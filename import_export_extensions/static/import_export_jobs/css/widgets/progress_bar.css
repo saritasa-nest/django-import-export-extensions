@@ -1,0 +1,31 @@
+progress {
+  text-align: center;
+  height: 2.0em;
+  width: 100%;
+  -webkit-appearance: none;
+  border: none;
+  position:relative;
+}
+progress:before {
+  content: attr(data-label);
+  font-size: 1.0em;
+  font-weight: bold;
+  color: var(--body-fg);
+  vertical-align: center;
+  text-align: center;
+
+  /*Position text over the progress bar */
+  position:absolute;
+  left:0;
+  right:0;
+  top: 5px;
+}
+progress::-webkit-progress-bar {
+  background-color: var(--breadcrumbs-fg);
+}
+progress::-webkit-progress-value {
+  background-color: var(--breadcrumbs-bg);
+}
+progress::-moz-progress-bar {
+  background-color: var(--breadcrumbs-bg);
+}

@@ -1,0 +1,61 @@
+-r production.txt
+
+# Improved REPL
+ipdb
+ipython
+
+# Linters
+
+# A plugin for Flake8 finding likely bugs and design problems in your program.
+# https://github.com/PyCQA/flake8-bugbear
+flake8-bugbear
+# Extension to enforce better comma placement.
+# https://github.com/PyCQA/flake8-commas
+flake8-commas
+# A flake8 plugin checking common style issues or inconsistencies with pytest-based tests.
+# https://github.com/m-burst/flake8-pytest-style
+flake8-pytest-style
+# A flake8 plugin that warn about backslashes usage
+# https://github.com/wemake-services/flake8-broken-line
+flake8-broken-line
+# A flake8 plugin that warn about missing docstrings
+# https://github.com/pycqa/flake8-docstrings
+flake8-docstrings
+# A flake8 plugin to detect bad practices on Django projects.
+# https://github.com/rocioar/flake8-django
+flake8-django
+# https://github.com/zheller/flake8-quotes
+# A flake8 plugin to expect usage of double quotes
+flake8-quotes
+# https://flake8.pycqa.org/en/latest/
+flake8
+# McCabe complexity checker
+# https://github.com/PyCQA/mccabe
+mccabe
+
+# https://github.com/python/mypy
+# Static type checker for Python.
+mypy
+
+# For proper import sorting
+isort
+
+# Provide management command to check if primary database is ready to accept
+# connections
+# https://github.com/painless-software/django-probes
+django-probes
+
+# For testing django app using pytest
+pytest-django
+pytest-mock
+
+
+factory-boy
+
+# Install drf for test app
+djangorestframework
+# Install for better django shell
+django-extensions
+
+# Documentation
+sphinx

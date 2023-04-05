@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:5
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h postgres -t 5 -U ${COMPOSE_PROJECT_NAME}-user || false"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    environment:
+      - POSTGRES_DB=${COMPOSE_PROJECT_NAME}-dev
+      - POSTGRES_USER=${COMPOSE_PROJECT_NAME}-user
+      - POSTGRES_PASSWORD=testpass

@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load static admin_urls %}
+
+{% comment %}
+  Template for celery import.
+
+  Display form for choosing data file
+{% endcomment %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+{% endblock %}
+
+
+{% block breadcrumbs_last %}
+  &rsaquo; {% trans "Import" %}
+{% endblock %}
+
+{% block content %}
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <fieldset class="module aligned">
+      {% for field in form %}
+        <div class="form-row">
+          {{ field.errors }}
+
+          {{ field.label_tag }}
+
+          {{ field }}
+
+          {% if field.field.help_text %}
+            <p class="help">{{ field.field.help_text|safe }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </fieldset>
+
+    <div class="submit-row">
+      <input type="submit" class="default" value="{% trans "Submit" %}">
+    </div>
+  </form>
+
+{% endblock %}

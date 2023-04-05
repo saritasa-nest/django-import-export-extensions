@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load static admin_urls %}
+
+{% comment %}
+  Template for showing export results.
+
+  * Display status and allow downloading file
+  * If data contains errors show traceback
+{% endcomment %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs_last %}
+  <a href="{% url opts|admin_urlname:'celery_export' %}?{{request.GET.urlencode}}">
+    {% trans "Export" %}
+  </a>
+  &rsaquo; {% trans "Export results" %}
+{% endblock %}
+
+{% block content %}
+  {% block export_results %}
+    {% if export_job.export_status == 'EXPORT_ERROR' %}
+      <h2>
+        {% trans "There are some errors during data exporting:" %}
+      </h2>
+      <div class="error">
+        {{ export_job.error_message }}
+        {% if debug %}
+          <div class="traceback">{{ export_job.traceback|linebreaks }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if export_job.export_status == 'EXPORTED' %}
+      <h2>
+        {% trans "You can download exported data with following link" %}
+      </h2>
+      <a href="{{ export_job.data_file.url }}" id="data_file">Download export data</a>
+    {% endif %}
+  {% endblock %}
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load static admin_urls %}
+
+{% comment %}
+  Template to show status of export job.
+  Similar to job's admin page.
+
+{% endcomment %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "import_export_extensions/css/admin/admin.css" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "import_export_extensions/css/widgets/progress_bar.css" %}"/>
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+  <script type="text/javascript" src="{% static 'import_export_extensions/js/widgets/progress_bar.js' %}"></script>
+{% endblock %}
+
+
+{% block breadcrumbs_last %}
+  <a href="{% url opts|admin_urlname:'celery_export' %}?{{request.GET.urlencode}}">
+    {% trans "Export" %}
+  </a>
+  &rsaquo;
+  {% trans "Exporting ..." %}
+{% endblock %}
+
+{% block content %}
+  <div>
+    <fieldset class="module aligned collapse">
+      <div class="form-row">
+        <label>Status</label><p id="current-job-status">{{ export_job.export_status|title }}</p>
+      </div>
+
+      {% if export_job.export_status not in export_job.export_finished_statuses %}
+        <div class="form-row">
+          <label>Progress</label>
+          <p id="progress_bar_html">
+            <progress max="100" id="progress-bar" data-url="{{ export_job_url }}"></progress>
+          </p>
+        </div>
+      {% endif %}
+
+      {% if export_job.export_status == export_job.ExportStatus.EXPORTED %}
+        <div class="form-row">
+          <label>Totals</label>
+          <p>
+            {% for total, stat in export_job.result.totals.items %}
+              {{ total.title }}:&nbsp; <b>{{ stat }}</b><br>
+            {% endfor %}
+          </p>
+        </div>
+      {% endif %}
+
+      {% if export_job.export_status == export_job.ExportStatus.EXPORT_ERROR %}
+        <div class="form-row">
+          <label>Error</label>
+          <p><b>{{ export_job.error_message }}</b></p>
+        </div>
+        <div class="form-row">
+          <label>Traceback</label>
+          {{ export_job.traceback | linebreaks }}
+        </div>
+      {% endif %}
+    </fieldset>
+  </div>
+{% endblock %}
