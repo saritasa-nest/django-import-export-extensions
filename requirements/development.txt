@@ -62,3 +62,6 @@ sphinx
 
 # Needed to run runserver_plus
 Werkzeug
+
+# Needed for documentation generation
+watchdog

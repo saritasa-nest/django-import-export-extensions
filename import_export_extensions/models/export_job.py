@@ -23,7 +23,7 @@ class ExportJob(TimeStampedModel):
 
     Export steps:
 
-    1. Create `ExportJob` with resource initialization parameters.
+    1. Create ExportJob with resource initialization parameters.
     2. Try to export all data to file.
     3. If everything correct - export data to file from database.
 
@@ -43,7 +43,8 @@ class ExportJob(TimeStampedModel):
         * EXPORTED:
             DB queryset exported, no errors occurred
 
-        State diagrams:
+        State diagrams::
+
             CREATED
                |
             EXPORTING  - (EXPORT_ERROR)
@@ -190,24 +191,27 @@ class ExportJob(TimeStampedModel):
     def progress(self) -> typing.Optional[TaskStateInfo]:
         """Return dict with parsing state.
 
-        Example for sync mode:
-        {
-            'state': 'EXPORTING',
-            'info': None
-        }
+        Example for sync mode::
 
-        Example for celery (celery) mode:
-        {
-            'state': 'EXPORTING',
-            'info': {'current': 15, 'total': 100}
-        }
+            {
+                'state': 'EXPORTING',
+                'info': None
+            }
+
+        Example for celery (celery) mode::
+
+            {
+                'state': 'EXPORTING',
+                'info': {'current': 15, 'total': 100}
+            }
 
         Possible states:
-            https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
-            PENDING
-            STARTED
-            SUCCESS
-            EXPORTING - custom status that also set export info
+            1. PENDING
+            2. STARTED
+            3. SUCCESS
+            4. EXPORTING - custom status that also set export info
+
+        https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
 
         """
         if self.export_status not in (self.ExportStatus.EXPORTING,):

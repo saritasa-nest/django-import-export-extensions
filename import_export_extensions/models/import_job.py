@@ -57,7 +57,8 @@ class ImportJob(TimeStampedModel):
         * CANCELLED:
             import job has been cancelled (revoked)
 
-        State diagrams:
+        State diagrams::
+
             CREATED
                |
             .parse_data()
@@ -239,24 +240,27 @@ class ImportJob(TimeStampedModel):
     def progress(self) -> typing.Optional[TaskStateInfo]:
         """Return dict with parsing state.
 
-        Example for sync mode:
-        {
-            'state': 'PARSING',
-            'info': None
-        }
+        Example for sync mode::
 
-        Example for background (celery) mode:
-        {
-            'state': 'PARSING',
-            'info': {'current': 15, 'total': 100}
-        }
+            {
+                'state': 'PARSING',
+                'info': None
+            }
+
+        Example for background (celery) mode::
+
+            {
+                'state': 'PARSING',
+                'info': {'current': 15, 'total': 100}
+            }
 
         Possible states:
-            https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
-            PENDING
-            STARTED
-            SUCCESS
-            PARSING - custom status that also set importing info
+            1. PENDING
+            2. STARTED
+            3. SUCCESS
+            4. PARSING - custom status that also set importing info
+
+        https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
 
         """
         if self.import_status not in (

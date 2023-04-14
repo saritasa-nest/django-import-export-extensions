@@ -1,13 +1,17 @@
 import os
 import sys
 
+import django
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.append(os.path.abspath("."))
 sys.path.append(os.path.abspath(".."))
 sys.path.append(os.path.abspath("../tests"))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
+django.setup()
 # -- General configuration ---------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -16,7 +20,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
-    "sphinx.ext.autosectionlabel",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

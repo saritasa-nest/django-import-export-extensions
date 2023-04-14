@@ -34,11 +34,12 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
     Example models from ``IntermediateManyToManyField`` docstring will be used.
 
     So this widget's ``clean`` method should return dict with Membership info,
-    i.e:
-    {
-        'band': <Some band>,
-        'date_joined': '2015-01-18'
-    }
+    i.e::
+
+        {
+            'band': <Some band>,
+            'date_joined': '2015-01-18'
+        }
 
     And ``render`` method should return string that will contain required data.
 
@@ -221,7 +222,8 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
                   instance. If there are few instances in DB with same
                   `self.rem_field`=`rem_field_value` then it returns few items
 
-        Example:
+        Example::
+
             {
                 'object': <Band object>,
                 'properties': {'date_joined': '2011-10-12'}

@@ -132,7 +132,7 @@ def clean_sequence_of_string_values(
     Args:
         sequence: list of strings
         ignore_empty: boolean value which defines should empty strings be
-                      removed from sequence or not
+        removed from sequence or not
 
     Returns:
         cleared_sequence: list of cleared sequence items

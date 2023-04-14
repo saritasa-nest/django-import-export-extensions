@@ -21,22 +21,23 @@ class CeleryImportAdminMixin:
     """Admin mixin for celery import.
 
     Admin import work-flow is:
-        GET `celery_import_action()` - display form with import file input
 
-        POST `celery_import_action()` - save file and create ImportJob.
-            This view redirects to next view:
+    GET ``celery_import_action()`` - display form with import file input
 
-        GET `celery_import_job_status_view()` - display ImportJob status (with
-            progress bar and critical errors occurred). When data parsing is
-            done, redirect to next view:
+    POST ``celery_import_action()`` - save file and create ImportJob.
+        This view redirects to next view:
 
-        GET `celery_import_job_results_view()` - display rows that will be
-            imported and data parse errors. If no errors - next step.
-            If errors - display same form as in `import_action()`
+    GET ``celery_import_job_status_view()`` - display ImportJob status (with
+        progress bar and critical errors occurred). When data parsing is
+        done, redirect to next view:
 
-        POST `celery_import_job_results_view()` - start data importing and
-            redirect back to GET `celery_import_job_status_view()`
-            with progress bar and import totals.
+    GET ``celery_import_job_results_view()`` - display rows that will be
+        imported and data parse errors. If no errors - next step.
+        If errors - display same form as in ``import_action()``
+
+    POST ``celery_import_job_results_view()`` - start data importing and
+        redirect back to GET ``celery_import_job_status_view()``
+        with progress bar and import totals.
 
     """
 
@@ -137,13 +138,13 @@ class CeleryImportAdminMixin:
         """Return list of urls.
 
         * /<model>/<celery-import>/:
-         ImportForm ('celery_import_action' method)
+            ImportForm ('celery_import_action' method)
         * /<model>/<celery-import>/<ID>/:
-         status of ImportJob and progress bar
-         ('celery_import_job_status_view')
+            status of ImportJob and progress bar
+            ('celery_import_job_status_view')
         * /<model>/<celery-import>/<ID>/results/:
-         table with import results (errors) and import confirmation
-         ('celery_import_job_results_view')
+            table with import results (errors) and import confirmation
+            ('celery_import_job_results_view')
 
         """
         urls = super().get_urls()
@@ -182,8 +183,10 @@ class CeleryImportAdminMixin:
     ):
         """Show and handle ImportForm.
 
-        GET: show import form with data_file input form
-        POST: create ImportJob instance and redirect to it's status
+        GET:
+            show import form with data_file input form
+        POST:
+            create ImportJob instance and redirect to it's status
 
         """
         resource = self.get_import_resource(request, *args, **kwargs)
@@ -345,6 +348,7 @@ class CeleryImportAdminMixin:
 
         Raises:
             Http404
+
         """
         return get_object_or_404(klass=models.ImportJob, id=job_id)
 

@@ -174,7 +174,7 @@ class IntermediateManyToManyField(M2MField):
 
         Args:
             obj(model instance): object being imported
-            data(OrderedDict_: all extracted data for object
+            data(OrderedDict): all extracted data for object
 
         Example:
             obj - Artist instance
