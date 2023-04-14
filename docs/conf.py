@@ -30,8 +30,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "django-import-export-extensions"
-copyright = "2022-2023, Nikita Azanov"
-author = "Nikita Azanov"
+copyright = "2022-2023, Saritasa"
+author = "Saritasa"
 
 
 # The version info for the project you're documenting, acts as replacement for

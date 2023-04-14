@@ -42,8 +42,8 @@ def reqs(file_name: str) -> list[str]:
 
 
 setup(
-    author="Nikita Azanov",
-    author_email="nikita.azanov@saritasa.com",
+    author="Saritasa",
+    author_email="pypi@saritasa.com",
     python_requires=">=3.9",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
