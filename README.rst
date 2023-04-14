@@ -27,6 +27,18 @@ adding the following features:
 * Support `drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_ generated API schema
 * Additional fields and widgets (FileWidget, IntermediateM2MWidget, M2MField)
 
+Migration from django-import-export
+-----------------------------------
+Resources migration
+^^^^^^^^^^^^^^^^^^^
+Change ``Resource`` or ``ModelResource`` to
+``CeleryResource`` or ``CeleryModelResource`` respectively.
+
+Admin migration
+^^^^^^^^^^^^^^^
+Change ``ImportMixin``, ``ExportMixin``, ``ImportExportMixin``
+to ``CeleryImportMixin``, ``CeleryExportMixin`` or ``CeleryImportExportMixin`` respectively.
+
 License
 -------
 * Free software: MIT license
