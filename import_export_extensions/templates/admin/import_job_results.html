@@ -1,0 +1,85 @@
+{% load i18n  %}
+{% load static %}
+
+{% comment %}
+
+This template adds html block with import results to ImportJob admin page.
+If errors - shows lines, where errors accured.
+If no errors - shows imported data.
+
+{% endcomment %}
+
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+<script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+
+{% if result.has_errors or result.has_validation_errors  %}
+  <b style="color: red">Importing data contains errors</b>
+  <br>
+  {% for error in result.base_errors  %}
+    <li>
+      {{ error.error }}
+      {% if debug %}
+        <div class="traceback">{{ error.traceback|linebreaks }}</div>
+      {% endif %}
+    </li>
+  {% endfor %}
+  {% for line, errors in result.row_errors %}
+    {% for error in errors %}
+      <li>
+        <b>Row number: {{ line }}</b> - {{ error.error }}
+        <br>
+        <a href="#" class="show-error-detail">Show row data {% if debug %}and debug info{% endif %}</a>
+        <div style="display: none;"><code>{{ error.row.values|join:", " }}</code></div>
+        {% if debug %}
+          <div style="display: none;" class="traceback">{{ error.traceback|linebreaks }}</div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  {% endfor %}
+  {% for invalid_row in result.invalid_rows %}
+    <b>{% trans "Row number" %}: {{ invalid_row.number }}</b>
+    {% for field, errors in invalid_row.error_dict.items %}
+      <br>
+      <b>&ensp;{{ field }}: </b>
+      <br>
+      {% for error in errors %}
+        <b style="color: red">&ensp;{{ error }}</b>
+        <br>
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
+{% else %}
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        {% for field in result.diff_headers %}
+          <th>{{ field }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    {% for row in result.rows %}
+      {% if not row.errors %}
+        <tr>
+          <td>
+            {% if row.import_type == 'new' %}
+              <b>New</b>
+            {% elif row.import_type == 'skip' %}
+              <b>Skipped</b>
+            {% elif row.import_type == 'delete' %}
+              <b>Delete</b>
+            {% elif row.import_type == 'update' %}
+              <b>Update</b>
+            {% endif %}
+          </td>
+          {% for field in row.diff %}
+            <td>
+              {{ field }}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </table>
+{% endif %}

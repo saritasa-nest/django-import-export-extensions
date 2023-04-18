@@ -1,0 +1,158 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load static admin_urls %}
+
+{% comment %}
+  Template for showing import results.
+
+  * Display table with parsed data and errors (like in import.html)
+  * If data contain no errors - show confirm form
+{% endcomment %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+{% endblock %}
+
+
+{% block breadcrumbs_last %}
+  <a href="{% url opts|admin_urlname:'celery_import' %}?{{request.GET.urlencode}}">
+    {% trans "Import" %}
+  </a>
+  &rsaquo; {% trans "Import results" %}
+{% endblock %}
+
+{% block content %}
+
+  {# Confirmation form if there is no errors #}
+  {% if confirm_form %}
+    {% block confirm_form %}
+      <form action="" method="POST">
+        {% csrf_token %}
+        {{ confirm_form.as_p }}
+        <p>
+          {% trans "Below is a preview of data to be imported. If you are satisfied with the results, click 'Confirm import'" %}
+        </p>
+        <div class="submit-row">
+          <input type="submit" class="default" name="confirm" value="{% trans "Confirm import" %}">
+        </div>
+      </form>
+    {% endblock %}
+  {% endif %}
+
+  {# Show Import form if result contain errors #}
+  {# form.action is to ImportJob creation #}
+  {% if import_form %}
+    <form action="{% url opts|admin_urlname:"celery_import" %}?{{ request.GET.urlencode }}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <fieldset class="module aligned">
+        {% for field in import_form %}
+          <div class="form-row">
+            {{ field.errors }}
+
+            {{ field.label_tag }}
+
+            {{ field }}
+
+            {% if field.field.help_text %}
+              <p class="help">{{ field.field.help_text|safe }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </fieldset>
+
+      <div class="submit-row">
+        <input type="submit" class="default" value="{% trans "Submit" %}">
+      </div>
+    </form>
+
+  {% endif %}
+
+
+  {% block import_results %}
+    {% if result.has_errors or result.has_validation_errors %}
+      <h2>{% trans "Errors" %}</h2>
+      <ul>
+        {% for error in result.base_errors  %}
+          <li>
+            {{ error.error }}
+            {% if debug %}
+              <div class="traceback">{{ error.traceback|linebreaks }}</div>
+            {% endif %}
+          </li>
+        {% endfor %}
+        {% for line, errors in result.row_errors %}
+          {% for error in errors %}
+            <li>
+              <b>{% trans "Row number" %}: {{ line }}</b> - {{ error.error }}
+              <br>
+              <a href="#" class="show-error-detail">Show row data {% if debug %}and debug info{% endif %}</a>
+              <div style="display: none;"><code>{{ error.row.values|join:", " }}</code></div>
+              {% if debug %}
+                <div style="display: none;" class="traceback">{{ error.traceback|linebreaks }}</div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        {% endfor %}
+        {% for invalid_row in result.invalid_rows %}
+          <li>
+            <b>{% trans "Row number" %}: {{ invalid_row.number }}</b><br>
+            {% for field, errors in invalid_row.error_dict.items %}
+              <b>{{ field }}</b>
+              <br>
+              {% for error in errors %}
+                <b style="color: red">{{ error }}</b><br>
+              {% endfor %}
+            {% endfor %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if import_job.import_status in import_job.success_statuses %}
+      <h2>
+        {% if import_job.import_status == "PARSED" %}
+          {% trans "These elements will be imported successfully" %}
+        {% elif import_job.import_status == "IMPORTED"%}
+          {% trans "These elements are imported successfully" %}
+        {% endif %}
+      </h2>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {% for field in result.diff_headers %}
+              <th>{{ field }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        {% for row in result.rows %}
+          {% if not row.errors %}
+            <tr>
+              <td>
+                {% if row.import_type == 'new' %}
+                  {% trans "New" %}
+                {% elif row.import_type == 'skip' %}
+                  {% trans "Skipped" %}
+                {% elif row.import_type == 'delete' %}
+                  {% trans "Delete" %}
+                {% elif row.import_type == 'update' %}
+                  {% trans "Update" %}
+                {% endif %}
+              </td>
+              {% for field in row.diff %}
+                <td>
+                  {{ field }}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </table>
+    {% endif %}
+  {% endblock %}
+
+
+{% endblock %}

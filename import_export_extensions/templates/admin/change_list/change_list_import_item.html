@@ -1,0 +1,4 @@
+{% load i18n %}
+{% load admin_urls %}
+
+<li><a href='{% url opts|admin_urlname:"celery_import" %}{{cl.get_query_string}}' class="import_link">{% trans "Import" %}</a></li>

@@ -1,0 +1,7 @@
+.traceback {
+  float: left;
+}
+
+.traceback p {
+  padding-left: 0;
+}

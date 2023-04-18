@@ -1,0 +1,73 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load static admin_urls %}
+
+{% comment %}
+  Template to show status of import job.
+  Similar to job's admin page.
+
+{% endcomment %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "import_export_extensions/css/admin/admin.css" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "import_export_extensions/css/widgets/progress_bar.css" %}"/>
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+  <script type="text/javascript" src="{% static 'import_export_extensions/js/widgets/progress_bar.js' %}"></script>
+{% endblock %}
+
+
+{% block breadcrumbs_last %}
+  <a href="{% url opts|admin_urlname:'celery_import' %}?{{request.GET.urlencode}}">
+    {% trans "Import" %}
+  </a>
+  &rsaquo; {% trans "Importing..." %}
+{% endblock %}
+
+{% block content %}
+  <div>
+
+    <fieldset class="module aligned collapse">
+      <div class="form-row">
+        <label>Status</label><p id="current-job-status">{{ import_job.import_status|title }}</p>
+      </div>
+
+      {% if import_job.import_status in import_job.progress_statuses %}
+        <div class="form-row">
+          <label>Progress</label>
+          <p id="progress_bar_html">
+            <progress max="100" id="progress-bar" data-url="{{ import_job_url }}"></progress>
+          </p>
+        </div>
+      {% endif %}
+
+      {% if import_job.import_status in import_job.success_statuses %}
+        <div class="form-row">
+          <label>Totals</label>
+          <p>
+            {% for total, stat in import_job.result.totals.items %}
+              {{ total.title }}:&nbsp; <b>{{ stat }}</b><br>
+            {% endfor %}
+          </p>
+        </div>
+      {% endif %}
+
+      {% if import_job.import_status in import_job.failure_statuses %}
+        <div class="form-row">
+          <label>Error</label>
+          <p><b>{{ import_job.error_message }}</b></p>
+        </div>
+        <div class="form-row">
+          <label>Traceback</label>
+          {{ import_job.traceback | linebreaks }}
+        </div>
+      {% endif %}
+    </fieldset>
+  </div>
+{% endblock %}

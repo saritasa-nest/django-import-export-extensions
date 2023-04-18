@@ -1,0 +1,69 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.2.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: isort (python)
+
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.2.3
+    hooks:
+      - id: add-trailing-comma
+
+  - repo: https://github.com/jorisroovers/gitlint
+    rev:  v0.17.0
+    hooks:
+    -   id: gitlint
+
+  - repo: https://github.com/rtts/djhtml
+    rev: v1.5.2
+    hooks:
+      - id: djhtml
+        args: [ "--tabwidth=2" ]
+      - id: djcss
+        args: [ "--tabwidth=2" ]
+      - id: djjs
+        args: [ "--tabwidth=2" ]
+
+  - repo: local
+    hooks:
+      - id: check_new_migrations
+        name: check for new migrations
+        entry: inv django.check-new-migrations
+        language: system
+        pass_filenames: false
+        types: [ file ]
+        stages: [ push ]
+
+      - id: linters
+        name: run linters
+        entry: inv linters.all
+        language: system
+        pass_filenames: false
+        types: [ python ]
+        stages: [ push ]
+
+      - id: tests
+        name: run tests
+        entry: inv tests.run-ci
+        language: system
+        pass_filenames: false
+        types: [ python ]
+        stages: [ push ]
+
+      - id: package_installation_verify
+        name: verify package can be installed
+        entry: python setup.py check
+        language: system
+        pass_filenames: false
+        types: [ python ]
+        stages: [ push ]
