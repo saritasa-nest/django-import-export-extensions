@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
+    rev: v4.4.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
@@ -15,12 +15,12 @@ repos:
         name: isort (python)
 
   - repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.2.3
+    rev: v2.4.0
     hooks:
       - id: add-trailing-comma
 
   - repo: https://github.com/jorisroovers/gitlint
-    rev:  v0.17.0
+    rev:  v0.19.1
     hooks:
     -   id: gitlint
 
