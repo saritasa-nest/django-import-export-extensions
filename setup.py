@@ -60,7 +60,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
     ],
-    description="TODO: There should be description\nTODO: Rename project",
+    description="Extend functionality of `django-import-export`",
     entry_points={
         "console_scripts": [
             "import_export_extensions=import_export_extensions.cli:main",
