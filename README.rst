@@ -7,13 +7,16 @@ django-import-export-extensions
         :alt: Build status on Github
 
 .. image:: https://img.shields.io/badge/python%20versions-3.9%20%7C%203.10%20%7C%203.11-blue
-        :target: https://img.shields.io/badge/python%20versions-3.9%20%7C%203.10%20%7C%203.11-blue
+        :target: https://pypi.org/project/import-export-extensions/
         :alt: Supported python versions
 
 .. image:: https://img.shields.io/badge/django--versions-3.2%20%7C%204.0%20%7C%204.1%20%7C%204.2-blue
-        :target: https://img.shields.io/badge/django--versions-3.2%20%7C%204.0%20%7C%204.1%20%7C%204.2-blue
+        :target: https://pypi.org/project/import-export-extensions/
         :alt: Supported django versions
 
+.. image:: https://readthedocs.org/projects/django-import-export-extensions/badge/?version=latest
+    :target: https://django-import-export-extensions.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 Description
 -----------
