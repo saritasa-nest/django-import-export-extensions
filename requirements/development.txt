@@ -59,6 +59,7 @@ django-extensions
 
 # Documentation
 sphinx
+sphinx-rtd-theme
 
 # Needed to run runserver_plus
 Werkzeug
