@@ -20,6 +20,8 @@ from .utils import (
     url_to_internal_value,
 )
 
+DEFAULT_SYSTEM_STORAGE = "django.core.files.storage.FileSystemStorage"
+
 
 class IntermediateManyToManyWidget(ManyToManyWidget):
     """Widget for M2M field with custom ``through`` model.
@@ -292,10 +294,7 @@ class FileWidget(CharWidget):
         if not value:
             return None
 
-        if (
-            settings.DEFAULT_FILE_STORAGE
-            == "django.core.files.storage.FileSystemStorage"
-        ):
+        if self._get_default_storage() == DEFAULT_SYSTEM_STORAGE:
             return f"http://localhost:8000{value.url}"
 
         return value.url
@@ -325,3 +324,17 @@ class FileWidget(CharWidget):
         filename = f"{self.filename}.{ext}" if ext else self.filename
 
         return File(file, filename)
+
+    def _get_default_storage(self) -> str:
+        """Return default system storage used in project.
+
+        Use the value from `STORAGES` if it's available,
+        otherwise use `DEFAULT_FILE_STORAGE`.
+
+        `STORAGES` variable replaced `DEFAULT_FILE_STORAGE`, in django 4.2
+        https://docs.djangoproject.com/en/4.2/ref/settings/#default-file-storage
+
+        """
+        if hasattr(settings, "STORAGES"):
+            return settings.STORAGES["default"]["BACKEND"]
+        return settings.DEFAULT_FILE_STORAGE

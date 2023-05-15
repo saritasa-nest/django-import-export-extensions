@@ -86,11 +86,18 @@ def superuser():
 def temp_directory_for_media(tmpdir_factory):
     """Fixture that set temp directory for all media files.
 
-    This fixture changes FILE_STORAGE to filesystem and provides temp dir for
-    media. PyTest cleans up this temp dir by itself after few test runs
+    This fixture changes DEFAULT_FILE_STORAGE or STORAGES variable
+    to filesystem and provides temp dir for media.
+    PyTest cleans up this temp dir by itself after few test runs
+
     """
-    settings.DEFAULT_FILE_STORAGE = (
-        "django.core.files.storage.FileSystemStorage"
-    )
+    if hasattr(settings, "STORAGES"):
+        settings.STORAGES["default"]["BACKEND"] = (
+            "django.core.files.storage.FileSystemStorage"
+        )
+    else:
+        settings.DEFAULT_FILE_STORAGE = (
+            "django.core.files.storage.FileSystemStorage"
+        )
     media = tmpdir_factory.mktemp("tmp_media")
     settings.MEDIA_ROOT = media
