@@ -62,7 +62,7 @@ repos:
 
       - id: package_installation_verify
         name: verify package can be installed
-        entry: python setup.py check
+        entry: pip install --dry-run .
         language: system
         pass_filenames: false
         types: [ python ]
