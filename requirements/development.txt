@@ -27,6 +27,9 @@ flake8-django
 # https://github.com/zheller/flake8-quotes
 # A flake8 plugin to expect usage of double quotes
 flake8-quotes
+# A flake8 plugin loading the configuration from pyproject.toml
+# https://github.com/john-hen/Flake8-pyproject
+flake8-pyproject
 # https://flake8.pycqa.org/en/latest/
 flake8
 # McCabe complexity checker

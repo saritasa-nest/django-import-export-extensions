@@ -1,0 +1,145 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    {name = "Saritasa", email = "pypi@saritasa.com"},
+]
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+description = "Extend functionality of `django-import-export`"
+readme = "README.rst"
+license = {file = "LICENSE"}
+keywords = ["django_import_export_extensions"]
+name = "django_import_export_extensions"
+dynamic = ["dependencies", "version"]
+
+[project.urls]
+"Homepage" = "https://github.com/saritasa-nest/django-import-export-extensions"
+"Bug Tracker" = "https://github.com/saritasa-nest/django-import-export-extensions/issues"
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements/production.txt"}
+version = {attr = "import_export_extensions.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["import_export_extensions", "import_export_extensions.*"]
+
+[tool.isort]
+line_length = 79
+multi_line_output = 3
+known_django = "django"
+known_drf = "rest_framework"
+known_apps = "import_export_extensions"
+skip = [
+    "migrations",
+    "_tmp,src",
+    "scripts",
+    ".venv",
+    "node_modules",
+    "config",
+]
+sections = [
+    "FUTURE",
+    "STDLIB",
+    "DJANGO",
+    "DRF",
+    "THIRDPARTY",
+    "FIRSTPARTY",
+    "APPS",
+    "LOCALFOLDER",
+]
+include_trailing_comma = true
+default_section = "THIRDPARTY"
+
+[tool.flake8]
+ignore = [
+    # https://www.flake8rules.com/rules/E126.html
+    "E126",
+    # https://www.flake8rules.com/rules/W503.html
+    "W503",
+    # https://www.flake8rules.com/rules/W504.html
+    "W504",
+    # https://github.com/m-burst/flake8-pytest-style/blob/master/docs/rules/PT004.md
+    "PT004",
+    # http://www.pydocstyle.org/en/latest/error_codes.html
+    "D100",
+    "D106",
+    "D107",
+    "D204",
+    "D301",
+]
+statistics = true
+count = true
+max-complexity = 10
+pytest-fixture-no-parentheses = true
+pytest-parametrize-names-type = "list"
+pytest-parametrize-values-type = "list"
+pytest-parametrize-values-row-type = "list"
+inline-quotes = "double"
+docstring-quotes = "double"
+docstring-convention = "pep257"
+exclude = [
+    "migrations",
+    ".venv",
+    "__init__.py",
+    "docs",
+    "tests/settings.py",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+implicit_optional = false
+
+warn_no_return = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_configs = true
+allow_redefinition = false
+disallow_any_generics = true
+strict_equality = true
+strict_optional = true
+
+ignore_errors = false
+local_partial_types = true
+
+enable_error_code = [
+    "truthy-bool",
+    "redundant-expr",
+]
+
+disable_error_code = [
+    "attr-defined",
+    "index",
+    "annotation-unchecked",
+]
+
+exclude = "settings.py"
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+warn_unreachable = false
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+python_files = [
+    "tests.py",
+    "test_*.py",
+    "*_tests.py",
+]
