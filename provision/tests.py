@@ -18,4 +18,9 @@ def run(context, params=""):
 @task
 def run_ci(context):
     """Run tests in github actions."""
-    run(context, params="-v")
+    start.run_coverage(
+        context,
+        "--source import_export_extensions "
+        "--omit import_export_extensions/migrations "
+        "-m pytest -v",
+    )

@@ -6,6 +6,10 @@ django-import-export-extensions
         :target: https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml
         :alt: Build status on Github
 
+.. image:: https://coveralls.io/repos/github/saritasa-nest/django-import-export-extensions/badge.svg?branch=main
+        :target: https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main
+        :alt: Test coverage
+
 .. image:: https://img.shields.io/badge/python%20versions-3.9%20%7C%203.10%20%7C%203.11-blue
         :target: https://pypi.org/project/django-import-export-extensions/
         :alt: Supported python versions

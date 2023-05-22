@@ -69,3 +69,6 @@ Werkzeug
 
 # Needed for documentation generation
 watchdog
+
+# Code coverage testing for Python.
+coverage
