@@ -165,6 +165,31 @@ class ExportJob(TimeStampedModel):
             f"using {self.resource_path}(Format {self.file_format_path})"
         )
 
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        """Start task for data exporting when ExportJob is created.
+
+        Celery task is manually called with `apply_async`, to provide
+        possibility of custom `task_id` with which task will be run.
+
+        """
+        is_created = self._state.adding
+        super().save(
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields,
+        )
+        if is_created:
+            self.export_task_id = str(uuid.uuid4())
+            self.save(update_fields=["export_task_id"])
+            transaction.on_commit(self._start_export_data_task)
+
     @property
     def resource(self):
         """Get initialized resource instance."""
@@ -231,31 +256,6 @@ class ExportJob(TimeStampedModel):
         return ValueError(
             f"Wrong export job status: {self.get_export_status_display()}",
         )
-
-    def save(
-        self,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
-    ):
-        """Start task for data exporting when ExportJob is created.
-
-        Celery task is manually called with `apply_async`, to provide
-        possibility of custom `task_id` with which task will be run.
-
-        """
-        is_created = self._state.adding
-        super().save(
-            force_insert=force_insert,
-            force_update=force_update,
-            using=using,
-            update_fields=update_fields,
-        )
-        if is_created:
-            self.export_task_id = str(uuid.uuid4())
-            self.save(update_fields=["export_task_id"])
-            transaction.on_commit(self._start_export_data_task)
 
     def _start_export_data_task(self):
         """Start export data task."""

@@ -227,6 +227,31 @@ class ImportJob(TimeStampedModel):
             f"<{self.pk}> using {self.resource_path}"
         )
 
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        """Start task for data parsing when ImportJob is created.
+
+        Celery task is manually called with `apply_async`, to provide
+        possibility of custom `task_id` with which task will be run.
+
+        """
+        is_created = self._state.adding
+        super().save(
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields,
+        )
+        if is_created:
+            self.parse_task_id = str(uuid.uuid4())
+            self.save(update_fields=["parse_task_id"])
+            transaction.on_commit(self.start_parse_data_task)
+
     @property
     def resource(self):
         """Get initialized resource instance."""
@@ -289,31 +314,6 @@ class ImportJob(TimeStampedModel):
         return ValueError(
             f"Wrong import job status: {self.get_import_status_display()}",
         )
-
-    def save(
-        self,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
-    ):
-        """Start task for data parsing when ImportJob is created.
-
-        Celery task is manually called with `apply_async`, to provide
-        possibility of custom `task_id` with which task will be run.
-
-        """
-        is_created = self._state.adding
-        super().save(
-            force_insert=force_insert,
-            force_update=force_update,
-            using=using,
-            update_fields=update_fields,
-        )
-        if is_created:
-            self.parse_task_id = str(uuid.uuid4())
-            self.save(update_fields=["parse_task_id"])
-            transaction.on_commit(self.start_parse_data_task)
 
     def start_parse_data_task(self):
         """Start parsing task."""

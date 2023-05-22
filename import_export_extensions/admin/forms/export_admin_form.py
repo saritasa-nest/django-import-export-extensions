@@ -34,4 +34,19 @@ class ExportJobAdminForm(forms.ModelForm):
         )
 
     class Meta:
-        fields = "__all__"
+        fields = (
+            "export_status",
+            "resource_path",
+            "file_format_path",
+            "data_file",
+            "resource_kwargs",
+            "traceback",
+            "error_message",
+            "result",
+            "export_task_id",
+            "export_started",
+            "export_finished",
+            "created_by",
+            "created",
+            "modified",
+        )

@@ -38,4 +38,20 @@ class ImportJobAdminForm(forms.ModelForm):
         )
 
     class Meta:
-        fields = "__all__"
+        fields = (
+            "import_status",
+            "resource_path",
+            "data_file",
+            "resource_kwargs",
+            "traceback",
+            "error_message",
+            "result",
+            "parse_task_id",
+            "import_task_id",
+            "parse_finished",
+            "import_started",
+            "import_finished",
+            "created_by",
+            "created",
+            "modified",
+        )
