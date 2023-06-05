@@ -2,6 +2,13 @@
 History
 =======
 
+0.1.5 (2023-06-07)
+------------------
+* Add support for multiple resource classes in model admin
+* Refactor CeleryExportAdminMixin, CeleryImportAdminMixin
+    * move common logic to a base class
+    * drop `get_export_formats`, `get_import_formats` methods: call the corresponding methods on resource class instead
+
 0.1.4 (2023-05-22)
 ------------------
 * Add coverage badge

@@ -13,11 +13,13 @@ from django.template.response import TemplateResponse
 from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
+from import_export_extensions.resources import get_resource_display_name
+
 from ... import forms, models
-from .base import FormatType, ModelInfo, ResourceObj, ResourceType
+from .base import BaseImportMixin, ModelInfo, ResourceObj
 
 
-class CeleryImportAdminMixin:
+class CeleryImportAdminMixin(BaseImportMixin):
     """Admin mixin for celery import.
 
     Admin import work-flow is:
@@ -41,8 +43,6 @@ class CeleryImportAdminMixin:
 
     """
 
-    # Resource class
-    resource_class: ResourceType = None     # type: ignore
     # Import data encoding
     from_encoding: str = "utf-8"
 
@@ -67,28 +67,6 @@ class CeleryImportAdminMixin:
             meta=self.model._meta,
         )
 
-    def get_import_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get kwargs for import resource."""
-        return self.get_resource_kwargs(request, *args, **kwargs)
-
-    def get_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get common resource kwargs."""
-        return {}
-
-    def get_resource_class(self) -> ResourceType:
-        """Get resource class."""
-        return self.resource_class
-
     def get_import_resource(
         self,
         request: WSGIRequest,
@@ -96,35 +74,14 @@ class CeleryImportAdminMixin:
         **kwargs,
     ) -> ResourceObj:
         """Get initialized resource."""
-        return self.get_import_resource_class()(
+        resource_class = self.choose_import_resource_class(kwargs.get("form"))
+        return resource_class(
             **self.get_import_resource_kwargs(
                 request,
                 *args,
                 **kwargs,
             ),
         )
-
-    def get_import_resource_class(self) -> ResourceType:
-        """Return ResourceClass to use for import."""
-        return self.get_resource_class()
-
-    def get_import_formats(self) -> list[FormatType]:
-        """Get supported import formats."""
-        return [
-            import_format for import_format in
-            self.get_resource_class().get_supported_formats()
-            if import_format().can_import()
-        ]
-
-    def get_import_format_by_ext(
-        self,
-        extension: str,
-    ) -> typing.Union[FormatType, None]:
-        """Return available import formats."""
-        for import_format in self.get_import_formats():
-            if import_format().get_title().upper() == extension.upper():
-                return import_format
-        return None
 
     def get_context_data(
         self,
@@ -189,16 +146,18 @@ class CeleryImportAdminMixin:
             create ImportJob instance and redirect to it's status
 
         """
-        resource = self.get_import_resource(request, *args, **kwargs)
         context = self.get_context_data(request)
 
         form = forms.ImportForm(
             request.POST or None,
             request.FILES or None,
+            resources=self.get_resource_classes(),
         )
-
         if request.method == "POST" and form.is_valid():
             # create ImportJob and redirect to page with it's status
+            resource = self.get_import_resource(
+                request, *args, **kwargs, form=form,
+            )
             job = self.create_import_job(
                 request=request,
                 resource=resource,
@@ -208,6 +167,15 @@ class CeleryImportAdminMixin:
                 request=request,
                 job=job,
             )
+        else:
+            res_kwargs = self.get_import_resource_kwargs(
+                request, *args, form=form, **kwargs,
+            )
+            resource_classes = self.get_import_resource_classes()
+            resources = [
+                resource_class(**res_kwargs)
+                for resource_class in resource_classes
+            ]
 
         # GET: display Import Form
         context.update(self.admin_site.each_context(request))
@@ -215,8 +183,12 @@ class CeleryImportAdminMixin:
         context["title"] = _("Import")
         context["form"] = form
         context["opts"] = self.model_info.meta
-        context["fields"] = [
-            f.column_name for f in resource.get_user_visible_fields()
+        context["fields_list"] = [
+            (
+                get_resource_display_name(resource.__class__),
+                [f.column_name for f in resource.get_user_visible_fields()],
+            )
+            for resource in resources
         ]
 
         request.current_app = self.admin_site.name

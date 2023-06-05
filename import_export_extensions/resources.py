@@ -40,6 +40,15 @@ class TaskState(Enum):
     PARSING = _("Parsing")
 
 
+def get_resource_display_name(
+    resource_class: typing.Type[resources.Resource],
+) -> str:
+    """Return the resource class display name."""
+    if hasattr(resource_class, "get_display_name"):
+        return resource_class.get_display_name()
+    return resource_class.__name__
+
+
 class CeleryResourceMixin:
     """Mixin for resources for background import/export using celery."""
     filter_class: typing.Type[filters.FilterSet]
@@ -78,6 +87,24 @@ class CeleryResourceMixin:
     def get_supported_formats(cls) -> list[typing.Type[base_formats.Format]]:
         """Get a list of supported formats."""
         return cls.SUPPORTED_FORMATS
+
+    @classmethod
+    def get_export_formats(cls) -> list[typing.Type[base_formats.Format]]:
+        """Get a list of supported export formats."""
+        return [
+            fmt
+            for fmt in cls.get_supported_formats()
+            if fmt().can_export()
+        ]
+
+    @classmethod
+    def get_import_formats(cls) -> list[typing.Type[base_formats.Format]]:
+        """Get a list of supported import formats."""
+        return [
+            fmt
+            for fmt in cls.get_supported_formats()
+            if fmt().can_import()
+        ]
 
     @classmethod
     def get_supported_extensions_map(cls) -> dict[

@@ -1,12 +1,15 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
 {% load static admin_urls %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
 
 {% block extrahead %}
   {{ block.super }}
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
   <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+  {{ resources_formats|json_script:"format-data" }}
+  {{ form.media }}
 {% endblock %}
 
 {% block breadcrumbs_last %}
@@ -14,7 +17,7 @@
 {% endblock %}
 
 {% block content %}
-  <form action="" method="POST">
+  <form id="export-form" action="" method="POST">
     {% csrf_token %}
 
     <fieldset class="module aligned">
