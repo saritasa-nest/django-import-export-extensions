@@ -21,8 +21,8 @@ class ExportJobAdminForm(forms.ModelForm):
 
     def __init__(
         self,
-        instance: models.ExportJob,
         *args,
+        instance: models.ExportJob,
         **kwargs,
     ):
         """Provide `export_progressbar` widget the `ExportJob` instance."""
