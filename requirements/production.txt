@@ -7,7 +7,6 @@ celery
 redis
 
 django>=3.2
-django-object-actions
 django-picklefield
 django-filter
 

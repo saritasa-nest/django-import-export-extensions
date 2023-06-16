@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "django_object_actions",
     "django_probes",
     "django_extensions",
     "import_export_extensions",

@@ -20,8 +20,8 @@ class ImportJobAdminForm(forms.ModelForm):
 
     def __init__(
         self,
-        instance: models.ImportJob,
         *args,
+        instance: models.ImportJob,
         **kwargs,
     ):
         """Provide `import_progressbar` widget the ``ImportJob`` instance."""

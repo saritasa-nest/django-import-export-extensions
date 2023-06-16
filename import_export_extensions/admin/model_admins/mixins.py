@@ -6,12 +6,10 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
 
-from django_object_actions import DjangoObjectActions
-
 from ... import models
 
 
-class ImportJobActionsMixin(DjangoObjectActions):
+class ImportJobActionsMixin:
     """Logic of ImportJob object actions."""
 
     def cancel_import_action(
