@@ -1,6 +1,6 @@
 (function($) {
   $(document).ready(function() {
-    const exportForm = $('#export-form');
+    const exportForm = $("#export-form");
     const formatField = exportForm.find('select[name="file_format"]'),
     resourceField = exportForm.find('select[name="resource"]');
     const formatData = JSON.parse($("#format-data").text());
@@ -11,7 +11,7 @@
         const selectedResourceFormats = formatData[selectedResourceIndex];
 
         formatField.empty();
-        formatField.append(`<option value>---</option>`);
+        formatField.append("<option value>---</option>");
         selectedResourceFormats.forEach((format, index) => {
           const selected = format === "xlsx" ? "selected" : "";
           const formatOption = `<option value=${index.toString()} ${selected}>${format}</option>`;
