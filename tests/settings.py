@@ -12,7 +12,9 @@ SECRET_KEY = "a87082n4v52u4rnvk2edv128eudfvn5"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = [
+    "*",
+]
 
 # Application definition
 
@@ -29,6 +31,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "import_export_extensions",
     "tests.fake_app",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -96,6 +99,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+
+# Configure `drf-spectacular` to check it works for import-export API
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
 AUTH_USER_MODEL = "auth.User"
 
