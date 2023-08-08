@@ -10,7 +10,7 @@ from import_export.resources import modelresource_factory
 
 from ...resources import CeleryModelResource, CeleryResource
 
-ResourceObj: typing.TypeAlias = CeleryResource | CeleryModelResource
+ResourceObj = typing.Union[CeleryResource, CeleryModelResource]
 ResourceType = typing.Type[ResourceObj]
 FormatType = typing.Type[base_formats.Format]
 

@@ -49,7 +49,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
 
     def __init__(
         self,
-        rem_model: type[Model],
+        rem_model: typing.Type[Model],
         instance_separator: str = ",",
         prop_separator: typing.Optional[str] = None,
         rem_field: str = "pk",

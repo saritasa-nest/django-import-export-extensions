@@ -57,6 +57,8 @@ factory-boy
 
 # Install drf for test app
 djangorestframework
+# Install drf-spectacular for test app
+drf-spectacular
 # Install for better django shell
 django-extensions
 
