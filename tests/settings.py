@@ -103,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Configure `drf-spectacular` to check it works for import-export API
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 AUTH_USER_MODEL = "auth.User"
