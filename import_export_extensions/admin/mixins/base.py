@@ -40,7 +40,7 @@ class ModelInfo:
 class BaseImportExportMixin:
     """Provide common methods for export/import mixin."""
 
-    resource_classes: typing.Sequence[ResourceType] | None = None
+    resource_classes: typing.Optional[typing.Sequence[ResourceType]] = None
 
     def get_resource_classes(self) -> tuple[ResourceType, ...]:
         """Return resource classes."""
