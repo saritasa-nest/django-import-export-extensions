@@ -1,3 +1,4 @@
+name: Django-import-export-extensions CI
 
 on:
   pull_request:
