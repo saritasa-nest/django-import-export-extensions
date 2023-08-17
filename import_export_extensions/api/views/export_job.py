@@ -60,7 +60,7 @@ class ExportBase(type):
             detail=False,
             queryset=viewset.resource_class.get_model_queryset(),
             filterset_class=getattr(
-                viewset.resource_class, "filter_class", None,
+                viewset.resource_class, "filterset_class", None,
             ),
             filter_backends=[
                 django_filters.rest_framework.DjangoFilterBackend,

@@ -8,7 +8,7 @@ from .models import Artist, Band
 
 class SimpleArtistResource(CeleryModelResource):
     """Artist resource with simple fields."""
-    filter_class = ArtistFilterSet
+    filterset_class = ArtistFilterSet
 
     class Meta:
         model = Artist
