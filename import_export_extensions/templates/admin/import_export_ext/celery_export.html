@@ -1,4 +1,4 @@
-{% extends "admin/base.html" %}
+{% extends "admin/import_export_ext/base.html" %}
 {% load i18n %}
 {% load static admin_urls %}
 
@@ -7,6 +7,7 @@
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
   <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
+  {{ form.media }}
 {% endblock %}
 
 {% block breadcrumbs_last %}

@@ -1,9 +1,9 @@
-{% extends "admin/base.html" %}
+{% extends "admin/import_export_ext/base.html" %}
 {% load i18n %}
 {% load static admin_urls %}
 
 {% comment %}
-  Template to show status of import job.
+  Template to show status of export job.
   Similar to job's admin page.
 
 {% endcomment %}
@@ -24,48 +24,48 @@
 
 
 {% block breadcrumbs_last %}
-  <a href="{% url opts|admin_urlname:'celery_import' %}?{{request.GET.urlencode}}">
-    {% trans "Import" %}
+  <a href="{% url opts|admin_urlname:'celery_export' %}?{{request.GET.urlencode}}">
+    {% trans "Export" %}
   </a>
-  &rsaquo; {% trans "Importing..." %}
+  &rsaquo;
+  {% trans "Exporting ..." %}
 {% endblock %}
 
 {% block content %}
   <div>
-
     <fieldset class="module aligned collapse">
       <div class="form-row">
-        <label>Status</label><p id="current-job-status">{{ import_job.import_status|title }}</p>
+        <label>Status</label><p id="current-job-status">{{ export_job.export_status|title }}</p>
       </div>
 
-      {% if import_job.import_status in import_job.progress_statuses %}
+      {% if export_job.export_status not in export_job.export_finished_statuses %}
         <div class="form-row">
           <label>Progress</label>
           <p id="progress_bar_html">
-            <progress max="100" id="progress-bar" data-url="{{ import_job_url }}"></progress>
+            <progress max="100" id="progress-bar" data-url="{{ export_job_url }}"></progress>
           </p>
         </div>
       {% endif %}
 
-      {% if import_job.import_status in import_job.success_statuses %}
+      {% if export_job.export_status == export_job.ExportStatus.EXPORTED %}
         <div class="form-row">
           <label>Totals</label>
           <p>
-            {% for total, stat in import_job.result.totals.items %}
+            {% for total, stat in export_job.result.totals.items %}
               {{ total.title }}:&nbsp; <b>{{ stat }}</b><br>
             {% endfor %}
           </p>
         </div>
       {% endif %}
 
-      {% if import_job.import_status in import_job.failure_statuses %}
+      {% if export_job.export_status == export_job.ExportStatus.EXPORT_ERROR %}
         <div class="form-row">
           <label>Error</label>
-          <p><b>{{ import_job.error_message }}</b></p>
+          <p><b>{{ export_job.error_message }}</b></p>
         </div>
         <div class="form-row">
           <label>Traceback</label>
-          {{ import_job.traceback | linebreaks }}
+          {{ export_job.traceback | linebreaks }}
         </div>
       {% endif %}
     </fieldset>
