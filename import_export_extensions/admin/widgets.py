@@ -29,14 +29,12 @@ class ProgressBarWidget(forms.Widget):
 
         """
         progress_bar = f"""
-            <p>
-                <progress
-                 value="0"
-                 max="100"
-                 id="progress-bar"
-                 data-url="{self.url}">
-                </progress>
-            </p>
+            <progress
+                value="0"
+                max="100"
+                id="progress-bar"
+                data-url="{self.url}">
+            </progress>
         """
 
         return progress_bar
