@@ -21,7 +21,10 @@ def test_cancel_import_error_status(
         artists=[existing_artist, new_artist],
     )
     job.import_status = ImportJob.ImportStatus.PARSED
-    with pytest.raises(ValueError, match="Wrong import job status"):
+    with pytest.raises(
+        ValueError,
+        match=f"ImportJob with id {job.id} has incorrect status",
+    ):
         job.cancel_import()
 
 

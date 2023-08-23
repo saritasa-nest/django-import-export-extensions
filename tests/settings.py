@@ -12,8 +12,6 @@ SECRET_KEY = "a87082n4v52u4rnvk2edv128eudfvn5"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -27,6 +25,7 @@ INSTALLED_APPS = [
     "django_object_actions",
     "django_probes",
     "django_extensions",
+    "import_export",
     "import_export_extensions",
     "tests.fake_app",
 ]
@@ -78,24 +77,6 @@ DATABASES = {
         "PORT": 5432,
     },
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-]
 
 AUTH_USER_MODEL = "auth.User"
 

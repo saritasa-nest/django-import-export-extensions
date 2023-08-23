@@ -25,13 +25,13 @@ def test_export_using_admin_model(client: Client, superuser: User):
 
     # Make get request to admin export page
     export_get_response = client.get(
-        path=reverse("admin:fake_app_artist_celery_export"),
+        path=reverse("admin:fake_app_artist_export"),
     )
     assert export_get_response.status_code == status.HTTP_200_OK
 
     # Start export job using admin panel
     start_export_response = client.post(
-        path=reverse("admin:fake_app_artist_celery_export"),
+        path=reverse("admin:fake_app_artist_export"),
         data={
             "file_format": 0,
         },

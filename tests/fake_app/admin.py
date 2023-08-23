@@ -3,7 +3,7 @@ from django.contrib import admin
 from import_export_extensions.admin import CeleryImportExportMixin
 
 from .models import Artist, Band, Instrument, Membership
-from .resources import ArtistResourceWithM2M
+from .resources import ArtistResourceWithM2M, SimpleArtistResource
 
 
 @admin.register(Artist)
@@ -13,7 +13,7 @@ class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
         "name",
         "instrument",
     )
-    resource_class = ArtistResourceWithM2M
+    resource_classes = [ArtistResourceWithM2M, SimpleArtistResource]
 
 
 @admin.register(Instrument)

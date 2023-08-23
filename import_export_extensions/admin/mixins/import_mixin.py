@@ -1,6 +1,9 @@
 import typing
 
+from django.conf import settings
+from django.contrib.auth import get_permission_codename
 from django.core.cache import cache
+from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIRequest
 from django.forms.forms import Form
 from django.http import (
@@ -13,11 +16,18 @@ from django.template.response import TemplateResponse
 from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
-from ... import forms, models
+from import_export import admin as base_admin
+from import_export import forms as base_forms
+from import_export import mixins as base_mixins
+
+from ... import models
 from .base import FormatType, ModelInfo, ResourceObj, ResourceType
 
 
-class CeleryImportAdminMixin:
+class CeleryImportAdminMixin(
+    base_mixins.BaseImportMixin,
+    base_admin.ImportExportMixinBase,
+):
     """Admin mixin for celery import.
 
     Admin import work-flow is:
@@ -40,25 +50,20 @@ class CeleryImportAdminMixin:
         with progress bar and import totals.
 
     """
-
-    # Resource class
-    resource_class: ResourceType = None     # type: ignore
     # Import data encoding
     from_encoding: str = "utf-8"
-
-    change_list_template: str = "admin/change_list/change_list_import.html"
 
     # Statuses that should be displayed on 'results' page
     results_statuses = models.ImportJob.results_statuses
 
     # Template used to display ImportForm
-    celery_import_template: str = "admin/celery_import.html"
+    celery_import_template: str = "admin/import_export/import.html"
 
     # Template used to display status of import jobs
-    import_status_template: str = "admin/celery_import_status.html"
+    import_status_template: str = "admin/import_export_ext/celery_import_status.html"
 
     # template used to display results of import jobs
-    import_result_template_name: str = "admin/celery_import_results.html"
+    import_result_template_name: str = "admin/import_export_ext/celery_import_results.html"
 
     @property
     def model_info(self) -> ModelInfo:
@@ -67,65 +72,6 @@ class CeleryImportAdminMixin:
             meta=self.model._meta,
         )
 
-    def get_import_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get kwargs for import resource."""
-        return self.get_resource_kwargs(request, *args, **kwargs)
-
-    def get_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get common resource kwargs."""
-        return {}
-
-    def get_resource_class(self) -> ResourceType:
-        """Get resource class."""
-        return self.resource_class
-
-    def get_import_resource(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> ResourceObj:
-        """Get initialized resource."""
-        return self.get_import_resource_class()(
-            **self.get_import_resource_kwargs(
-                request,
-                *args,
-                **kwargs,
-            ),
-        )
-
-    def get_import_resource_class(self) -> ResourceType:
-        """Return ResourceClass to use for import."""
-        return self.get_resource_class()
-
-    def get_import_formats(self) -> list[FormatType]:
-        """Get supported import formats."""
-        return [
-            import_format for import_format in
-            self.get_resource_class().get_supported_formats()
-            if import_format().can_import()
-        ]
-
-    def get_import_format_by_ext(
-        self,
-        extension: str,
-    ) -> typing.Union[FormatType, None]:
-        """Return available import formats."""
-        for import_format in self.get_import_formats():
-            if import_format().get_title().upper() == extension.upper():
-                return import_format
-        return None
-
     def get_context_data(
         self,
         request: WSGIRequest,
@@ -133,6 +79,9 @@ class CeleryImportAdminMixin:
     ) -> dict[str, typing.Any]:
         """Get context data."""
         return {}
+
+    def get_import_context_data(self, **kwargs):
+        return self.get_context_data(**kwargs)
 
     def get_urls(self):
         """Return list of urls.
@@ -152,14 +101,14 @@ class CeleryImportAdminMixin:
             re_path(
                 r"^celery-import/$",
                 self.admin_site.admin_view(self.celery_import_action),
-                name=f"{self.model_info.app_model_name}_celery_import",
+                name=f"{self.model_info.app_model_name}_import",
             ),
             re_path(
                 r"^celery-import/(?P<job_id>\d+)/$",
                 self.admin_site.admin_view(self.celery_import_job_status_view),
                 name=(
                     f"{self.model_info.app_model_name}"
-                    f"_celery_import_job_status"
+                    f"_import_job_status"
                 ),
             ),
             re_path(
@@ -169,7 +118,7 @@ class CeleryImportAdminMixin:
                 ),
                 name=(
                     f"{self.model_info.app_model_name}"
-                    f"_celery_import_job_results"
+                    f"_import_job_results"
                 ),
             ),
         ]
@@ -189,19 +138,27 @@ class CeleryImportAdminMixin:
             create ImportJob instance and redirect to it's status
 
         """
-        resource = self.get_import_resource(request, *args, **kwargs)
-        context = self.get_context_data(request)
+        if not self.has_import_permission(request):
+            raise PermissionDenied
 
-        form = forms.ImportForm(
+        # resource = self.get_import_resource(request, *args, **kwargs)
+        context = self.get_context_data(request)
+        resource_classes = self.get_import_resource_classes()
+
+        form = base_forms.ImportForm(
+            self.get_import_formats(),
             request.POST or None,
             request.FILES or None,
+            resources=resource_classes,
         )
+        resource_kwargs = self.get_import_resource_kwargs(request)
 
         if request.method == "POST" and form.is_valid():
             # create ImportJob and redirect to page with it's status
+            resource_class = self.choose_import_resource_class(form)
             job = self.create_import_job(
                 request=request,
-                resource=resource,
+                resource=resource_class(**resource_kwargs),
                 form=form,
             )
             return self._redirect_to_import_status_page(
@@ -210,13 +167,23 @@ class CeleryImportAdminMixin:
             )
 
         # GET: display Import Form
+        resources = [
+            resource_class(**resource_kwargs)
+            for resource_class in resource_classes
+        ]
+
         context.update(self.admin_site.each_context(request))
 
         context["title"] = _("Import")
         context["form"] = form
         context["opts"] = self.model_info.meta
-        context["fields"] = [
-            f.column_name for f in resource.get_user_visible_fields()
+        context["media"] = self.media + form.media
+        context["fields_list"] = [
+            (
+                resource.get_display_name(),
+                [f.column_name for f in resource.get_user_visible_fields()],
+            )
+            for resource in resources
         ]
 
         request.current_app = self.admin_site.name
@@ -240,7 +207,10 @@ class CeleryImportAdminMixin:
         If job result is ready - redirects to another page to see results.
 
         """
-        job = self.get_job(request, job_id)
+        if not self.has_import_permission(request):
+            raise PermissionDenied
+
+        job = self.get_import_job(request, job_id)
         if job.import_status in self.results_statuses:
             return self._redirect_to_results_page(
                 request=request,
@@ -282,7 +252,10 @@ class CeleryImportAdminMixin:
             * start data importing if data is correct
 
         """
-        job = self.get_job(request=request, job_id=job_id)
+        if not self.has_import_permission(request):
+            raise PermissionDenied
+
+        job = self.get_import_job(request=request, job_id=job_id)
         if job.import_status not in self.results_statuses:
             return self._redirect_to_import_status_page(
                 request=request,
@@ -300,7 +273,9 @@ class CeleryImportAdminMixin:
 
             if job.import_status != models.ImportJob.ImportStatus.PARSED:
                 # display import form
-                context["import_form"] = forms.ImportForm()
+                context["import_form"] = base_forms.ImportForm(
+                    import_formats=job.resource.SUPPORTED_FORMATS,
+                )
             else:
                 context["confirm_form"] = Form()
 
@@ -339,7 +314,7 @@ class CeleryImportAdminMixin:
             created_by=request.user,
         )
 
-    def get_job(
+    def get_import_job(
         self,
         request: WSGIRequest,
         job_id: int,
@@ -359,7 +334,7 @@ class CeleryImportAdminMixin:
     ) -> HttpResponseRedirect:
         """Shortcut for redirecting to job's status page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_celery_import_job_status"
+            f"admin:{self.model_info.app_model_name}_import_job_status"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
@@ -373,7 +348,7 @@ class CeleryImportAdminMixin:
     ) -> HttpResponseRedirect:
         """Shortcut for redirecting to job's results page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_celery_import_job_results"
+            f"admin:{self.model_info.app_model_name}_import_job_results"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
@@ -396,3 +371,22 @@ class CeleryImportAdminMixin:
                 cache.delete(key)
 
         return HttpResponseRedirect(redirect_to=url)
+
+    def has_import_permission(self, request):
+        """Return whether a request has import permission."""
+        IMPORT_PERMISSION_CODE = getattr(
+            settings,
+            "IMPORT_EXPORT_IMPORT_PERMISSION_CODE",
+            None,
+        )
+        if IMPORT_PERMISSION_CODE is None:
+            return True
+
+        opts = self.opts
+        codename = get_permission_codename(IMPORT_PERMISSION_CODE, opts)
+        return request.user.has_perm("%s.%s" % (opts.app_label, codename))
+
+    def changelist_view(self, request, context=None):
+        context = context or {}
+        context["has_import_permission"] = self.has_import_permission(request)
+        return super().changelist_view(request, context)
