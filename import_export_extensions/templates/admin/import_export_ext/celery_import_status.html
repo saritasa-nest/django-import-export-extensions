@@ -1,4 +1,4 @@
-{% extends "admin/import_export_ext/base.html" %}
+{% extends "admin/import_export/base.html" %}
 {% load i18n %}
 {% load static admin_urls %}
 
@@ -24,7 +24,7 @@
 
 
 {% block breadcrumbs_last %}
-  <a href="{% url opts|admin_urlname:'celery_import' %}?{{request.GET.urlencode}}">
+  <a href="{% url opts|admin_urlname:'import' %}?{{request.GET.urlencode}}">
     {% trans "Import" %}
   </a>
   &rsaquo; {% trans "Importing..." %}
