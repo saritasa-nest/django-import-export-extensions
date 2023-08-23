@@ -250,12 +250,17 @@ class ExportJob(TimeStampedModel):
 
         return self._get_task_state(self.export_task_id)
 
-    @property
-    def _incorrect_status_error(self) -> ValueError:
-        """Shortcut for raising error when ExportJob is in incorrect state."""
-        return ValueError(
-            f"Wrong export job status: {self.get_export_status_display()}",
-        )
+    def _check_import_status_correctness(
+        self,
+        expected_statuses: typing.Sequence[ExportStatus],
+    ) -> None:
+        """Raise `ValueError` if `ImportJob` is in incorrect state."""
+        if self.export_status not in expected_statuses:
+            raise ValueError(
+                f"ImportJob with id {self.id} has incorrect status: "
+                f"`{self.export_status}`. Expected statuses:"
+                f" {[status.value for status in expected_statuses]}",
+            )
 
     def _start_export_data_task(self):
         """Start export data task."""

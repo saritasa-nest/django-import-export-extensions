@@ -1,6 +1,6 @@
 import typing
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -14,7 +14,6 @@ from . import mixins
 
 class ImportJobAdmin(
     mixins.BaseImportExportJobAdminMixin,
-    mixins.ImportJobActionsMixin,
     admin.ModelAdmin,
 ):
     """Admin class for debugging ImportJob."""
@@ -39,9 +38,10 @@ class ImportJobAdmin(
     import_job_model = models.ImportJob
     list_filter = ("import_status",)
     list_select_related = ("created_by",)
-
-    class Media:
-        pass
+    actions = [
+        "cancel_jobs",
+        "confirm_jobs",
+    ]
 
     def get_queryset(self, request: WSGIRequest):
         """Override `get_queryset`.
@@ -258,6 +258,34 @@ class ImportJobAdmin(
             return [status, progress, import_params]
 
         return [status, traceback_, import_params]
+
+    @admin.action(description="Cancel selected jobs")
+    def cancel_jobs(self, request, queryset):
+        """Admin action for cancelling data import."""
+        for obj in queryset:
+            try:
+                obj.cancel_import()
+                self.message_user(
+                    request,
+                    _("Import Canceled"),
+                    messages.SUCCESS,
+                )
+            except ValueError as error:
+                self.message_user(request, str(error), messages.ERROR)
+
+    @admin.action(description="Confirm selected jobs")
+    def confirm_jobs(self, request, queryset):
+        """Admin action for confirming data import."""
+        for obj in queryset:
+            try:
+                obj.confirm_import()
+                self.message_user(
+                    request,
+                    _("Import Confirmed"),
+                    messages.SUCCESS,
+                )
+            except ValueError as error:
+                self.message_user(request, str(error), messages.ERROR)
 
 
 admin.site.register(models.ImportJob, ImportJobAdmin)
