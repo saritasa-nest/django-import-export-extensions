@@ -328,6 +328,7 @@ class CeleryExportAdminMixin(
         return request.user.has_perm("%s.%s" % (opts.app_label, codename))
 
     def changelist_view(self, request, context=None):
+        """Add the check for permission to changelist template context."""
         context = context or {}
         context["has_export_permission"] = True
         return super().changelist_view(request, context)

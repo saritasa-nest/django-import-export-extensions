@@ -1,7 +1,7 @@
 import os
 import traceback
 import uuid
-from typing import Optional, Sequence, Type, Union
+from typing import Optional, Sequence, Type
 
 from django.conf import settings
 from django.db import models, transaction

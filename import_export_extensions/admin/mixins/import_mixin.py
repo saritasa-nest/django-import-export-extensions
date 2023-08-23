@@ -21,7 +21,7 @@ from import_export import forms as base_forms
 from import_export import mixins as base_mixins
 
 from ... import models
-from .base import FormatType, ModelInfo, ResourceObj, ResourceType
+from .base import ModelInfo, ResourceObj
 
 
 class CeleryImportAdminMixin(
@@ -51,19 +51,19 @@ class CeleryImportAdminMixin(
 
     """
     # Import data encoding
-    from_encoding: str = "utf-8"
+    from_encoding = "utf-8"
 
     # Statuses that should be displayed on 'results' page
     results_statuses = models.ImportJob.results_statuses
 
     # Template used to display ImportForm
-    celery_import_template: str = "admin/import_export/import.html"
+    celery_import_template = "admin/import_export/import.html"
 
     # Template used to display status of import jobs
-    import_status_template: str = "admin/import_export_ext/celery_import_status.html"
+    import_status_template = "admin/import_export_ext/celery_import_status.html"
 
     # template used to display results of import jobs
-    import_result_template_name: str = "admin/import_export_ext/celery_import_results.html"
+    import_result_template_name = "admin/import_export_ext/celery_import_results.html"
 
     @property
     def model_info(self) -> ModelInfo:
@@ -81,6 +81,7 @@ class CeleryImportAdminMixin(
         return {}
 
     def get_import_context_data(self, **kwargs):
+        """Get context for import data."""
         return self.get_context_data(**kwargs)
 
     def get_urls(self):
@@ -387,6 +388,7 @@ class CeleryImportAdminMixin(
         return request.user.has_perm("%s.%s" % (opts.app_label, codename))
 
     def changelist_view(self, request, context=None):
+        """Add the check for permission to changelist template context."""
         context = context or {}
         context["has_import_permission"] = self.has_import_permission(request)
         return super().changelist_view(request, context)

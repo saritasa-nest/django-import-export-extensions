@@ -87,6 +87,7 @@ ignore = [
 statistics = true
 count = true
 max-complexity = 10
+max-line-length = 100
 pytest-fixture-no-parentheses = true
 pytest-parametrize-names-type = "list"
 pytest-parametrize-values-type = "list"
