@@ -57,6 +57,7 @@ class ExportJob(TimeStampedModel):
         EXPORTING = "EXPORTING", _("Exporting")
         EXPORT_ERROR = "EXPORT_ERROR", _("Export Error")
         EXPORTED = "EXPORTED", _("Exported")
+        CANCELLED = "CANCELLED", _("Cancelled")
 
     export_finished_statuses = (
         ExportStatus.EXPORTED,
@@ -302,6 +303,29 @@ class ExportJob(TimeStampedModel):
                     "error_message",
                 ],
             )
+
+    def cancel_export(self) -> None:
+        """Cancel current data export.
+
+        ExportJob can be CANCELLED only from following states:
+            - CREATED
+            - EXPORTING
+
+        """
+        status_task_field_map = {
+            self.ExportStatus.CREATED: "export_task_id",
+            self.ExportStatus.EXPORTING: "export_task_id",
+        }
+        self._check_import_status_correctness(
+            expected_statuses=status_task_field_map.keys(),  # type: ignore
+        )
+
+        # send signal to celery to revoke task
+        task_id = getattr(self, status_task_field_map[self.export_status])
+        current_app.control.revoke(task_id, terminate=True)
+
+        self.export_status = self.ExportStatus.CANCELLED
+        self.save(update_fields=["export_status"])
 
     def _export_data_inner(self):
         """Run export process with saving to file."""
