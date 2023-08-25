@@ -43,14 +43,15 @@ To install `django-import-export-extensions`, run this command in your terminal:
 
     $ pip install django-import-export-extensions
 
-Add `import_export_extensions` to INSTALLED_APPS
+Add `import_export` and `import_export_extensions` to INSTALLED_APPS
 
 .. code-block:: python
 
     # settings.py
     INSTALLED_APPS = (
         ...
-        'import_export_extensions',
+        "import_export",
+        "import_export_extensions",
     )
 
 Run `migrate` command to create ImportJob/ExportJob models and
