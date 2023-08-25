@@ -75,4 +75,4 @@ coverage
 
 # Database abstraction layer
 # https://pypi.org/project/psycopg2-binary/
-psycopg
+psycopg2-binary
