@@ -21,7 +21,7 @@ from import_export import forms as base_forms
 from import_export import mixins as base_mixins
 
 from ... import models
-from .base import ModelInfo, ResourceObj
+from . import types
 
 
 class CeleryImportAdminMixin(
@@ -66,9 +66,9 @@ class CeleryImportAdminMixin(
     import_result_template_name = "admin/import_export_ext/celery_import_results.html"
 
     @property
-    def model_info(self) -> ModelInfo:
+    def model_info(self) -> types.ModelInfo:
         """Get info of imported model."""
-        return ModelInfo(
+        return types.ModelInfo(
             meta=self.model._meta,
         )
 
@@ -142,7 +142,6 @@ class CeleryImportAdminMixin(
         if not self.has_import_permission(request):
             raise PermissionDenied
 
-        # resource = self.get_import_resource(request, *args, **kwargs)
         context = self.get_context_data(request)
         resource_classes = self.get_import_resource_classes()
 
@@ -305,7 +304,7 @@ class CeleryImportAdminMixin(
         self,
         request: WSGIRequest,
         form: Form,
-        resource: ResourceObj,
+        resource: types.ResourceObj,
     ):
         """Create and return instance of import job."""
         return models.ImportJob.objects.create(

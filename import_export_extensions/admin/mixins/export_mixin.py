@@ -14,12 +14,12 @@ from django.template.response import TemplateResponse
 from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
-import import_export.forms
 from import_export import admin as base_admin
+from import_export import forms as base_forms
 from import_export import mixins as base_mixins
 
 from ... import models
-from .base import FormatType, ModelInfo, ResourceObj, ResourceType
+from . import types
 
 
 class CeleryExportAdminMixin(
@@ -56,16 +56,16 @@ class CeleryExportAdminMixin(
     export_results_statuses = models.ExportJob.export_finished_statuses
 
     @property
-    def model_info(self) -> ModelInfo:
+    def model_info(self) -> types.ModelInfo:
         """Get info of exported model."""
-        return ModelInfo(
+        return types.ModelInfo(
             meta=self.model._meta,
         )
 
     def get_export_data(
         self,
-        resource: ResourceObj,
-        file_format: FormatType,
+        resource: types.ResourceObj,
+        file_format: types.FormatType,
         queryset,
         *args,
         **kwargs,
@@ -133,7 +133,7 @@ class CeleryExportAdminMixin(
             raise PermissionDenied
 
         formats = self.get_export_formats()
-        form = import_export.forms.ExportForm(
+        form = base_forms.ExportForm(
             formats,
             request.POST or None,
             resources=self.get_export_resource_classes(),
@@ -184,6 +184,7 @@ class CeleryExportAdminMixin(
         view).
 
         If job result is ready - redirects to another page to see results.
+
         """
         if not self.has_export_permission(request):
             raise PermissionDenied
@@ -222,6 +223,7 @@ class CeleryExportAdminMixin(
             * show message
             * if no errors - show file link
             * if errors - show traceback and error
+
         """
         if not self.has_export_permission(request):
             raise PermissionDenied
@@ -253,9 +255,9 @@ class CeleryExportAdminMixin(
     def create_export_job(
         self,
         request: WSGIRequest,
-        resource_class: ResourceType,
+        resource_class: types.ResourceType,
         resource_kwargs: dict[str, typing.Any],
-        file_format: FormatType,
+        file_format: types.FormatType,
     ) -> models.ExportJob:
         """Create and return instance of export job with chosen format."""
         job = models.ExportJob.objects.create(
