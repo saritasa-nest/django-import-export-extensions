@@ -1,7 +1,5 @@
 import typing
 
-from django.conf import settings
-from django.contrib.auth import get_permission_codename
 from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import (
@@ -52,8 +50,13 @@ class CeleryExportAdminMixin(
 
     export_results_template_name = "admin/import_export_extensions/celery_export_results.html"
 
+    import_export_change_list_template = "admin/import_export/change_list_export.html"
+
     # Statuses that should be displayed on 'results' page
     export_results_statuses = models.ExportJob.export_finished_statuses
+
+    # Copy methods of mixin from original package to reuse it here
+    has_export_permission = base_admin.ExportMixin.has_export_permission
 
     @property
     def model_info(self) -> types.ModelInfo:
@@ -62,18 +65,15 @@ class CeleryExportAdminMixin(
             meta=self.model._meta,
         )
 
-    def get_export_data(
-        self,
-        resource: types.ResourceObj,
-        file_format: types.FormatType,
-        queryset,
-        *args,
-        **kwargs,
-    ):
-        """Return file_format representation for given queryset."""
-        data = resource.export(queryset, *args, **kwargs)
-        export_data = file_format().export_data(data)
-        return export_data
+    def get_export_resource_kwargs(self, request, *args, **kwargs):
+        """Provide escape settings to resource kwargs."""
+        kwargs = super().get_export_resource_kwargs(request, *args, **kwargs)
+        kwargs.update({
+            "escape_output": self.should_escape_output,
+            "escape_html": self.should_escape_html,
+            "escape_formulae": self.should_escape_formulae,
+        })
+        return kwargs
 
     def get_context_data(
         self,

@@ -216,6 +216,12 @@ class ImportJob(TimeStampedModel):
         help_text=_("User which started import"),
     )
 
+    skip_parse_step = models.BooleanField(
+        default=False,
+        help_text=_("Start importing without confirmation"),
+        verbose_name=_("Skip parse step"),
+    )
+
     class Meta:
         verbose_name = _("Import job")
         verbose_name_plural = _("Import jobs")
@@ -247,7 +253,20 @@ class ImportJob(TimeStampedModel):
             using=using,
             update_fields=update_fields,
         )
-        if is_created:
+        if not is_created:
+            return
+
+        if self.skip_parse_step:
+            self.import_task_id = str(uuid.uuid4())
+            self.import_started = timezone.now()
+            self.save(
+                update_fields=[
+                    "import_task_id",
+                    "import_started",
+                ],
+            )
+            transaction.on_commit(self._start_import_data_task)
+        else:
             self.parse_task_id = str(uuid.uuid4())
             self.save(update_fields=["parse_task_id"])
             transaction.on_commit(self.start_parse_data_task)
@@ -423,8 +442,13 @@ class ImportJob(TimeStampedModel):
 
     def import_data(self):
         """Import data from `data_file` to DB."""
+        expected_status = (
+            self.ImportStatus.CREATED
+            if self.skip_parse_step
+            else self.ImportStatus.CONFIRMED
+        )
         self._check_import_status_correctness(
-            expected_statuses=(self.ImportStatus.CONFIRMED,),
+            expected_statuses=(expected_status,),
         )
 
         self.import_status = self.ImportStatus.IMPORTING
