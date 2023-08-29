@@ -13,12 +13,7 @@ from django.utils.encoding import smart_str
 from import_export.exceptions import ImportExportError
 from import_export.widgets import CharWidget, ManyToManyWidget
 
-from .utils import (
-    clean_sequence_of_string_values,
-    download_file,
-    get_clear_q_filter,
-    url_to_internal_value,
-)
+from . import utils
 
 DEFAULT_SYSTEM_STORAGE = "django.core.files.storage.FileSystemStorage"
 
@@ -183,7 +178,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         if self.instance_separator == "\n":
             value = value.replace("\r", "")
 
-        raw_instances = clean_sequence_of_string_values(
+        raw_instances = utils.clean_sequence_of_string_values(
             value.split(self.instance_separator),
         )
 
@@ -246,7 +241,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         # i.e. PK of Band
         # props contain other saved properties of intermediate model
         # i.e. `date_joined`
-        rem_field_value, *props = clean_sequence_of_string_values(
+        rem_field_value, *props = utils.clean_sequence_of_string_values(
             raw_instance.split(self.prop_separator), ignore_empty=False,
         )
 
@@ -271,7 +266,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         """Shortcut to filter corresponding instances."""
         if self.rem_field_lookup:
             if self.rem_field_lookup == "regex":
-                instance_filter = get_clear_q_filter(
+                instance_filter = utils.get_clear_q_filter(
                     rem_field_value, self.rem_field,
                 )
             else:
@@ -304,7 +299,7 @@ class FileWidget(CharWidget):
         if not value:
             return None
 
-        internal_url = url_to_internal_value(urlparse(value).path)
+        internal_url = utils.url_to_internal_value(urlparse(value).path)
 
         if not internal_url:
             raise ValidationError("Invalid image path")
@@ -319,7 +314,7 @@ class FileWidget(CharWidget):
 
     def _get_file(self, url: str) -> File:
         """Download file from the external resource."""
-        file = download_file(url)
+        file = utils.download_file(url)
         ext = mimetypes.guess_extension(file.content_type)
         filename = f"{self.filename}.{ext}" if ext else self.filename
 

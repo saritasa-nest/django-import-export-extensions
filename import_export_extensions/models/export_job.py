@@ -1,3 +1,4 @@
+import pathlib
 import traceback
 import typing
 import uuid
@@ -161,10 +162,10 @@ class ExportJob(TimeStampedModel):
 
     def __str__(self) -> str:
         """Return string representation."""
-        return (
-            f"Export job({self.export_status}) <{self.pk}> "
-            f"using {self.resource_path}(Format {self.file_format_path})"
-        )
+        resource_name = pathlib.Path(self.resource_path).suffix.lstrip(".")
+        file_format = pathlib.Path(self.file_format_path).suffix.lstrip(".")
+
+        return f"ExportJob(resource={resource_name}, file_format={file_format})"
 
     def save(
         self,

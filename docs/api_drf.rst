@@ -2,6 +2,12 @@
 API (Rest Framework)
 ====================
 
+.. autoclass:: import_export_extensions.api.views.ImportJobViewSet
+   :members:
+
+.. autoclass:: import_export_extensions.api.views.ExportJobViewSet
+   :members:
+
 .. autoclass:: import_export_extensions.api.CreateExportJob
    :members: create, validate
 

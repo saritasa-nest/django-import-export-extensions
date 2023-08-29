@@ -58,7 +58,7 @@ class CeleryResourceMixin:
         super().__init__()
 
     def get_queryset(self):
-        """Filter export queryset via django-import export."""
+        """Filter export queryset via filterset class."""
         queryset = super().get_queryset()
         if not self._filter_kwargs:
             return queryset
