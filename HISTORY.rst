@@ -7,7 +7,7 @@ History
 * Improve GitHub workflow name
 * Get rid of DjangoObjectActions and implement default django admin action instead (Maybe later we can extend this)
 * Use mixins.BaseExportMixin, mixins.BaseImportMixin and admin.ImportExportMixinBase from original package for celery admin mixins
-* Use admin/import_export/ templates instead of copies in admin/import_export_ext/
+* Use admin/import_export/ templates instead of copies in admin/import_export_extensions/
 * Small improvements:
 
     * Fix static folder name

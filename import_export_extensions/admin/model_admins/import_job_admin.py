@@ -175,7 +175,7 @@ class ImportJobAdmin(
 
     def _input_errors(self, job: models.ImportJob):
         """Render html with input errors."""
-        template = "admin/import_export_ext/import_job_results.html"
+        template = "admin/import_export_extensions/import_job_results.html"
         return render_to_string(
             template,
             dict(result=job.result),

@@ -48,9 +48,9 @@ class CeleryExportAdminMixin(
     # template used to display ExportForm
     celery_export_template_name = "admin/import_export/export.html"
 
-    export_status_template_name = "admin/import_export_ext/celery_export_status.html"
+    export_status_template_name = "admin/import_export_extensions/celery_export_status.html"
 
-    export_results_template_name = "admin/import_export_ext/celery_export_results.html"
+    export_results_template_name = "admin/import_export_extensions/celery_export_results.html"
 
     # Statuses that should be displayed on 'results' page
     export_results_statuses = models.ExportJob.export_finished_statuses

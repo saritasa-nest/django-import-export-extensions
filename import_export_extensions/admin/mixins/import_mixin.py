@@ -60,10 +60,10 @@ class CeleryImportAdminMixin(
     celery_import_template = "admin/import_export/import.html"
 
     # Template used to display status of import jobs
-    import_status_template = "admin/import_export_ext/celery_import_status.html"
+    import_status_template = "admin/import_export_extensions/celery_import_status.html"
 
     # template used to display results of import jobs
-    import_result_template_name = "admin/import_export_ext/celery_import_results.html"
+    import_result_template_name = "admin/import_export_extensions/celery_import_results.html"
 
     @property
     def model_info(self) -> types.ModelInfo:
