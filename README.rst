@@ -34,19 +34,98 @@ adding the following features:
 * Support `drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_ generated API schema
 * Additional fields and widgets (FileWidget, IntermediateM2MWidget, M2MField)
 
-Migration from django-import-export
------------------------------------
-Resources migration
-^^^^^^^^^^^^^^^^^^^
-Change ``Resource`` or ``ModelResource`` to
-``CeleryResource`` or ``CeleryModelResource`` respectively.
+Installation
+-----
 
-Admin migration
-^^^^^^^^^^^^^^^
-Change ``ImportMixin``, ``ExportMixin``, ``ImportExportMixin``
-to ``CeleryImportMixin``, ``CeleryExportMixin`` or ``CeleryImportExportMixin`` respectively.
+To install `django-import-export-extensions`, run this command in your terminal:
 
-License
--------
-* Free software: MIT license
+.. code-block:: console
+
+    $ pip install django-import-export-extensions
+
+Add `import_export_extensions` to INSTALLED_APPS
+
+.. code-block:: python
+
+    # settings.py
+    INSTALLED_APPS = (
+        ...
+        'import_export_extensions',
+    )
+
+Run `migrate` command to create ImportJob/ExportJob models and
+`collectstatic` to let Django collect package static files to use in the admin.
+
+.. code-block:: shell
+
+    $ python manage.py migrate
+    $ python manage.py collectstatic
+
+
+Usage
+-----
+
+Prepare resource for your model
+
+.. code-block:: python
+
+    # apps/books/resources.py
+    from import_export_extensions.resources import CeleryModelResource
+
+    from .. import models
+
+
+    class BookResource(CeleryModelResource):
+
+        class Meta:
+            model = models.Book
+
+Use `CeleryImportExportMixin` class and set `resource_class` in admin model
+to import/export via Django Admin
+
+.. code-block:: python
+
+    # apps/books/admin.py
+    from django.contrib import admin
+
+    from import_export_extensions.admin import CeleryImportExportMixin
+
+    from .. import resources
+
+
+    @admin.register(models.Book)
+    class BookAdmin(CeleryImportExportMixin, admin.ModelAdmin):
+        resource_class = resources.BookResource
+
+
+Prepare view sets to import/export via API
+
+.. code-block:: python
+
+    # apps/books/api/views.py
+    from .. import resources
+
+    from import_export_extensions.api import views
+
+
+    class BookExportViewSet(views.ExportJobViewSet):
+        resource_class = resources.BookResource
+
+
+    class BookImportViewSet(views.ImportJobViewSet):
+        resource_class = resources.BookResource
+
+
+Don't forget to `configure Celery <https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html>`_
+if you want to run import/export in background
+
+
+Links:
+------
 * Documentation: https://django-import-export-extensions.readthedocs.io.
+* GitHub: https://github.com/saritasa-nest/django-import-export-extensions/
+* PyPI: https://pypi.org/project/django-import-export-extensions/
+
+License:
+________
+* Free software: MIT license

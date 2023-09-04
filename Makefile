@@ -56,11 +56,7 @@ coverage: ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/import_export_extensions.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ import_export_extensions
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
+	DJANGO_SETTINGS_MODULE=tests.settings make html -C docs
 	$(BROWSER) docs/_build/html/index.html
 
 servedocs: docs ## compile the docs watching for changes

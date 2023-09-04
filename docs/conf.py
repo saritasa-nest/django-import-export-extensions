@@ -9,16 +9,17 @@ import django
 sys.path.append(os.path.abspath("."))
 sys.path.append(os.path.abspath(".."))
 sys.path.append(os.path.abspath("../tests"))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 django.setup()
+
 # -- General configuration ---------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named "sphinx.ext.*") or your custom ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.viewcode",
+    "sphinx.ext.autosectionlabel",
     "sphinx.ext.intersphinx",
 ]
 
@@ -144,4 +145,5 @@ texinfo_appendices = []
 # intersphinx documentation
 intersphinx_mapping = {
     "tablib": ("https://tablib.readthedocs.io/en/stable/", None),
+    "django-import-export": ("https://django-import-export.readthedocs.io/en/latest/", None),
 }

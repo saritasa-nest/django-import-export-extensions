@@ -1,7 +1,7 @@
 .. highlight:: shell
 
 ==============================
-Installation and Configuration
+Installation and configuration
 ==============================
 
 
@@ -21,6 +21,32 @@ you through the process.
 
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+
+Then just add `import_export_extensions` to INSTALLED_APPS
+
+.. code-block:: python
+
+    # settings.py
+    INSTALLED_APPS = (
+        ...
+        'import_export_extensions',
+    )
+
+And then run `migrate` command to create ImportJob/ExportJob models and
+`collectstatic` to let Django collect package static files to use in the admin.
+
+.. code-block:: shell
+
+    $ python manage.py migrate
+    $ python manage.py collectstatic
+
+
+Celery
+------
+
+You need to `set up Celery <https://docs.celeryq.dev/en/latest/getting-started/first-steps-with-celery.html>`_
+to use background import/export. Just plug in Celery and you don't need additional
+settings.
 
 
 From sources
@@ -51,33 +77,6 @@ Once you have a copy of the source, you can install it with:
 .. _tarball: https://github.com/saritasa-nest/django-import-export-extensions/tarball/master
 
 
-Add `import_export_extensions` to INSTALLED_APPS
-
-.. code-block:: python
-
-    # settings.py
-    INSTALLED_APPS = (
-        ...
-        'import_export_extensions',
-    )
-
-And then run `migrate` command to create ImportJob/ExportJob models and
-`collectstatic` to let Django collect package static files to use in the admin.
-
-.. code-block:: shell
-
-    $ python manage.py migrate
-    $ python manage.py collectstatic
-
-
-Celery
-------
-
-You need to `set up Celery <https://docs.celeryq.dev/en/latest/getting-started/first-steps-with-celery.html>`_
-to use background import/export. Just plug in Celery and you don't need additional
-settings.
-
-
 Settings
 -------------
 
@@ -94,11 +93,11 @@ a ``ValueError`` exception will be raised on import.
 ~~~~~~~~~~~~~~~~~~
 
 Mapping file extensions to mime types to import files.
-Default is `mimetypes.types_map`.
+Default is `mimetypes.types_map <https://docs.python.org/3/library/mimetypes.html#mimetypes.types_map>`_.
 
 
 Settings from django-import-export
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are also available `settings from original django-import-export
 <https://django-import-export.readthedocs.io/en/latest/installation.html#settings>`_
