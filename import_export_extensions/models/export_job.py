@@ -312,17 +312,15 @@ class ExportJob(TimeStampedModel):
             - EXPORTING
 
         """
-        status_task_field_map = {
-            self.ExportStatus.CREATED: "export_task_id",
-            self.ExportStatus.EXPORTING: "export_task_id",
-        }
         self._check_import_status_correctness(
-            expected_statuses=status_task_field_map.keys(),  # type: ignore
+            expected_statuses=[
+                self.ExportStatus.CREATED.value,
+                self.ExportStatus.EXPORTING.value,
+            ],
         )
 
         # send signal to celery to revoke task
-        task_id = getattr(self, status_task_field_map[self.export_status])
-        current_app.control.revoke(task_id, terminate=True)
+        current_app.control.revoke(self.export_task_id, terminate=True)
 
         self.export_status = self.ExportStatus.CANCELLED
         self.save(update_fields=["export_status"])
