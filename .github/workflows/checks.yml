@@ -1,4 +1,4 @@
-name: Django-import-export-extensions CI
+name: Run tests and style checks
 
 on:
   pull_request:
