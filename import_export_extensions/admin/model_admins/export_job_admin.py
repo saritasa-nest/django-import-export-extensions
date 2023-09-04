@@ -217,12 +217,12 @@ class ExportJobAdmin(
     @admin.action(description="Cancel selected jobs")
     def cancel_jobs(self, request, queryset):
         """Admin action for cancelling data export."""
-        for obj in queryset:
+        for job in queryset:
             try:
-                obj.cancel_export()
+                job.cancel_export()
                 self.message_user(
                     request,
-                    _("Export Canceled"),
+                    _(f"Export of {job} canceled"),
                     messages.SUCCESS,
                 )
             except ValueError as error:

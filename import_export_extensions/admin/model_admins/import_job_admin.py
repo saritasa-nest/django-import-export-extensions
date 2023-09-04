@@ -262,12 +262,12 @@ class ImportJobAdmin(
     @admin.action(description="Cancel selected jobs")
     def cancel_jobs(self, request, queryset):
         """Admin action for cancelling data import."""
-        for obj in queryset:
+        for job in queryset:
             try:
-                obj.cancel_import()
+                job.cancel_import()
                 self.message_user(
                     request,
-                    _("Import Canceled"),
+                    _(f"Import of {job} canceled"),
                     messages.SUCCESS,
                 )
             except ValueError as error:
@@ -276,12 +276,12 @@ class ImportJobAdmin(
     @admin.action(description="Confirm selected jobs")
     def confirm_jobs(self, request, queryset):
         """Admin action for confirming data import."""
-        for obj in queryset:
+        for job in queryset:
             try:
-                obj.confirm_import()
+                job.confirm_import()
                 self.message_user(
                     request,
-                    _("Import Confirmed"),
+                    _(f"Import of {job} confirmed"),
                     messages.SUCCESS,
                 )
             except ValueError as error:
