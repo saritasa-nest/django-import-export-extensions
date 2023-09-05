@@ -52,15 +52,15 @@ class CreateExportJob(serializers.Serializer):
 
     def __init__(
         self,
-        filter_kwargs: typing.Optional[dict[str, typing.Any]] = None,
         *args,
+        filter_kwargs: typing.Optional[dict[str, typing.Any]] = None,
+        resource_kwargs: typing.Optional[dict[str, typing.Any]] = None,
         **kwargs,
     ):
         """Set filter kwargs and current user."""
         super().__init__(*args, **kwargs)
-        self._filter_kwargs: typing.Optional[dict[str, typing.Any]] = (
-            filter_kwargs
-        )
+        self._filter_kwargs = filter_kwargs
+        self._resource_kwargs = resource_kwargs or {}
         self._request: request.Request = self.context.get("request")
         self._user = getattr(self._request, "user", None)
 
@@ -86,11 +86,10 @@ class CreateExportJob(serializers.Serializer):
         ]
         return models.ExportJob.objects.create(
             resource_path=self.resource_class.class_path,
-            file_format_path=(
-                f"{file_format_class.__module__}.{file_format_class.__name__}"
-            ),
+            file_format_path=f"{file_format_class.__module__}.{file_format_class.__name__}",
             resource_kwargs=dict(
                 filter_kwargs=self._filter_kwargs,
+                **self._resource_kwargs,
             ),
             created_by=self._user,
         )
@@ -108,7 +107,6 @@ def get_create_export_job_serializer(
         """Serializer to start export job."""
 
         resource_class: typing.Type[resources.CeleryModelResource] = resource
-
         file_format = serializers.ChoiceField(
             required=True,
             choices=[

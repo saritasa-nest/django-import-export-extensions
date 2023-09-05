@@ -3,7 +3,6 @@ import typing
 from rest_framework import request, serializers
 
 from celery import states
-from django_filters.utils import translate_validation
 
 from ... import models, resources
 from .progress import ProgressSerializer
@@ -50,29 +49,19 @@ class CreateImportJob(serializers.Serializer):
 
     resource_class: typing.Type[resources.CeleryModelResource]
 
+    file = serializers.FileField(required=True)
+
     def __init__(
         self,
-        filter_kwargs: typing.Optional[dict[str, typing.Any]] = None,
         *args,
+        resource_kwargs: typing.Optional[dict[str, typing.Any]] = None,
         **kwargs,
     ):
         """Set filter kwargs and current user."""
         super().__init__(*args, **kwargs)
-        self._filter_kwargs: typing.Optional[dict[str, typing.Any]] = (
-            filter_kwargs
-        )
         self._request: request.Request = self.context.get("request")
+        self._resource_kwargs = resource_kwargs or {}
         self._user = getattr(self._request, "user", None)
-
-    def validate(self, attrs: dict[str, typing.Any]) -> dict[str, typing.Any]:
-        """Check that filter kwargs are valid."""
-        if self._filter_kwargs:
-            filter_instance = self.resource_class.filterset_class(
-                data=self._filter_kwargs,
-            )
-            if not filter_instance.is_valid():
-                raise translate_validation(error_dict=filter_instance.errors)
-        return attrs
 
     def create(
         self,
@@ -82,9 +71,7 @@ class CreateImportJob(serializers.Serializer):
         return models.ImportJob.objects.create(
             data_file=validated_data["file"],
             resource_path=self.resource_class.class_path,
-            resource_kwargs=dict(
-                filter_kwargs=self._filter_kwargs,
-            ),
+            resource_kwargs=self._resource_kwargs,
             created_by=self._user,
         )
 
@@ -101,8 +88,6 @@ def get_create_import_job_serializer(
         """Serializer to start import job."""
 
         resource_class: typing.Type[resources.CeleryModelResource] = resource
-
-        file = serializers.FileField(required=True)
 
     return type(
         f"{resource.__name__}CreateImportJob",
