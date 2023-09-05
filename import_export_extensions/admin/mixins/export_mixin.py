@@ -12,10 +12,16 @@ from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from ... import forms, models
-from .base import FormatType, ModelInfo, ResourceObj, ResourceType
+from .base import (
+    BaseExportMixin,
+    FormatType,
+    ModelInfo,
+    ResourceObj,
+    ResourceType,
+)
 
 
-class CeleryExportAdminMixin:
+class CeleryExportAdminMixin(BaseExportMixin):
     """Admin mixin for celery export.
 
     Admin export work-flow is:
@@ -32,7 +38,6 @@ class CeleryExportAdminMixin:
             If errors - traceback and error message.
 
     """
-    resource_class: ResourceType = None    # type: ignore
     # export data encoding
     to_encoding = "utf-8"
 
@@ -54,40 +59,6 @@ class CeleryExportAdminMixin:
         return ModelInfo(
             meta=self.model._meta,
         )
-
-    def get_export_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get kwargs for export resource."""
-        return self.get_resource_kwargs(request, *args, **kwargs)
-
-    def get_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get common resource kwargs."""
-        return {}
-
-    def get_resource_class(self) -> ResourceType:
-        """Get resource class."""
-        return self.resource_class
-
-    def get_export_resource_class(self) -> ResourceType:
-        """Return ResourceClass to use for export."""
-        return self.get_resource_class()
-
-    def get_export_formats(self) -> list[FormatType]:
-        """Get supported export formats."""
-        return [
-            export_format for export_format in
-            self.get_resource_class().get_supported_formats()
-            if export_format().can_export()
-        ]
 
     def get_export_data(
         self,
@@ -157,11 +128,10 @@ class CeleryExportAdminMixin:
 
         """
         context = self.get_context_data(request)
-
-        formats = self.get_export_formats()
+        resource_classes = self.get_export_resource_classes()
         form = forms.ExportForm(
-            formats,
-            request.POST or None,
+            data=request.POST or None,
+            resources=resource_classes,
         )
         is_valid_post_request = request.method == "POST" and form.is_valid()
         # Allows to get resource_kwargs passed in a form
@@ -173,8 +143,11 @@ class CeleryExportAdminMixin:
             *args,
             **kwargs,
         )
-        resource = self.get_export_resource_class()(**resource_kwargs)
+
         if is_valid_post_request:
+            resource_class = self.choose_export_resource_class(form)
+            resource = resource_class(**resource_kwargs)
+            formats = resource.get_export_formats()
             file_format = formats[int(form.cleaned_data["file_format"])]
             # create ExportJob and redirect to page with it's status
             job = self.create_export_job(
@@ -194,10 +167,13 @@ class CeleryExportAdminMixin:
         context["title"] = _("Export")
         context["form"] = form
         context["opts"] = self.model_info.meta
-        context["fields"] = [
-            file_format.column_name
-            for file_format in resource.get_user_visible_fields()
-        ]
+        context["resources_formats"] = {
+            str(index): [
+                fmt().get_title()
+                for fmt in resource_class.get_export_formats()
+            ]
+            for index, resource_class in enumerate(resource_classes)
+        }
 
         request.current_app = self.admin_site.name
         return TemplateResponse(
