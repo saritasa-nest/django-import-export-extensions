@@ -1,4 +1,5 @@
 import os
+import pathlib
 import traceback
 import uuid
 from typing import Optional, Sequence, Type
@@ -228,10 +229,9 @@ class ImportJob(TimeStampedModel):
 
     def __str__(self) -> str:
         """Return string representation."""
-        return (
-            f"Import job({self.import_status}) "
-            f"<{self.pk}> using {self.resource_path}"
-        )
+        resource_name = pathlib.Path(self.resource_path).suffix.lstrip(".")
+
+        return f"ImportJob(resource={resource_name})"
 
     def save(
         self,

@@ -18,8 +18,9 @@ django-import-export-extensions is a Django application and library based on
    :caption: User Guide
 
    installation
-   migrate_from_original_import_export
    getting_started
+   extensions
+   migrate_from_original_import_export
    authors
    history
 

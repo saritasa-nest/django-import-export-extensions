@@ -8,13 +8,13 @@ Installation and configuration
 Stable release
 --------------
 
-To install django-import-export-extensions, run this command in your terminal:
+To install ``django-import-export-extensions``, run this command in your terminal:
 
 .. code-block:: console
 
     $ pip install django-import-export-extensions
 
-This is the preferred method to install django-import-export-extensions, as it will always install the most recent stable release.
+This is the preferred method to install ``django-import-export-extensions``, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -22,7 +22,7 @@ you through the process.
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
-Then just add `import_export` and `import_export_extensions` to INSTALLED_APPS
+Then just add ``import_export`` and ``import_export_extensions`` to INSTALLED_APPS
 
 .. code-block:: python
 

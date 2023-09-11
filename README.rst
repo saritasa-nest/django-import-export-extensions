@@ -3,24 +3,28 @@ django-import-export-extensions
 ===============================
 
 .. image:: https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml/badge.svg
-        :target: https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml
-        :alt: Build status on Github
+    :target: https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml
+    :alt: Build status on Github
 
 .. image:: https://coveralls.io/repos/github/saritasa-nest/django-import-export-extensions/badge.svg?branch=main
-        :target: https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main
-        :alt: Test coverage
+    :target: https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main
+    :alt: Test coverage
 
 .. image:: https://img.shields.io/badge/python%20versions-3.9%20%7C%203.10%20%7C%203.11-blue
-        :target: https://pypi.org/project/django-import-export-extensions/
-        :alt: Supported python versions
+    :target: https://pypi.org/project/django-import-export-extensions/
+    :alt: Supported python versions
 
 .. image:: https://img.shields.io/badge/django--versions-3.2%20%7C%204.0%20%7C%204.1%20%7C%204.2-blue
-        :target: https://pypi.org/project/django-import-export-extensions/
-        :alt: Supported django versions
+    :target: https://pypi.org/project/django-import-export-extensions/
+    :alt: Supported django versions
 
 .. image:: https://readthedocs.org/projects/django-import-export-extensions/badge/?version=latest
     :target: https://django-import-export-extensions.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+
+.. image:: https://static.pepy.tech/personalized-badge/django-import-export-extensions?period=month&units=international_system&left_color=black&right_color=blue&left_text=Downloads/month
+    :target: https://pepy.tech/project/django-import-export-extensions
+    :alt: Downloading statistic
 
 Description
 -----------
@@ -128,5 +132,5 @@ Links:
 * PyPI: https://pypi.org/project/django-import-export-extensions/
 
 License:
-________
+--------
 * Free software: MIT license
