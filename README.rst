@@ -32,14 +32,14 @@ Description
 `django-import-export <https://github.com/django-import-export/django-import-export/>`_
 adding the following features:
 
-* Import/export :ref:`resources<Resources>` in the background via Celery
-* Manage import/export :ref:`jobs<ImportJob/ExportJob models>` via Django Admin
-* :ref:`DRF integration<ViewSets>` that allows to work with import/export jobs via API
+* Import/export resources in the background via Celery
+* Manage import/export jobs via Django Admin
+* DRF integration that allows to work with import/export jobs via API
 * Support `drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_ generated API schema
-* Additional:ref:`fields<Fields>` and :ref:`widgets<Widgets>` (FileWidget, IntermediateM2MWidget, M2MField)
+* Additional fields and widgets (FileWidget, IntermediateM2MWidget, M2MField)
 
 Installation
------
+------------
 
 To install ``django-import-export-extensions``, run this command in your terminal:
 
