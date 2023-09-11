@@ -7,13 +7,8 @@ celery
 redis
 
 django>=3.2
-django-object-actions
 django-picklefield
 django-filter
 
 # To work with FileField widget that can download files during importing
 requests
-
-# Database abstraction layer
-# https://pypi.org/project/psycopg2-binary/
-psycopg2-binary

@@ -22,14 +22,15 @@ you through the process.
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
-Then just add `import_export_extensions` to INSTALLED_APPS
+Then just add `import_export` and `import_export_extensions` to INSTALLED_APPS
 
 .. code-block:: python
 
     # settings.py
     INSTALLED_APPS = (
         ...
-        'import_export_extensions',
+        "import_export",
+        "import_export_extensions",
     )
 
 And then run `migrate` command to create ImportJob/ExportJob models and

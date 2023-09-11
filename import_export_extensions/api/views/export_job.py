@@ -8,6 +8,7 @@ from rest_framework import (
     status,
     viewsets,
 )
+from rest_framework.exceptions import ValidationError
 from rest_framework.request import Request
 
 import django_filters
@@ -60,7 +61,7 @@ class ExportBase(type):
             detail=False,
             queryset=viewset.resource_class.get_model_queryset(),
             filterset_class=getattr(
-                viewset.resource_class, "filter_class", None,
+                viewset.resource_class, "filterset_class", None,
             ),
             filter_backends=[
                 django_filters.rest_framework.DjangoFilterBackend,
@@ -70,13 +71,19 @@ class ExportBase(type):
         try:
             from drf_spectacular.utils import extend_schema, extend_schema_view
 
+            detail_serializer_class = viewset().get_detail_serializer_class()
             return extend_schema_view(
                 start=extend_schema(
                     filters=True,
                     request=viewset().get_export_create_serializer_class(),
                     responses={
-                        status.HTTP_201_CREATED:
-                            viewset().get_detail_serializer_class(),
+                        status.HTTP_201_CREATED: detail_serializer_class,
+                    },
+                ),
+                cancel=extend_schema(
+                    request=None,
+                    responses={
+                        status.HTTP_200_OK: detail_serializer_class,
                     },
                 ),
             )(viewset)
@@ -129,4 +136,20 @@ class ExportJobViewSet(
         """Get serializer which will be used to start export job."""
         return serializers.get_create_export_job_serializer(
             self.resource_class,
+        )
+
+    @decorators.action(methods=["POST"], detail=True)
+    def cancel(self, *args, **kwargs):
+        """Cancel export job that is in progress."""
+        job: models.ExportJob = self.get_object()
+
+        try:
+            job.cancel_export()
+        except ValueError as error:
+            raise ValidationError(error.args[0])
+
+        serializer = self.get_serializer(instance=job)
+        return response.Response(
+            status=status.HTTP_200_OK,
+            data=serializer.data,
         )

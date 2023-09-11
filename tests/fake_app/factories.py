@@ -55,7 +55,7 @@ class ArtistImportJobFactory(factory.django.DjangoModelFactory):
         ArtistImportJobFactory(artists=[artist1, artist2])
     """
 
-    resource_path = "tests.fake_app." "resources.SimpleArtistResource"
+    resource_path = "tests.fake_app.resources.SimpleArtistResource"
     resource_kwargs: dict[str, str] = {}
 
     class Meta:

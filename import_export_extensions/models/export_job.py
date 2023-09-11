@@ -57,6 +57,7 @@ class ExportJob(TimeStampedModel):
         EXPORTING = "EXPORTING", _("Exporting")
         EXPORT_ERROR = "EXPORT_ERROR", _("Export Error")
         EXPORTED = "EXPORTED", _("Exported")
+        CANCELLED = "CANCELLED", _("Cancelled")
 
     export_finished_statuses = (
         ExportStatus.EXPORTED,
@@ -250,12 +251,17 @@ class ExportJob(TimeStampedModel):
 
         return self._get_task_state(self.export_task_id)
 
-    @property
-    def _incorrect_status_error(self) -> ValueError:
-        """Shortcut for raising error when ExportJob is in incorrect state."""
-        return ValueError(
-            f"Wrong export job status: {self.get_export_status_display()}",
-        )
+    def _check_import_status_correctness(
+        self,
+        expected_statuses: typing.Sequence[ExportStatus],
+    ) -> None:
+        """Raise `ValueError` if `ImportJob` is in incorrect state."""
+        if self.export_status not in expected_statuses:
+            raise ValueError(
+                f"ImportJob with id {self.id} has incorrect status: "
+                f"`{self.export_status}`. Expected statuses:"
+                f" {[status.value for status in expected_statuses]}",
+            )
 
     def _start_export_data_task(self):
         """Start export data task."""
@@ -297,6 +303,27 @@ class ExportJob(TimeStampedModel):
                     "error_message",
                 ],
             )
+
+    def cancel_export(self) -> None:
+        """Cancel current data export.
+
+        ExportJob can be CANCELLED only from following states:
+            - CREATED
+            - EXPORTING
+
+        """
+        self._check_import_status_correctness(
+            expected_statuses=[
+                self.ExportStatus.CREATED.value,
+                self.ExportStatus.EXPORTING.value,
+            ],
+        )
+
+        # send signal to celery to revoke task
+        current_app.control.revoke(self.export_task_id, terminate=True)
+
+        self.export_status = self.ExportStatus.CANCELLED
+        self.save(update_fields=["export_status"])
 
     def _export_data_inner(self):
         """Run export process with saving to file."""

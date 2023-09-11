@@ -69,7 +69,7 @@ class CreateExportJob(serializers.Serializer):
         if not self._filter_kwargs:
             return attrs
 
-        filter_instance = self.resource_class.filter_class(
+        filter_instance = self.resource_class.filterset_class(
             data=self._filter_kwargs,
         )
         if not filter_instance.is_valid():

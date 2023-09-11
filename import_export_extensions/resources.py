@@ -42,7 +42,7 @@ class TaskState(Enum):
 
 class CeleryResourceMixin:
     """Mixin for resources for background import/export using celery."""
-    filter_class: typing.Type[filters.FilterSet]
+    filterset_class: typing.Type[filters.FilterSet]
     SUPPORTED_FORMATS: list[
         typing.Type[base_formats.Format]
     ] = base_formats.DEFAULT_FORMATS
@@ -62,7 +62,7 @@ class CeleryResourceMixin:
         queryset = super().get_queryset()
         if not self._filter_kwargs:
             return queryset
-        filter_instance = self.filter_class(
+        filter_instance = self.filterset_class(
             data=self._filter_kwargs,
         )
         if not filter_instance.is_valid():

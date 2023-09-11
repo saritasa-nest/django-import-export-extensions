@@ -79,6 +79,7 @@ def superuser():
         email="test@localhost.com",
         password="test_pass",
         is_staff=True,
+        is_superuser=True,
     )
 
 

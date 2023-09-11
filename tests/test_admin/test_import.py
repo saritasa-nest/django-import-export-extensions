@@ -33,15 +33,16 @@ def test_import_using_admin_model(
 
     # Go to import page in admin panel
     import_response = client.get(
-        path=reverse("admin:fake_app_artist_celery_import"),
+        path=reverse("admin:fake_app_artist_import"),
     )
     assert import_response.status_code == status.HTTP_200_OK
 
     # Start import job using admin panel
     start_import_job_response = client.post(
-        path=reverse("admin:fake_app_artist_celery_import"),
+        path=reverse("admin:fake_app_artist_import"),
         data={
             "import_file": uploaded_file,
+            "input_format": 0,  # Choose CSV format
         },
     )
     assert start_import_job_response.status_code == status.HTTP_302_FOUND

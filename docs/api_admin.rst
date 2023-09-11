@@ -17,7 +17,7 @@ Admin
 .. automodule:: import_export_extensions.admin.forms.import_admin_form
    :members:
 
-.. automodule:: import_export_extensions.admin.mixins.base
+.. automodule:: import_export_extensions.admin.mixins.types
    :members:
 
 .. automodule:: import_export_extensions.admin.mixins.export_mixin

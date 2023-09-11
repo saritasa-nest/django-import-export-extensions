@@ -1,7 +1,8 @@
 import typing
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import QuerySet
 from django.http import JsonResponse
 from django.urls import re_path
 from django.utils.translation import gettext_lazy as _
@@ -36,6 +37,9 @@ class ExportJobAdmin(
     export_job_model = models.ExportJob
     list_filter = ("export_status",)
     list_select_related = ("created_by",)
+    actions = (
+        "cancel_jobs",
+    )
 
     def export_data_action(
         self,
@@ -210,6 +214,20 @@ class ExportJobAdmin(
             return [progress, export_params]
 
         return [status, traceback_fields, export_params]
+
+    @admin.action(description="Cancel selected jobs")
+    def cancel_jobs(self, request: WSGIRequest, queryset: QuerySet):
+        """Admin action for cancelling data export."""
+        for job in queryset:
+            try:
+                job.cancel_export()
+                self.message_user(
+                    request,
+                    _(f"Export of {job} canceled"),
+                    messages.SUCCESS,
+                )
+            except ValueError as error:
+                self.message_user(request, str(error), messages.ERROR)
 
 
 admin.site.register(models.ExportJob, ExportJobAdmin)

@@ -67,7 +67,7 @@ class CreateImportJob(serializers.Serializer):
     def validate(self, attrs: dict[str, typing.Any]) -> dict[str, typing.Any]:
         """Check that filter kwargs are valid."""
         if self._filter_kwargs:
-            filter_instance = self.resource_class.filter_class(
+            filter_instance = self.resource_class.filterset_class(
                 data=self._filter_kwargs,
             )
             if not filter_instance.is_valid():

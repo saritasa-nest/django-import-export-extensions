@@ -1,7 +1,7 @@
 import os
 import traceback
-import typing
 import uuid
+from typing import Optional, Sequence, Type
 
 from django.conf import settings
 from django.db import models, transaction
@@ -262,7 +262,7 @@ class ImportJob(TimeStampedModel):
         return resource
 
     @property
-    def progress(self) -> typing.Optional[TaskStateInfo]:
+    def progress(self) -> Optional[TaskStateInfo]:
         """Return dict with parsing state.
 
         Example for sync mode::
@@ -308,12 +308,17 @@ class ImportJob(TimeStampedModel):
 
         return self._get_task_state(current_task)
 
-    @property
-    def _incorrect_status_error(self) -> ValueError:
-        """Shortcut for raising error when ImportJob is in incorrect state."""
-        return ValueError(
-            f"Wrong import job status: {self.get_import_status_display()}",
-        )
+    def _check_import_status_correctness(
+        self,
+        expected_statuses: Sequence[ImportStatus],
+    ) -> None:
+        """Raise `ValueError` if `ImportJob` is in incorrect state."""
+        if self.import_status not in expected_statuses:
+            raise ValueError(
+                f"ImportJob with id {self.id} has incorrect status: "
+                f"`{self.import_status}`. Expected statuses:"
+                f" {[status.value for status in expected_statuses]}",
+            )
 
     def start_parse_data_task(self):
         """Start parsing task."""
@@ -330,8 +335,9 @@ class ImportJob(TimeStampedModel):
         Sets `result` and/or `traceback` and update `status`.
 
         """
-        if self.import_status != self.ImportStatus.CREATED:
-            raise self._incorrect_status_error
+        self._check_import_status_correctness(
+            expected_statuses=(self.ImportStatus.CREATED,),
+        )
 
         self.import_status = self.ImportStatus.PARSING
         self.save(update_fields=["import_status"])
@@ -390,8 +396,9 @@ class ImportJob(TimeStampedModel):
         possibility of custom `task_id` with which task will be run.
 
         """
-        if self.import_status != self.ImportStatus.PARSED:
-            raise self._incorrect_status_error
+        self._check_import_status_correctness(
+            expected_statuses=(self.ImportStatus.PARSED,),
+        )
 
         self.import_status = self.ImportStatus.CONFIRMED
         self.import_task_id = str(uuid.uuid4())
@@ -416,8 +423,9 @@ class ImportJob(TimeStampedModel):
 
     def import_data(self):
         """Import data from `data_file` to DB."""
-        if self.import_status != self.ImportStatus.CONFIRMED:
-            raise self._incorrect_status_error
+        self._check_import_status_correctness(
+            expected_statuses=(self.ImportStatus.CONFIRMED,),
+        )
 
         self.import_status = self.ImportStatus.IMPORTING
         self.save(update_fields=["import_status"])
@@ -466,7 +474,7 @@ class ImportJob(TimeStampedModel):
     def _get_import_format_by_ext(
         self,
         file_ext: str,
-    ) -> typing.Type[base_formats.Format]:
+    ) -> Type[base_formats.Format]:
         """Determine import file format by file extension."""
         supported_formats = self.resource.get_supported_formats()
         for import_format in supported_formats:
@@ -520,8 +528,9 @@ class ImportJob(TimeStampedModel):
             self.ImportStatus.CONFIRMED: "import_task_id",
             self.ImportStatus.IMPORTING: "import_task_id",
         }
-        if self.import_status not in status_task_field_map:
-            raise self._incorrect_status_error
+        self._check_import_status_correctness(
+            expected_statuses=status_task_field_map.keys(),  # type: ignore
+        )
 
         # send signal to celery to revoke task
         task_id = getattr(self, status_task_field_map[self.import_status])

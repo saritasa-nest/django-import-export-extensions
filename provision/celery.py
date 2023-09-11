@@ -5,6 +5,6 @@ from invoke import task
 def run(context):
     """Start celery worker."""
     context.run(
-        "celery --app config.celery:app "
+        "celery --app tests.celery_app:app "
         "worker --beat --scheduler=django --loglevel=info",
     )

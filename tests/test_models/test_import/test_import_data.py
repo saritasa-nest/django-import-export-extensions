@@ -77,5 +77,8 @@ def test_import_data_wrong_status(artist_import_job: ImportJob):
     artist_import_job.import_status = ImportJob.ImportStatus.PARSE_ERROR
     artist_import_job.save()
 
-    with pytest.raises(ValueError, match="Wrong import job status"):
+    with pytest.raises(
+        ValueError,
+        match=f"ImportJob with id {artist_import_job.id} has incorrect status",
+    ):
         artist_import_job.import_data()

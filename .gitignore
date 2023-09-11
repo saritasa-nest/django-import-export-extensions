@@ -104,4 +104,5 @@ ENV/
 
 # Test files
 tests/media
+tests/static
 tests/db.sqlite3

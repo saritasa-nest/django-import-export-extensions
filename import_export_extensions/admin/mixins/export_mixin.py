@@ -1,5 +1,8 @@
 import typing
 
+from django.conf import settings
+from django.contrib.auth import get_permission_codename
+from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import (
     HttpResponse,
@@ -11,11 +14,18 @@ from django.template.response import TemplateResponse
 from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
-from ... import forms, models
-from .base import FormatType, ModelInfo, ResourceObj, ResourceType
+from import_export import admin as base_admin
+from import_export import forms as base_forms
+from import_export import mixins as base_mixins
+
+from ... import models
+from . import types
 
 
-class CeleryExportAdminMixin:
+class CeleryExportAdminMixin(
+    base_mixins.BaseExportMixin,
+    base_admin.ImportExportMixinBase,
+):
     """Admin mixin for celery export.
 
     Admin export work-flow is:
@@ -32,67 +42,30 @@ class CeleryExportAdminMixin:
             If errors - traceback and error message.
 
     """
-    resource_class: ResourceType = None    # type: ignore
     # export data encoding
     to_encoding = "utf-8"
 
-    change_list_template = "admin/change_list/celery_change_list_export.html"
-
     # template used to display ExportForm
-    celery_export_template_name = "admin/celery_export.html"
+    celery_export_template_name = "admin/import_export/export.html"
 
-    export_status_template_name = "admin/celery_export_status.html"
+    export_status_template_name = "admin/import_export_extensions/celery_export_status.html"
 
-    export_results_template_name = "admin/celery_export_results.html"
+    export_results_template_name = "admin/import_export_extensions/celery_export_results.html"
 
     # Statuses that should be displayed on 'results' page
     export_results_statuses = models.ExportJob.export_finished_statuses
 
     @property
-    def model_info(self) -> ModelInfo:
+    def model_info(self) -> types.ModelInfo:
         """Get info of exported model."""
-        return ModelInfo(
+        return types.ModelInfo(
             meta=self.model._meta,
         )
 
-    def get_export_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get kwargs for export resource."""
-        return self.get_resource_kwargs(request, *args, **kwargs)
-
-    def get_resource_kwargs(
-        self,
-        request: WSGIRequest,
-        *args,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get common resource kwargs."""
-        return {}
-
-    def get_resource_class(self) -> ResourceType:
-        """Get resource class."""
-        return self.resource_class
-
-    def get_export_resource_class(self) -> ResourceType:
-        """Return ResourceClass to use for export."""
-        return self.get_resource_class()
-
-    def get_export_formats(self) -> list[FormatType]:
-        """Get supported export formats."""
-        return [
-            export_format for export_format in
-            self.get_resource_class().get_supported_formats()
-            if export_format().can_export()
-        ]
-
     def get_export_data(
         self,
-        resource: ResourceObj,
-        file_format: FormatType,
+        resource: types.ResourceObj,
+        file_format: types.FormatType,
         queryset,
         *args,
         **kwargs,
@@ -113,11 +86,11 @@ class CeleryExportAdminMixin:
     def get_urls(self):
         """Return list of urls.
 
-        /<model>/<export>/:
+        /<model/celery-export/:
             ExportForm ('export_action' method)
-        /<model>/<export>/<ID>/:
+        /<model>/celery-export/<ID>/:
             status of ExportJob and progress bar ('export_job_status_view')
-        /<model>/<export>/<ID>/results/:
+        /<model>/celery-export/<ID>/results/:
             table with export results (errors)
 
         """
@@ -126,14 +99,14 @@ class CeleryExportAdminMixin:
             re_path(
                 r"^celery-export/$",
                 self.admin_site.admin_view(self.celery_export_action),
-                name=f"{self.model_info.app_model_name}_celery_export",
+                name=f"{self.model_info.app_model_name}_export",
             ),
             re_path(
                 r"^celery-export/(?P<job_id>\d+)/$",
                 self.admin_site.admin_view(self.export_job_status_view),
                 name=(
                     f"{self.model_info.app_model_name}"
-                    f"_celery_export_job_status"
+                    f"_export_job_status"
                 ),
             ),
             re_path(
@@ -143,7 +116,7 @@ class CeleryExportAdminMixin:
                 ),
                 name=(
                     f"{self.model_info.app_model_name}"
-                    f"_celery_export_job_results"
+                    f"_export_job_results"
                 ),
             ),
         ]
@@ -156,30 +129,26 @@ class CeleryExportAdminMixin:
         POST: create ExportJob instance and redirect to it's status
 
         """
-        context = self.get_context_data(request)
+        if not self.has_export_permission(request):
+            raise PermissionDenied
 
         formats = self.get_export_formats()
-        form = forms.ExportForm(
+        form = base_forms.ExportForm(
             formats,
             request.POST or None,
+            resources=self.get_export_resource_classes(),
         )
-        is_valid_post_request = request.method == "POST" and form.is_valid()
-        # Allows to get resource_kwargs passed in a form
-        if is_valid_post_request:
-            kwargs.update(dict(form=form))
-
         resource_kwargs = self.get_export_resource_kwargs(
             request=request,
             *args,
             **kwargs,
         )
-        resource = self.get_export_resource_class()(**resource_kwargs)
-        if is_valid_post_request:
+        if request.method == "POST" and form.is_valid():
             file_format = formats[int(form.cleaned_data["file_format"])]
             # create ExportJob and redirect to page with it's status
             job = self.create_export_job(
                 request=request,
-                resource_class=resource.__class__,
+                resource_class=self.choose_export_resource_class(form),
                 resource_kwargs=resource_kwargs,
                 file_format=file_format,
             )
@@ -189,17 +158,14 @@ class CeleryExportAdminMixin:
             )
 
         # GET: display Export Form
+        context = self.get_context_data(request)
         context.update(self.admin_site.each_context(request))
 
         context["title"] = _("Export")
         context["form"] = form
         context["opts"] = self.model_info.meta
-        context["fields"] = [
-            file_format.column_name
-            for file_format in resource.get_user_visible_fields()
-        ]
-
         request.current_app = self.admin_site.name
+
         return TemplateResponse(
             request=request,
             template=[self.celery_export_template_name],
@@ -218,7 +184,11 @@ class CeleryExportAdminMixin:
         view).
 
         If job result is ready - redirects to another page to see results.
+
         """
+        if not self.has_export_permission(request):
+            raise PermissionDenied
+
         job = self.get_export_job(request=request, job_id=job_id)
         if job.export_status in self.export_results_statuses:
             return self._redirect_to_export_results_page(
@@ -253,7 +223,11 @@ class CeleryExportAdminMixin:
             * show message
             * if no errors - show file link
             * if errors - show traceback and error
+
         """
+        if not self.has_export_permission(request):
+            raise PermissionDenied
+
         job = self.get_export_job(request=request, job_id=job_id)
         if job.export_status not in self.export_results_statuses:
             return self._redirect_to_export_status_page(
@@ -281,9 +255,9 @@ class CeleryExportAdminMixin:
     def create_export_job(
         self,
         request: WSGIRequest,
-        resource_class: ResourceType,
+        resource_class: types.ResourceType,
         resource_kwargs: dict[str, typing.Any],
-        file_format: FormatType,
+        file_format: types.FormatType,
     ) -> models.ExportJob:
         """Create and return instance of export job with chosen format."""
         job = models.ExportJob.objects.create(
@@ -318,7 +292,7 @@ class CeleryExportAdminMixin:
     ) -> HttpResponse:
         """Shortcut for redirecting to job's status page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_celery_export_job_status"
+            f"admin:{self.model_info.app_model_name}_export_job_status"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
@@ -333,10 +307,34 @@ class CeleryExportAdminMixin:
     ) -> HttpResponse:
         """Shortcut for redirecting to job's results page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_celery_export_job_results"
+            f"admin:{self.model_info.app_model_name}_export_job_results"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
         if query:
             url = f"{url}?{query}"
         return HttpResponseRedirect(redirect_to=url)
+
+    def has_export_permission(self, request: WSGIRequest):
+        """Return whether a request has export permission."""
+        EXPORT_PERMISSION_CODE = getattr(
+            settings,
+            "IMPORT_EXPORT_EXPORT_PERMISSION_CODE",
+            None,
+        )
+        if EXPORT_PERMISSION_CODE is None:
+            return True
+
+        opts = self.opts
+        codename = get_permission_codename(EXPORT_PERMISSION_CODE, opts)
+        return request.user.has_perm("%s.%s" % (opts.app_label, codename))
+
+    def changelist_view(
+        self,
+        request: WSGIRequest,
+        context: typing.Optional[dict[str, typing.Any]] = None,
+    ):
+        """Add the check for permission to changelist template context."""
+        context = context or {}
+        context["has_export_permission"] = True
+        return super().changelist_view(request, context)
