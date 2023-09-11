@@ -28,7 +28,7 @@ django-import-export-extensions
 
 Description
 -----------
-`django-import-export-extensions` extends the functionality of
+``django-import-export-extensions`` extends the functionality of
 `django-import-export <https://github.com/django-import-export/django-import-export/>`_
 adding the following features:
 
@@ -41,13 +41,13 @@ adding the following features:
 Installation
 -----
 
-To install `django-import-export-extensions`, run this command in your terminal:
+To install ``django-import-export-extensions``, run this command in your terminal:
 
 .. code-block:: console
 
     $ pip install django-import-export-extensions
 
-Add `import_export` and `import_export_extensions` to INSTALLED_APPS
+Add ``import_export`` and ``import_export_extensions`` to ``INSTALLED_APPS``
 
 .. code-block:: python
 
@@ -85,7 +85,7 @@ Prepare resource for your model
         class Meta:
             model = models.Book
 
-Use `CeleryImportExportMixin` class and set `resource_class` in admin model
+Use ``CeleryImportExportMixin`` class and set ``resource_class`` in admin model
 to import/export via Django Admin
 
 .. code-block:: python
