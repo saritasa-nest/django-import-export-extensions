@@ -38,7 +38,7 @@ Here is simple django model from test app that we gonna use in the examples abov
 Resources
 ---------
 
-The resource class is a core of import/export. This is similar to serializers in DRF, but
+The resource class is a core of import/export. This is similar to forms in Django, but
 provides methods for converting data from a file to objects and vice versa.
 
 ``django-import-export-extensions`` provides ``CeleryResource`` and ``CeleryModelResource`` classes. Here

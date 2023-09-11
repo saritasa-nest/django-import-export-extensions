@@ -22,7 +22,7 @@ django-import-export-extensions
     :target: https://django-import-export-extensions.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. image:: https://static.pepy.tech/personalized-badge/django-import-export-extensions?period=month&units=international_system&left_color=black&right_color=blue&left_text=Downloads/month
+.. image:: https://static.pepy.tech/personalized-badge/django-import-export-extensions?period=month&units=international_system&left_color=gray&right_color=blue&left_text=Downloads/month
     :target: https://pepy.tech/project/django-import-export-extensions
     :alt: Downloading statistic
 
@@ -32,11 +32,11 @@ Description
 `django-import-export <https://github.com/django-import-export/django-import-export/>`_
 adding the following features:
 
-* Import/export resources in the background via Celery
-* Manage import/export jobs via Django Admin
-* DRF integration that allows to work with import/export jobs via API
+* Import/export :ref:`resources<Resources>` in the background via Celery
+* Manage import/export :ref:`jobs<ImportJob/ExportJob models>` via Django Admin
+* :ref:`DRF integration<ViewSets>` that allows to work with import/export jobs via API
 * Support `drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_ generated API schema
-* Additional fields and widgets (FileWidget, IntermediateM2MWidget, M2MField)
+* Additional:ref:`fields<Fields>` and :ref:`widgets<Widgets>` (FileWidget, IntermediateM2MWidget, M2MField)
 
 Installation
 -----
@@ -58,8 +58,8 @@ Add `import_export` and `import_export_extensions` to INSTALLED_APPS
         "import_export_extensions",
     )
 
-Run `migrate` command to create ImportJob/ExportJob models and
-`collectstatic` to let Django collect package static files to use in the admin.
+Run ``migrate`` command to create ImportJob/ExportJob models and
+``collectstatic`` to let Django collect package static files to use in the admin.
 
 .. code-block:: shell
 
