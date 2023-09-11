@@ -110,6 +110,7 @@ STATICFILES_FINDERS = (
 # Configure `drf-spectacular` to check it works for import-export API
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "COMPONENT_SPLIT_REQUEST": True,  # Allows to upload import file from Swagger UI
 }
 
 # Don't use celery when you're local

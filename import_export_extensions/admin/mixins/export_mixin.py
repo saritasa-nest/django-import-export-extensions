@@ -52,8 +52,6 @@ class CeleryExportAdminMixin(
 
     import_export_change_list_template = "admin/import_export/change_list_export.html"
 
-    import_export_change_list_template = "admin/import_export/change_list_export.html"
-
     # Statuses that should be displayed on 'results' page
     export_results_statuses = models.ExportJob.export_finished_statuses
 

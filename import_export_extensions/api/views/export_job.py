@@ -122,6 +122,16 @@ class ExportJobViewSet(
             resource_path=self.resource_class.class_path,
         )
 
+    def get_resource_kwargs(self) -> dict[str, typing.Any]:
+        """Provide extra arguments to resource class."""
+        return {}
+
+    def get_serializer(self, *args, **kwargs):
+        """Provide resource kwargs to serializer class."""
+        if self.action == "start":
+            kwargs.setdefault("resource_kwargs", self.get_resource_kwargs())
+        return super().get_serializer(*args, **kwargs)
+
     def get_serializer_class(self):
         """Return special serializer on creation."""
         if self.action == "start":

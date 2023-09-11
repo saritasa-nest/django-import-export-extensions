@@ -85,6 +85,9 @@ to implement import/export via API. Just create custom class with ``resource_cla
 
     urlpatterns = band_import_export_router.urls
 
+By default, all import/export jobs for the set ``resource_class`` will be available,
+but you can override ``get_queryset`` method to change it. You can also override
+``get_resource_kwargs`` method to provide some values in resource class (for ``start`` action).
 
 These view sets provide all methods required for entire import/export workflow: start, details,
 confirm, cancel and list actions. There is also `drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_

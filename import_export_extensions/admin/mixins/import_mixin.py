@@ -72,14 +72,6 @@ class CeleryImportAdminMixin(
     get_skip_admin_log = base_admin.ImportMixin.get_skip_admin_log
     has_import_permission = base_admin.ImportMixin.has_import_permission
 
-    import_export_change_list_template = "admin/import_export/change_list_import.html"
-
-    skip_admin_log = None
-    # Copy methods of mixin from original package to reuse it here
-    generate_log_entries = base_admin.ImportMixin.generate_log_entries
-    get_skip_admin_log = base_admin.ImportMixin.get_skip_admin_log
-    has_import_permission = base_admin.ImportMixin.has_import_permission
-
     @property
     def model_info(self) -> types.ModelInfo:
         """Get info of imported model."""
