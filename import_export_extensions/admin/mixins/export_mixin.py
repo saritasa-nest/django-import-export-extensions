@@ -315,7 +315,7 @@ class CeleryExportAdminMixin(
             url = f"{url}?{query}"
         return HttpResponseRedirect(redirect_to=url)
 
-    def has_export_permission(self, request):
+    def has_export_permission(self, request: WSGIRequest):
         """Return whether a request has export permission."""
         EXPORT_PERMISSION_CODE = getattr(
             settings,
@@ -329,7 +329,11 @@ class CeleryExportAdminMixin(
         codename = get_permission_codename(EXPORT_PERMISSION_CODE, opts)
         return request.user.has_perm("%s.%s" % (opts.app_label, codename))
 
-    def changelist_view(self, request, context=None):
+    def changelist_view(
+        self,
+        request: WSGIRequest,
+        context: typing.Optional[dict[str, typing.Any]] = None,
+    ):
         """Add the check for permission to changelist template context."""
         context = context or {}
         context["has_export_permission"] = True

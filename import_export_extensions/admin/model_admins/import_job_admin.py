@@ -2,6 +2,7 @@ import typing
 
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import QuerySet
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.urls import re_path
@@ -38,10 +39,10 @@ class ImportJobAdmin(
     import_job_model = models.ImportJob
     list_filter = ("import_status",)
     list_select_related = ("created_by",)
-    actions = [
+    actions = (
         "cancel_jobs",
         "confirm_jobs",
-    ]
+    )
 
     def get_queryset(self, request: WSGIRequest):
         """Override `get_queryset`.
@@ -260,7 +261,7 @@ class ImportJobAdmin(
         return [status, traceback_, import_params]
 
     @admin.action(description="Cancel selected jobs")
-    def cancel_jobs(self, request, queryset):
+    def cancel_jobs(self, request: WSGIRequest, queryset: QuerySet):
         """Admin action for cancelling data import."""
         for job in queryset:
             try:
@@ -274,7 +275,7 @@ class ImportJobAdmin(
                 self.message_user(request, str(error), messages.ERROR)
 
     @admin.action(description="Confirm selected jobs")
-    def confirm_jobs(self, request, queryset):
+    def confirm_jobs(self, request: WSGIRequest, queryset: QuerySet):
         """Admin action for confirming data import."""
         for job in queryset:
             try:

@@ -372,7 +372,7 @@ class CeleryImportAdminMixin(
 
         return HttpResponseRedirect(redirect_to=url)
 
-    def has_import_permission(self, request):
+    def has_import_permission(self, request: WSGIRequest):
         """Return whether a request has import permission."""
         IMPORT_PERMISSION_CODE = getattr(
             settings,
@@ -386,7 +386,11 @@ class CeleryImportAdminMixin(
         codename = get_permission_codename(IMPORT_PERMISSION_CODE, opts)
         return request.user.has_perm("%s.%s" % (opts.app_label, codename))
 
-    def changelist_view(self, request, context=None):
+    def changelist_view(
+        self,
+        request: WSGIRequest,
+        context: typing.Optional[dict[str, typing.Any]] = None,
+    ):
         """Add the check for permission to changelist template context."""
         context = context or {}
         context["has_import_permission"] = self.has_import_permission(request)
