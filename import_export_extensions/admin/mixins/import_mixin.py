@@ -1,7 +1,6 @@
 import typing
 
 from django.conf import settings
-from django.contrib.auth import get_permission_codename
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIRequest
@@ -64,6 +63,14 @@ class CeleryImportAdminMixin(
 
     # template used to display results of import jobs
     import_result_template_name = "admin/import_export_extensions/celery_import_results.html"
+
+    import_export_change_list_template = "admin/import_export/change_list_import.html"
+
+    skip_admin_log = None
+    # Copy methods of mixin from original package to reuse it here
+    generate_log_entries = base_admin.ImportMixin.generate_log_entries
+    get_skip_admin_log = base_admin.ImportMixin.get_skip_admin_log
+    has_import_permission = base_admin.ImportMixin.has_import_permission
 
     @property
     def model_info(self) -> types.ModelInfo:
@@ -206,12 +213,16 @@ class CeleryImportAdminMixin(
 
         If job result is ready - redirects to another page to see results.
 
+        Also generates admin log entries if the job has `IMPORTED` status.
+
         """
         if not self.has_import_permission(request):
             raise PermissionDenied
 
         job = self.get_import_job(request, job_id)
         if job.import_status in self.results_statuses:
+            if job.import_status == models.ImportJob.ImportStatus.IMPORTED:
+                self.generate_log_entries(job.result, request)
             return self._redirect_to_results_page(
                 request=request,
                 job=job,
@@ -312,6 +323,7 @@ class CeleryImportAdminMixin(
             data_file=form.cleaned_data["import_file"],
             resource_kwargs=resource.resource_init_kwargs,
             created_by=request.user,
+            skip_parse_step=getattr(settings, "IMPORT_EXPORT_SKIP_ADMIN_CONFIRM", False),
         )
 
     def get_import_job(
@@ -371,20 +383,6 @@ class CeleryImportAdminMixin(
                 cache.delete(key)
 
         return HttpResponseRedirect(redirect_to=url)
-
-    def has_import_permission(self, request: WSGIRequest):
-        """Return whether a request has import permission."""
-        IMPORT_PERMISSION_CODE = getattr(
-            settings,
-            "IMPORT_EXPORT_IMPORT_PERMISSION_CODE",
-            None,
-        )
-        if IMPORT_PERMISSION_CODE is None:
-            return True
-
-        opts = self.opts
-        codename = get_permission_codename(IMPORT_PERMISSION_CODE, opts)
-        return request.user.has_perm("%s.%s" % (opts.app_label, codename))
 
     def changelist_view(
         self,

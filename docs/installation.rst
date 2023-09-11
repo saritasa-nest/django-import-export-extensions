@@ -103,3 +103,6 @@ Settings from django-import-export
 There are also available `settings from original django-import-export
 <https://django-import-export.readthedocs.io/en/latest/installation.html#settings>`_
 package.
+
+Only ``IMPORT_EXPORT_TMP_STORAGE_CLASS`` setting does not affect anything, because the storage
+is not used in ``CeleryImportAdminMixin`` implementation.
