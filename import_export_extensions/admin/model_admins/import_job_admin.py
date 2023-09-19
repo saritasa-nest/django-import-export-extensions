@@ -141,6 +141,7 @@ class ImportJobAdmin(
             readonly_fields.extend(
                 [
                     "resource_path",
+                    "input_errors_file",
                     "data_file",
                     "resource_kwargs",
                 ],
@@ -241,7 +242,10 @@ class ImportJobAdmin(
         data = (
             _("Importing data"),
             {
-                "fields": ("_input_errors",),
+                "fields": (
+                    "input_errors_file",
+                    "_input_errors",
+                ),
                 "classes": ("collapse",),
             },
         )

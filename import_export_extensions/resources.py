@@ -267,3 +267,6 @@ class CeleryModelResource(CeleryResourceMixin, resources.ModelResource):
 
         """
         return cls._meta.model.objects.all()
+
+    class Meta:
+        store_instance = True

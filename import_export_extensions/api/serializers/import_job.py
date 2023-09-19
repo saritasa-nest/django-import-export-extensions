@@ -5,6 +5,7 @@ from rest_framework import request, serializers
 from celery import states
 
 from ... import models, resources
+from . import import_job_details as details
 from .progress import ProgressSerializer
 
 
@@ -26,13 +27,49 @@ class ImportJobSerializer(serializers.ModelSerializer):
 
     progress = ImportProgressSerializer()
 
+    import_params = details.ImportParamsSerializer(
+        read_only=True,
+        source="*",
+    )
+    totals = details.TotalsSerializer(
+        read_only=True,
+        source="*",
+    )
+    parse_error = serializers.CharField(
+        source="error_message",
+        read_only=True,
+        allow_blank=True,
+    )
+    input_error = details.InputErrorSerializer(
+        source="*",
+        read_only=True,
+    )
+    importing_data = details.ImportingDataSerializer(
+        read_only=True,
+        source="*",
+    )
+    input_errors_file = serializers.FileField(
+        read_only=True,
+        allow_null=True,
+    )
+    is_all_rows_shown = details.IsAllRowsShowField(
+        source="*",
+        read_only=True,
+    )
+
     class Meta:
         model = models.ImportJob
         fields = (
             "id",
-            "import_status",
-            "data_file",
             "progress",
+            "import_status",
+            "import_params",
+            "totals",
+            "parse_error",
+            "input_error",
+            "is_all_rows_shown",
+            "importing_data",
+            "input_errors_file",
             "import_started",
             "import_finished",
             "created",
@@ -50,6 +87,10 @@ class CreateImportJob(serializers.Serializer):
     resource_class: typing.Type[resources.CeleryModelResource]
 
     file = serializers.FileField(required=True)
+    skip_parse_step = serializers.BooleanField(
+        required=False,
+        default=False,
+    )
 
     def __init__(
         self,
@@ -73,6 +114,7 @@ class CreateImportJob(serializers.Serializer):
             resource_path=self.resource_class.class_path,
             resource_kwargs=self._resource_kwargs,
             created_by=self._user,
+            skip_parse_step=validated_data["skip_parse_step"],
         )
 
     def update(self, instance, validated_data):

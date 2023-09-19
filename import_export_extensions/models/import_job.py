@@ -5,8 +5,10 @@ import uuid
 from typing import Optional, Sequence, Type
 
 from django.conf import settings
+from django.core.files import base as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
+from django.utils.encoding import force_bytes
 from django.utils.translation import gettext_lazy as _
 
 import tablib
@@ -15,6 +17,7 @@ from import_export.formats import base_formats
 from import_export.results import Result
 from picklefield.fields import PickledObjectField
 
+from ..resources import CeleryResource
 from . import tools
 from .core import TaskStateInfo, TimeStampedModel
 
@@ -146,6 +149,13 @@ class ImportJob(TimeStampedModel):
         upload_to=tools.upload_import_file_to,
         help_text=_("File that contain data to be imported"),
     )
+    input_errors_file = models.FileField(
+        max_length=512,
+        null=True,
+        verbose_name=_("Input errors file"),
+        help_text=_("File that contain failed rows"),
+        upload_to=tools.upload_import_file_to,
+    )
 
     resource_kwargs = models.JSONField(
         default=dict,
@@ -247,6 +257,7 @@ class ImportJob(TimeStampedModel):
 
         """
         is_created = self._state.adding
+        self._save_input_errors_file()
         super().save(
             force_insert=force_insert,
             force_update=force_update,
@@ -272,7 +283,7 @@ class ImportJob(TimeStampedModel):
             transaction.on_commit(self.start_parse_data_task)
 
     @property
-    def resource(self):
+    def resource(self) -> CeleryResource:
         """Get initialized resource instance."""
         resource_class = module_loading.import_string(self.resource_path)
         resource = resource_class(
@@ -307,10 +318,7 @@ class ImportJob(TimeStampedModel):
         https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
 
         """
-        if self.import_status not in (
-            self.ImportStatus.PARSING,
-            self.ImportStatus.IMPORTING,
-        ):
+        if self.import_status not in self.progress_statuses:
             return None
 
         current_task = (
@@ -402,7 +410,7 @@ class ImportJob(TimeStampedModel):
             dataset,
             dry_run=True,
             raise_errors=False,
-            collect_failures=True,
+            collect_failed_rows=True,
         )
 
     def confirm_import(self):
@@ -492,7 +500,7 @@ class ImportJob(TimeStampedModel):
             dry_run=False,
             raise_errors=True,
             use_transactions=True,
-            collect_failures=True,
+            collect_failed_rows=True,
         )
 
     def _get_import_format_by_ext(
@@ -501,11 +509,11 @@ class ImportJob(TimeStampedModel):
     ) -> Type[base_formats.Format]:
         """Determine import file format by file extension."""
         supported_formats = self.resource.get_supported_formats()
+
         for import_format in supported_formats:
-            if import_format().get_title().upper() == file_ext.upper().replace(
-                ".", "",
-            ):
+            if import_format().get_title().upper() == file_ext.upper().replace(".", ""):
                 return import_format
+
         supported_formats_titles = ",".join(
             supported_format().get_title()
             for supported_format in supported_formats
@@ -597,4 +605,40 @@ class ImportJob(TimeStampedModel):
         return dict(
             state=async_result.state,
             info=async_result.info,
+        )
+
+    def _save_input_errors_file(self):
+        """Save input errors file.
+
+        This should be saved after parsing and after importing
+        and if there are row errors in result.
+
+        """
+        if (
+            self.import_status not in self.results_statuses
+            or not self.result
+            or not self.result.row_errors()
+            or self.input_errors_file
+        ):
+            return
+        _, file_ext = os.path.splitext(self.data_file.name)
+        file_format = self._get_import_format_by_ext(
+            file_ext=file_ext,
+        )()
+        export_data = file_format.export_data(
+            dataset=self.result.failed_dataset,
+        )
+
+        # create file if `export_data` is not file
+        if not hasattr(export_data, "read"):
+            export_data = django_files.ContentFile(force_bytes(export_data))
+
+        file_name = self.resource.generate_export_filename(
+            file_format,
+        ).replace("/", "-")
+
+        self.input_errors_file.save(
+            name=f"FailedRows{file_name}",
+            content=export_data,
+            save=True,
         )
