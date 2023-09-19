@@ -335,7 +335,6 @@ class ExportJob(TimeStampedModel):
         # file object (formats inherited from `BaseZipExport`)
         export_data = self.file_format.export_data(
             dataset=self.result,
-            escape_output=self.resource_kwargs.get("escape_output", False),
             escape_html=self.resource_kwargs.get("escape_html", False),
             escape_formulae=self.resource_kwargs.get("escape_formulae", False),
         )
