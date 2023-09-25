@@ -2,6 +2,10 @@
 History
 =======
 
+0.4.1 (2023-09-25)
+------------------
+* Remvoe ``escape_output`` due it's deprecation
+
 0.4.0 (2023-09-11)
 ------------------
 * Make possible to pass ``resource_kwargs`` in ViewSets
