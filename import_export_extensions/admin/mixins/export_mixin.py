@@ -69,7 +69,6 @@ class CeleryExportAdminMixin(
         """Provide escape settings to resource kwargs."""
         kwargs = super().get_export_resource_kwargs(request, *args, **kwargs)
         kwargs.update({
-            "escape_output": self.should_escape_output,
             "escape_html": self.should_escape_html,
             "escape_formulae": self.should_escape_formulae,
         })
