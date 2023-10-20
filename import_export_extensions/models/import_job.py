@@ -13,13 +13,12 @@ import tablib
 from celery import current_app, result, states
 from import_export.formats import base_formats
 from import_export.results import Result
-from picklefield.fields import PickledObjectField
 
 from . import tools
-from .core import TaskStateInfo, TimeStampedModel
+from .core import BaseJob, TaskStateInfo
 
 
-class ImportJob(TimeStampedModel):
+class ImportJob(BaseJob):
     """Abstract model for managing celery import jobs.
 
     Encapsulate all logic related to celery import.
@@ -131,49 +130,11 @@ class ImportJob(TimeStampedModel):
         verbose_name=_("Job status"),
     )
 
-    resource_path = models.CharField(
-        max_length=128,
-        verbose_name=_("Resource class path"),
-        help_text=_(
-            "Dotted path to subclass of `import_export.Resource` that "
-            "should be used for import",
-        ),
-    )
-
     data_file = models.FileField(
         max_length=512,
         verbose_name=_("Data file"),
         upload_to=tools.upload_import_file_to,
         help_text=_("File that contain data to be imported"),
-    )
-
-    resource_kwargs = models.JSONField(
-        default=dict,
-        verbose_name=_("Resource kwargs"),
-        help_text=_("Keyword parameters required for resource initialization"),
-    )
-
-    traceback = models.TextField(
-        blank=True,
-        default=str,
-        verbose_name=_("Traceback"),
-        help_text=_("Python traceback in case of parse/import error"),
-    )
-    error_message = models.CharField(
-        max_length=128,
-        blank=True,
-        default=str,
-        verbose_name=_("Error message"),
-        help_text=_("Python error message in case of parse/import error"),
-    )
-
-    result = PickledObjectField(
-        default=str,
-        verbose_name=_("Import result"),
-        help_text=_(
-            "Internal import result object that contain "
-            "info about import statistics. Pickled Python object",
-        ),
     )
 
     parse_task_id = models.CharField(
@@ -206,15 +167,6 @@ class ImportJob(TimeStampedModel):
         editable=False,
         null=True,
         verbose_name=_("Import finished"),
-    )
-
-    created_by = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        editable=False,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Created by"),
-        help_text=_("User which started import"),
     )
 
     skip_parse_step = models.BooleanField(
