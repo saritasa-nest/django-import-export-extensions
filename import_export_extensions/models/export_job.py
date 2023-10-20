@@ -3,7 +3,6 @@ import traceback
 import typing
 import uuid
 
-from django.conf import settings
 from django.core import files as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
@@ -11,13 +10,12 @@ from django.utils.translation import gettext_lazy as _
 
 from celery import current_app, result, states
 from import_export.formats import base_formats
-from picklefield import PickledObjectField
 
 from . import tools
-from .core import TaskStateInfo, TimeStampedModel
+from .core import BaseJob, TaskStateInfo
 
 
-class ExportJob(TimeStampedModel):
+class ExportJob(BaseJob):
     """Abstract model for managing celery export jobs.
 
     Encapsulate all logic related to celery export.
@@ -72,15 +70,6 @@ class ExportJob(TimeStampedModel):
         verbose_name=_("Job status"),
     )
 
-    resource_path = models.CharField(
-        max_length=128,
-        verbose_name=_("Resource class path"),
-        help_text=_(
-            "Dotted path to subclass of `import_export.Resource` that "
-            "should be used for export",
-        ),
-    )
-
     file_format_path = models.CharField(
         max_length=128,
         verbose_name=_("Export path to class"),
@@ -94,35 +83,6 @@ class ExportJob(TimeStampedModel):
         verbose_name=_("Data file"),
         upload_to=tools.upload_export_file_to,
         help_text=_("File that contain exported data"),
-    )
-
-    resource_kwargs = models.JSONField(
-        default=dict,
-        verbose_name=_("Resource kwargs"),
-        help_text=_("Keyword parameters required for resource initialization"),
-    )
-
-    traceback = models.TextField(
-        blank=True,
-        default=str,
-        verbose_name=_("Traceback"),
-        help_text=_("Python traceback in case of export error"),
-    )
-    error_message = models.CharField(
-        max_length=128,
-        blank=True,
-        default=str,
-        verbose_name=_("Error message"),
-        help_text=_("Python error message in case of export error"),
-    )
-
-    result = PickledObjectField(
-        default=str,
-        verbose_name=_("Export result"),
-        help_text=_(
-            "Internal export result object that contain "
-            "info about export statistics. Pickled Python object",
-        ),
     )
 
     export_task_id = models.CharField(  # noqa: DJ01
@@ -145,15 +105,6 @@ class ExportJob(TimeStampedModel):
         editable=False,
         blank=True,
         null=True,
-    )
-
-    created_by = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        editable=False,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Created by"),
-        help_text=_("User which started export"),
     )
 
     class Meta:
@@ -191,16 +142,6 @@ class ExportJob(TimeStampedModel):
             self.export_task_id = str(uuid.uuid4())
             self.save(update_fields=["export_task_id"])
             transaction.on_commit(self._start_export_data_task)
-
-    @property
-    def resource(self):
-        """Get initialized resource instance."""
-        resource_class = module_loading.import_string(self.resource_path)
-        resource = resource_class(
-            created_by=self.created_by,
-            **self.resource_kwargs,
-        )
-        return resource
 
     @property
     def file_format(self) -> base_formats.Format:
@@ -252,14 +193,14 @@ class ExportJob(TimeStampedModel):
 
         return self._get_task_state(self.export_task_id)
 
-    def _check_import_status_correctness(
+    def _check_export_status_correctness(
         self,
         expected_statuses: typing.Sequence[ExportStatus],
     ) -> None:
-        """Raise `ValueError` if `ImportJob` is in incorrect state."""
+        """Raise `ValueError` if `ExportJob` is in incorrect state."""
         if self.export_status not in expected_statuses:
             raise ValueError(
-                f"ImportJob with id {self.id} has incorrect status: "
+                f"ExportJob with id {self.id} has incorrect status: "
                 f"`{self.export_status}`. Expected statuses:"
                 f" {[status.value for status in expected_statuses]}",
             )
@@ -313,7 +254,7 @@ class ExportJob(TimeStampedModel):
             - EXPORTING
 
         """
-        self._check_import_status_correctness(
+        self._check_export_status_correctness(
             expected_statuses=[
                 self.ExportStatus.CREATED.value,
                 self.ExportStatus.EXPORTING.value,
@@ -367,7 +308,7 @@ class ExportJob(TimeStampedModel):
             )
 
         # Update job's status in case of exception
-        self.export_status = ExportJob.ExportStatus.EXPORT_ERROR
+        self.export_status = self.ExportStatus.EXPORT_ERROR
         self.error_message = str(async_result.info)[:128]
         self.traceback = str(async_result.traceback)
         self.save(
