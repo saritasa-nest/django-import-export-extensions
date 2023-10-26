@@ -84,6 +84,10 @@ ignore = [
     "D204",
     "D301",
 ]
+extend-select = [
+    "DJ10",  # Model should define verbose_name in Meta class
+    "DJ11",  # Model should define verbose_name_plural in Meta class
+]
 statistics = true
 count = true
 max-complexity = 10
