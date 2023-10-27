@@ -285,7 +285,7 @@ class CeleryImportAdminMixin(
             if job.import_status != models.ImportJob.ImportStatus.PARSED:
                 # display import form
                 context["import_form"] = base_forms.ImportForm(
-                    import_formats=job.resource.SUPPORTED_FORMATS,
+                    import_formats=self.get_import_formats(),
                 )
             else:
                 context["confirm_form"] = Form()
