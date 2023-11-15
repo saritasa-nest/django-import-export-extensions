@@ -16,3 +16,6 @@ pre-commit
 # Gitlint is a git commit message linter written in python: it checks your commit messages for style.
 # https://jorisroovers.com/gitlint/
 gitlint
+# TODO: Remove when issue will be resolved:
+# https://github.com/jorisroovers/gitlint/issues/535
+virtualenv==20.24.5
