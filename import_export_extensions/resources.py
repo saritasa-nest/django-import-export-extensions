@@ -10,7 +10,7 @@ import tablib
 from celery import current_task, result
 from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
-from import_export import resources
+from import_export import resources, results
 from import_export.formats import base_formats
 from import_export.results import Error as BaseError
 
@@ -40,12 +40,44 @@ class TaskState(Enum):
     PARSING = _("Parsing")
 
 
+class SkippedErrorsRowResult(results.RowResult):
+    def __init__(self, *args, **kwargs):
+        self.non_field_skipped_errors: list[str] = []
+        self.field_skipped_errors: dict[str, str] = dict()
+        super().__init__()
+
+    @property
+    def has_skipped_errors(self):
+        if len(self.non_field_skipped_errors) > 0 or len(self.field_skipped_errors) > 0:
+            return True
+        return False
+
+    @property
+    def skipped_errors_count(self):
+        return len(self.non_field_skipped_errors) + len(self.field_skipped_errors)
+
+
+class SkippedErrorsResult(results.Result):
+    @property
+    def has_skipped_rows(self):
+        if any(row.has_skipped_errors for row in self.rows):
+            return True
+        return False
+
+    @property
+    def skipped_rows(self):
+        return list(
+            filter(lambda row: row.has_skipped_errors, self.rows),
+        )
+
+
 class CeleryResourceMixin:
     """Mixin for resources for background import/export using celery."""
     filterset_class: typing.Type[filters.FilterSet]
     SUPPORTED_FORMATS: list[
         typing.Type[base_formats.Format]
     ] = base_formats.DEFAULT_FORMATS
+    report_error_column=False  # a parameter to report table column not defined in the resource class
 
     def __init__(
         self,
@@ -97,6 +129,7 @@ class CeleryResourceMixin:
         use_transactions: typing.Optional[bool] = None,
         collect_failed_rows: bool = False,
         rollback_on_validation_errors: bool = False,
+        force_import: bool = False,
         **kwargs,
     ):
         """Init task state before importing."""
@@ -114,8 +147,15 @@ class CeleryResourceMixin:
             use_transactions=use_transactions,
             collect_failed_rows=collect_failed_rows,
             rollback_on_validation_errors=rollback_on_validation_errors,
+            force_import=force_import,
             **kwargs,
         )
+
+    def get_field_column_names(self):
+        names = []
+        for field in self.get_fields():
+            names.append(field.column_name)
+        return names
 
     def import_row(
         self,
@@ -124,10 +164,11 @@ class CeleryResourceMixin:
         using_transactions=True,
         dry_run=False,
         raise_errors=False,
+        force_import=False,
         **kwargs,
     ):
         """Update task status as we import rows."""
-        imported_row = super().import_row(
+        imported_row: SkippedErrorsRowResult = super().import_row(
             row=row,
             instance_loader=instance_loader,
             using_transactions=using_transactions,
@@ -141,7 +182,41 @@ class CeleryResourceMixin:
                 else TaskState.PARSING.name
             ),
         )
+        if not force_import:
+            return imported_row
+        if (
+            imported_row.import_type == results.RowResult.IMPORT_TYPE_ERROR
+            or imported_row.import_type == results.RowResult.IMPORT_TYPE_INVALID
+        ):
+            imported_row.diff=[]
+            for field in self.get_fields():
+                imported_row.diff.append(row.get(field.column_name, ''))
+
+            if self.report_error_column:
+                for row_name in row:
+                    if not row_name in self.get_field_column_names():
+                        imported_row.diff.append(row.get(row_name, ''))
+
+            imported_row.non_field_skipped_errors.extend(
+                str(error.error) for error in imported_row.errors
+            )
+            if imported_row.validation_error is not None:
+                imported_row.field_skipped_errors.append(
+                    imported_row.validation_error.message_dict,
+                )
+            imported_row.errors = []
+            imported_row.validation_error = None
+
+            imported_row.import_type = results.RowResult.IMPORT_TYPE_SKIP
         return imported_row
+
+    @classmethod
+    def get_row_result_class(self):
+        return SkippedErrorsRowResult
+
+    @classmethod
+    def get_result_class(self):
+        return SkippedErrorsResult
 
     def export(
         self,

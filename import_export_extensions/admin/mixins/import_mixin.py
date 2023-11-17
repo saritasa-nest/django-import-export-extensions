@@ -20,6 +20,7 @@ from import_export import forms as base_forms
 from import_export import mixins as base_mixins
 
 from ... import models
+from ..forms import ExtendedImportForm
 from . import types
 
 
@@ -152,7 +153,7 @@ class CeleryImportAdminMixin(
         context = self.get_context_data(request)
         resource_classes = self.get_import_resource_classes()
 
-        form = base_forms.ImportForm(
+        form = ExtendedImportForm(
             self.get_import_formats(),
             request.POST or None,
             request.FILES or None,
@@ -324,6 +325,7 @@ class CeleryImportAdminMixin(
             resource_kwargs=resource.resource_init_kwargs,
             created_by=request.user,
             skip_parse_step=getattr(settings, "IMPORT_EXPORT_SKIP_ADMIN_CONFIRM", False),
+            force_import=form.cleaned_data["force_import"],
         )
 
     def get_import_job(

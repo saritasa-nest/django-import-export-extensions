@@ -35,6 +35,7 @@ class ImportJobSerializer(serializers.ModelSerializer):
             "progress",
             "import_started",
             "import_finished",
+            "force_import",
             "created",
             "modified",
         )

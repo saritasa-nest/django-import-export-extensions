@@ -17,6 +17,7 @@ class SimpleArtistResource(CeleryModelResource):
             "name",
             "instrument",
         ]
+        # clean_model_instances = True
 
 
 class ArtistResourceWithM2M(CeleryModelResource):

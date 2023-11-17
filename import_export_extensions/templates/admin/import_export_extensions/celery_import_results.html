@@ -162,7 +162,7 @@
           {% trans "These elements are imported successfully" %}
         {% endif %}
       </h2>
-      <table>
+      <table class="import-preview">
         <thead>
           <tr>
             <th></th>
@@ -174,11 +174,34 @@
         {% for row in result.rows %}
           {% if not row.errors %}
             <tr>
-              <td>
+              <td class="errors">
                 {% if row.import_type == 'new' %}
                   {% trans "New" %}
                 {% elif row.import_type == 'skip' %}
                   {% trans "Skipped" %}
+                  <span class="validation-error-count">{{ row.skipped_errors_count}}</span>
+                  <div class="validation-error-container">
+                    <ul class="validation-error-list">
+                      {% for field_name, error_message in row.field_skipped_errors.items %}
+                        <li>
+                          <span class="validation-error-field-label">{{ field_name }}</span>
+                          <ul>
+                            <li>{{ error_message }}</li>
+                          </ul>
+                        </li>
+                      {% endfor %}
+                      {% if row.non_field_skipped_errors %}
+                        <li>
+                          <span class="validation-error-field-label">{% trans "Non field specific" %}</span>
+                          <ul>
+                            {% for error in row.non_field_skipped_errors %}
+                              <li>{{ error }}</li>
+                            {% endfor %}
+                          </ul>
+                        </li>
+                      {% endif %}
+                    </ul>
+                  </div>
                 {% elif row.import_type == 'delete' %}
                   {% trans "Delete" %}
                 {% elif row.import_type == 'update' %}
