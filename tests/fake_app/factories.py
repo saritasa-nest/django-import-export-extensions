@@ -63,11 +63,18 @@ class ArtistImportJobFactory(factory.django.DjangoModelFactory):
 
     class Params:
         artists: list[models.Artist] = []
+        is_invalid_file: bool = False
 
     @factory.lazy_attribute
     def data_file(self):
         """Generate `data_file` based on passed `artists`."""
         resource = SimpleArtistResource()
+
+        if self.is_invalid_file:
+            self.artists.append(
+                ArtistFactory.build(instrument=InstrumentFactory.build()),
+            )
+
         dataset = resource.export(self.artists)
         export_data = formats.CSV().export_data(dataset)
         content = django_files.ContentFile(export_data)

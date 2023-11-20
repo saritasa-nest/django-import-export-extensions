@@ -41,6 +41,7 @@ class TaskState(Enum):
 
 
 class SkippedErrorsRowResult(results.RowResult):
+    """Custom row result class with ability to store skipped errors in row."""
     def __init__(self, *args, **kwargs):
         self.non_field_skipped_errors: list[str] = []
         self.field_skipped_errors: dict[str, str] = dict()
@@ -48,24 +49,33 @@ class SkippedErrorsRowResult(results.RowResult):
 
     @property
     def has_skipped_errors(self):
+        """Return True if row contain any skipped errors."""
         if len(self.non_field_skipped_errors) > 0 or len(self.field_skipped_errors) > 0:
             return True
         return False
 
     @property
     def skipped_errors_count(self):
-        return len(self.non_field_skipped_errors) + len(self.field_skipped_errors)
+        """Return count of skipped errors."""
+        return (
+            len(self.non_field_skipped_errors)
+            + len(self.field_skipped_errors)
+        )
 
 
 class SkippedErrorsResult(results.Result):
+    """Custom result class with ability to store info about skipped rows."""
+
     @property
     def has_skipped_rows(self):
+        """Return True if contain any skipped rows."""
         if any(row.has_skipped_errors for row in self.rows):
             return True
         return False
 
     @property
     def skipped_rows(self):
+        """Return all rows with skipped errors."""
         return list(
             filter(lambda row: row.has_skipped_errors, self.rows),
         )
@@ -77,7 +87,7 @@ class CeleryResourceMixin:
     SUPPORTED_FORMATS: list[
         typing.Type[base_formats.Format]
     ] = base_formats.DEFAULT_FORMATS
-    report_error_column=False  # a parameter to report table column not defined in the resource class
+    report_error_column = False
 
     def __init__(
         self,
@@ -151,7 +161,9 @@ class CeleryResourceMixin:
             **kwargs,
         )
 
-    def get_field_column_names(self):
+    @property
+    def field_column_names(self):
+        """Return field column names."""
         names = []
         for field in self.get_fields():
             names.append(field.column_name)
@@ -188,14 +200,14 @@ class CeleryResourceMixin:
             imported_row.import_type == results.RowResult.IMPORT_TYPE_ERROR
             or imported_row.import_type == results.RowResult.IMPORT_TYPE_INVALID
         ):
-            imported_row.diff=[]
+            imported_row.diff = []
             for field in self.get_fields():
-                imported_row.diff.append(row.get(field.column_name, ''))
+                imported_row.diff.append(row.get(field.column_name, ""))
 
             if self.report_error_column:
                 for row_name in row:
-                    if not row_name in self.get_field_column_names():
-                        imported_row.diff.append(row.get(row_name, ''))
+                    if row_name not in self.field_column_names():
+                        imported_row.diff.append(row.get(row_name, ""))
 
             imported_row.non_field_skipped_errors.extend(
                 str(error.error) for error in imported_row.errors
@@ -212,10 +224,12 @@ class CeleryResourceMixin:
 
     @classmethod
     def get_row_result_class(self):
+        """Return custom row result class."""
         return SkippedErrorsRowResult
 
     @classmethod
     def get_result_class(self):
+        """Geti custom result class."""
         return SkippedErrorsResult
 
     def export(

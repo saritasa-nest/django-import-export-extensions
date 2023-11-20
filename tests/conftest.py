@@ -72,6 +72,31 @@ def uploaded_file(existing_artist: Artist):
 
 
 @pytest.fixture
+def force_import_artist_job(new_artist: Artist):
+    """Return `ImportJob` with `force_import=True` and file with invalid row."""
+    return ArtistImportJobFactory(
+        artists=[new_artist],
+        is_invalid_file=True,
+        force_import=True,
+    )
+
+
+@pytest.fixture
+def invalid_uploaded_file(new_artist: Artist):
+    """Generate invalid `Artist` imort file."""
+    import_job = ArtistImportJobFactory.build(
+        artists=[new_artist],
+        force_import=True,
+        is_invalid_file=True,
+    )
+    return SimpleUploadedFile(
+        "test_file.csv",
+        content=import_job.data_file.file.read().encode(),
+        content_type="text/plain",
+    )
+
+
+@pytest.fixture
 def superuser():
     """Return superuser instance."""
     return get_user_model().objects.create(

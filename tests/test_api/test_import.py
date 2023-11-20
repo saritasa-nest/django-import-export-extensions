@@ -56,3 +56,41 @@ def test_import_api_detail(
         ),
     )
     assert response.data["import_finished"]
+
+
+@pytest.mark.django_db(transaction=True)
+def test_force_import_api_detail(
+    client: Client,
+    superuser: User,
+    force_import_artist_job: ImportJob,
+):
+    """Test detail api for force import job.
+
+    Ensure created import job with invalid file will have `PARSED` status.
+    Ensure force import job after confirmation will skip invalid rows
+    and create right ones.
+
+    """
+    client.force_login(superuser)
+    response = client.get(
+        path=reverse(
+            "import-artist-detail",
+            kwargs={"pk": force_import_artist_job.id},
+        ),
+    )
+    assert response.data["import_status"] == ImportJob.ImportStatus.PARSED
+
+    force_import_artist_job.refresh_from_db()
+    force_import_artist_job.confirm_import()
+
+    response = client.get(
+        path=reverse(
+            "import-artist-detail",
+            kwargs={"pk": force_import_artist_job.id},
+        ),
+    )
+    assert response.data["import_finished"]
+
+    force_import_artist_job.refresh_from_db()
+    assert force_import_artist_job.result.totals["new"] == 1
+    assert force_import_artist_job.result.totals["skip"] == 1
