@@ -45,7 +45,7 @@ def up_containers(
     else:
         common.success("Bring up all containers")
     up_cmd = (
-        f"docker-compose up "
+        f"docker compose up "
         f"{'-d ' if detach else ''}"
         f"{' '.join(containers)}"
     )
@@ -61,7 +61,7 @@ def up_containers(
 def stop_containers(context, containers):
     """Stop containers."""
     common.success(f"Stopping {' '.join(containers)} containers ")
-    cmd = f"docker-compose stop {' '.join(containers)}"
+    cmd = f"docker compose stop {' '.join(containers)}"
     context.run(cmd)
 
 
@@ -87,8 +87,10 @@ def stop(context):
 @task
 def clear(context):
     """Stop and remove all containers defined in docker-compose.
+
     Also remove images.
+
     """
-    common.success("Clearing docker-compose")
-    context.run("docker-compose rm -f")
-    context.run("docker-compose down -v --rmi all --remove-orphans")
+    common.success("Clearing docker compose")
+    context.run("docker compose rm -f")
+    context.run("docker compose down -v --rmi all --remove-orphans")
