@@ -16,7 +16,6 @@ from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from import_export import admin as base_admin
-from import_export import forms as base_forms
 from import_export import mixins as base_mixins
 
 from ... import models
@@ -285,7 +284,7 @@ class CeleryImportAdminMixin(
 
             if job.import_status != models.ImportJob.ImportStatus.PARSED:
                 # display import form
-                context["import_form"] = base_forms.ImportForm(
+                context["import_form"] = ExtendedImportForm(
                     import_formats=self.get_import_formats(),
                 )
             else:
