@@ -48,14 +48,14 @@ class SkippedErrorsRowResult(results.RowResult):
         super().__init__()
 
     @property
-    def has_skipped_errors(self):
+    def has_skipped_errors(self) -> bool:
         """Return True if row contain any skipped errors."""
         if len(self.non_field_skipped_errors) > 0 or len(self.field_skipped_errors) > 0:
             return True
         return False
 
     @property
-    def skipped_errors_count(self):
+    def skipped_errors_count(self) -> int:
         """Return count of skipped errors."""
         return (
             len(self.non_field_skipped_errors)
@@ -67,14 +67,14 @@ class SkippedErrorsResult(results.Result):
     """Custom result class with ability to store info about skipped rows."""
 
     @property
-    def has_skipped_rows(self):
+    def has_skipped_rows(self) -> bool:
         """Return True if contain any skipped rows."""
         if any(row.has_skipped_errors for row in self.rows):
             return True
         return False
 
     @property
-    def skipped_rows(self):
+    def skipped_rows(self) -> list[SkippedErrorsRowResult]:
         """Return all rows with skipped errors."""
         return list(
             filter(lambda row: row.has_skipped_errors, self.rows),
