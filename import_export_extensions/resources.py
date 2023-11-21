@@ -142,7 +142,11 @@ class CeleryResourceMixin:
         force_import: bool = False,
         **kwargs,
     ):
-        """Init task state before importing."""
+        """Init task state before importing.
+
+        If `force_import=True`, then rows with errors will be skipped.
+
+        """
         self.initialize_task_state(
             state=(
                 TaskState.IMPORTING.name if not dry_run
@@ -179,7 +183,12 @@ class CeleryResourceMixin:
         force_import=False,
         **kwargs,
     ):
-        """Update task status as we import rows."""
+        """Update task status as we import rows.
+
+        If `force_import=True`, then row errors will be stored in
+        `field_skipped_errors` or `non_field_skipped_errors`.
+
+        """
         imported_row: SkippedErrorsRowResult = super().import_row(
             row=row,
             instance_loader=instance_loader,
