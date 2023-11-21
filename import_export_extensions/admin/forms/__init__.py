@@ -1,3 +1,3 @@
 from .export_job_admin_form import ExportJobAdminForm
-from .import_admin_form import ExtendedImportForm
+from .import_admin_form import ForceImportForm
 from .import_job_admin_form import ImportJobAdminForm
