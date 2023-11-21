@@ -87,7 +87,6 @@ class CeleryResourceMixin:
     SUPPORTED_FORMATS: list[
         typing.Type[base_formats.Format]
     ] = base_formats.DEFAULT_FORMATS
-    report_error_column = False
 
     def __init__(
         self,
@@ -165,14 +164,6 @@ class CeleryResourceMixin:
             **kwargs,
         )
 
-    @property
-    def field_column_names(self):
-        """Return field column names."""
-        names = []
-        for field in self.get_fields():
-            names.append(field.column_name)
-        return names
-
     def import_row(
         self,
         row,
@@ -212,11 +203,6 @@ class CeleryResourceMixin:
             imported_row.diff = []
             for field in self.get_fields():
                 imported_row.diff.append(row.get(field.column_name, ""))
-
-            if self.report_error_column:
-                for row_name in row:
-                    if row_name not in self.field_column_names():
-                        imported_row.diff.append(row.get(row_name, ""))
 
             imported_row.non_field_skipped_errors.extend(
                 str(error.error) for error in imported_row.errors
