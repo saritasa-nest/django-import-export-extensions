@@ -82,3 +82,39 @@ def test_import_data_wrong_status(artist_import_job: ImportJob):
         match=f"ImportJob with id {artist_import_job.id} has incorrect status",
     ):
         artist_import_job.import_data()
+
+
+@pytest.mark.parametrize(
+    "force_import",
+    [False, True],
+)
+@pytest.mark.django_db(transaction=True)
+def test_import_data_invalid_row_file(
+    new_artist: Artist,
+    force_import: bool,
+):
+    """Test import file with ivalid row.
+
+    If force_import = False, then job must finish with `INPUT_ERROR`
+    and not create instances for correct rows.
+    If force_import = True, then job must finish with `IMPORTED`
+    and skip invalid rows and create correct ones.
+
+    """
+    import_job: ImportJob = ArtistImportJobFactory(
+        artists=[new_artist],
+        force_import=force_import,
+        is_invalid_file=True,
+    )
+    import_job.parse_data()
+    import_job.refresh_from_db()
+
+    if force_import:
+        import_job.confirm_import()
+        import_job.refresh_from_db()
+
+        assert import_job.import_status == ImportJob.ImportStatus.IMPORTED
+        assert Artist.objects.filter(name=new_artist.name).exists()
+    else:
+        assert import_job.import_status == ImportJob.ImportStatus.INPUT_ERROR
+        assert not Artist.objects.filter(name=new_artist.name).exists()
