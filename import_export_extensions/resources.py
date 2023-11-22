@@ -1,6 +1,7 @@
 import typing
 from enum import Enum
 
+from django.core.exceptions import ValidationError
 from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
@@ -43,8 +44,8 @@ class TaskState(Enum):
 class SkippedErrorsRowResult(results.RowResult):
     """Custom row result class with ability to store skipped errors in row."""
     def __init__(self, *args, **kwargs):
-        self.non_field_skipped_errors: list[str] = []
-        self.field_skipped_errors: dict[str, str] = dict()
+        self.non_field_skipped_errors: list[Error] = []
+        self.field_skipped_errors: dict[str, list[ValidationError]] = dict()
         super().__init__()
 
     @property
@@ -205,11 +206,11 @@ class CeleryResourceMixin:
                 imported_row.diff.append(row.get(field.column_name, ""))
 
             imported_row.non_field_skipped_errors.extend(
-                str(error.error) for error in imported_row.errors
+                imported_row.errors,
             )
             if imported_row.validation_error is not None:
                 imported_row.field_skipped_errors.update(
-                    **imported_row.validation_error.message_dict,
+                    **imported_row.validation_error.error_dict,
                 )
             imported_row.errors = []
             imported_row.validation_error = None

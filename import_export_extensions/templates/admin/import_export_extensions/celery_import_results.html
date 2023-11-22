@@ -182,11 +182,15 @@
                   <span class="validation-error-count">{{ row.skipped_errors_count}}</span>
                   <div class="validation-error-container">
                     <ul class="validation-error-list">
-                      {% for field_name, error_message in row.field_skipped_errors.items %}
+                      {% for field_name, errors in row.field_skipped_errors.items %}
                         <li>
                           <span class="validation-error-field-label">{{ field_name }}</span>
                           <ul>
-                            <li>{{ error_message }}</li>
+                            {% for error in errors %}
+                              <li>
+                                {{ error }}
+                              </li>
+                            {% endfor %}
                           </ul>
                         </li>
                       {% endfor %}
