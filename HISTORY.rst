@@ -2,10 +2,11 @@
 History
 =======
 
-0.4.2 (2023-10-20)
+UNRELEASED
 ------------------
 * Add base model for `ImportJob` and `ExportJob`
 * Extend import results template: show validation errors in table
+* Add force-import feature: skip rows with errors while importing
 
 0.4.1 (2023-09-25)
 ------------------
