@@ -208,8 +208,8 @@ class CeleryResourceMixin:
                 str(error.error) for error in imported_row.errors
             )
             if imported_row.validation_error is not None:
-                imported_row.field_skipped_errors.append(
-                    imported_row.validation_error.message_dict,
+                imported_row.field_skipped_errors.update(
+                    **imported_row.validation_error.message_dict,
                 )
             imported_row.errors = []
             imported_row.validation_error = None
