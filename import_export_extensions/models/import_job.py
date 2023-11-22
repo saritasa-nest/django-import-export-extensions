@@ -177,7 +177,7 @@ class ImportJob(BaseJob):
 
     force_import = models.BooleanField(
         default=False,
-        help_text=_("Import data with skip ivalid rows."),
+        help_text=_("Import data with skip invalid rows."),
         verbose_name=_("Force import"),
     )
 

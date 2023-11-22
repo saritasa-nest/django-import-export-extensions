@@ -93,7 +93,7 @@ def test_import_data_invalid_row_file(
     new_artist: Artist,
     force_import: bool,
 ):
-    """Test import file with ivalid row.
+    """Test import file with invalid row.
 
     If force_import = False, then job must finish with `INPUT_ERROR`
     and not create instances for correct rows.
