@@ -71,6 +71,8 @@ class ArtistImportJobFactory(factory.django.DjangoModelFactory):
         resource = SimpleArtistResource()
 
         if self.is_invalid_file:
+            # Append not existing artist with a non-existent instrument
+            # to violate the not-null constraint
             self.artists.append(
                 ArtistFactory.build(instrument=InstrumentFactory.build()),
             )

@@ -61,7 +61,7 @@ def membership(band: Band) -> Membership:
 
 
 @pytest.fixture
-def uploaded_file(existing_artist: Artist):
+def uploaded_file(existing_artist: Artist) -> SimpleUploadedFile:
     """Generate valid `Artist` import file."""
     import_job = ArtistImportJobFactory.build(artists=[existing_artist])
     return SimpleUploadedFile(
@@ -72,7 +72,7 @@ def uploaded_file(existing_artist: Artist):
 
 
 @pytest.fixture
-def force_import_artist_job(new_artist: Artist):
+def force_import_artist_job(new_artist: Artist) -> Artist:
     """Return `ImportJob` with `force_import=True` and file with invalid row."""
     return ArtistImportJobFactory(
         artists=[new_artist],
@@ -82,7 +82,7 @@ def force_import_artist_job(new_artist: Artist):
 
 
 @pytest.fixture
-def invalid_uploaded_file(new_artist: Artist):
+def invalid_uploaded_file(new_artist: Artist) -> SimpleUploadedFile:
     """Generate invalid `Artist` imort file."""
     import_job = ArtistImportJobFactory.build(
         artists=[new_artist],
