@@ -43,7 +43,7 @@ class TaskState(Enum):
 
 class SkippedErrorsRowResult(results.RowResult):
     """Custom row result class with ability to store skipped errors in row."""
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.non_field_skipped_errors: list[Error] = []
         self.field_skipped_errors: dict[str, list[ValidationError]] = dict()
         super().__init__()
