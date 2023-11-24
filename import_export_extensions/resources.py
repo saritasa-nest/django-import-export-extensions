@@ -41,7 +41,7 @@ class TaskState(Enum):
     PARSING = _("Parsing")
 
 
-class SkippedErrorsRowResult(results.RowResult):
+class SkippedRow(results.RowResult):
     """Custom row result class with ability to store skipped errors in row."""
     def __init__(self):
         self.non_field_skipped_errors: list[Error] = []
@@ -64,7 +64,7 @@ class SkippedErrorsRowResult(results.RowResult):
         )
 
 
-class SkippedErrorsResult(results.Result):
+class ResultWithSkippedRows(results.Result):
     """Custom result class with ability to store info about skipped rows."""
 
     @property
@@ -75,7 +75,7 @@ class SkippedErrorsResult(results.Result):
         return False
 
     @property
-    def skipped_rows(self) -> list[SkippedErrorsRowResult]:
+    def skipped_rows(self) -> list[SkippedRow]:
         """Return all rows with skipped errors."""
         return list(
             filter(lambda row: row.has_skipped_errors, self.rows),
@@ -181,7 +181,7 @@ class CeleryResourceMixin:
         `field_skipped_errors` or `non_field_skipped_errors`.
 
         """
-        imported_row: SkippedErrorsRowResult = super().import_row(
+        imported_row: SkippedRow = super().import_row(
             row=row,
             instance_loader=instance_loader,
             using_transactions=using_transactions,
@@ -221,12 +221,12 @@ class CeleryResourceMixin:
     @classmethod
     def get_row_result_class(self):
         """Return custom row result class."""
-        return SkippedErrorsRowResult
+        return SkippedRow
 
     @classmethod
     def get_result_class(self):
         """Geti custom result class."""
-        return SkippedErrorsResult
+        return ResultWithSkippedRows
 
     def export(
         self,
