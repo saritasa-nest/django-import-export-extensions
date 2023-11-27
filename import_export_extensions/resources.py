@@ -1,7 +1,6 @@
 import typing
 from enum import Enum
 
-from django.core.exceptions import ValidationError
 from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
@@ -13,25 +12,8 @@ from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
 from import_export import resources, results
 from import_export.formats import base_formats
-from import_export.results import Error as BaseError
 
-
-class Error(BaseError):
-    """Customization of over base Error class from import export."""
-
-    def __repr__(self) -> str:
-        """Return object representation in string format."""
-        return f"Error({self.error})"
-
-    def __reduce__(self):
-        """Simplify Exception object for pickling.
-
-        `error` object may contain not pickable objects (for example, django's
-        lazy text), so here it replaced with simple string.
-
-        """
-        self.error = str(self.error)
-        return super().__reduce__()
+from .results import Error, Result, RowResult
 
 
 class TaskState(Enum):
@@ -39,47 +21,6 @@ class TaskState(Enum):
     IMPORTING = _("Importing")
     EXPORTING = _("Exporting")
     PARSING = _("Parsing")
-
-
-class SkippedRow(results.RowResult):
-    """Custom row result class with ability to store skipped errors in row."""
-    def __init__(self):
-        self.non_field_skipped_errors: list[Error] = []
-        self.field_skipped_errors: dict[str, list[ValidationError]] = dict()
-        super().__init__()
-
-    @property
-    def has_skipped_errors(self) -> bool:
-        """Return True if row contain any skipped errors."""
-        if len(self.non_field_skipped_errors) > 0 or len(self.field_skipped_errors) > 0:
-            return True
-        return False
-
-    @property
-    def skipped_errors_count(self) -> int:
-        """Return count of skipped errors."""
-        return (
-            len(self.non_field_skipped_errors)
-            + len(self.field_skipped_errors)
-        )
-
-
-class ResultWithSkippedRows(results.Result):
-    """Custom result class with ability to store info about skipped rows."""
-
-    @property
-    def has_skipped_rows(self) -> bool:
-        """Return True if contain any skipped rows."""
-        if any(row.has_skipped_errors for row in self.rows):
-            return True
-        return False
-
-    @property
-    def skipped_rows(self) -> list[SkippedRow]:
-        """Return all rows with skipped errors."""
-        return list(
-            filter(lambda row: row.has_skipped_errors, self.rows),
-        )
 
 
 class CeleryResourceMixin:
@@ -181,7 +122,7 @@ class CeleryResourceMixin:
         `field_skipped_errors` or `non_field_skipped_errors`.
 
         """
-        imported_row: SkippedRow = super().import_row(
+        imported_row: RowResult = super().import_row(
             row=row,
             instance_loader=instance_loader,
             using_transactions=using_transactions,
@@ -221,12 +162,12 @@ class CeleryResourceMixin:
     @classmethod
     def get_row_result_class(self):
         """Return custom row result class."""
-        return SkippedRow
+        return RowResult
 
     @classmethod
     def get_result_class(self):
         """Geti custom result class."""
-        return ResultWithSkippedRows
+        return Result
 
     def export(
         self,
