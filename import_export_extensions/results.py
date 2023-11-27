@@ -43,6 +43,13 @@ class RowResult(results.RowResult):
             + len(self.field_skipped_errors)
         )
 
+    @property
+    def has_error_import_type(self) -> bool:
+        """Return true if import type is not valid."""
+        if self.import_type not in self.valid_import_types:
+            return True
+        return False
+
 
 class Result(results.Result):
     """Custom result class with ability to store info about skipped rows."""

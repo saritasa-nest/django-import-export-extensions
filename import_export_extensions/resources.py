@@ -1,3 +1,4 @@
+import collections
 import typing
 from enum import Enum
 
@@ -136,28 +137,37 @@ class CeleryResourceMixin:
                 else TaskState.PARSING.name
             ),
         )
-        if not force_import:
-            return imported_row
-        if (
-            imported_row.import_type == RowResult.IMPORT_TYPE_ERROR
-            or imported_row.import_type == RowResult.IMPORT_TYPE_INVALID
-        ):
-            imported_row.diff = []
-            for field in self.get_fields():
-                imported_row.diff.append(row.get(field.column_name, ""))
-
-            imported_row.non_field_skipped_errors.extend(
-                imported_row.errors,
-            )
-            if imported_row.validation_error is not None:
-                imported_row.field_skipped_errors.update(
-                    **imported_row.validation_error.error_dict,
-                )
-            imported_row.errors = []
-            imported_row.validation_error = None
-
-            imported_row.import_type = RowResult.IMPORT_TYPE_SKIP
+        if force_import and imported_row.has_error_import_type:
+            imported_row = self._skip_row_with_errors(imported_row, row)
         return imported_row
+
+    def _skip_row_with_errors(
+        self,
+        row_result: RowResult,
+        row_data: collections.OrderedDict[str, str],
+    ) -> RowResult:
+        """Process row as skipped.
+
+        Move row errors to skipped errors attributes.
+        Change import type to skipped.
+
+        """
+        row_result.diff = []
+        for field in self.get_fields():
+            row_result.diff.append(row_data.get(field.column_name, ""))
+
+        row_result.non_field_skipped_errors.extend(
+            row_result.errors,
+        )
+        if row_result.validation_error is not None:
+            row_result.field_skipped_errors.update(
+                **row_result.validation_error.error_dict,
+            )
+        row_result.errors = []
+        row_result.validation_error = None
+
+        row_result.import_type = RowResult.IMPORT_TYPE_SKIP
+        return row_result
 
     @classmethod
     def get_row_result_class(self):
