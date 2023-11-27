@@ -193,9 +193,9 @@ class CeleryResourceMixin:
             queryset=queryset,
         )
         return super().export(  # type: ignore
-            queryset=queryset,
             *args,
             **kwargs,
+            queryset=queryset,
         )
 
     def export_resource(self, obj):
