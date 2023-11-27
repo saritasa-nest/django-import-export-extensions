@@ -10,7 +10,7 @@ import tablib
 from celery import current_task, result
 from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
-from import_export import resources, results
+from import_export import resources
 from import_export.formats import base_formats
 
 from .results import Error, Result, RowResult
@@ -139,8 +139,8 @@ class CeleryResourceMixin:
         if not force_import:
             return imported_row
         if (
-            imported_row.import_type == results.RowResult.IMPORT_TYPE_ERROR
-            or imported_row.import_type == results.RowResult.IMPORT_TYPE_INVALID
+            imported_row.import_type == RowResult.IMPORT_TYPE_ERROR
+            or imported_row.import_type == RowResult.IMPORT_TYPE_INVALID
         ):
             imported_row.diff = []
             for field in self.get_fields():
@@ -156,7 +156,7 @@ class CeleryResourceMixin:
             imported_row.errors = []
             imported_row.validation_error = None
 
-            imported_row.import_type = results.RowResult.IMPORT_TYPE_SKIP
+            imported_row.import_type = RowResult.IMPORT_TYPE_SKIP
         return imported_row
 
     @classmethod
