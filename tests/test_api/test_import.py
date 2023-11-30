@@ -40,6 +40,7 @@ def test_import_api_detail(
             kwargs={"pk": artist_import_job.id},
         ),
     )
+    assert response.status_code == status.HTTP_200_OK, response.data
     assert response.data["import_status"] == ImportJob.ImportStatus.PARSED
 
     artist_import_job.refresh_from_db()
@@ -51,6 +52,7 @@ def test_import_api_detail(
             kwargs={"pk": artist_import_job.id},
         ),
     )
+    assert response.status_code == status.HTTP_200_OK, response.data
     assert response.data["import_finished"]
 
 
@@ -73,6 +75,7 @@ def test_force_import_api_detail(
             kwargs={"pk": force_import_artist_job.id},
         ),
     )
+    assert response.status_code == status.HTTP_200_OK, response.data
     assert response.data["import_status"] == ImportJob.ImportStatus.PARSED
 
     force_import_artist_job.refresh_from_db()
@@ -84,6 +87,7 @@ def test_force_import_api_detail(
             kwargs={"pk": force_import_artist_job.id},
         ),
     )
+    assert response.status_code == status.HTTP_200_OK, response.data
     assert response.data["import_finished"]
 
     force_import_artist_job.refresh_from_db()

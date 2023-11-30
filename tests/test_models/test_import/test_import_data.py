@@ -123,8 +123,10 @@ def test_import_data_skip_parse_step(
     import_job.refresh_from_db()
 
     assert import_job.import_status == expected_status
-    if is_instance_created:
-        assert Artist.objects.filter(name=new_artist.name).exists()
+    assert (
+        Artist.objects.filter(name=new_artist.name).exists()
+        == is_instance_created
+    )
 
 
 def test_force_import_create_correct_rows(
@@ -139,5 +141,5 @@ def test_force_import_create_correct_rows(
     )
     import_job.import_data()
     import_job.refresh_from_db()
-    assert import_job.ImportStatus.IMPORTED
+    assert import_job.import_status == import_job.ImportStatus.IMPORTED
     assert Artist.objects.filter(name=new_artist.name).exists()
