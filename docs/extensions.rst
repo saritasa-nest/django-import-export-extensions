@@ -201,9 +201,11 @@ ___
 API
 ___
 
-Also it can be used through api.
+In api there're 2 fields: ``force_import`` and ``skip_parse_step``.
 
-``force_import`` field available in ``start`` endpoint body:
+- ``force_import`` allows skip rows with errors.
+
+- ``skip_parse_step`` allows you to run the import task immediately, without having to call the ``confirm`` endpoint.
 
 .. image:: _static/images/start_api.png
 
