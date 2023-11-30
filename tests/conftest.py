@@ -79,7 +79,7 @@ def force_import_artist_job(new_artist: Artist) -> Artist:
     """Return `ImportJob` with `force_import=True` and file with invalid row."""
     return ArtistImportJobFactory(
         artists=[new_artist],
-        is_invalid_file=True,
+        is_valid_file=False,
         force_import=True,
     )
 
@@ -90,7 +90,7 @@ def invalid_uploaded_file(new_artist: Artist) -> SimpleUploadedFile:
     import_job = ArtistImportJobFactory.build(
         artists=[new_artist],
         force_import=True,
-        is_invalid_file=True,
+        is_valid_file=False,
     )
     return SimpleUploadedFile(
         "test_file.csv",

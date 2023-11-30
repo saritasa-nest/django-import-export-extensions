@@ -63,14 +63,14 @@ class ArtistImportJobFactory(factory.django.DjangoModelFactory):
 
     class Params:
         artists: list[models.Artist] = []
-        is_invalid_file: bool = False
+        is_valid_file: bool = True
 
     @factory.lazy_attribute
     def data_file(self):
         """Generate `data_file` based on passed `artists`."""
         resource = SimpleArtistResource()
 
-        if self.is_invalid_file:
+        if not self.is_valid_file:
             # Append not existing artist with a non-existent instrument
             # to violate the not-null constraint
             self.artists.append(

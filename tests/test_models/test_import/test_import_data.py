@@ -87,22 +87,22 @@ def test_import_data_wrong_status(artist_import_job: ImportJob):
 @pytest.mark.parametrize(
     [
         "skip_parse_step",
-        "is_invalid_file",
+        "is_valid_file",
         "expected_status",
         "is_instance_created",
     ],
     [
-        [False, False, ImportJob.ImportStatus.PARSED, False],
-        [False, True, ImportJob.ImportStatus.INPUT_ERROR, False],
-        [True, False, ImportJob.ImportStatus.IMPORTED, True],
-        [True, True, ImportJob.ImportStatus.IMPORT_ERROR, False],
+        [False, True, ImportJob.ImportStatus.PARSED, False],
+        [False, False, ImportJob.ImportStatus.INPUT_ERROR, False],
+        [True, True, ImportJob.ImportStatus.IMPORTED, True],
+        [True, False, ImportJob.ImportStatus.IMPORT_ERROR, False],
     ],
 )
 @pytest.mark.django_db(transaction=True)
 def test_import_data_skip_parse_step(
     new_artist: Artist,
     skip_parse_step: bool,
-    is_invalid_file: bool,
+    is_valid_file: bool,
     expected_status: ImportJob.ImportStatus,
     is_instance_created: bool,
 ):
@@ -117,7 +117,7 @@ def test_import_data_skip_parse_step(
         artists=[new_artist],
         force_import=False,
         skip_parse_step=skip_parse_step,
-        is_invalid_file=is_invalid_file,
+        is_valid_file=is_valid_file,
     )
     import_job.save()
     import_job.refresh_from_db()
@@ -135,7 +135,7 @@ def test_force_import_create_correct_rows(
         artists=[new_artist],
         force_import=True,
         skip_parse_step=True,
-        is_invalid_file=True,
+        is_valid_file=False,
     )
     import_job.import_data()
     import_job.refresh_from_db()

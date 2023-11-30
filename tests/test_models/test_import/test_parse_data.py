@@ -157,7 +157,7 @@ def test_parse_data_invalid_row_file(
     import_job: ImportJob = ArtistImportJobFactory(
         artists=[new_artist],
         force_import=force_import,
-        is_invalid_file=True,
+        is_valid_file=False,
     )
     import_job.parse_data()
     import_job.refresh_from_db()
