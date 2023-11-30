@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+
+from rest_framework import test
 
 import pytest
 
@@ -127,3 +130,19 @@ def temp_directory_for_media(tmpdir_factory):
         )
     media = tmpdir_factory.mktemp("tmp_media")
     settings.MEDIA_ROOT = media
+
+
+@pytest.fixture
+def api_client() -> test.APIClient:
+    """Create api client."""
+    return test.APIClient()
+
+
+@pytest.fixture
+def admin_api_client(
+    superuser: User,
+    api_client: test.APIClient,
+) -> test.APIClient:
+    """Authenticate admin_user and return api client."""
+    api_client.force_authenticate(user=superuser)
+    return api_client

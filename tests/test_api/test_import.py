@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test.client import Client
 from django.urls import reverse
 
 from rest_framework import status
+from rest_framework.test import APIClient
 
 import pytest
 
@@ -12,13 +12,11 @@ from import_export_extensions.models.import_job import ImportJob
 
 @pytest.mark.django_db(transaction=True)
 def test_import_api_creates_import_job(
-    client: Client,
-    superuser: User,
+    admin_api_client: APIClient,
     uploaded_file: SimpleUploadedFile,
 ):
     """Ensure import start api creates new import job."""
-    client.force_login(superuser)
-    response = client.post(
+    response = admin_api_client.post(
         path=reverse("import-artist-start"),
         data={
             "file": uploaded_file,
@@ -32,13 +30,11 @@ def test_import_api_creates_import_job(
 
 @pytest.mark.django_db(transaction=True)
 def test_import_api_detail(
-    client: Client,
-    superuser: User,
+    admin_api_client: APIClient,
     artist_import_job: ImportJob,
 ):
     """Ensure import detail api shows current import job status."""
-    client.force_login(superuser)
-    response = client.get(
+    response = admin_api_client.get(
         path=reverse(
             "import-artist-detail",
             kwargs={"pk": artist_import_job.id},
@@ -49,7 +45,7 @@ def test_import_api_detail(
     artist_import_job.refresh_from_db()
     artist_import_job.confirm_import()
 
-    response = client.get(
+    response = admin_api_client.get(
         path=reverse(
             "import-artist-detail",
             kwargs={"pk": artist_import_job.id},
@@ -60,7 +56,7 @@ def test_import_api_detail(
 
 @pytest.mark.django_db(transaction=True)
 def test_force_import_api_detail(
-    client: Client,
+    admin_api_client: APIClient,
     superuser: User,
     force_import_artist_job: ImportJob,
 ):
@@ -71,8 +67,7 @@ def test_force_import_api_detail(
     and create right ones.
 
     """
-    client.force_login(superuser)
-    response = client.get(
+    response = admin_api_client.get(
         path=reverse(
             "import-artist-detail",
             kwargs={"pk": force_import_artist_job.id},
@@ -83,7 +78,7 @@ def test_force_import_api_detail(
     force_import_artist_job.refresh_from_db()
     force_import_artist_job.confirm_import()
 
-    response = client.get(
+    response = admin_api_client.get(
         path=reverse(
             "import-artist-detail",
             kwargs={"pk": force_import_artist_job.id},
