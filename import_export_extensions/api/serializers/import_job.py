@@ -35,6 +35,7 @@ class ImportJobSerializer(serializers.ModelSerializer):
             "progress",
             "import_started",
             "import_finished",
+            "force_import",
             "created",
             "modified",
         )
@@ -50,6 +51,8 @@ class CreateImportJob(serializers.Serializer):
     resource_class: typing.Type[resources.CeleryModelResource]
 
     file = serializers.FileField(required=True)
+    force_import = serializers.BooleanField(default=False, required=False)
+    skip_parse_step = serializers.BooleanField(default=False, required=False)
 
     def __init__(
         self,
@@ -70,6 +73,8 @@ class CreateImportJob(serializers.Serializer):
         """Create import job."""
         return models.ImportJob.objects.create(
             data_file=validated_data["file"],
+            force_import=validated_data["force_import"],
+            skip_parse_step=validated_data["skip_parse_step"],
             resource_path=self.resource_class.class_path,
             resource_kwargs=self._resource_kwargs,
             created_by=self._user,

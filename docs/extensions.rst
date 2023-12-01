@@ -178,6 +178,38 @@ for filtering:
 .. figure:: _static/images/filters-openapi.png
 
 
+------------
+Force import
+------------
+
+This package provides *force import* feature. When force import is enabled,
+then rows with errors will be skipped and rest of the rows will be handled.
+
+__________
+Admin page
+__________
+
+This functionality available in admin:
+
+.. figure:: _static/images/force_import_admin.png
+
+In case if some rows contain any errors it will be reported on parse/import stage:
+
+.. figure:: _static/images/force_import_results.png
+
+___
+API
+___
+
+In api there're 2 fields: ``force_import`` and ``skip_parse_step``.
+
+- ``force_import`` allows you to skip rows with errors.
+
+- ``skip_parse_step`` allows you to run the import task immediately, without having to call the ``confirm`` endpoint.
+
+.. image:: _static/images/start_api.png
+
+
 -------
 Widgets
 -------
