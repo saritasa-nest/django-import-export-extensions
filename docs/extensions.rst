@@ -203,7 +203,7 @@ ___
 
 In api there're 2 fields: ``force_import`` and ``skip_parse_step``.
 
-- ``force_import`` allows skip rows with errors.
+- ``force_import`` allows you to skip rows with errors.
 
 - ``skip_parse_step`` allows you to run the import task immediately, without having to call the ``confirm`` endpoint.
 

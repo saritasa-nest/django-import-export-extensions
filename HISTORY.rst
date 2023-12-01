@@ -7,6 +7,7 @@ UNRELEASED
 * Add base model for ``ImportJob`` and ``ExportJob``
 * Extend import results template: show validation errors in table
 * Add force-import feature: skip rows with errors while importing
+* Add ``skip_parse_step`` parameter for importing API
 
 0.4.1 (2023-09-25)
 ------------------
