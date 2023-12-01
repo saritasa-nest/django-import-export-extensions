@@ -1,12 +1,12 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
-[project]
-authors = [
-    {name = "Saritasa", email = "pypi@saritasa.com"},
-]
-requires-python = ">=3.9"
+[tool.poetry]
+name = "django-import-export-extensions"
+version = "0.4.2"
+description = "Extend functionality of `django-import-export`"
+authors = ["Saritasa <pypi@saritasa.com>"]
+keywords = ["django_import_export_extensions"]
+license = "MIT"
+readme = "README.rst"
+packages = [{include = "import_export_extensions"}]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -22,23 +22,60 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-description = "Extend functionality of `django-import-export`"
-readme = "README.rst"
-license = {file = "LICENSE"}
-keywords = ["django_import_export_extensions"]
-name = "django_import_export_extensions"
-dynamic = ["dependencies", "version"]
 
-[project.urls]
-"Homepage" = "https://github.com/saritasa-nest/django-import-export-extensions"
-"Bug Tracker" = "https://github.com/saritasa-nest/django-import-export-extensions/issues"
+[tool.poetry.dependencies]
+python = ">=3.10, <3.12"
+django-import-export = "^3.3.3"
+celery = "^5.3.6"
+redis = "^5.0.1"
+django = ">=3.2"
+djangorestframework = "^3.14.0"
+drf-spectacular = "^0.26.5"
+requests = "^2.31.0"
+django-filter = "^23.4"
+django-extensions = "^3.2.3"
+django-picklefield = "^3.1"
 
-[tool.setuptools.dynamic]
-dependencies = {file = "requirements/production.txt"}
-version = {attr = "import_export_extensions.__version__"}
+[tool.poetry.group.dev.dependencies]
+ipdb = "^0.13.13"
+ipython = "^8.18.1"
 
-[tool.setuptools.packages.find]
-include = ["import_export_extensions", "import_export_extensions.*"]
+[tool.poetry.group.linters.dependencies]
+flake8-bugbear = "^23.11.28"
+flake8-pytest-style = "^1.7.2"
+flake8-broken-line = "^1.0.0"
+flake8-docstrings = "^1.7.0"
+flake8-django = "^1.4"
+flake8-quotes = "^3.3.2"
+flake8-pyproject = "^1.2.3"
+flake8 = "^6.1.0"
+mccabe = "^0.7.0"
+mypy = "^1.7.1"
+types-requests = "^2.31.0.10"
+
+[tool.poetry.group.test.dependencies]
+django-probes = "^1.7.0"
+pytest-django = "^4.7.0"
+pytest-mock = "^3.12.0"
+factory-boy = "^3.3.0"
+werkzeug = "^3.0.1"
+coverage = "^7.3.2"
+psycopg2-binary = "^2.9.9"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+watchdog = "^3.0.0"
+
+[tool.poetry.group.local.dependencies]
+toml = "^0.10.2"
+pre-commit = "^3.5.0"
+cruft = "^2.15.0"
+saritasa-invocations = "^0.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 line_length = 79
@@ -135,7 +172,10 @@ disable_error_code = [
     "annotation-unchecked",
 ]
 
-exclude = "settings.py"
+exclude = [
+    "settings.py",
+    "docs/",
+]
 
 [[tool.mypy.overrides]]
 module = "tests.*"

@@ -1,24 +1,42 @@
+import saritasa_invocations
 from invoke import Collection
 
-from provision import celery, ci, django, docker, git, linters, project, tests
+from provision import ci, project
 
 ns = Collection(
-    celery,
+    saritasa_invocations.celery,
     ci,
-    django,
-    docker,
-    linters,
+    saritasa_invocations.django,
+    saritasa_invocations.docker,
     project,
-    tests,
-    git,
+    saritasa_invocations.pytest,
+    saritasa_invocations.poetry,
+    saritasa_invocations.git,
+    saritasa_invocations.pre_commit,
+    saritasa_invocations.mypy,
+    saritasa_invocations.python,
 )
 
 # Configurations for run command
 ns.configure(
-    dict(
-        run=dict(
-            pty=True,
-            echo=True,
+    {
+        "run": {
+            "pty": True,
+            "echo": True,
+        },
+        "saritasa_invocations": saritasa_invocations.Config(
+            project_name="django-import-export-extensions",
+            celery=saritasa_invocations.CelerySettings(
+                app="tests.celery_app:app",
+            ),
+            django=saritasa_invocations.DjangoSettings(
+                manage_file_path="tests/manage.py",
+                settings_path="tests.settings",
+                apps_path="tests",
+            ),
+            github_actions=saritasa_invocations.GitHubActionsSettings(
+                hosts=("postgres", "redis"),
+            ),
         ),
-    ),
+    },
 )

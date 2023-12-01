@@ -138,9 +138,9 @@ class CeleryExportAdminMixin(
             resources=self.get_export_resource_classes(),
         )
         resource_kwargs = self.get_export_resource_kwargs(
-            request=request,
             *args,
             **kwargs,
+            request=request,
         )
         if request.method == "POST" and form.is_valid():
             file_format = formats[int(form.cleaned_data["file_format"])]
