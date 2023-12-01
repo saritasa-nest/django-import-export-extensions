@@ -175,6 +175,12 @@ class ImportJob(BaseJob):
         verbose_name=_("Skip parse step"),
     )
 
+    force_import = models.BooleanField(
+        default=False,
+        help_text=_("Import data with skip invalid rows."),
+        verbose_name=_("Force import"),
+    )
+
     class Meta:
         verbose_name = _("Import job")
         verbose_name_plural = _("Import jobs")
@@ -355,6 +361,7 @@ class ImportJob(BaseJob):
             dry_run=True,
             raise_errors=False,
             collect_failures=True,
+            force_import=self.force_import,
         )
 
     def confirm_import(self):
@@ -445,6 +452,7 @@ class ImportJob(BaseJob):
             raise_errors=True,
             use_transactions=True,
             collect_failures=True,
+            force_import=self.force_import,
         )
 
     def _get_import_format_by_ext(

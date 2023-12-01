@@ -3,6 +3,9 @@ from pytest_mock import MockerFixture
 
 from import_export_extensions.models import ImportJob
 
+from ...fake_app.factories import ArtistImportJobFactory
+from ...fake_app.models import Artist
+
 
 def test_parse_valid_data_file(artist_import_job: ImportJob):
     """Test `parse_data` with valid importing data.
@@ -126,3 +129,37 @@ def test_error_message_length(
     artist_import_job.parse_data()
 
     assert len(artist_import_job.error_message) == max_length
+
+
+@pytest.mark.parametrize(
+    [
+        "force_import",
+        "expected_status",
+    ],
+    [
+        [False, ImportJob.ImportStatus.INPUT_ERROR],
+        [True, ImportJob.ImportStatus.PARSED],
+    ],
+)
+@pytest.mark.django_db(transaction=True)
+def test_parse_data_invalid_row_file(
+    new_artist: Artist,
+    force_import: bool,
+    expected_status: ImportJob.ImportStatus,
+):
+    """Test parse file with invalid row.
+
+    If force_import = False, then job must finish with `INPUT_ERROR`.
+    If force_import = True, then job must finish with `PARSED`
+    and skip invalid rows.
+
+    """
+    import_job: ImportJob = ArtistImportJobFactory(
+        artists=[new_artist],
+        force_import=force_import,
+        is_valid_file=False,
+    )
+    import_job.parse_data()
+    import_job.refresh_from_db()
+
+    assert import_job.import_status == expected_status
