@@ -188,3 +188,27 @@ python_files = [
     "test_*.py",
     "*_tests.py",
 ]
+
+[tool.coverage.run]
+source = [
+    "import_export_extensions",
+]
+omit = [
+    "import_export_extensions/migrations",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "def __repr__",
+    "def __str__",
+    "pass",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

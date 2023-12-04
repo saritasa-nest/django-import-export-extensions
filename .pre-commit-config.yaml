@@ -78,9 +78,7 @@ repos:
       - id: tests
         name: run tests
         entry:
-          inv python.run
-          " -m coverage run --source import_export_extensions
-          --omit import_export_extensions/migrations -m pytest -v"
+          inv python.run " -m coverage run -m pytest -v"
         language: system
         pass_filenames: false
         types: [ python ]

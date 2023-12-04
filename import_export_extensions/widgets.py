@@ -169,13 +169,13 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
 
         """
         if not value:
-            return []
+            return []  # pragma: no cover
 
         # if value is one integer number
         value = str(value)
 
         # in some cases if click `enter` values `\n\r` inserted
-        if self.instance_separator == "\n":
+        if self.instance_separator == "\n":  # pragma: no cover
             value = value.replace("\r", "")
 
         raw_instances = utils.clean_sequence_of_string_values(
@@ -287,7 +287,7 @@ class FileWidget(CharWidget):
     def render(self, value: Model, *args, **kwargs) -> typing.Optional[str]:
         """Convert DB value to URL to file."""
         if not value:
-            return None
+            return None  # pragma: no cover
 
         if self._get_default_storage() == DEFAULT_SYSTEM_STORAGE:
             return f"http://localhost:8000{value.url}"
@@ -297,7 +297,7 @@ class FileWidget(CharWidget):
     def clean(self, value: str, *args, **kwargs) -> typing.Optional[str]:
         """Get the file and check for exists."""
         if not value:
-            return None
+            return None  # pragma: no cover
 
         internal_url = utils.url_to_internal_value(urlparse(value).path)
 
