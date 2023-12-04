@@ -4,6 +4,8 @@ History
 
 UNRELEASED
 ------------------
+* Drop support of python 3.9
+* Migrate from pip-tools to poetry
 * Add base model for ``ImportJob`` and ``ExportJob``
 * Extend import results template: show validation errors in table
 * Add force-import feature: skip rows with errors while importing
