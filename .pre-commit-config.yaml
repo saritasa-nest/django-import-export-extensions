@@ -77,8 +77,7 @@ repos:
 
       - id: tests
         name: run tests
-        entry:
-          inv python.run " -m coverage run -m pytest -v"
+        entry: inv ci.coverage
         language: system
         pass_filenames: false
         types: [ python ]
