@@ -36,7 +36,7 @@ classifiers = [
 packages = [{include = "import_export_extensions"}]
 
 [tool.poetry.dependencies]
-python = ">=3.10, <3.12"
+python = "^3.10"
 django-import-export = "^3.3.3"
 celery = "^5.3.6"
 redis = "^5.0.1"
