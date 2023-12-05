@@ -128,9 +128,6 @@ sphinx = "^7.2.6"
 # Theme for documentation
 # https://pypi.org/project/sphinx-rtd-theme/
 sphinx-rtd-theme = "^2.0.0"
-# Python API and shell utilities to monitor file system events.
-# https://pypi.org/project/watchdog/
-watchdog = "^3.0.0"
 
 [tool.poetry.group.local.dependencies]
 # A Python library for parsing and creating TOML
