@@ -284,20 +284,30 @@ class FileWidget(CharWidget):
     def __init__(self, filename: str):
         self.filename = filename
 
-    def render(self, value: Model, *args, **kwargs) -> typing.Optional[str]:
+    def render(
+        self,
+        value: typing.Optional[Model],
+        *args,
+        **kwargs,
+    ) -> typing.Optional[str]:
         """Convert DB value to URL to file."""
         if not value:
-            return None  # pragma: no cover
+            return None
 
         if self._get_default_storage() == DEFAULT_SYSTEM_STORAGE:
             return f"http://localhost:8000{value.url}"
 
         return value.url
 
-    def clean(self, value: str, *args, **kwargs) -> typing.Optional[str]:
+    def clean(
+        self,
+        value: typing.Optional[str],
+        *args,
+        **kwargs,
+    ) -> typing.Optional[str]:
         """Get the file and check for exists."""
         if not value:
-            return None  # pragma: no cover
+            return None
 
         internal_url = utils.url_to_internal_value(urlparse(value).path)
 
