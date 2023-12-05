@@ -2,9 +2,6 @@ import saritasa_invocations
 from invoke import task
 
 
-##############################################################################
-# Build project locally
-##############################################################################
 @task
 def init(context, clean=False):
     """Prepare env for working with project."""

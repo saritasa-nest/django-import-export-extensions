@@ -1,6 +1,3 @@
-##############################################################################
-# Commands used in ci for code validation
-##############################################################################
 import saritasa_invocations
 from invoke import task
 

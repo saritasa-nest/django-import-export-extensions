@@ -1,14 +1,14 @@
 import saritasa_invocations
 from invoke import Collection
 
-from provision import ci, project
+import provision
 
 ns = Collection(
     saritasa_invocations.celery,
-    ci,
+    provision.ci,
     saritasa_invocations.django,
     saritasa_invocations.docker,
-    project,
+    provision.project,
     saritasa_invocations.pytest,
     saritasa_invocations.poetry,
     saritasa_invocations.git,

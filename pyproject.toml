@@ -2,26 +2,38 @@
 name = "django-import-export-extensions"
 version = "0.4.2"
 description = "Extend functionality of `django-import-export`"
-authors = ["Saritasa <pypi@saritasa.com>"]
-keywords = ["django_import_export_extensions"]
 license = "MIT"
+authors = ["Saritasa <pypi@saritasa.com>"]
+maintainers = [
+    "Nikita Azanov <nikita.azanov@saritasa.com>",
+    "Vladislav Romaschenko <vladislav.romaschenko@saritasa.com>",
+    "Andrey Otto <andrey.otto@saritasa.com>",
+    "Stanislav Khlud <stanislav.khlud@saritasa.com>",
+]
 readme = "README.rst"
-packages = [{include = "import_export_extensions"}]
+repository = "https://github.com/saritasa-nest/django-import-export-extensions"
+documentation = "https://django-import-export-extensions.readthedocs.io"
+keywords = [
+    "python",
+    "json",
+    "django",
+    "csv",
+    "xlsx",
+    "celery",
+    "import_export",
+    "django_import_export_extensions"
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Framework :: Django",
     "Framework :: Django :: 3.2",
     "Framework :: Django :: 4.0",
     "Framework :: Django :: 4.1",
     "Framework :: Django :: 4.2",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
 ]
+packages = [{include = "import_export_extensions"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10, <3.12"
