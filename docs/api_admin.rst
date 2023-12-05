@@ -11,7 +11,10 @@ Admin
 .. automodule:: import_export_extensions.admin.model_admins.mixins
    :members:
 
-.. automodule:: import_export_extensions.admin.forms.export_admin_form
+.. automodule:: import_export_extensions.admin.forms.export_job_admin_form
+   :members:
+
+.. automodule:: import_export_extensions.admin.forms.import_job_admin_form
    :members:
 
 .. automodule:: import_export_extensions.admin.forms.import_admin_form
