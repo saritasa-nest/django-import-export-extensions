@@ -1,7 +1,6 @@
 from django.urls import reverse
 
-from rest_framework import status
-from rest_framework.test import APIClient
+from rest_framework import status, test
 
 import pytest
 
@@ -9,7 +8,7 @@ from import_export_extensions.models import ExportJob
 
 
 @pytest.mark.django_db(transaction=True)
-def test_export_api_creates_export_job(admin_api_client: APIClient):
+def test_export_api_creates_export_job(admin_api_client: test.APIClient):
     """Ensure export start API creates new export job."""
     response = admin_api_client.post(
         path=reverse("export-artist-start"),
@@ -24,7 +23,7 @@ def test_export_api_creates_export_job(admin_api_client: APIClient):
 
 @pytest.mark.django_db(transaction=True)
 def test_export_api_detail(
-    admin_api_client: APIClient,
+    admin_api_client: test.APIClient,
     artist_export_job: ExportJob,
 ):
     """Ensure export detail API shows current export job status."""
