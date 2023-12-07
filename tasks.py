@@ -4,11 +4,12 @@ from invoke import Collection
 import provision
 
 ns = Collection(
-    saritasa_invocations.celery,
+    provision.project,
+    provision.docs,
     provision.ci,
+    saritasa_invocations.celery,
     saritasa_invocations.django,
     saritasa_invocations.docker,
-    provision.project,
     saritasa_invocations.pytest,
     saritasa_invocations.poetry,
     saritasa_invocations.git,
