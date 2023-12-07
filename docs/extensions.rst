@@ -185,9 +185,8 @@ Force import
 This package provides *force import* feature. When force import is enabled,
 then rows with errors will be skipped and rest of the rows will be handled.
 
-__________
 Admin page
-__________
+^^^^^^^^^^
 
 This functionality available in admin:
 
@@ -197,9 +196,8 @@ In case if some rows contain any errors it will be reported on parse/import stag
 
 .. figure:: _static/images/force_import_results.png
 
-___
 API
-___
+^^^
 
 In api there're 2 fields: ``force_import`` and ``skip_parse_step``.
 
@@ -217,7 +215,7 @@ Widgets
 This package also provides additional widgets for some types of data.
 
 FileWidget
-__________
+^^^^^^^^^^
 
 Working with file fields is a common issue. ``FileWidget`` allows to import/export files
 including links to external resources that store files and save them in ``DEFAULT_FILE_STORAGE``.
@@ -227,7 +225,7 @@ also supports ``AWS_STORAGE_BUCKET_NAME`` setting.
 
 
 IntermediateManyToManyWidget
-____________________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``IntermediateManyToManyWidget`` allows to import/export objects with related items.
 Default M2M widget store just IDs of related objects. With intermediate widget
@@ -238,7 +236,7 @@ Fields
 ------
 
 M2MField
-________
+^^^^^^^^
 
 This is resource field for M2M fields. Provides faster import of related fields.
 
@@ -246,7 +244,7 @@ This is resource field for M2M fields. Provides faster import of related fields.
     and creates intermediate models only for newly added models.
 
 IntermediateManyToManyField
-___________________________
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is resource field for M2M with custom ``through`` model.
 

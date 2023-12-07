@@ -5,6 +5,7 @@ import provision
 
 ns = Collection(
     provision.project,
+    provision.docs,
     provision.ci,
     saritasa_invocations.celery,
     saritasa_invocations.django,

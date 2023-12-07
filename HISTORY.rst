@@ -10,6 +10,7 @@ UNRELEASED
 * Extend import results template: show validation errors in table
 * Add force-import feature: skip rows with errors while importing
 * Add ``skip_parse_step`` parameter for importing API
+* Remove Makefile in favor of ``invoke`` commands
 
 0.4.1 (2023-09-25)
 ------------------
