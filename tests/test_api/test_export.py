@@ -17,8 +17,8 @@ def test_export_api_creates_export_job(admin_api_client: test.APIClient):
         },
     )
     assert response.status_code == status.HTTP_201_CREATED
-    assert response.data["export_status"] == "CREATED"
-    assert ExportJob.objects.first()
+    assert response.data["export_status"] == ExportJob.ExportStatus.CREATED
+    assert ExportJob.objects.filter(id=response.data["id"]).exists()
 
 
 @pytest.mark.django_db(transaction=True)
