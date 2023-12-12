@@ -1,22 +1,20 @@
-##############################################################################
-# Commands used in ci for code validation
-##############################################################################
+import saritasa_invocations
 from invoke import task
-
-from . import common, docker, project
 
 
 @task
 def prepare(context):
     """Prepare ci environment for check."""
-    common.success("Preparing CI")
-    docker.up(context)
-    set_up_hosts(context)
-    project.install_requirements(context)
+    saritasa_invocations.print_success("Preparing CI")
+    saritasa_invocations.docker.up(context)
+    saritasa_invocations.github_actions.set_up_hosts(context)
+    saritasa_invocations.poetry.install(context)
 
 
-def set_up_hosts(context):
-    """Add services to hosts."""
-    common.success("Setting up hosts")
-    context.run("echo \"127.0.0.1 postgres\" | sudo tee -a /etc/hosts")
-    context.run("echo \"127.0.0.1 redis\" | sudo tee -a /etc/hosts")
+@task
+def coverage(context):
+    """Run tests through coverage to generate coverage report."""
+    saritasa_invocations.python.run(
+        context,
+        command="-m coverage run -m pytest -v",
+    )

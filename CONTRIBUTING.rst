@@ -67,11 +67,9 @@ Ready to contribute? Here's how to set up `django-import-export-extensions` for 
 3. Setup virtual environment using pyenv::
 
     $ pyenv install 3.11
-    $ pyenv virtualenv 3.11 django-import-export-extensions
-    $ pyenv local django-import-export-extensions
-    $ pyenv activate django-import-export-extensions
-    $ pip install -r requirements/local_build.txt
-    $ inv project.init
+    $ pyenv shell $(pyenv latest 3.11)
+    $ poetry config virtualenvs.in-project true
+    $ poetry env use $(which python) &&  poetry install && source .venv/bin/activate
 
 4. Create a branch for local development::
 
@@ -82,8 +80,7 @@ Ready to contribute? Here's how to set up `django-import-export-extensions` for 
 5. When you're done making changes, check that your changes pass flake8 and the
    tests::
 
-    $ inv tests.run
-    $ inv linters.all
+    $ inv pre-commit.run-hooks
 
 6. Commit your changes and push your branch to GitHub::
 

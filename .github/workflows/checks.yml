@@ -12,7 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - '3.9'
           - '3.10'
           - '3.11'
         django-version:
@@ -20,6 +19,7 @@ jobs:
           - '>=4.0,<4.1'
           - '>=4.1,<4.2'
           - '>=4.2,<4.3'
+          - '>=5.0,<5.1'
     name: python ${{ matrix.python-version }} - django ${{ matrix.django-version }}
 
     steps:
@@ -37,20 +37,42 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements/*.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Install Dependencies
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+
+    - name: Cache poetry dependencies
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install local dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction
+
+    - name: Install Django
       run: |
-        pip install --upgrade pip wheel setuptools
-        pip install --requirement requirements/local_build.txt
-        pip install 'django${{ matrix.django-version }}'
+        poetry run pip install 'django${{ matrix.django-version }}'
+
     - name: Prepare env
       run: |
-        inv ci.prepare
+        poetry run inv ci.prepare
+
     - name: Run checks ${{ matrix.python-version }}
-      run: inv git.run-hooks
+      run: poetry run inv pre-commit.run-hooks
+
     - name: Upload results to coveralls
       run: |
-        pip install coveralls
-        coveralls --service=github
+        poetry run pip install coveralls
+        poetry run coveralls --service=github
+
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
