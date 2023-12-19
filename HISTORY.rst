@@ -2,7 +2,7 @@
 History
 =======
 
-UNRELEASED
+0.5.0 (2023-12-19)
 ------------------
 * Drop support of python 3.9
 * Migrate from pip-tools to poetry
