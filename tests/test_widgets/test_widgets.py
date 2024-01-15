@@ -396,3 +396,15 @@ def test_file_widget_clean_non_existed_url(mocker: MockerFixture):
     widget = FileWidget(filename="import_file")
     cleaned_result = widget.clean(value="http://testdownload.org/file.csv")
     assert isinstance(cleaned_result, File)
+
+
+def test_file_widget_render_none():
+    """Test file widget render return None if no value provided."""
+    widget = FileWidget(filename="import_file")
+    assert widget.render(None) is None
+
+
+def test_file_widget_clean_none():
+    """Test file widget clean return None if no value provided."""
+    widget = FileWidget(filename="import_file")
+    assert widget.clean(None) is None

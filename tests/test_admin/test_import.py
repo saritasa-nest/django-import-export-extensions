@@ -76,3 +76,35 @@ def test_import_using_admin_model(
 
     import_job.refresh_from_db()
     assert import_job.import_status == ImportJob.ImportStatus.IMPORTED
+
+
+@pytest.mark.usefixtures("existing_artist")
+def test_import_admin_has_same_formats(
+    client: Client,
+    superuser: User,
+    artist_import_job: ImportJob,
+):
+    """Ensure input formats on import forms are the same.
+
+    Ensure Import forms on import and on import result pages
+    fetch format choices from the same source.
+
+    """
+    client.force_login(superuser)
+    artist_import_job.import_status = ImportJob.ImportStatus.IMPORTED
+    artist_import_job.save()
+    import_response = client.get(
+        path=reverse("admin:fake_app_artist_import"),
+    )
+    import_response_result = client.get(
+        path=reverse(
+            "admin:fake_app_artist_import_job_results",
+            kwargs={"job_id": artist_import_job.id},
+        ),
+    )
+    import_response_form = import_response.context_data["form"]
+    import_response_result_form = import_response_result.context_data["import_form"]
+    assert (
+        import_response_form.fields["input_format"].choices ==
+        import_response_result_form.fields["input_format"].choices
+    )

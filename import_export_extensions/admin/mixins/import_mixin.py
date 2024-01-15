@@ -16,10 +16,10 @@ from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from import_export import admin as base_admin
-from import_export import forms as base_forms
 from import_export import mixins as base_mixins
 
 from ... import models
+from ..forms import ForceImportForm
 from . import types
 
 
@@ -152,7 +152,7 @@ class CeleryImportAdminMixin(
         context = self.get_context_data(request)
         resource_classes = self.get_import_resource_classes()
 
-        form = base_forms.ImportForm(
+        form = ForceImportForm(
             self.get_import_formats(),
             request.POST or None,
             request.FILES or None,
@@ -284,8 +284,8 @@ class CeleryImportAdminMixin(
 
             if job.import_status != models.ImportJob.ImportStatus.PARSED:
                 # display import form
-                context["import_form"] = base_forms.ImportForm(
-                    import_formats=job.resource.SUPPORTED_FORMATS,
+                context["import_form"] = ForceImportForm(
+                    import_formats=self.get_import_formats(),
                 )
             else:
                 context["confirm_form"] = Form()
@@ -324,6 +324,7 @@ class CeleryImportAdminMixin(
             resource_kwargs=resource.resource_init_kwargs,
             created_by=request.user,
             skip_parse_step=getattr(settings, "IMPORT_EXPORT_SKIP_ADMIN_CONFIRM", False),
+            force_import=form.cleaned_data["force_import"],
         )
 
     def get_import_job(

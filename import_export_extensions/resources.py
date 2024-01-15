@@ -1,3 +1,4 @@
+import collections
 import typing
 from enum import Enum
 
@@ -12,25 +13,8 @@ from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
 from import_export import resources
 from import_export.formats import base_formats
-from import_export.results import Error as BaseError
 
-
-class Error(BaseError):
-    """Customization of over base Error class from import export."""
-
-    def __repr__(self) -> str:
-        """Return object representation in string format."""
-        return f"Error({self.error})"
-
-    def __reduce__(self):
-        """Simplify Exception object for pickling.
-
-        `error` object may contain not pickable objects (for example, django's
-        lazy text), so here it replaced with simple string.
-
-        """
-        self.error = str(self.error)
-        return super().__reduce__()
+from .results import Error, Result, RowResult
 
 
 class TaskState(Enum):
@@ -97,9 +81,14 @@ class CeleryResourceMixin:
         use_transactions: typing.Optional[bool] = None,
         collect_failed_rows: bool = False,
         rollback_on_validation_errors: bool = False,
+        force_import: bool = False,
         **kwargs,
     ):
-        """Init task state before importing."""
+        """Init task state before importing.
+
+        If `force_import=True`, then rows with errors will be skipped.
+
+        """
         self.initialize_task_state(
             state=(
                 TaskState.IMPORTING.name if not dry_run
@@ -114,6 +103,7 @@ class CeleryResourceMixin:
             use_transactions=use_transactions,
             collect_failed_rows=collect_failed_rows,
             rollback_on_validation_errors=rollback_on_validation_errors,
+            force_import=force_import,
             **kwargs,
         )
 
@@ -124,10 +114,16 @@ class CeleryResourceMixin:
         using_transactions=True,
         dry_run=False,
         raise_errors=False,
+        force_import=False,
         **kwargs,
     ):
-        """Update task status as we import rows."""
-        imported_row = super().import_row(
+        """Update task status as we import rows.
+
+        If `force_import=True`, then row errors will be stored in
+        `field_skipped_errors` or `non_field_skipped_errors`.
+
+        """
+        imported_row: RowResult = super().import_row(
             row=row,
             instance_loader=instance_loader,
             using_transactions=using_transactions,
@@ -141,7 +137,47 @@ class CeleryResourceMixin:
                 else TaskState.PARSING.name
             ),
         )
+        if force_import and imported_row.has_error_import_type:
+            imported_row = self._skip_row_with_errors(imported_row, row)
         return imported_row
+
+    def _skip_row_with_errors(
+        self,
+        row_result: RowResult,
+        row_data: collections.OrderedDict[str, str],
+    ) -> RowResult:
+        """Process row as skipped.
+
+        Move row errors to skipped errors attributes.
+        Change import type to skipped.
+
+        """
+        row_result.diff = []
+        for field in self.get_fields():
+            row_result.diff.append(row_data.get(field.column_name, ""))
+
+        row_result.non_field_skipped_errors.extend(
+            row_result.errors,
+        )
+        if row_result.validation_error is not None:
+            row_result.field_skipped_errors.update(
+                **row_result.validation_error.error_dict,
+            )
+        row_result.errors = []
+        row_result.validation_error = None
+
+        row_result.import_type = RowResult.IMPORT_TYPE_SKIP
+        return row_result
+
+    @classmethod
+    def get_row_result_class(self):
+        """Return custom row result class."""
+        return RowResult
+
+    @classmethod
+    def get_result_class(self):
+        """Geti custom result class."""
+        return Result
 
     def export(
         self,
@@ -157,9 +193,9 @@ class CeleryResourceMixin:
             queryset=queryset,
         )
         return super().export(  # type: ignore
-            queryset=queryset,
             *args,
             **kwargs,
+            queryset=queryset,
         )
 
     def export_resource(self, obj):

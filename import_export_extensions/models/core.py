@@ -1,7 +1,11 @@
 import typing
 
+from django.conf import settings
 from django.db import models
+from django.utils import module_loading
 from django.utils.translation import gettext_lazy as _
+
+from picklefield.fields import PickledObjectField
 
 
 class CreationDateTimeField(models.DateTimeField):
@@ -53,3 +57,68 @@ class TaskStateInfo(typing.TypedDict):
     """Class representing task state dict."""
     state: str
     info: typing.Optional[dict[str, int]]
+
+
+class BaseJob(TimeStampedModel):
+    """Base model for managing celery jobs."""
+
+    resource_path = models.CharField(
+        max_length=128,
+        verbose_name=_("Resource class path"),
+        help_text=_(
+            "Dotted path to subclass of `import_export.Resource` that "
+            "should be used for import",
+        ),
+    )
+    resource_kwargs = models.JSONField(
+        default=dict,
+        verbose_name=_("Resource kwargs"),
+        help_text=_("Keyword parameters required for resource initialization"),
+    )
+    traceback = models.TextField(
+        blank=True,
+        default=str,
+        verbose_name=_("Traceback"),
+        help_text=_("Python traceback in case of import/export error"),
+    )
+    error_message = models.CharField(
+        max_length=128,
+        blank=True,
+        default=str,
+        verbose_name=_("Error message"),
+        help_text=_("Python error message in case of import/export error"),
+    )
+    created_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        editable=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Created by"),
+        help_text=_("User which started job"),
+    )
+    result = PickledObjectField(
+        default=str,
+        verbose_name=_("Job result"),
+        help_text=_(
+            "Internal job result object that contain "
+            "info about job statistics. Pickled Python object",
+        ),
+    )
+
+    class Meta:
+        abstract = True
+
+    @property
+    def resource(self):
+        """Get initialized resource instance."""
+        resource_class = module_loading.import_string(self.resource_path)
+        resource = resource_class(
+            created_by=self.created_by,
+            **self.resource_kwargs,
+        )
+        return resource
+
+    @property
+    def progress(self) -> typing.Optional[TaskStateInfo]:
+        """Return dict with current job state."""
+        raise NotImplementedError

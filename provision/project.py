@@ -1,43 +1,46 @@
-from invoke import task
+import pathlib
+import shutil
 
-from . import common, django, docker, git, linters, tests
+import invoke
+import saritasa_invocations
 
 
-##############################################################################
-# Build project locally
-##############################################################################
-@task
-def init(context, clean=False):
+@invoke.task
+def init(context: invoke.Context, clean: bool = False):
     """Prepare env for working with project."""
-    common.success("Setting up git config")
-    git.setup(context)
-    common.success("Initial assembly of all dependencies")
-    install_tools(context)
-    install_requirements(context)
+    saritasa_invocations.print_success("Setting up git config")
+    saritasa_invocations.git.setup(context)
+    saritasa_invocations.print_success("Initial assembly of all dependencies")
+    saritasa_invocations.poetry.install(context)
     if clean:
-        docker.clear(context)
-    django.migrate(context)
-    tests.run(context)
-    linters.all(context)
-    django.createsuperuser(context)
+        saritasa_invocations.docker.clear(context)
+        clear(context)
+    saritasa_invocations.django.migrate(context)
+    saritasa_invocations.pytest.run(context)
+    saritasa_invocations.django.createsuperuser(context)
 
 
-##############################################################################
-# Manage dependencies
-##############################################################################
-@task
-def install_tools(context):
-    """Install shell/cli dependencies, and tools needed to install requirements
+@invoke.task
+def clear(context: invoke.Context):
+    """Clear package directory from cache files."""
+    saritasa_invocations.print_success("Start clearing")
+    build_dirs = ("build", "dist", ".eggs")
+    coverage_dirs = ("htmlcov",)
+    cache_dirs = (".mypy_cache", ".pytest_cache")
 
-    Define your dependencies here, for example:
-    local("sudo npm -g install ngrok")
+    saritasa_invocations.print_success("Remove cache directories")
+    for directory in build_dirs + coverage_dirs + cache_dirs:
+        shutil.rmtree(directory, ignore_errors=True)
 
-    """
-    context.run("pip install --upgrade setuptools pip pip-tools wheel")
+    cwd = pathlib.Path(".")
+    # remove egg paths
+    saritasa_invocations.print_success("Remove egg directories")
+    for path in cwd.glob("*.egg-info"):
+        shutil.rmtree(path, ignore_errors=True)
 
+    for path in cwd.glob("*.egg"):
+        path.unlink(missing_ok=True)
 
-@task
-def install_requirements(context, env="development"):
-    """Install local development requirements"""
-    common.success(f"Install requirements with pip from {env}.txt")
-    context.run(f"pip install -r requirements/{env}.txt")
+    # remove last coverage file
+    saritasa_invocations.print_success("Remove coverage file")
+    pathlib.Path(".coverage").unlink(missing_ok=True)

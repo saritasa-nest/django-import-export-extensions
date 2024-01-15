@@ -2,6 +2,20 @@
 History
 =======
 
+0.5.0 (2023-12-19)
+------------------
+* Drop support of python 3.9
+* Migrate from pip-tools to poetry
+* Add base model for ``ImportJob`` and ``ExportJob``
+* Extend import results template: show validation errors in table
+* Add force-import feature: skip rows with errors while importing
+* Add ``skip_parse_step`` parameter for importing API
+* Remove Makefile in favor of ``invoke`` commands
+
+0.4.1 (2023-09-25)
+------------------
+* Remvoe ``escape_output`` due it's deprecation
+
 0.4.0 (2023-09-11)
 ------------------
 * Make possible to pass ``resource_kwargs`` in ViewSets

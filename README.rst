@@ -10,11 +10,11 @@ django-import-export-extensions
     :target: https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main
     :alt: Test coverage
 
-.. image:: https://img.shields.io/badge/python%20versions-3.9%20%7C%203.10%20%7C%203.11-blue
+.. image:: https://img.shields.io/pypi/pyversions/django-import-export-extensions
     :target: https://pypi.org/project/django-import-export-extensions/
     :alt: Supported python versions
 
-.. image:: https://img.shields.io/badge/django--versions-3.2%20%7C%204.0%20%7C%204.1%20%7C%204.2-blue
+.. image:: https://img.shields.io/badge/django--versions-3.2_%7C_4.0_%7C_4.1_%7C_4.2_%7C_5.0-blue
     :target: https://pypi.org/project/django-import-export-extensions/
     :alt: Supported django versions
 

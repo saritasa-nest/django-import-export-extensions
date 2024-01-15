@@ -82,3 +82,64 @@ def test_import_data_wrong_status(artist_import_job: ImportJob):
         match=f"ImportJob with id {artist_import_job.id} has incorrect status",
     ):
         artist_import_job.import_data()
+
+
+@pytest.mark.parametrize(
+    [
+        "skip_parse_step",
+        "is_valid_file",
+        "expected_status",
+        "is_instance_created",
+    ],
+    [
+        [False, True, ImportJob.ImportStatus.PARSED, False],
+        [False, False, ImportJob.ImportStatus.INPUT_ERROR, False],
+        [True, True, ImportJob.ImportStatus.IMPORTED, True],
+        [True, False, ImportJob.ImportStatus.IMPORT_ERROR, False],
+    ],
+)
+@pytest.mark.django_db(transaction=True)
+def test_import_data_skip_parse_step(
+    new_artist: Artist,
+    skip_parse_step: bool,
+    is_valid_file: bool,
+    expected_status: ImportJob.ImportStatus,
+    is_instance_created: bool,
+):
+    """Test import job skip parse step logic.
+
+    If `skip_parse_step=True`,
+    then instance will import data if no errors detected.
+    If `skip_parse_step=False`, then parse only.
+
+    """
+    import_job: ImportJob = ArtistImportJobFactory.build(
+        artists=[new_artist],
+        force_import=False,
+        skip_parse_step=skip_parse_step,
+        is_valid_file=is_valid_file,
+    )
+    import_job.save()
+    import_job.refresh_from_db()
+
+    assert import_job.import_status == expected_status
+    assert (
+        Artist.objects.filter(name=new_artist.name).exists()
+        == is_instance_created
+    )
+
+
+def test_force_import_create_correct_rows(
+    new_artist: Artist,
+):
+    """Test import job with `force_import=True` create correct rows."""
+    import_job: ImportJob = ArtistImportJobFactory(
+        artists=[new_artist],
+        force_import=True,
+        skip_parse_step=True,
+        is_valid_file=False,
+    )
+    import_job.import_data()
+    import_job.refresh_from_db()
+    assert import_job.import_status == import_job.ImportStatus.IMPORTED
+    assert Artist.objects.filter(name=new_artist.name).exists()
