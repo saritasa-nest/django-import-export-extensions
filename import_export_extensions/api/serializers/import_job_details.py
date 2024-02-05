@@ -8,6 +8,12 @@ from import_export.results import RowResult
 from ... import models
 
 
+class SkippedErrorsDict(typing.TypedDict):
+    """Typed dict for skipped errors."""
+    non_field_skipped_errors: list[str]
+    field_skipped_errors: dict[str, list[str]]
+
+
 class ImportParamsSerializer(serializers.Serializer):
     """Serializer for representing import parameters."""
     data_file = serializers.FileField()
@@ -172,7 +178,7 @@ class SkippedErrorsSerializer(serializers.Serializer):
             not in models.ImportJob.results_statuses
         ):
             return super().to_representation(self.get_initial())
-        skipped_errors = {
+        skipped_errors: SkippedErrorsDict = {
             "non_field_skipped_errors": [],
             "field_skipped_errors": {},
         }
