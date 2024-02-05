@@ -153,3 +153,35 @@ class IsAllRowsShowField(serializers.BooleanField):
         if instance.import_status not in models.ImportJob.success_statuses:
             return False
         return instance.result.total_rows == len(instance.result.rows)
+
+
+class SkippedErrorsSerializer(serializers.Serializer):
+    """Serializer for import job skipped rows."""
+
+    non_field_skipped_errors = serializers.ListField(
+        child=serializers.CharField(),
+    )
+    field_skipped_errors = serializers.DictField(
+        child=serializers.ListField(child=serializers.CharField()),
+    )
+
+    def to_representation(self, instance: models.ImportJob):
+        """Parse skipped errors from import job result."""
+        if (
+            instance.import_status
+            not in models.ImportJob.results_statuses
+        ):
+            return super().to_representation(self.get_initial())
+        skipped_errors = {
+            "non_field_skipped_errors": [],
+            "field_skipped_errors": {},
+        }
+        for row in instance.result.skipped_rows:
+            non_field_errors = [
+                error.error for error in row.non_field_skipped_errors
+            ]
+            skipped_errors["non_field_skipped_errors"].extend(non_field_errors)
+            for field, errors in row.field_skipped_errors.items():
+                errors = [error.messages for error in errors]
+                skipped_errors["field_skipped_errors"][field] = errors
+        return super().to_representation(skipped_errors)

@@ -44,6 +44,10 @@ class ImportJobSerializer(serializers.ModelSerializer):
         source="*",
         read_only=True,
     )
+    skipped_errors = details.SkippedErrorsSerializer(
+        source="*",
+        read_only=True,
+    )
     importing_data = details.ImportingDataSerializer(
         read_only=True,
         source="*",
@@ -67,6 +71,7 @@ class ImportJobSerializer(serializers.ModelSerializer):
             "totals",
             "parse_error",
             "input_error",
+            "skipped_errors",
             "is_all_rows_shown",
             "importing_data",
             "input_errors_file",
