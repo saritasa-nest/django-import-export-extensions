@@ -1,5 +1,5 @@
+import itertools
 import typing
-from itertools import zip_longest
 
 from rest_framework import serializers
 
@@ -76,7 +76,11 @@ class ImportingDataSerializer(serializers.Serializer):
                     {
                         "previous": v1,
                         "current": v2,
-                    } for v1, v2 in zip_longest(original_fields, current_fields, fillvalue="")
+                    } for v1, v2 in itertools.zip_longest(
+                        original_fields,
+                        current_fields,
+                        fillvalue="",
+                    )
                 ],
             })
 

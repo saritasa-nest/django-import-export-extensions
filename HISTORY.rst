@@ -2,6 +2,10 @@
 History
 =======
 
+UNRELEASED
+----------
+* Extend response of import job api
+
 0.5.0 (2023-12-19)
 ------------------
 * Drop support of python 3.9
