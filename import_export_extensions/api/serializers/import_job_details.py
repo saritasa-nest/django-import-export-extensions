@@ -62,21 +62,23 @@ class ImportingDataSerializer(serializers.Serializer):
                 continue
 
             original_fields = [
-                resource.export_field(f, row.original) if row.original else ""
-                for f in resource.get_user_visible_fields()
+                resource.export_field(field, row.original)
+                if row.original else ""
+                for field in resource.get_user_visible_fields()
             ]
             current_fields = [
-                resource.export_field(f, row.instance)
-                for f in resource.get_user_visible_fields()
+                resource.export_field(field, row.instance)
+                for field in resource.get_user_visible_fields()
             ]
 
             rows.append({
                 "operation": row.import_type,
                 "parsed_fields": [
                     {
-                        "previous": v1,
-                        "current": v2,
-                    } for v1, v2 in itertools.zip_longest(
+                        "previous": original_field,
+                        "current": current_field,
+                    } for original_field, current_field
+                    in itertools.zip_longest(
                         original_fields,
                         current_fields,
                         fillvalue="",

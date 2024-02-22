@@ -1,4 +1,3 @@
-import os
 import pathlib
 import traceback
 import uuid
@@ -8,7 +7,6 @@ from django.conf import settings
 from django.core.files import base as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
-from django.utils.encoding import force_bytes
 from django.utils.translation import gettext_lazy as _
 
 import tablib
@@ -485,7 +483,7 @@ class ImportJob(BaseJob):
 
     def _get_data_to_import(self) -> tablib.Dataset:
         """Read ``self.data_file`` content and convert it to dataset."""
-        _, file_ext = os.path.splitext(self.data_file.name)
+        file_ext = pathlib.Path(self.data_file.name).suffix
         input_format = self._get_import_format_by_ext(
             file_ext=file_ext,
         )()
@@ -581,7 +579,7 @@ class ImportJob(BaseJob):
             or self.input_errors_file
         ):
             return
-        _, file_ext = os.path.splitext(self.data_file.name)
+        file_ext = pathlib.Path(self.data_file.name).suffix
         file_format = self._get_import_format_by_ext(
             file_ext=file_ext,
         )()
@@ -591,7 +589,9 @@ class ImportJob(BaseJob):
 
         # create file if `export_data` is not file
         if not hasattr(export_data, "read"):
-            export_data = django_files.ContentFile(force_bytes(export_data))
+            export_data = django_files.ContentFile(
+                encoding.force_bytes(export_data),
+            )
 
         file_name = self.resource.generate_export_filename(
             file_format,
