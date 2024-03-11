@@ -163,3 +163,5 @@ def test_parse_data_invalid_row_file(
     import_job.refresh_from_db()
 
     assert import_job.import_status == expected_status
+    if expected_status == ImportJob.ImportStatus.INPUT_ERROR:
+        assert import_job.input_errors_file is not None

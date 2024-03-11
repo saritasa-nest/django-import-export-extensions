@@ -32,3 +32,7 @@ upload_import_file_to = functools.partial(
     upload_file_to,
     main_folder_name="import",
 )
+upload_import_error_file_to = functools.partial(
+    upload_file_to,
+    main_folder_name="errors",
+)

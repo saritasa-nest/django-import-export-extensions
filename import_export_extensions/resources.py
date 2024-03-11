@@ -161,7 +161,7 @@ class CeleryResourceMixin:
         )
         if row_result.validation_error is not None:
             row_result.field_skipped_errors.update(
-                **row_result.validation_error.error_dict,
+                **row_result.validation_error.update_error_dict({}),
             )
         row_result.errors = []
         row_result.validation_error = None
@@ -303,3 +303,6 @@ class CeleryModelResource(CeleryResourceMixin, resources.ModelResource):
 
         """
         return cls._meta.model.objects.all()
+
+    class Meta:
+        store_instance = True
