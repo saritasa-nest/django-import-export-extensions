@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.urls import re_path
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 from ... import models
 from .. import forms
@@ -149,6 +150,7 @@ class ImportJobAdmin(
 
         return readonly_fields
 
+    @admin.display(description=_("Parse/Import results"))
     def _show_results(
         self,
         obj: typing.Optional[models.ImportJob] = None,
@@ -173,18 +175,18 @@ class ImportJobAdmin(
 
         return "\n".join(result_sections)
 
-    _show_results.short_description = _("Parse/Import results")
-
+    @admin.display(description=_("Import data"))
     def _input_errors(self, job: models.ImportJob):
         """Render html with input errors."""
         template = "admin/import_export_extensions/import_job_results.html"
+        # template = "admin/import_export_extensions/celery_import_results.html"
         return render_to_string(
-            template,
-            dict(result=job.result),
+            template_name=template,
+            context={
+                "result": job.result,
+                "debug": settings.DEBUG,
+            },
         )
-
-    _input_errors.short_description = "Import data"
-    _input_errors.allow_tags = True
 
     def get_fieldsets(
         self,

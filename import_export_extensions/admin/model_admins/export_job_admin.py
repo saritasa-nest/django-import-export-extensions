@@ -41,6 +41,7 @@ class ExportJobAdmin(
         "cancel_jobs",
     )
 
+    @admin.action(description=_("Start Export"))
     def export_data_action(
         self,
         request: WSGIRequest,
@@ -54,8 +55,6 @@ class ExportJobAdmin(
 
         """
         tasks.export_data_task.delay(obj.id)
-
-    export_data_action.label = _("Start Export")
 
     def get_urls(self):
         """Add url to get current export job progress in JSON representation.
