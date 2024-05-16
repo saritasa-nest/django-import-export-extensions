@@ -1,3 +1,6 @@
+import collections
+import typing
+
 from django.core.exceptions import ValidationError
 
 from import_export import results
@@ -23,10 +26,57 @@ class Error(results.Error):
 
 class RowResult(results.RowResult):
     """Custom row result class with ability to store skipped errors in row."""
-    def __init__(self):
-        self.non_field_skipped_errors: list[Error] = []
+
+    def __init__(self) -> None:
+        """Copy of base init except creating validation error field."""
+        self.non_field_skipped_errors: list[results.Error] = []
         self.field_skipped_errors: dict[str, list[ValidationError]] = dict()
-        super().__init__()
+        self.errors: list[Error] = []
+        self.diff: list[str] | None = None
+        self.import_type = None
+        self.row_values: dict[str, typing.Any] = {}
+        self.object_id = None
+        self.object_repr = None
+        self.instance = None
+        self.original = None
+        self.new_record = None
+        # variable to store modified value of ValidationError
+        self._validation_error: ValidationError | None = None
+
+    @property
+    def validation_error(self) -> ValidationError | None:
+        """Return modified validation error."""
+        return self._validation_error
+
+    @validation_error.setter
+    def validation_error(self, value: ValidationError) -> None:
+        """Modify passed error to reduce count of nested exception classes.
+
+        Result class is saved in `ImportJob` model as pickled field
+        and python's `pickle` can't handle
+        `ValidationError` with high level of nested errors,
+        therefore we reduce nesting by using string value of nested errors.
+
+        If `ValidationError` has no `message_dict` attr,
+        then it means that there're no nested exceptions
+        and we can safely save it.
+
+        Otherwise, we will go through all nested validation errors
+        and build new `ValidationError` with only one level of
+        nested `ValidationError` instances.
+
+        """
+        result = collections.defaultdict(list)
+        if not hasattr(value, "message_dict"):
+            self._validation_error = value
+            return
+        for field, error_messages in value.message_dict.items():
+            validation_errors = [
+                ValidationError(message=message, code="invalid")
+                for message in error_messages
+            ]
+            result[field].extend(validation_errors)
+        self._validation_error = ValidationError(result)
 
     @property
     def has_skipped_errors(self) -> bool:

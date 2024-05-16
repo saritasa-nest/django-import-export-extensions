@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import module_loading
 from django.utils.translation import gettext_lazy as _
 
+from import_export.results import Result
 from picklefield.fields import PickledObjectField
 
 
@@ -97,7 +98,7 @@ class BaseJob(TimeStampedModel):
         help_text=_("User which started job"),
     )
     result = PickledObjectField(
-        default=str,
+        default=Result,
         verbose_name=_("Job result"),
         help_text=_(
             "Internal job result object that contain "

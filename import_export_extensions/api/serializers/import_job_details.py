@@ -3,7 +3,7 @@ import typing
 
 from rest_framework import serializers
 
-from import_export.results import RowResult
+from import_export.results import Result, RowResult
 
 from ... import models
 
