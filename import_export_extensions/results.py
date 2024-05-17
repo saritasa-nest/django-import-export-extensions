@@ -66,10 +66,10 @@ class RowResult(results.RowResult):
         nested `ValidationError` instances.
 
         """
-        result = collections.defaultdict(list)
         if not hasattr(value, "message_dict"):
             self._validation_error = value
             return
+        result = collections.defaultdict(list)
         for field, error_messages in value.message_dict.items():
             validation_errors = [
                 ValidationError(message=message, code="invalid")
