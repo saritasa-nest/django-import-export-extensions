@@ -2,7 +2,7 @@ import pytest
 
 from import_export_extensions.models import ImportJob
 
-from ...fake_app.factories import ArtistImportJobFactory
+from ...fake_app.factories import ArtistFactory, ArtistImportJobFactory
 from ...fake_app.models import Artist
 
 
@@ -143,3 +143,16 @@ def test_force_import_create_correct_rows(
     import_job.refresh_from_db()
     assert import_job.import_status == import_job.ImportStatus.IMPORTED
     assert Artist.objects.filter(name=new_artist.name).exists()
+
+
+def test_import_data_with_validation_error(existing_artist: Artist):
+    """Test import handles `ValidationError` instances correctly.
+
+    If validation error occur, then job should end with `INPUT_ERROR` status.
+
+    """
+    wrong_artist = ArtistFactory.build(name=existing_artist.name)
+    job = ArtistImportJobFactory(artists=[wrong_artist])
+    job.parse_data()
+    job.refresh_from_db()
+    assert job.import_status == ImportJob.ImportStatus.INPUT_ERROR

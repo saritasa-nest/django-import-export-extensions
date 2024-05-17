@@ -17,7 +17,7 @@ class Instrument(models.Model):
 
 class Artist(models.Model):
     """Model representing artist."""
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     bands = models.ManyToManyField("Band", through="Membership")
 
     instrument = models.ForeignKey(
