@@ -35,4 +35,5 @@ class ArtistResourceWithM2M(CeleryModelResource):
 
     class Meta:
         model = Artist
+        clean_model_instances = True
         fields = ["id", "name", "bands", "instrument"]
