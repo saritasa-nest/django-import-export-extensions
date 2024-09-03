@@ -43,7 +43,7 @@ def test_import_using_admin_model(
         path=reverse("admin:fake_app_artist_import"),
         data={
             "import_file": uploaded_file,
-            "input_format": 0,  # Choose CSV format
+            "format": 0,  # Choose CSV format
         },
     )
     assert start_import_job_response.status_code == status.HTTP_302_FOUND
@@ -109,6 +109,6 @@ def test_import_admin_has_same_formats(
         "import_form"
     ]
     assert (
-        import_response_form.fields["input_format"].choices
-        == import_response_result_form.fields["input_format"].choices
+        import_response_form.fields["format"].choices
+        == import_response_result_form.fields["format"].choices
     )

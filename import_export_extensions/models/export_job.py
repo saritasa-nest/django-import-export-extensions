@@ -274,11 +274,7 @@ class ExportJob(BaseJob):
 
         # `export_data` may be bytes (base formats such as xlsx, csv, etc.) or
         # file object (formats inherited from `BaseZipExport`)
-        export_data = self.file_format.export_data(
-            dataset=self.result,
-            escape_html=self.resource_kwargs.get("escape_html", False),
-            escape_formulae=self.resource_kwargs.get("escape_formulae", False),
-        )
+        export_data = self.file_format.export_data(dataset=self.result)
         # create file if `export_data` is not file
         if not hasattr(export_data, "read"):
             export_data = django_files.base.ContentFile(

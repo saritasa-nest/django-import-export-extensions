@@ -157,19 +157,19 @@ class CeleryImportAdminMixin(
             raise PermissionDenied
 
         context = self.get_context_data(request)
-        resource_classes = self.get_import_resource_classes()
+        resource_classes = self.get_import_resource_classes(request)
 
         form = ForceImportForm(
-            self.get_import_formats(),
-            request.POST or None,
-            request.FILES or None,
+            formats=self.get_import_formats(),
             resources=resource_classes,
+            data=request.POST or None,
+            files=request.FILES or None,
         )
         resource_kwargs = self.get_import_resource_kwargs(request)
 
         if request.method == "POST" and form.is_valid():
             # create ImportJob and redirect to page with it's status
-            resource_class = self.choose_import_resource_class(form)
+            resource_class = self.choose_import_resource_class(form, request)
             job = self.create_import_job(
                 request=request,
                 resource=resource_class(**resource_kwargs),
@@ -292,7 +292,8 @@ class CeleryImportAdminMixin(
             if job.import_status != models.ImportJob.ImportStatus.PARSED:
                 # display import form
                 context["import_form"] = ForceImportForm(
-                    import_formats=self.get_import_formats(),
+                    formats=self.get_import_formats(),
+                    resources=self.get_import_resource_classes(request),
                 )
             else:
                 context["confirm_form"] = Form()

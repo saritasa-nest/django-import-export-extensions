@@ -39,7 +39,6 @@ class RowResult(results.RowResult):
         self.object_repr = None
         self.instance = None
         self.original = None
-        self.new_record = None
         # variable to store modified value of ValidationError
         self._validation_error: ValidationError | None = None
 
