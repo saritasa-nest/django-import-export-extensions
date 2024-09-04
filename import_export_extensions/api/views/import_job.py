@@ -24,7 +24,7 @@ class ImportBase(type):
         specify request and response, and enable filters.
 
         """
-        viewset: typing.Type["ImportJobViewSet"] = super().__new__(
+        viewset: type[ImportJobViewSet] = super().__new__(
             cls,
             name,
             bases,
@@ -90,9 +90,7 @@ class ImportJobViewSet(
     permission_classes = (permissions.IsAuthenticated,)
     queryset = models.ImportJob.objects.all()
     serializer_class = serializers.ImportJobSerializer
-    resource_class: typing.Optional[
-        typing.Type[resources.CeleryModelResource]
-    ] = None
+    resource_class: type[resources.CeleryModelResource] | None = None
 
     def get_queryset(self):
         """Filter import jobs by resource used in viewset."""
@@ -148,10 +146,10 @@ class ImportJobViewSet(
 
         try:
             job.confirm_import()
-        except ValueError:
+        except ValueError as error:
             raise ValidationError(
                 f"Wrong import job status: {job.import_status}",
-            )
+            ) from error
 
         serializer = self.get_serializer(instance=job)
         return response.Response(
@@ -166,10 +164,10 @@ class ImportJobViewSet(
 
         try:
             job.cancel_import()
-        except ValueError:
+        except ValueError as error:
             raise ValidationError(
                 f"Wrong import job status: {job.import_status}",
-            )
+            ) from error
 
         serializer = self.get_serializer(instance=job)
         return response.Response(

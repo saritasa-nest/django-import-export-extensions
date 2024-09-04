@@ -49,6 +49,7 @@ class CeleryImportAdminMixin(
         with progress bar and import totals.
 
     """
+
     # Import data encoding
     from_encoding = "utf-8"
 
@@ -59,12 +60,18 @@ class CeleryImportAdminMixin(
     celery_import_template = "admin/import_export/import.html"
 
     # Template used to display status of import jobs
-    import_status_template = "admin/import_export_extensions/celery_import_status.html"
+    import_status_template = (
+        "admin/import_export_extensions/celery_import_status.html"
+    )
 
     # template used to display results of import jobs
-    import_result_template_name = "admin/import_export_extensions/celery_import_results.html"
+    import_result_template_name = (
+        "admin/import_export_extensions/celery_import_results.html"
+    )
 
-    import_export_change_list_template = "admin/import_export/change_list_import.html"
+    import_export_change_list_template = (
+        "admin/import_export/change_list_import.html"
+    )
 
     skip_admin_log = None
     # Copy methods of mixin from original package to reuse it here
@@ -323,7 +330,11 @@ class CeleryImportAdminMixin(
             data_file=form.cleaned_data["import_file"],
             resource_kwargs=resource.resource_init_kwargs,
             created_by=request.user,
-            skip_parse_step=getattr(settings, "IMPORT_EXPORT_SKIP_ADMIN_CONFIRM", False),
+            skip_parse_step=getattr(
+                settings,
+                "IMPORT_EXPORT_SKIP_ADMIN_CONFIRM",
+                False,
+            ),
             force_import=form.cleaned_data["force_import"],
         )
 
@@ -334,7 +345,7 @@ class CeleryImportAdminMixin(
     ) -> models.ImportJob:
         """Get ImportJob instance.
 
-        Raises:
+        Raises
             Http404
 
         """
@@ -366,7 +377,7 @@ class CeleryImportAdminMixin(
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url
-        if not job.import_status == models.ImportJob.ImportStatus.PARSED:
+        if job.import_status != models.ImportJob.ImportStatus.PARSED:
             return HttpResponseRedirect(redirect_to=url)
 
         # Redirections add one by one links to `redirect_to`
@@ -388,7 +399,7 @@ class CeleryImportAdminMixin(
     def changelist_view(
         self,
         request: WSGIRequest,
-        context: typing.Optional[dict[str, typing.Any]] = None,
+        context: dict[str, typing.Any] | None = None,
     ):
         """Add the check for permission to changelist template context."""
         context = context or {}

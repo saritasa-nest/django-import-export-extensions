@@ -3,16 +3,16 @@
 import functools
 
 import django.db.models.deletion
-import picklefield.fields
 from django.conf import settings
 from django.db import migrations, models
+
+import picklefield.fields
 
 import import_export_extensions.models.core
 import import_export_extensions.models.tools
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -35,13 +35,15 @@ class Migration(migrations.Migration):
                 (
                     "created",
                     import_export_extensions.models.core.CreationDateTimeField(
-                        auto_now=True, verbose_name="Created",
+                        auto_now=True,
+                        verbose_name="Created",
                     ),
                 ),
                 (
                     "modified",
                     import_export_extensions.models.core.ModificationDateTimeField(
-                        auto_now=True, verbose_name="Modified",
+                        auto_now=True,
+                        verbose_name="Modified",
                     ),
                 ),
                 (
@@ -80,7 +82,7 @@ class Migration(migrations.Migration):
                         upload_to=functools.partial(
                             import_export_extensions.models.tools.upload_file_to,
                             *(),
-                            **{"main_folder_name": "import"}
+                            main_folder_name="import",
                         ),
                         verbose_name="Data file",
                     ),
@@ -142,13 +144,17 @@ class Migration(migrations.Migration):
                 (
                     "parse_finished",
                     models.DateTimeField(
-                        editable=False, null=True, verbose_name="Parse finished",
+                        editable=False,
+                        null=True,
+                        verbose_name="Parse finished",
                     ),
                 ),
                 (
                     "import_started",
                     models.DateTimeField(
-                        editable=False, null=True, verbose_name="Import started",
+                        editable=False,
+                        null=True,
+                        verbose_name="Import started",
                     ),
                 ),
                 (
@@ -191,13 +197,15 @@ class Migration(migrations.Migration):
                 (
                     "created",
                     import_export_extensions.models.core.CreationDateTimeField(
-                        auto_now=True, verbose_name="Created",
+                        auto_now=True,
+                        verbose_name="Created",
                     ),
                 ),
                 (
                     "modified",
                     import_export_extensions.models.core.ModificationDateTimeField(
-                        auto_now=True, verbose_name="Modified",
+                        auto_now=True,
+                        verbose_name="Modified",
                     ),
                 ),
                 (
@@ -238,7 +246,7 @@ class Migration(migrations.Migration):
                         upload_to=functools.partial(
                             import_export_extensions.models.tools.upload_file_to,
                             *(),
-                            **{"main_folder_name": "export"}
+                            main_folder_name="export",
                         ),
                         verbose_name="Data file",
                     ),

@@ -1,4 +1,5 @@
 import os
+import pathlib
 import sys
 
 import django
@@ -6,9 +7,9 @@ import django
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.append(os.path.abspath("."))
-sys.path.append(os.path.abspath(".."))
-sys.path.append(os.path.abspath("../tests"))
+sys.path.append(str(pathlib.Path.cwd()))
+sys.path.append(str(pathlib.Path("..").resolve()))
+sys.path.append(str(pathlib.Path("../tests").resolve()))
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 django.setup()
@@ -106,7 +107,7 @@ man_pages = [
 ]
 
 
-# -- Options for Texinfo output ------------------------------------------------
+# -- Options for Texinfo output -----------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
@@ -129,5 +130,8 @@ texinfo_appendices = []
 # intersphinx documentation
 intersphinx_mapping = {
     "tablib": ("https://tablib.readthedocs.io/en/stable/", None),
-    "django-import-export": ("https://django-import-export.readthedocs.io/en/latest/", None),
+    "django-import-export": (
+        "https://django-import-export.readthedocs.io/en/latest/",
+        None,
+    ),
 }

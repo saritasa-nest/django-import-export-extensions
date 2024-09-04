@@ -56,8 +56,9 @@ class TimeStampedModel(models.Model):
 
 class TaskStateInfo(typing.TypedDict):
     """Class representing task state dict."""
+
     state: str
-    info: typing.Optional[dict[str, int]]
+    info: dict[str, int] | None
 
 
 class BaseJob(TimeStampedModel):
@@ -120,6 +121,6 @@ class BaseJob(TimeStampedModel):
         return resource
 
     @property
-    def progress(self) -> typing.Optional[TaskStateInfo]:
+    def progress(self) -> TaskStateInfo | None:
         """Return dict with current job state."""
         raise NotImplementedError

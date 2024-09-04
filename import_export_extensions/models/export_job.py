@@ -85,7 +85,7 @@ class ExportJob(BaseJob):
         help_text=_("File that contain exported data"),
     )
 
-    export_task_id = models.CharField(  # noqa: DJ01
+    export_task_id = models.CharField(  # noqa: DJ001
         verbose_name=_("Export task ID"),
         max_length=36,
         null=True,
@@ -116,7 +116,7 @@ class ExportJob(BaseJob):
         resource_name = pathlib.Path(self.resource_path).suffix.lstrip(".")
         file_format = pathlib.Path(self.file_format_path).suffix.lstrip(".")
 
-        return f"ExportJob(resource={resource_name}, file_format={file_format})"
+        return f"ExportJob(resource={resource_name}, {file_format=})"
 
     def save(
         self,
@@ -156,7 +156,7 @@ class ExportJob(BaseJob):
         ).replace("/", "-")
 
     @property
-    def progress(self) -> typing.Optional[TaskStateInfo]:
+    def progress(self) -> TaskStateInfo | None:
         """Return dict with parsing state.
 
         Example for sync mode::

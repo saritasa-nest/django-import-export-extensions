@@ -4,9 +4,11 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ("import_export_extensions", "0004_alter_exportjob_created_by_and_more"),
+        (
+            "import_export_extensions",
+            "0004_alter_exportjob_created_by_and_more",
+        ),
     ]
 
     operations = [

@@ -44,12 +44,12 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
 
     def __init__(
         self,
-        rem_model: typing.Type[Model],
+        rem_model: type[Model],
         instance_separator: str = ",",
-        prop_separator: typing.Optional[str] = None,
+        prop_separator: str | None = None,
         rem_field: str = "pk",
-        rem_field_lookup: typing.Optional[str] = None,
-        extra_fields: typing.Optional[list[str]] = None,
+        rem_field_lookup: str | None = None,
+        extra_fields: list[str] | None = None,
         render_empty: bool = False,
         *args,
         **kwargs,
@@ -65,6 +65,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
             extra_fields(list[str]): extra fields that should be dumped
                 (will be dumped in most dummy way)
             render_empty (bool): defines if render empty values or not
+
         """
         if prop_separator == ";" or prop_separator is None:
             prop_separator = ":"
@@ -87,11 +88,10 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
             value(QuerySet): instances of intermediate model
 
         """
-        instances = []
-        for i in value:
-            instances.append(
-                self.render_instance(i, self._get_related_instance(i)),
-            )
+        instances = [
+            self.render_instance(i, self._get_related_instance(i))
+            for i in value
+        ]
         # Clean empty instances
         if not self.render_empty:
             instances = list(filter(None, instances))
@@ -112,10 +112,11 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         # get related object (i.e. Band)
         props = [
             smart_str(self._get_field_value(related_object, self.rem_field)),
+            *[
+                smart_str(self._get_field_value(instance, attr))
+                for attr in self.extra_fields
+            ],
         ]
-
-        for attr in self.extra_fields:
-            props.append(smart_str(self._get_field_value(instance, attr)))
 
         return self.prop_separator.join(props)
 
@@ -197,9 +198,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         # if there are entries in `invalid_instances`
         if invalid_instances:
             raise ValueError(
-                "You are trying import invalid values: {0}".format(
-                    str(invalid_instances),
-                ),
+                f"You are trying import invalid values: {invalid_instances!s}",
             )
 
         return result
@@ -232,9 +231,8 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         if len(props) > len(self.extra_fields) + 1:
             # +1 is for `self.rem_field`
             raise ImportExportError(
-                "Too many property separators '{0}' in '{1}'".format(
-                    self.prop_separator, raw_instance,
-                ),
+                f"Too many property separators '{self.prop_separator}' in "
+                f"'{raw_instance}'",
             )
 
         # rem instance now contains value used to identify related object,
@@ -242,7 +240,8 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         # props contain other saved properties of intermediate model
         # i.e. `date_joined`
         rem_field_value, *props = utils.clean_sequence_of_string_values(
-            raw_instance.split(self.prop_separator), ignore_empty=False,
+            raw_instance.split(self.prop_separator),
+            ignore_empty=False,
         )
 
         # get related objects
@@ -250,12 +249,14 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
 
         # if we tries import nonexistent instance
         if not qs.exists():
-            raise ValueError("Invalid instance {0}".format(raw_instance))
+            raise ValueError(f"Invalid instance {raw_instance}")
 
         # build dict with other properties. Ignore extra fields which has
         # empty strings values
         other_props = {
-            key: value for key, value in zip(self.extra_fields, props) if value
+            key: value
+            for key, value in zip(self.extra_fields, props, strict=False)
+            if value
         }
         return [
             {"object": rem_object, "properties": other_props}
@@ -267,7 +268,8 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         if self.rem_field_lookup:
             if self.rem_field_lookup == "regex":
                 instance_filter = utils.get_clear_q_filter(
-                    rem_field_value, self.rem_field,
+                    rem_field_value,
+                    self.rem_field,
                 )
             else:
                 lookup = f"{self.rem_field}__{self.rem_field_lookup}"
@@ -286,10 +288,10 @@ class FileWidget(CharWidget):
 
     def render(
         self,
-        value: typing.Optional[Model],
+        value: Model | None,
         *args,
         **kwargs,
-    ) -> typing.Optional[str]:
+    ) -> str | None:
         """Convert DB value to URL to file."""
         if not value:
             return None
@@ -301,10 +303,10 @@ class FileWidget(CharWidget):
 
     def clean(
         self,
-        value: typing.Optional[str],
+        value: str | None,
         *args,
         **kwargs,
-    ) -> typing.Optional[str]:
+    ) -> str | None:
         """Get the file and check for exists."""
         if not value:
             return None

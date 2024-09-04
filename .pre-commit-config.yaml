@@ -8,42 +8,12 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
 
-  - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.2
     hooks:
-      - id: isort
-        name: isort (python)
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        exclude: node_modules|migrations|scripts|.venv|__init__.py
-        additional_dependencies: [
-          # A flake8 plugin that checks django code style.
-          # https://github.com/rocioar/flake8-django
-          flake8-django,
-          # required by flake8-django
-          django,
-          django_extensions,
-          # A plugin for Flake8 finding likely bugs and design problems in your program.
-          # https://github.com/PyCQA/flake8-bugbear
-          flake8-bugbear,
-          # A flake8 plugin checking common style issues or inconsistencies with pytest-based tests.
-          # https://github.com/m-burst/flake8-pytest-style
-          flake8-pytest-style,
-          # A flake8 plugin that warn about backslashes usage.
-          # https://github.com/wemake-services/flake8-broken-line
-          flake8-broken-line,
-          # A simple module that adds an extension for the fantastic pydocstyle tool to flake8.
-          # https://github.com/PyCQA/flake8-docstrings
-          flake8-docstrings,
-          # McCabe complexity checker.
-          # https://github.com/PyCQA/mccabe
-          mccabe,
-          # A flake8 plug-in loading the configuration from pyproject.toml
-          flake8-pyproject,
-        ]
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
 
   - repo: https://github.com/asottile/add-trailing-comma
     rev: v2.4.0

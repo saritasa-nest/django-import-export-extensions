@@ -67,31 +67,6 @@ ipdb = "^0.13.13"
 ipython = "^8.18.1"
 
 [tool.poetry.group.linters.dependencies]
-flake8 = "^6.1.0"
-# A plugin for Flake8 finding likely bugs and design problems in your program.
-# https://github.com/PyCQA/flake8-bugbear
-flake8-bugbear = "^23.11.28"
-# A flake8 plugin checking common style issues or inconsistencies with pytest-based tests.
-# https://github.com/m-burst/flake8-pytest-style
-flake8-pytest-style = "^1.7.2"
-# A flake8 plugin that warn about backslashes usage.
-# https://github.com/wemake-services/flake8-broken-line
-flake8-broken-line = "^1.0.0"
-# A simple module that adds an extension for the fantastic pydocstyle tool to flake8.
-# https://github.com/PyCQA/flake8-docstrings
-flake8-docstrings = "^1.7.0"
-# A flake8 plugin that checks django code style.
-# https://github.com/rocioar/flake8-django
-flake8-django = "^1.4"
-# Flake8 Extension to lint for quotes.
-# https://github.com/zheller/flake8-quotes
-flake8-quotes = "^3.3.2"
-# A flake8 plug-in loading the configuration from pyproject.toml
-# https://pypi.org/project/Flake8-pyproject/
-flake8-pyproject = "^1.2.3"
-# McCabe complexity checker.
-# https://github.com/PyCQA/mccabe
-mccabe = "^0.7.0"
 # Mypy is a static type checker for Python.
 # https://mypy.readthedocs.io/en/stable/
 mypy = "^1.7.1"
@@ -145,71 +120,225 @@ saritasa-invocations = "^0.10.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.isort]
-line_length = 79
-multi_line_output = 3
-known_django = "django"
-known_drf = "rest_framework"
-known_apps = "import_export_extensions"
-skip = [
-    "migrations",
-    "_tmp,src",
-    "scripts",
-    ".venv",
-    "node_modules",
-    "config",
-]
-sections = [
-    "FUTURE",
-    "STDLIB",
-    "DJANGO",
-    "DRF",
-    "THIRDPARTY",
-    "FIRSTPARTY",
-    "APPS",
-    "LOCALFOLDER",
-]
-include_trailing_comma = true
-default_section = "THIRDPARTY"
+[tool.ruff]
+line-length = 79
+indent-width = 4
+target-version = "py310"
 
-[tool.flake8]
-ignore = [
-    # https://www.flake8rules.com/rules/E126.html
-    "E126",
-    # https://www.flake8rules.com/rules/W503.html
-    "W503",
-    # https://www.flake8rules.com/rules/W504.html
-    "W504",
-    # https://github.com/m-burst/flake8-pytest-style/blob/master/docs/rules/PT004.md
-    "PT004",
-    # http://www.pydocstyle.org/en/latest/error_codes.html
-    "D100",
-    "D106",
-    "D107",
-    "D204",
-    "D301",
-]
+[tool.ruff.lint]
 extend-select = [
-    "DJ10",  # Model should define verbose_name in Meta class
-    "DJ11",  # Model should define verbose_name_plural in Meta class
+  # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
+  "W",
+  "E",
+  # https://docs.astral.sh/ruff/rules/#mccabe-c90
+  "C90",
+  # https://docs.astral.sh/ruff/rules/#isort-i
+  "I",
+  # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+  "N",
+  # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+  "D",
+  # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+  "UP",
+  # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
+  "ANN",
+  # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+  "S",
+  # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+  "B",
+  # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+  "A",
+  # https://docs.astral.sh/ruff/rules/#flake8-commas-com
+  "COM",
+  # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+  "C4",
+  # https://docs.astral.sh/ruff/rules/#flake8-datetimez-dtz
+  "DTZ",
+  # https://docs.astral.sh/ruff/rules/#flake8-debugger-t10
+  "T10",
+  # https://docs.astral.sh/ruff/rules/#flake8-django-dj
+  "DJ",
+  # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+  "T20",
+  # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+  "PT",
+  # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+  "SIM",
+  # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+  "PTH",
+  # https://docs.astral.sh/ruff/rules/#flake8-todos-td
+  "TD",
+  # https://docs.astral.sh/ruff/rules/#eradicate-era
+  "ERA",
+  # https://docs.astral.sh/ruff/rules/#tryceratops-try
+  "TRY",
+  # https://docs.astral.sh/ruff/rules/#flynt-fly
+  "FLY",
+  # https://docs.astral.sh/ruff/rules/#perflint-perf
+  "PERF",
+  # https://docs.astral.sh/ruff/rules/#refurb-furb
+  "FURB",
+  # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+  "PIE",
+  # https://docs.astral.sh/ruff/rules/#flake8-async-async
+  "ASYNC",
+  # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+  "RUF"
 ]
-statistics = true
-count = true
-max-complexity = 10
-max-line-length = 100
-pytest-fixture-no-parentheses = true
-pytest-parametrize-names-type = "list"
-pytest-parametrize-values-type = "list"
-pytest-parametrize-values-row-type = "list"
-inline-quotes = "double"
-docstring-quotes = "double"
-docstring-convention = "pep257"
+ignore = [
+  # https://docs.astral.sh/ruff/rules/missing-type-args
+  "ANN002",
+  # https://docs.astral.sh/ruff/rules/missing-type-self
+  "ANN101",
+  # https://docs.astral.sh/ruff/rules/missing-type-cls
+  "ANN102",
+  # https://docs.astral.sh/ruff/rules/missing-type-kwargs
+  "ANN003",
+  # https://docs.astral.sh/ruff/rules/any-type
+  "ANN401",
+  # https://docs.astral.sh/ruff/rules/undocumented-public-module
+  "D100",
+  # https://docs.astral.sh/ruff/rules/undocumented-public-package
+  "D104",
+  # https://docs.astral.sh/ruff/rules/undocumented-magic-method
+  "D105",
+  # https://docs.astral.sh/ruff/rules/undocumented-public-nested-class
+  "D106",
+  # https://docs.astral.sh/ruff/rules/undocumented-public-init
+  "D107",
+  # https://docs.astral.sh/ruff/rules/one-blank-line-before-class
+  "D203",
+  # https://docs.astral.sh/ruff/rules/multi-line-summary-second-line
+  "D213",
+  # https://docs.astral.sh/ruff/rules/escape-sequence-in-docstring/
+  "D301",
+  # https://docs.astral.sh/ruff/rules/dashed-underline-after-section
+  "D407",
+  # https://docs.astral.sh/ruff/rules/undocumented-param/
+  "D417",
+  # https://docs.astral.sh/ruff/rules/error-suffix-on-exception-name
+  "N818",
+  # https://docs.astral.sh/ruff/rules/invalid-module-name
+  "N999",
+  # https://docs.astral.sh/ruff/rules/unnecessary-collection-call
+  "C408",
+  # https://docs.astral.sh/ruff/rules/mutable-class-default
+  "RUF012",
+  # https://docs.astral.sh/ruff/rules/raise-vanilla-args
+  "TRY003",
+  # https://docs.astral.sh/ruff/rules/try-consider-else
+  "TRY300",
+  # https://docs.astral.sh/ruff/rules/missing-trailing-comma
+  "COM812",  # ruff formatter suggested to exclude it
+  # https://docs.astral.sh/ruff/rules/try-except-in-loop/
+  "PERF203",
+
+  # TODO: remove after fix:
+  # https://docs.astral.sh/ruff/rules/missing-type-function-argument/
+  "ANN001",
+  # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function/
+  "ANN201",
+  # https://docs.astral.sh/ruff/rules/missing-return-type-private-function/
+  "ANN202",
+  # https://docs.astral.sh/ruff/rules/missing-return-type-special-method/
+  "ANN204",
+]
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+  # https://docs.astral.sh/ruff/rules/unused-import
+  "F401",
+]
+"**/settings.py" = [
+  # https://docs.astral.sh/ruff/rules/line-too-long
+  "E501",
+]
+"**/tests/*" = [
+  # https://docs.astral.sh/ruff/rules/assert
+  "S101",
+  # https://docs.astral.sh/ruff/rules/hardcoded-password-func-arg
+  "S106",
+  # https://docs.astral.sh/ruff/rules/suspicious-non-cryptographic-random-usage
+  "S311",
+]
+"**/test_*" = [
+  # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
+  "ANN201",
+]
+"**/migrations/*" = [
+  # https://docs.astral.sh/ruff/rules/undocumented-public-class
+  "D101",
+  # https://docs.astral.sh/ruff/rules/line-too-long
+  "E501",
+]
+"**/views**" = [
+  # https://docs.astral.sh/ruff/rules/ANN201
+  "ANN001",
+  # https://docs.astral.sh/ruff/rules/ANN201
+  "ANN201",
+]
+"**/admin**" = [
+  # https://docs.astral.sh/ruff/rules/missing-type-function-argument
+  "ANN001",
+  # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
+  "ANN201",
+]
+"**/api**" = [
+  # https://docs.astral.sh/ruff/rules/missing-type-function-argument
+  "ANN001",
+  # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
+  "ANN201",
+  # https://docs.astral.sh/ruff/rules/missing-return-type-private-function
+  "ANN202",
+]
+"tasks.py" = [
+  # https://docs.astral.sh/ruff/rules/hardcoded-password-func-arg
+  "S106",
+]
+"**/apps.py" = [
+  # https://docs.astral.sh/ruff/rules/undocumented-public-method
+  "D102",
+]
+"**/docs**" = [
+  # https://docs.astral.sh/ruff/rules/builtin-variable-shadowing/
+  "A001",
+]
+
+[tool.ruff.lint.isort]
+force-wrap-aliases = true
+split-on-trailing-comma = true
+section-order = [
+    "future",
+    "standard-library",
+    "django",
+    "drf",
+    "third-party",
+    "first-party",
+    "apps",
+    "local-folder",
+]
+[tool.ruff.lint.isort.sections]
+django = ["django"]
+drf = ["rest_framework"]
+apps = ["apps", "config", "libs"]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+parametrize-names-type = "list"
+parametrize-values-type = "list"
+parametrize-values-row-type = "list"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
 exclude = [
-    "migrations",
-    ".venv",
-    "__init__.py",
-    "docs",
-    "tests/settings.py",
+  # Disabling for admin since it's just configs and black/ruff format one item
+  # tuples as one line
+  "**/admin.py",
+  "**/views.py",
+  "**/admin/*",
+  "**/views/*",
 ]
 
 [tool.mypy]

@@ -1,4 +1,5 @@
 """There are kind a functional tests for import using Django Admin."""
+
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test.client import Client
@@ -62,7 +63,8 @@ def test_import_using_admin_model(
 
     # Confirm import on result page
     confirm_response = client.post(
-        path=status_page_response.url, data={"confirm": "Confirm import"},
+        path=status_page_response.url,
+        data={"confirm": "Confirm import"},
     )
     assert confirm_response.status_code == status.HTTP_302_FOUND
 
@@ -103,8 +105,10 @@ def test_import_admin_has_same_formats(
         ),
     )
     import_response_form = import_response.context_data["form"]
-    import_response_result_form = import_response_result.context_data["import_form"]
+    import_response_result_form = import_response_result.context_data[
+        "import_form"
+    ]
     assert (
-        import_response_form.fields["input_format"].choices ==
-        import_response_result_form.fields["input_format"].choices
+        import_response_form.fields["input_format"].choices
+        == import_response_result_form.fields["input_format"].choices
     )

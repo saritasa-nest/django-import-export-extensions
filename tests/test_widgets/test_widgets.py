@@ -7,6 +7,10 @@ import pytest
 from import_export.exceptions import ImportExportError
 from pytest_mock import MockerFixture
 
+from import_export_extensions.widgets import (
+    FileWidget,
+    IntermediateManyToManyWidget,
+)
 from tests.fake_app.factories import (
     ArtistFactory,
     ArtistImportJobFactory,
@@ -14,11 +18,6 @@ from tests.fake_app.factories import (
     MembershipFactory,
 )
 from tests.fake_app.models import Band, Membership
-
-from import_export_extensions.widgets import (
-    FileWidget,
-    IntermediateManyToManyWidget,
-)
 
 
 @pytest.fixture
@@ -66,10 +65,7 @@ def test_render_instance_extra_fields(membership: Membership):
         extra_fields=["date_joined"],
         instance_separator=";",
     )
-    expected_value = "{band.pk}:{membership.date_joined}".format(
-        band=membership.band,
-        membership=membership,
-    )
+    expected_value = f"{membership.band.pk}:{membership.date_joined}"
     result_value = widget.render_instance(membership, membership.band)
     assert expected_value == result_value
 
@@ -96,13 +92,8 @@ def test_render_few_instances(membership: Membership):
     membership2 = MembershipFactory(artist=membership.artist)
 
     expected_value = (
-        "{band1.pk}:{membership1.date_joined};"
-        "{band2.pk}:{membership2.date_joined}".format(
-            band1=membership.band,
-            membership1=membership,
-            band2=membership2.band,
-            membership2=membership2,
-        )
+        f"{membership.band.pk}:{membership.date_joined};"
+        f"{membership2.band.pk}:{membership2.date_joined}"
     )
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
@@ -172,10 +163,7 @@ def test_clean_one_instance_extra_properties(membership: Membership):
     }
 
     """
-    raw_data = "{band.pk}:{date_joined}".format(
-        band=membership.band,
-        date_joined=membership.date_joined,
-    )
+    raw_data = f"{membership.band.pk}:{membership.date_joined}"
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
         extra_fields=["date_joined"],
@@ -200,9 +188,7 @@ def test_clean_one_instance_if_in_db_few_with_same_attr():
     band_1 = BandFactory(title="Band")
     band_2 = BandFactory(title="Band")
 
-    raw_data = "{band.title}".format(
-        band=band_1,
-    )
+    raw_data = f"{band_1.title}"
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
         rem_field="title",
@@ -211,7 +197,7 @@ def test_clean_one_instance_if_in_db_few_with_same_attr():
     result = widget.clean_instance(raw_data)
 
     assert len(result) == 2
-    assert set([item["object"] for item in result]) == {band_1, band_2}
+    assert {item["object"] for item in result} == {band_1, band_2}
 
 
 def test_clean_if_in_db_few_with_same_attr():
@@ -224,10 +210,7 @@ def test_clean_if_in_db_few_with_same_attr():
     band_1 = BandFactory(title="Band")
     band_2 = BandFactory(title="Band")
 
-    raw_data = "{band_1.title};{band_2.title}".format(
-        band_1=band_1,
-        band_2=band_2,
-    )
+    raw_data = f"{band_1.title};{band_2.title}"
 
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
@@ -238,7 +221,7 @@ def test_clean_if_in_db_few_with_same_attr():
     result = widget.clean(raw_data)
 
     assert len(result) == 2
-    assert set([item["object"] for item in result]) == {band_1, band_2}
+    assert {item["object"] for item in result} == {band_1, band_2}
 
 
 def test_clean_nonexistent_relations():
@@ -264,9 +247,8 @@ def test_clean_ignore_blank_instances():
         rem_field="title",
         instance_separator=";",
     )
-    raw_data = "\n\n{band_1.title}\n \n;   {band_2.title}\n  \n ".format(
-        band_1=BandFactory(),
-        band_2=BandFactory(),
+    raw_data = (
+        f"\n\n{BandFactory().title}\n \n;   {BandFactory().title}\n  \n "
     )
     result = widget.clean(raw_data)
 
@@ -284,9 +266,7 @@ def test_clean_extra_properties_with_leading_and_trailing_spaces(
     contains extra separate characters and whitespaces.
 
     """
-    raw_data = "   {band.pk} :  {date_joined} ".format(
-        band=membership.band, date_joined=membership.date_joined,
-    )
+    raw_data = f"   {membership.band.pk} :  {membership.date_joined} "
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
         extra_fields=["date_joined"],
@@ -310,7 +290,7 @@ def test_clean_extra_properties_with_blank_property_value(
     value in imported document
 
     """
-    raw_data = "{band.pk}:".format(band=membership.band)
+    raw_data = f"{membership.band.pk}:"
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
         extra_fields=["date_joined"],
@@ -328,9 +308,7 @@ def test_clean_extra_properties_with_too_many_prop_separators(
     membership: Membership,
 ):
     """Test raise exception if data contains too many property separators."""
-    raw_data = "{band.pk} :: : {date_joined}".format(
-        band=membership.band, date_joined=membership.date_joined,
-    )
+    raw_data = f"{membership.band.pk} :: : {membership.date_joined}"
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
         extra_fields=["date_joined"],

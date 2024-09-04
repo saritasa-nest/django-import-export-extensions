@@ -13,8 +13,8 @@ class ExportProgressSerializer(ProgressSerializer):
     """Serializer to show ExportJob progress."""
 
     state = serializers.ChoiceField(
-        choices=models.ExportJob.ExportStatus.values
-        + [
+        choices=[
+            *models.ExportJob.ExportStatus.values,
             states.PENDING,
             states.STARTED,
             states.SUCCESS,
@@ -48,13 +48,13 @@ class CreateExportJob(serializers.Serializer):
 
     """
 
-    resource_class: typing.Type[resources.CeleryModelResource]
+    resource_class: type[resources.CeleryModelResource]
 
     def __init__(
         self,
         *args,
-        filter_kwargs: typing.Optional[dict[str, typing.Any]] = None,
-        resource_kwargs: typing.Optional[dict[str, typing.Any]] = None,
+        filter_kwargs: dict[str, typing.Any] | None = None,
+        resource_kwargs: dict[str, typing.Any] | None = None,
         **kwargs,
     ):
         """Set filter kwargs and current user."""
@@ -99,14 +99,14 @@ class CreateExportJob(serializers.Serializer):
 
 
 def get_create_export_job_serializer(
-    resource: typing.Type[resources.CeleryModelResource],
-) -> typing.Type:  # type: ignore
+    resource: type[resources.CeleryModelResource],
+) -> type:
     """Create serializer for ExportJobs creation."""
 
     class _CreateExportJob(CreateExportJob):
         """Serializer to start export job."""
 
-        resource_class: typing.Type[resources.CeleryModelResource] = resource
+        resource_class: type[resources.CeleryModelResource] = resource
         file_format = serializers.ChoiceField(
             required=True,
             choices=[

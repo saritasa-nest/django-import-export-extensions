@@ -1,10 +1,9 @@
 import pytest
 
+from import_export_extensions.resources import CeleryModelResource
 from tests.fake_app.factories import MembershipFactory
 from tests.fake_app.models import Artist, Membership
 from tests.fake_app.resources import ArtistResourceWithM2M
-
-from import_export_extensions.resources import CeleryModelResource
 
 
 @pytest.fixture
@@ -42,7 +41,7 @@ def test_correct_restoring(
     artist_resource_with_m2m: CeleryModelResource,
     three_bands_artist: Artist,
 ):
-    """This is some kind of functional test for resources.
+    """Test that restoring works correct.
 
     Take a look at ``fake_app.models``. So we want to export
     ``Artist`` with info about his bands. And we want to store info about
@@ -67,14 +66,14 @@ def test_correct_restoring(
 
     memberships = list(Membership.objects.all())
     # check info about his bands
-    expected_bands = set(membership.band.id for membership in memberships)
+    expected_bands = {membership.band.id for membership in memberships}
     restored_bands = set(restored_artist.bands.values_list("id", flat=True))
 
     assert expected_bands == restored_bands
 
-    expected_join_dates = set(
+    expected_join_dates = {
         membership.date_joined for membership in memberships
-    )
+    }
     restored_join_dates = set(
         restored_membership.values_list("date_joined", flat=True),
     )

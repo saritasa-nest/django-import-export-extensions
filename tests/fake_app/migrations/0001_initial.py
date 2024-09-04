@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies: list[str] = []
@@ -26,8 +25,8 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=100, unique=True)),
             ],
             options={
-                'verbose_name': 'Artist',
-                'verbose_name_plural': 'Artists',
+                "verbose_name": "Artist",
+                "verbose_name_plural": "Artists",
             },
         ),
         migrations.CreateModel(
@@ -45,8 +44,8 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=100)),
             ],
             options={
-                'verbose_name': 'Band',
-                'verbose_name_plural': 'Bands',
+                "verbose_name": "Band",
+                "verbose_name_plural": "Bands",
             },
         ),
         migrations.CreateModel(
@@ -64,8 +63,8 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=100)),
             ],
             options={
-                'verbose_name': 'Instrument',
-                'verbose_name_plural': 'Instruments',
+                "verbose_name": "Instrument",
+                "verbose_name_plural": "Instruments",
             },
         ),
         migrations.CreateModel(
@@ -97,15 +96,16 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                'verbose_name': 'Membership',
-                'verbose_name_plural': 'Memberships',
+                "verbose_name": "Membership",
+                "verbose_name_plural": "Memberships",
             },
         ),
         migrations.AddField(
             model_name="artist",
             name="bands",
             field=models.ManyToManyField(
-                through="fake_app.Membership", to="fake_app.band",
+                through="fake_app.Membership",
+                to="fake_app.band",
             ),
         ),
         migrations.AddField(

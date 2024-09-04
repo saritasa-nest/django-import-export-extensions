@@ -81,24 +81,22 @@ class RowResult(results.RowResult):
     @property
     def has_skipped_errors(self) -> bool:
         """Return True if row contain any skipped errors."""
-        if len(self.non_field_skipped_errors) > 0 or len(self.field_skipped_errors) > 0:
-            return True
-        return False
+        return bool(
+            len(self.non_field_skipped_errors) > 0
+            or len(self.field_skipped_errors) > 0,
+        )
 
     @property
     def skipped_errors_count(self) -> int:
         """Return count of skipped errors."""
-        return (
-            len(self.non_field_skipped_errors)
-            + len(self.field_skipped_errors)
+        return len(self.non_field_skipped_errors) + len(
+            self.field_skipped_errors,
         )
 
     @property
     def has_error_import_type(self) -> bool:
         """Return true if import type is not valid."""
-        if self.import_type not in self.valid_import_types:
-            return True
-        return False
+        return self.import_type not in self.valid_import_types
 
 
 class Result(results.Result):
@@ -107,9 +105,7 @@ class Result(results.Result):
     @property
     def has_skipped_rows(self) -> bool:
         """Return True if contain any skipped rows."""
-        if any(row.has_skipped_errors for row in self.rows):
-            return True
-        return False
+        return bool(any(row.has_skipped_errors for row in self.rows))
 
     @property
     def skipped_rows(self) -> list[RowResult]:
