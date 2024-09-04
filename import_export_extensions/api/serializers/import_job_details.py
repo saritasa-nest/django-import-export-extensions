@@ -10,12 +10,14 @@ from ... import models
 
 class SkippedErrorsDict(typing.TypedDict):
     """Typed dict for skipped errors."""
+
     non_field_skipped_errors: list[str]
     field_skipped_errors: dict[str, list[str]]
 
 
 class ImportParamsSerializer(serializers.Serializer):
     """Serializer for representing import parameters."""
+
     data_file = serializers.FileField()
     resource_path = serializers.CharField()
     resource_kwargs = serializers.CharField()
@@ -23,6 +25,7 @@ class ImportParamsSerializer(serializers.Serializer):
 
 class ImportDiffSerializer(serializers.Serializer):
     """Serializer for representing importing rows diff."""
+
     previous = serializers.CharField(allow_blank=True, allow_null=True)
     current = serializers.CharField(allow_blank=True, allow_null=True)
 
@@ -33,6 +36,7 @@ class ImportRowSerializer(serializers.Serializer):
     Used to generate correct openapi spec.
 
     """
+
     operation = serializers.CharField()
     parsed_fields = serializers.ListField(
         child=ImportDiffSerializer(allow_null=True),
@@ -42,6 +46,7 @@ class ImportRowSerializer(serializers.Serializer):
 
 class ImportingDataSerializer(serializers.Serializer):
     """Serializer for representing importing data."""
+
     headers = serializers.ListField(
         child=serializers.CharField(),
     )
@@ -63,7 +68,8 @@ class ImportingDataSerializer(serializers.Serializer):
 
             original_fields = [
                 resource.export_field(field, row.original)
-                if row.original else ""
+                if row.original
+                else ""
                 for field in resource.get_user_visible_fields()
             ]
             current_fields = [
@@ -71,20 +77,24 @@ class ImportingDataSerializer(serializers.Serializer):
                 for field in resource.get_user_visible_fields()
             ]
 
-            rows.append({
-                "operation": row.import_type,
-                "parsed_fields": [
-                    {
-                        "previous": original_field,
-                        "current": current_field,
-                    } for original_field, current_field
-                    in itertools.zip_longest(
-                        original_fields,
-                        current_fields,
-                        fillvalue="",
-                    )
-                ],
-            })
+            parsed_fields = [
+                {
+                    "previous": original_field,
+                    "current": current_field,
+                }
+                for original_field, current_field in itertools.zip_longest(
+                    original_fields,
+                    current_fields,
+                    fillvalue="",
+                )
+            ]
+
+            rows.append(
+                {
+                    "operation": row.import_type,
+                    "parsed_fields": parsed_fields,
+                },
+            )
 
         importing_data = {
             "headers": instance.result.diff_headers,
@@ -95,6 +105,7 @@ class ImportingDataSerializer(serializers.Serializer):
 
 class TotalsSerializer(serializers.Serializer):
     """Serializer to represent import totals."""
+
     new = serializers.IntegerField(allow_null=True, required=False)
     update = serializers.IntegerField(allow_null=True, required=False)
     delete = serializers.IntegerField(allow_null=True, required=False)
@@ -110,6 +121,7 @@ class TotalsSerializer(serializers.Serializer):
 
 class RowError(serializers.Serializer):
     """Represent single row errors."""
+
     line = serializers.IntegerField()
     error = serializers.CharField()
     row = serializers.ListField(
@@ -119,6 +131,7 @@ class RowError(serializers.Serializer):
 
 class InputErrorSerializer(serializers.Serializer):
     """Represent Input errors."""
+
     base_errors = serializers.ListField(
         child=serializers.CharField(),
     )
@@ -150,7 +163,8 @@ class InputErrorSerializer(serializers.Serializer):
                         "line": line,
                         "error": str(error.error),
                         "row": error.row.values(),
-                    } for error in errors
+                    }
+                    for error in errors
                 ]
                 input_errors["row_errors"].append(line_errors)
 
@@ -179,10 +193,7 @@ class SkippedErrorsSerializer(serializers.Serializer):
 
     def to_representation(self, instance: models.ImportJob):
         """Parse skipped errors from import job result."""
-        if (
-            instance.import_status
-            not in models.ImportJob.results_statuses
-        ):
+        if instance.import_status not in models.ImportJob.results_statuses:
             return super().to_representation(self.get_initial())
         skipped_errors: SkippedErrorsDict = {
             "non_field_skipped_errors": [],

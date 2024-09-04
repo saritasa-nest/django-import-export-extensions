@@ -39,7 +39,7 @@ class M2MField(Field):
         m2m_rel, _, field_name, _ = self.get_relation_field_params(obj)
 
         # retrieve intermediate model
-        # intermediate_model == Membership
+        # intermediate_model is the Membership model
         intermediate_model = m2m_rel.through
 
         # filter relations with passed object
@@ -191,8 +191,8 @@ class IntermediateManyToManyField(M2MField):
         ) = self.get_relation_field_params(obj)
 
         # retrieve intermediate model
-        # IntermediateModel == Membership
-        IntermediateModel = m2m_rel.through
+        # intermediate_model is the Membership model
+        intermediate_model = m2m_rel.through
 
         # should be returned following list:
         # [{'band': <Band obj>, 'date_joined': '2016-08-18'}]
@@ -200,7 +200,7 @@ class IntermediateManyToManyField(M2MField):
 
         # remove current related objects,
         # i.e. clear artists's band
-        IntermediateModel.objects.filter(**{field_name: obj}).delete()
+        intermediate_model.objects.filter(**{field_name: obj}).delete()
 
         for rel_obj_data in instances_data:
             # add current and remote object to intermediate instance data
@@ -212,7 +212,7 @@ class IntermediateManyToManyField(M2MField):
                     reversed_field_name: rel_obj_data["object"],
                 },
             )
-            intermediate_obj = IntermediateModel(**obj_data)
+            intermediate_obj = intermediate_model(**obj_data)
             try:
                 intermediate_obj.full_clean()
             except Exception as e:

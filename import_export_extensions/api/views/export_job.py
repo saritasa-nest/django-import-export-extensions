@@ -29,7 +29,7 @@ class ExportBase(type):
         specify request and response, and enable filters.
 
         """
-        viewset: typing.Type["ExportJobViewSet"] = super().__new__(
+        viewset: type[ExportJobViewSet] = super().__new__(
             cls,
             name,
             bases,
@@ -111,9 +111,7 @@ class ExportJobViewSet(
     permission_classes = (permissions.IsAuthenticated,)
     queryset = models.ExportJob.objects.all()
     serializer_class = serializers.ExportJobSerializer
-    resource_class: typing.Optional[
-        typing.Type[resources.CeleryModelResource]
-    ] = None
+    resource_class: type[resources.CeleryModelResource] | None = None
     filterset_class: django_filters.rest_framework.FilterSet = None
 
     def get_queryset(self):
@@ -156,7 +154,7 @@ class ExportJobViewSet(
         try:
             job.cancel_export()
         except ValueError as error:
-            raise ValidationError(error.args[0])
+            raise ValidationError(error.args[0]) from error
 
         serializer = self.get_serializer(instance=job)
         return response.Response(

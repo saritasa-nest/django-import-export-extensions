@@ -13,8 +13,8 @@ class ImportProgressSerializer(ProgressSerializer):
     """Serializer to show ImportJob progress."""
 
     state = serializers.ChoiceField(
-        choices=models.ImportJob.ImportStatus.values
-        + [
+        choices=[
+            *models.ImportJob.ImportStatus.values,
             states.PENDING,
             states.STARTED,
             states.SUCCESS,
@@ -90,7 +90,7 @@ class CreateImportJob(serializers.Serializer):
 
     """
 
-    resource_class: typing.Type[resources.CeleryModelResource]
+    resource_class: type[resources.CeleryModelResource]
 
     file = serializers.FileField(required=True)
     force_import = serializers.BooleanField(default=False, required=False)
@@ -99,7 +99,7 @@ class CreateImportJob(serializers.Serializer):
     def __init__(
         self,
         *args,
-        resource_kwargs: typing.Optional[dict[str, typing.Any]] = None,
+        resource_kwargs: dict[str, typing.Any] | None = None,
         **kwargs,
     ):
         """Set filter kwargs and current user."""
@@ -127,14 +127,14 @@ class CreateImportJob(serializers.Serializer):
 
 
 def get_create_import_job_serializer(
-    resource: typing.Type[resources.CeleryModelResource],
-) -> typing.Type:  # type: ignore
+    resource: type[resources.CeleryModelResource],
+) -> type:
     """Create serializer for ImportJobs creation."""
 
     class _CreateImportJob(CreateImportJob):
         """Serializer to start import job."""
 
-        resource_class: typing.Type[resources.CeleryModelResource] = resource
+        resource_class: type[resources.CeleryModelResource] = resource
 
     return type(
         f"{resource.__name__}CreateImportJob",

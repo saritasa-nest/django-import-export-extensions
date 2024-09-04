@@ -1,4 +1,3 @@
-import typing
 
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
@@ -150,7 +149,7 @@ class ExportJobAdmin(
     def get_fieldsets(
         self,
         request: WSGIRequest,
-        obj: typing.Optional[models.ExportJob] = None,
+        obj: models.ExportJob | None = None,
     ):
         """Get fieldsets depending on object status."""
         status = (

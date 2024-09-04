@@ -9,6 +9,7 @@ from .resources import ArtistResourceWithM2M, SimpleArtistResource
 @admin.register(Artist)
 class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
     """Simple Artist admin model for tests."""
+
     list_display = (
         "name",
         "instrument",
@@ -19,12 +20,14 @@ class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
 @admin.register(Instrument)
 class InstrumentAdmin(admin.ModelAdmin):
     """Simple Instrument admin model for tests."""
+
     list_display = ("title",)
 
 
 @admin.register(Band)
 class BandAdmin(admin.ModelAdmin):
     """Band admin model for tests."""
+
     list_display = (
         "id",
         "title",
@@ -38,6 +41,7 @@ class BandAdmin(admin.ModelAdmin):
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
     """Membership admin model for tests."""
+
     list_display = (
         "id",
         "date_joined",

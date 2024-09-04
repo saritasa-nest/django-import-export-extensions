@@ -8,6 +8,7 @@ from .models import Artist, Band
 
 class SimpleArtistResource(CeleryModelResource):
     """Artist resource with simple fields."""
+
     filterset_class = ArtistFilterSet
 
     class Meta:
@@ -22,6 +23,7 @@ class SimpleArtistResource(CeleryModelResource):
 
 class ArtistResourceWithM2M(CeleryModelResource):
     """Artist resource with Many2Many field."""
+
     bands = IntermediateManyToManyField(
         attribute="bands",
         column_name="Bands he played in",

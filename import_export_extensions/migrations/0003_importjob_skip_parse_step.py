@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('import_export_extensions', '0002_alter_exportjob_export_status'),
+        ("import_export_extensions", "0002_alter_exportjob_export_status"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='importjob',
-            name='skip_parse_step',
-            field=models.BooleanField(default=False, help_text='Start importing without confirmation', verbose_name='Skip parse step'),
+            model_name="importjob",
+            name="skip_parse_step",
+            field=models.BooleanField(
+                default=False,
+                help_text="Start importing without confirmation",
+                verbose_name="Skip parse step",
+            ),
         ),
     ]

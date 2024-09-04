@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Instrument(models.Model):
     """Model representing Instrument."""
+
     title = models.CharField(max_length=100)
 
     class Meta:
@@ -17,6 +18,7 @@ class Instrument(models.Model):
 
 class Artist(models.Model):
     """Model representing artist."""
+
     name = models.CharField(max_length=100, unique=True)
     bands = models.ManyToManyField("Band", through="Membership")
 
@@ -36,6 +38,7 @@ class Artist(models.Model):
 
 class Band(models.Model):
     """Model representing band."""
+
     title = models.CharField(max_length=100)
 
     class Meta:
@@ -49,6 +52,7 @@ class Band(models.Model):
 
 class Membership(models.Model):
     """Model representing membership."""
+
     artist = models.ForeignKey(
         Artist,
         on_delete=models.CASCADE,
@@ -65,6 +69,4 @@ class Membership(models.Model):
 
     def __str__(self) -> str:
         """Return string representation."""
-        return "<{}> joined <{}> on <{}>".format(
-            self.artist, self.band, self.date_joined,
-        )
+        return f"<{self.artist}> joined <{self.band}> on <{self.date_joined}>"

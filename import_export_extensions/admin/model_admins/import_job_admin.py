@@ -1,4 +1,3 @@
-import typing
 
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
@@ -118,7 +117,7 @@ class ImportJobAdmin(
     def get_readonly_fields(
         self,
         request: WSGIRequest,
-        obj: typing.Optional[models.ImportJob] = None,
+        obj: models.ImportJob | None = None,
     ) -> list[str]:
         """Return readonly fields.
 
@@ -151,7 +150,7 @@ class ImportJobAdmin(
 
     def _show_results(
         self,
-        obj: typing.Optional[models.ImportJob] = None,
+        obj: models.ImportJob | None = None,
     ) -> str:
         """Show results totals.
 
@@ -189,7 +188,7 @@ class ImportJobAdmin(
     def get_fieldsets(
         self,
         request: WSGIRequest,
-        obj: typing.Optional[models.ImportJob] = None,
+        obj: models.ImportJob | None = None,
     ):
         """Get fieldsets depending on object status."""
         status = (

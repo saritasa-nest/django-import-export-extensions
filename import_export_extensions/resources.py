@@ -19,6 +19,7 @@ from .results import Error, Result, RowResult
 
 class TaskState(Enum):
     """Class with possible task state values."""
+
     IMPORTING = _("Importing")
     EXPORTING = _("Exporting")
     PARSING = _("Parsing")
@@ -26,14 +27,15 @@ class TaskState(Enum):
 
 class CeleryResourceMixin:
     """Mixin for resources for background import/export using celery."""
-    filterset_class: typing.Type[filters.FilterSet]
-    SUPPORTED_FORMATS: list[
-        typing.Type[base_formats.Format]
-    ] = base_formats.DEFAULT_FORMATS
+
+    filterset_class: type[filters.FilterSet]
+    SUPPORTED_FORMATS: list[type[base_formats.Format]] = (
+        base_formats.DEFAULT_FORMATS
+    )
 
     def __init__(
         self,
-        filter_kwargs: typing.Optional[dict[str, typing.Any]] = None,
+        filter_kwargs: dict[str, typing.Any] | None = None,
         **kwargs,
     ):
         """Remember init kwargs."""
@@ -54,18 +56,21 @@ class CeleryResourceMixin:
         return filter_instance.filter_queryset(queryset=queryset)
 
     @classproperty
-    def class_path(cls) -> str:
+    def class_path(self) -> str:
         """Get path of class to import it."""
-        return ".".join([cls.__module__, cls.__name__])
+        return f"{self.__module__}.{self.__name__}"
 
     @classmethod
-    def get_supported_formats(cls) -> list[typing.Type[base_formats.Format]]:
+    def get_supported_formats(cls) -> list[type[base_formats.Format]]:
         """Get a list of supported formats."""
         return cls.SUPPORTED_FORMATS
 
     @classmethod
-    def get_supported_extensions_map(cls) -> dict[
-        str, typing.Type[base_formats.Format],
+    def get_supported_extensions_map(
+        cls,
+    ) -> dict[
+        str,
+        type[base_formats.Format],
     ]:
         """Get a map of supported formats and their extensions."""
         return {
@@ -78,7 +83,7 @@ class CeleryResourceMixin:
         dataset: tablib.Dataset,
         dry_run: bool = False,
         raise_errors: bool = False,
-        use_transactions: typing.Optional[bool] = None,
+        use_transactions: bool | None = None,
         collect_failed_rows: bool = False,
         rollback_on_validation_errors: bool = False,
         force_import: bool = False,
@@ -91,7 +96,8 @@ class CeleryResourceMixin:
         """
         self.initialize_task_state(
             state=(
-                TaskState.IMPORTING.name if not dry_run
+                TaskState.IMPORTING.name
+                if not dry_run
                 else TaskState.PARSING.name
             ),
             queryset=dataset,
@@ -133,7 +139,8 @@ class CeleryResourceMixin:
         )
         self.update_task_state(
             state=(
-                TaskState.IMPORTING.name if not dry_run
+                TaskState.IMPORTING.name
+                if not dry_run
                 else TaskState.PARSING.name
             ),
         )
@@ -170,13 +177,13 @@ class CeleryResourceMixin:
         return row_result
 
     @classmethod
-    def get_row_result_class(self):
+    def get_row_result_class(cls) -> type[RowResult]:
         """Return custom row result class."""
         return RowResult
 
     @classmethod
-    def get_result_class(self):
-        """Geti custom result class."""
+    def get_result_class(cls) -> type[Result]:
+        """Get custom result class."""
         return Result
 
     def export(
@@ -209,7 +216,7 @@ class CeleryResourceMixin:
     def initialize_task_state(
         self,
         state: str,
-        queryset: typing.Union[QuerySet, tablib.Dataset],
+        queryset: QuerySet | tablib.Dataset,
     ):
         """Set initial state of the task to track progress.
 
@@ -280,7 +287,7 @@ class CeleryResourceMixin:
         return f"{model}-{date_str}.{extension}"
 
     @classmethod
-    def get_error_result_class(cls):
+    def get_error_result_class(cls) -> type[Error]:
         """Override default error class."""
         return Error
 
@@ -293,7 +300,7 @@ class CeleryModelResource(CeleryResourceMixin, resources.ModelResource):
     """ModelResource which supports importing via celery."""
 
     @classmethod
-    def get_model_queryset(cls):
+    def get_model_queryset(cls) -> QuerySet:
         """Return a queryset of all objects for this model.
 
         Override this if you

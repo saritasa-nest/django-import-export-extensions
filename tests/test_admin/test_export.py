@@ -1,4 +1,5 @@
 """There are kind a functional tests for export using Django Admin."""
+
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.urls import reverse

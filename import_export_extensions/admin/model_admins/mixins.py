@@ -1,4 +1,3 @@
-import typing
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.handlers.wsgi import WSGIRequest
@@ -45,8 +44,8 @@ class BaseImportExportJobAdminMixin:
 
     def get_from_content_type(
         self,
-        obj: typing.Union[models.ImportJob, models.ExportJob],
-    ) -> typing.Union[ContentType, None]:
+        obj: models.ImportJob | models.ExportJob,
+    ) -> ContentType | None:
         """Shortcut to get object from content_type."""
         content_type = obj.resource_kwargs.get("content_type")
         obj_id = obj.resource_kwargs.get("object_id")

@@ -1,4 +1,4 @@
-import os
+import pathlib
 import re
 import typing
 import unicodedata
@@ -16,7 +16,7 @@ def normalize_string_value(value: str) -> str:
     """Normalize string value.
 
     1. Remove leading and trailing whitespaces.
-    2. Replace all space characters (' \t\n\r\x0b\x0c') with the Space char.
+    2. Replace all space characters ('\t\n\r\x0b\x0c') with the Space char.
     3. Remove Unicode C0 controls to prevent problems with the creation of
     XLS(X) files with `openpyxl` lib.
     4. Normalize Unicode string, using `NFKC` form. See the details:
@@ -49,7 +49,10 @@ def get_mime_type_by_file_url(file_url: str) -> str:
 def download_file(external_url: str) -> ContentFile:
     """Download file from external resource and return the file object."""
     mime_type = get_mime_type_by_file_url(external_url)
-    data = requests.get(external_url)
+    data = requests.get(
+        external_url,
+        timeout=20,  # seconds
+    )
     file = ContentFile(data.content)
     file.content_type = mime_type
     return file
@@ -71,7 +74,7 @@ def get_file_extension(url: str, lower: bool = True) -> str:
     get_index = url.find("?")
     if get_index != -1:
         url = url[:get_index]  # remove GET params from URL
-    ext = os.path.splitext(url)[1][1:]
+    ext = pathlib.Path(url).suffix
     return ext.lower() if lower else ext
 
 
@@ -102,7 +105,8 @@ def get_clear_q_filter(str_value: str, attribute_name: str) -> Q:
             is r'^Hello\s+world$'
 
     Then for regex pattern we create Q filter.
-        Example:
+
+    Example:
             If attribute_name is 'title' then Q filter is
             Q(title__iregex=r'^Hello\s+world$')
 
@@ -115,7 +119,7 @@ def get_clear_q_filter(str_value: str, attribute_name: str) -> Q:
 
     words = [re.escape(value) for value in str_value.split()]
     pattern = r"\s+".join(words)
-    pattern = r"^{0}$".format(pattern)
+    pattern = rf"^{pattern}$"
 
     return Q(**{q_regex_attr: pattern})
 
@@ -156,7 +160,7 @@ def url_to_internal_value(file_url: str) -> str:
 
     if file_url.startswith(settings.MEDIA_URL[1:]):
         # In case of local storing crop the media prefix
-        file_url = file_url[len(settings.MEDIA_URL) - 1:]
+        file_url = file_url[len(settings.MEDIA_URL) - 1 :]
 
     elif (
         getattr(settings, "AWS_STORAGE_BUCKET_NAME", None)

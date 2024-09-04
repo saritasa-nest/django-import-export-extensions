@@ -1,5 +1,4 @@
 import dataclasses
-import typing
 
 from django.db.models.options import Options
 
@@ -7,12 +6,9 @@ from import_export.formats import base_formats
 
 from ... import resources
 
-ResourceObj = typing.Union[
-    resources.CeleryResource,
-    resources.CeleryModelResource,
-]
-ResourceType = typing.Type[ResourceObj]
-FormatType = typing.Type[base_formats.Format]
+ResourceObj = resources.CeleryResource | resources.CeleryModelResource
+ResourceType = type[ResourceObj]
+FormatType = type[base_formats.Format]
 
 
 @dataclasses.dataclass

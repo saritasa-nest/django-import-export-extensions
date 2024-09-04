@@ -123,7 +123,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 line-length = 79
 indent-width = 4
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
 extend-select = [
@@ -230,6 +230,8 @@ ignore = [
   "TRY300",
   # https://docs.astral.sh/ruff/rules/missing-trailing-comma
   "COM812",  # ruff formatter suggested to exclude it
+  # https://docs.astral.sh/ruff/rules/try-except-in-loop/
+  "PERF203",
 
   # TODO: remove after fix:
   # https://docs.astral.sh/ruff/rules/missing-type-function-argument/

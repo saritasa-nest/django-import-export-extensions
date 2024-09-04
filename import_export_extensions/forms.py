@@ -1,10 +1,9 @@
-"""This is source code of origin application ``django-import-export``.
+"""Source code of origin application ``django-import-export``.
 
 The difference is that these forms don't required file format, it is taken from
 file. And in ExportForm the default export format is `xlsx`.
 
 """
-import typing
 
 from django import forms
 from django.utils.translation import gettext_lazy as _
@@ -30,7 +29,7 @@ class ExportForm(forms.Form):
 
     def __init__(
         self,
-        formats: list[typing.Type[base_formats.Format]],
+        formats: list[type[base_formats.Format]],
         *args,
         **kwargs,
     ):

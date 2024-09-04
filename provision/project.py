@@ -32,7 +32,7 @@ def clear(context: invoke.Context):
     for directory in build_dirs + coverage_dirs + cache_dirs:
         shutil.rmtree(directory, ignore_errors=True)
 
-    cwd = pathlib.Path(".")
+    cwd = pathlib.Path()
     # remove egg paths
     saritasa_invocations.print_success("Remove egg directories")
     for path in cwd.glob("*.egg-info"):

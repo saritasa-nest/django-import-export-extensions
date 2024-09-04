@@ -1,8 +1,9 @@
 # !/usr/bin/env python3
 import os
+import pathlib
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")

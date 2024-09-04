@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -23,14 +21,11 @@ ie_router.register(
     basename="import-artist",
 )
 
-urlpatterns = [
-    re_path(r"^admin/", admin.site.urls),
-] + ie_router.urls
+urlpatterns = [re_path("^admin/", admin.site.urls), *ie_router.urls]
 
 
 # for serving uploaded files on dev environment with django
 if settings.DEBUG:
-
     urlpatterns += static(
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,

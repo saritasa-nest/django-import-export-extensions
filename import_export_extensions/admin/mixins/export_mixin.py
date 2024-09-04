@@ -40,17 +40,24 @@ class CeleryExportAdminMixin(
             If errors - traceback and error message.
 
     """
+
     # export data encoding
     to_encoding = "utf-8"
 
     # template used to display ExportForm
     celery_export_template_name = "admin/import_export/export.html"
 
-    export_status_template_name = "admin/import_export_extensions/celery_export_status.html"
+    export_status_template_name = (
+        "admin/import_export_extensions/celery_export_status.html"
+    )
 
-    export_results_template_name = "admin/import_export_extensions/celery_export_results.html"
+    export_results_template_name = (
+        "admin/import_export_extensions/celery_export_results.html"
+    )
 
-    import_export_change_list_template = "admin/import_export/change_list_export.html"
+    import_export_change_list_template = (
+        "admin/import_export/change_list_export.html"
+    )
 
     # Statuses that should be displayed on 'results' page
     export_results_statuses = models.ExportJob.export_finished_statuses
@@ -262,11 +269,8 @@ class CeleryExportAdminMixin(
         job = models.ExportJob.objects.create(
             resource_path=resource_class.class_path,
             resource_kwargs=resource_kwargs,
-            file_format_path=".".join(
-                [
-                    file_format.__module__,
-                    file_format.__name__,
-                ],
+            file_format_path=(
+                f"{file_format.__module__}.{file_format.__name__}"
             ),
         )
         return job
@@ -278,7 +282,7 @@ class CeleryExportAdminMixin(
     ) -> models.ExportJob:
         """Get ExportJob instance.
 
-        Raises:
+        Raises
             Http404
 
         """
@@ -317,7 +321,7 @@ class CeleryExportAdminMixin(
     def changelist_view(
         self,
         request: WSGIRequest,
-        context: typing.Optional[dict[str, typing.Any]] = None,
+        context: dict[str, typing.Any] | None = None,
     ):
         """Add the check for permission to changelist template context."""
         context = context or {}

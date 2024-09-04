@@ -1,7 +1,7 @@
 import pathlib
 import traceback
 import uuid
-from typing import Optional, Sequence, Type
+from collections.abc import Sequence
 
 from django.conf import settings
 from django.core.files import base as django_files
@@ -248,7 +248,7 @@ class ImportJob(BaseJob):
         return resource
 
     @property
-    def progress(self) -> Optional[TaskStateInfo]:
+    def progress(self) -> TaskStateInfo | None:
         """Return dict with parsing state.
 
         Example for sync mode::
@@ -356,7 +356,7 @@ class ImportJob(BaseJob):
     def _parse_data_inner(self) -> Result:
         """Run import process with `dry_run == True`.
 
-        Returns:
+        Returns
             apps.utils.async_import_export.results.Result instance with
             parsing results
 
@@ -447,7 +447,7 @@ class ImportJob(BaseJob):
         Transaction is not used as import is slow, so before it finish -
         no instances are saved to DB. So sync works incorrect
 
-        Returns:
+        Returns
             import_export.results.Result instance with parsing results
 
         """
@@ -464,12 +464,15 @@ class ImportJob(BaseJob):
     def _get_import_format_by_ext(
         self,
         file_ext: str,
-    ) -> Type[base_formats.Format]:
+    ) -> type[base_formats.Format]:
         """Determine import file format by file extension."""
         supported_formats = self.resource.get_supported_formats()
 
         for import_format in supported_formats:
-            if import_format().get_title().upper() == file_ext.upper().replace(".", ""):
+            if import_format().get_title().upper() == file_ext.upper().replace(
+                ".",
+                "",
+            ):
                 return import_format
 
         supported_formats_titles = ",".join(

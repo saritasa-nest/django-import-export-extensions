@@ -7,21 +7,20 @@ from rest_framework import test
 
 import pytest
 
-from tests.fake_app.models import Artist, Band, Membership
-
 from import_export_extensions.models import ExportJob, ImportJob
+from tests.fake_app.models import Artist, Band, Membership
 
 from .fake_app import factories
 from .fake_app.factories import ArtistImportJobFactory
 
 
 @pytest.fixture(scope="session", autouse=True)
-def django_db_setup(django_db_setup):
+def django_db_setup(django_db_setup):  # noqa: PT004
     """Set up test db for testing."""
 
 
 @pytest.fixture(autouse=True)
-def enable_db_access_for_all_tests(django_db_setup, db):
+def enable_db_access_for_all_tests(django_db_setup, db):  # noqa: PT004
     """Allow all tests to access DB."""
 
 
@@ -76,7 +75,7 @@ def uploaded_file(existing_artist: Artist) -> SimpleUploadedFile:
 
 @pytest.fixture
 def force_import_artist_job(new_artist: Artist) -> Artist:
-    """Return `ImportJob` with `force_import=True` and file with invalid row."""
+    """`ImportJob` with `force_import=True` and file with invalid row."""
     return ArtistImportJobFactory(
         artists=[new_artist],
         is_valid_file=False,
@@ -112,7 +111,7 @@ def superuser():
 
 
 @pytest.fixture(scope="session", autouse=True)
-def temp_directory_for_media(tmpdir_factory):
+def _temp_directory_for_media(tmpdir_factory):
     """Fixture that set temp directory for all media files.
 
     This fixture changes DEFAULT_FILE_STORAGE or STORAGES variable
