@@ -37,41 +37,41 @@ packages = [{include = "import_export_extensions"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django = ">=4.2,<5.1"
+django = ">=4.2"
 django-import-export = {extras = ["xls", "xlsx"], version = ">=4.0"}
 # Django REST Framework
 # https://www.django-rest-framework.org/
-djangorestframework = "^3.14.0"
+djangorestframework = "^3.15.2"
 # OpenApi auto specs generator
 # https://drf-spectacular.readthedocs.io/en/latest/
 drf-spectacular = "^0.26.5"
 # Filter querysets dynamically
 # https://django-filter.readthedocs.io/en/stable/
-django-filter = "^23.4"
+django-filter = "^24.3"
 # Different useful Django utils
 # https://django-extensions.readthedocs.io/en/latest/
 django-extensions = "^3.2.3"
 # Implementation of a pickled object field in django
 # https://github.com/gintas/django-picklefield
-django-picklefield = "^3.1"
+django-picklefield = "^3.2"
 # Celery
 # https://docs.celeryproject.org/en/stable/
-celery = {extras = ["redis"], version = "^5.3.6"}
+celery = {extras = ["redis"], version = "^5.4.0"}
 # HTTP library for Python
 # https://requests.readthedocs.io/en/latest/
-requests = "^2.31.0"
+requests = "^2.32.3"
 
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.13"
-ipython = "^8.18.1"
+ipython = "^8.27.0"
 
 [tool.poetry.group.linters.dependencies]
 # Mypy is a static type checker for Python.
 # https://mypy.readthedocs.io/en/stable/
-mypy = "^1.7.1"
+mypy = "^1.11.2"
 # This is a PEP 561 type stub package for the `requests` package
 # https://pypi.org/project/types-requests/
-types-requests = "^2.31.0.10"
+types-requests = "^2.32.0.20240905"
 
 [tool.poetry.group.test.dependencies]
 # Provides a Django management command to check whether the primary database is ready to accept connections.
@@ -79,19 +79,19 @@ types-requests = "^2.31.0.10"
 django-probes = "^1.7.0"
 # Plugin for pytest that provides a set of useful tools for testing Django applications and projects
 # https://pytest-django.readthedocs.io/en/latest/
-pytest-django = "^4.7.0"
+pytest-django = "^4.9.0"
 # This plugin provides a mocker fixture for pytest
 # https://pypi.org/project/pytest-mock/
-pytest-mock = "^3.12.0"
+pytest-mock = "^3.14.0"
 # Package for generating test data
 # https://factoryboy.readthedocs.io/en/stable/
-factory-boy = "^3.3.0"
+factory-boy = "^3.3.1"
 # Werkzeug is a comprehensive WSGI web application library
 # https://werkzeug.palletsprojects.com/en/3.0.x/
-werkzeug = "^3.0.1"
+werkzeug = "^3.0.4"
 # Tool for measuring code coverage of Python programs
 # https://coverage.readthedocs.io/en/7.3.2/
-coverage = "^7.3.2"
+coverage = "^7.6.1"
 # Psycopg is a PostgreSQL adapter for the Python
 # https://www.psycopg.org/docs/install.html
 psycopg2-binary = "^2.9.9"
@@ -99,7 +99,7 @@ psycopg2-binary = "^2.9.9"
 [tool.poetry.group.docs.dependencies]
 # Package for documnation generation
 # https://www.sphinx-doc.org/en/master/
-sphinx = "^7.2.6"
+sphinx = "<8"
 # Theme for documentation
 # https://pypi.org/project/sphinx-rtd-theme/
 sphinx-rtd-theme = "^2.0.0"
@@ -110,10 +110,10 @@ sphinx-rtd-theme = "^2.0.0"
 toml = "^0.10.2"
 # A framework for managing and maintaining multi-language pre-commit hooks.
 # https://pre-commit.com/
-pre-commit = "^3.5.0"
+pre-commit = "^3.8.0"
 # Collection of invoke commands which used in Saritasa organization
 # https://github.com/saritasa-nest/saritasa-python-invocations/
-saritasa-invocations = "^0.10.0"
+saritasa-invocations = "^1.2.1"
 
 [build-system]
 requires = ["poetry-core"]
