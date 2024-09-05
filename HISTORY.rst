@@ -5,6 +5,8 @@ History
 UNRELEASED
 ----------
 * Extend response of import job api
+* Added support for django-import-export >= 4.0
+* Removed support for django 3.2
 
 0.5.0 (2023-12-19)
 ------------------
@@ -18,7 +20,7 @@ UNRELEASED
 
 0.4.1 (2023-09-25)
 ------------------
-* Remvoe ``escape_output`` due it's deprecation
+* Remove ``escape_output`` due it's deprecation
 
 0.4.0 (2023-09-11)
 ------------------

@@ -43,7 +43,7 @@ class M2MField(Field):
         intermediate_model = m2m_rel.through
 
         # filter relations with passed object
-        qs = intermediate_model.objects.filter(**{field_name: obj})
+        qs = intermediate_model.objects.filter(**{f"{field_name}_id": obj.id})
         if self.export_order:
             qs = qs.order_by(self.export_order)
         return qs
@@ -89,7 +89,7 @@ class M2MField(Field):
             reversed_field_name,
         ) = self.get_relation_field_params(obj)
 
-        # retrieve intermediate model (AttendeeTeamMembership)
+        # retrieve intermediate model Membership
         intermediate_model = m2m_field.remote_field.through
 
         # should be returned following list:
@@ -116,7 +116,7 @@ class M2MField(Field):
         # Find instances to add after import
         added_ids = imported_ids - current_ids
         for instance in data:
-            # process only newly added attendees
+            # process only newly added objects
             if instance["object"].id not in added_ids:
                 continue
             obj_data = instance["properties"].copy()

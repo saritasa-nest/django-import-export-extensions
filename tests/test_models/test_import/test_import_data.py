@@ -41,10 +41,10 @@ def test_import_data_valid_data_file(
     new_artist_row_result = job.result.rows[1]
 
     # existing artist just updated
-    assert not existing_artist_row_result.new_record
+    assert not existing_artist_row_result.is_new()
 
     # new artist added
-    assert new_artist_row_result.new_record
+    assert new_artist_row_result.is_new()
 
     assert Artist.objects.count() == 2
 

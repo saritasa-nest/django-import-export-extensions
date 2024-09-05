@@ -72,15 +72,6 @@ class CeleryExportAdminMixin(
             meta=self.model._meta,
         )
 
-    def get_export_resource_kwargs(self, request, *args, **kwargs):
-        """Provide escape settings to resource kwargs."""
-        kwargs = super().get_export_resource_kwargs(request, *args, **kwargs)
-        kwargs.update({
-            "escape_html": self.should_escape_html,
-            "escape_formulae": self.should_escape_formulae,
-        })
-        return kwargs
-
     def get_context_data(
         self,
         request: WSGIRequest,
@@ -140,9 +131,9 @@ class CeleryExportAdminMixin(
 
         formats = self.get_export_formats()
         form = base_forms.ExportForm(
-            formats,
-            request.POST or None,
-            resources=self.get_export_resource_classes(),
+            formats=formats,
+            resources=self.get_export_resource_classes(request),
+            data=request.POST or None,
         )
         resource_kwargs = self.get_export_resource_kwargs(
             *args,
@@ -150,11 +141,14 @@ class CeleryExportAdminMixin(
             request=request,
         )
         if request.method == "POST" and form.is_valid():
-            file_format = formats[int(form.cleaned_data["file_format"])]
+            file_format = formats[int(form.cleaned_data["format"])]
             # create ExportJob and redirect to page with it's status
             job = self.create_export_job(
                 request=request,
-                resource_class=self.choose_export_resource_class(form),
+                resource_class=self.choose_export_resource_class(
+                    form,
+                    request,
+                ),
                 resource_kwargs=resource_kwargs,
                 file_format=file_format,
             )

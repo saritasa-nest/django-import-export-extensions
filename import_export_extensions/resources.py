@@ -11,7 +11,7 @@ import tablib
 from celery import current_task, result
 from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
-from import_export import resources
+from import_export import fields, resources
 from import_export.formats import base_formats
 
 from .results import Error, Result, RowResult
@@ -205,11 +205,9 @@ class CeleryResourceMixin:
             queryset=queryset,
         )
 
-    def export_resource(self, obj):
+    def export_resource(self, obj, fields: list[fields.Field] | None = None):
         """Update task status as we export rows."""
-        resource = [
-            self.export_field(field, obj) for field in self.get_export_fields()
-        ]
+        resource = super().export_resource(obj, fields)  # type: ignore
         self.update_task_state(state=TaskState.EXPORTING.name)
         return resource
 

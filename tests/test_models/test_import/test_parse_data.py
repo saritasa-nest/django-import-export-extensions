@@ -27,7 +27,7 @@ def test_parse_valid_data_file(artist_import_job: ImportJob):
 
     # artist instance should be updated
     row_result = artist_import_job.result.rows[0]
-    assert not row_result.new_record
+    assert not row_result.is_new()
 
 
 def test_parse_data_import_errors(

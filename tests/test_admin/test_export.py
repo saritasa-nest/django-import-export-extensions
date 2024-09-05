@@ -34,7 +34,7 @@ def test_export_using_admin_model(client: Client, superuser: User):
     start_export_response = client.post(
         path=reverse("admin:fake_app_artist_export"),
         data={
-            "file_format": 0,
+            "format": 0,
         },
     )
     assert start_export_response.status_code == status.HTTP_302_FOUND
