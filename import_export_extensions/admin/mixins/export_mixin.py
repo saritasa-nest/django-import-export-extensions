@@ -72,11 +72,6 @@ class CeleryExportAdminMixin(
             meta=self.model._meta,
         )
 
-    def get_export_resource_kwargs(self, request, *args, **kwargs):
-        """Provide escape settings to resource kwargs."""
-        kwargs = super().get_export_resource_kwargs(request, *args, **kwargs)
-        return kwargs
-
     def get_context_data(
         self,
         request: WSGIRequest,
