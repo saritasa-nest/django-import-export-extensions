@@ -78,6 +78,9 @@ class CeleryImportAdminMixin(
     generate_log_entries = base_admin.ImportMixin.generate_log_entries
     get_skip_admin_log = base_admin.ImportMixin.get_skip_admin_log
     has_import_permission = base_admin.ImportMixin.has_import_permission
+    _log_actions = base_admin.ImportMixin._log_actions
+    _create_log_entries = base_admin.ImportMixin._create_log_entries
+    _create_log_entry = base_admin.ImportMixin._create_log_entry
 
     @property
     def model_info(self) -> types.ModelInfo:
