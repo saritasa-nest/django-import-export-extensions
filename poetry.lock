@@ -1696,13 +1696,13 @@ files = [
 
 [[package]]
 name = "saritasa-invocations"
-version = "1.2.1"
+version = "1.2.3"
 description = "Collection of invoke commands used by Saritasa"
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "saritasa_invocations-1.2.1-py3-none-any.whl", hash = "sha256:1bc1cf01b6bb97f083535e27ae8d837907fc34f7ffc6f5d4469e422c0d40828b"},
-    {file = "saritasa_invocations-1.2.1.tar.gz", hash = "sha256:057e1df32e1e4cd357f7271c586e259cf871f6f46a07f07b8570bf3f42552634"},
+    {file = "saritasa_invocations-1.2.3-py3-none-any.whl", hash = "sha256:83d649b7d7eb4dc14faa484632d5780ace0d992fda0c0571fecfabb765864c70"},
+    {file = "saritasa_invocations-1.2.3.tar.gz", hash = "sha256:43059dbe477079eeee14f18f317ba81923790c8beee34f84db2b68eef4d7e16b"},
 ]
 
 [package.dependencies]
