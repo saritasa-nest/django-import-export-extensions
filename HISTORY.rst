@@ -7,6 +7,7 @@ UNRELEASED
 * Extend response of import job api
 * Added support for django-import-export >= 4.0
 * Removed support for django 3.2
+* Add search and ordering to API views
 
 0.5.0 (2023-12-19)
 ------------------

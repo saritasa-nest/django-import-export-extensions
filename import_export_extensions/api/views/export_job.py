@@ -1,14 +1,15 @@
+import contextlib
 import typing
 
 from rest_framework import (
     decorators,
+    exceptions,
     mixins,
     permissions,
     response,
     status,
     viewsets,
 )
-from rest_framework.exceptions import ValidationError
 from rest_framework.request import Request
 
 import django_filters
@@ -68,7 +69,7 @@ class ExportBase(type):
             ],
         )(start)
         # Correct specs of drf-spectacular if it is installed
-        try:
+        with contextlib.suppress(ImportError):
             from drf_spectacular.utils import extend_schema, extend_schema_view
 
             detail_serializer_class = viewset().get_detail_serializer_class()
@@ -87,8 +88,6 @@ class ExportBase(type):
                     },
                 ),
             )(viewset)
-        except ImportError:
-            pass
         return viewset
 
 
@@ -113,6 +112,15 @@ class ExportJobViewSet(
     serializer_class = serializers.ExportJobSerializer
     resource_class: type[resources.CeleryModelResource] | None = None
     filterset_class: django_filters.rest_framework.FilterSet = None
+    search_fields = ("id",)
+    ordering = (
+        "id",
+    )
+    ordering_fields = (
+        "id",
+        "created",
+        "modified",
+    )
 
     def get_queryset(self):
         """Filter export jobs by resource used in viewset."""
@@ -154,7 +162,7 @@ class ExportJobViewSet(
         try:
             job.cancel_export()
         except ValueError as error:
-            raise ValidationError(error.args[0]) from error
+            raise exceptions.ValidationError(error.args[0]) from error
 
         serializer = self.get_serializer(instance=job)
         return response.Response(
