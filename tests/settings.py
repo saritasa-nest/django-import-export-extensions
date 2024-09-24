@@ -117,6 +117,7 @@ REST_FRAMEWORK = {
 
 # Don't use celery when you're local
 CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_STORE_EAGER_RESULT = True
 
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["pickle", "json"]

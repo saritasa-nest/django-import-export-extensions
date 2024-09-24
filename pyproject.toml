@@ -5,40 +5,39 @@ description = "Extend functionality of `django-import-export`"
 license = "MIT"
 authors = ["Saritasa <pypi@saritasa.com>"]
 maintainers = [
-    "Nikita Azanov <nikita.azanov@saritasa.com>",
-    "Vladislav Romaschenko <vladislav.romaschenko@saritasa.com>",
-    "Andrey Otto <andrey.otto@saritasa.com>",
-    "Stanislav Khlud <stanislav.khlud@saritasa.com>",
+  "Nikita Azanov <nikita.azanov@saritasa.com>",
+  "Andrey Otto <andrey.otto@saritasa.com>",
+  "Stanislav Khlud <stanislav.khlud@saritasa.com>",
 ]
 readme = "README.rst"
 repository = "https://github.com/saritasa-nest/django-import-export-extensions"
 documentation = "https://django-import-export-extensions.readthedocs.io"
 keywords = [
-    "python",
-    "json",
-    "django",
-    "csv",
-    "xlsx",
-    "celery",
-    "import_export",
-    "django_import_export_extensions"
+  "python",
+  "json",
+  "django",
+  "csv",
+  "xlsx",
+  "celery",
+  "import_export",
+  "django_import_export_extensions",
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "Natural Language :: English",
-    "Framework :: Django",
-    "Framework :: Django :: 4.0",
-    "Framework :: Django :: 4.1",
-    "Framework :: Django :: 4.2",
-    "Framework :: Django :: 5.0",
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Framework :: Django",
+  "Framework :: Django :: 4.0",
+  "Framework :: Django :: 4.1",
+  "Framework :: Django :: 4.2",
+  "Framework :: Django :: 5.0",
 ]
-packages = [{include = "import_export_extensions"}]
+packages = [{ include = "import_export_extensions" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 django = ">=4.2"
-django-import-export = {extras = ["xls", "xlsx"], version = ">=4.0"}
+django-import-export = { extras = ["xls", "xlsx"], version = ">=4.0" }
 # Django REST Framework
 # https://www.django-rest-framework.org/
 djangorestframework = "^3.15.2"
@@ -56,7 +55,7 @@ django-extensions = "^3.2.3"
 django-picklefield = "^3.2"
 # Celery
 # https://docs.celeryproject.org/en/stable/
-celery = {extras = ["redis"], version = "^5.4.0"}
+celery = { extras = ["redis"], version = "^5.4.0" }
 # HTTP library for Python
 # https://requests.readthedocs.io/en/latest/
 requests = "^2.32.3"
@@ -182,7 +181,7 @@ extend-select = [
   # https://docs.astral.sh/ruff/rules/#flake8-async-async
   "ASYNC",
   # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
-  "RUF"
+  "RUF",
 ]
 ignore = [
   # https://docs.astral.sh/ruff/rules/missing-type-args
@@ -228,7 +227,7 @@ ignore = [
   # https://docs.astral.sh/ruff/rules/try-consider-else
   "TRY300",
   # https://docs.astral.sh/ruff/rules/missing-trailing-comma
-  "COM812",  # ruff formatter suggested to exclude it
+  "COM812", # ruff formatter suggested to exclude it
   # https://docs.astral.sh/ruff/rules/try-except-in-loop/
   "PERF203",
 
@@ -306,19 +305,23 @@ ignore = [
 force-wrap-aliases = true
 split-on-trailing-comma = true
 section-order = [
-    "future",
-    "standard-library",
-    "django",
-    "drf",
-    "third-party",
-    "first-party",
-    "apps",
-    "local-folder",
+  "future",
+  "standard-library",
+  "django",
+  "drf",
+  "third-party",
+  "first-party",
+  "apps",
+  "local-folder",
 ]
 [tool.ruff.lint.isort.sections]
 django = ["django"]
 drf = ["rest_framework"]
-apps = ["apps", "config", "libs"]
+apps = [
+  "apps",
+  "config",
+  "libs",
+]
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
@@ -358,19 +361,19 @@ ignore_errors = false
 local_partial_types = true
 
 enable_error_code = [
-    "truthy-bool",
-    "redundant-expr",
+  "truthy-bool",
+  "redundant-expr",
 ]
 
 disable_error_code = [
-    "attr-defined",
-    "index",
-    "annotation-unchecked",
+  "attr-defined",
+  "index",
+  "annotation-unchecked",
 ]
 
 exclude = [
-    "settings.py",
-    "docs/",
+  "settings.py",
+  "docs/",
 ]
 
 [[tool.mypy.overrides]]
@@ -380,31 +383,31 @@ warn_unreachable = false
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
 python_files = [
-    "tests.py",
-    "test_*.py",
-    "*_tests.py",
+  "tests.py",
+  "test_*.py",
+  "*_tests.py",
 ]
 
 [tool.coverage.run]
 source = [
-    "import_export_extensions",
+  "import_export_extensions",
 ]
 omit = [
-    "import_export_extensions/migrations",
-    "*/__init__.py",
+  "import_export_extensions/migrations",
+  "*/__init__.py",
 ]
 
 [tool.coverage.report]
 exclude_lines = [
-    "def __repr__",
-    "def __str__",
-    "pass",
-    "if self.debug:",
-    "if settings.DEBUG",
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "if __name__ == .__main__.:",
-    "if TYPE_CHECKING:",
-    "class .*\\bProtocol\\):",
-    "@(abc\\.)?abstractmethod",
+  "def __repr__",
+  "def __str__",
+  "pass",
+  "if self.debug:",
+  "if settings.DEBUG",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "class .*\\bProtocol\\):",
+  "@(abc\\.)?abstractmethod",
 ]
