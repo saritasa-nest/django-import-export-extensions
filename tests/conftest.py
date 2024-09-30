@@ -14,6 +14,15 @@ from .fake_app import factories
 from .fake_app.factories import ArtistImportJobFactory
 
 
+def pytest_configure() -> None:
+    """Set up Django settings for tests.
+
+    `pytest` automatically calls this function once when tests are run.
+
+    """
+    settings.TESTING = True
+
+
 @pytest.fixture(scope="session", autouse=True)
 def django_db_setup(django_db_setup):  # noqa: PT004
     """Set up test db for testing."""
