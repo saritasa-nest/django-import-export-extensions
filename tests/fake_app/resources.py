@@ -39,3 +39,10 @@ class ArtistResourceWithM2M(CeleryModelResource):
         model = Artist
         clean_model_instances = True
         fields = ["id", "name", "bands", "instrument"]
+
+    def get_queryset(self):
+        """Return a queryset."""
+        return Artist.objects.all().prefetch_related(
+            "membership_set__band",
+            "bands",
+        )
