@@ -64,6 +64,10 @@ requests = "^2.32.3"
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.13"
 ipython = "^8.27.0"
+# The Django Debug Toolbar is a configurable set of panels that display various debug information
+# about the current request/response and when clicked, display more details about the panel's content.
+# https://django-debug-toolbar.readthedocs.io/en/latest/
+django-debug-toolbar = "^4.4.6"
 
 [tool.poetry.group.linters.dependencies]
 # Mypy is a static type checker for Python.

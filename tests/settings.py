@@ -13,6 +13,7 @@ ALLOWED_HOSTS = ["*"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TESTING = False
 
 # Application definition
 
@@ -127,3 +128,17 @@ CELERY_BACKEND = "redis://redis/1"
 CELERY_TASK_DEFAULT_QUEUE = "development"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+if DEBUG:
+    INSTALLED_APPS += ("debug_toolbar",)
+    MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
+
+    def _show_toolbar_callback(request) -> bool:
+        """Show debug toolbar exclude testing."""
+        from django.conf import settings
+
+        return not settings.TESTING
+
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": _show_toolbar_callback,
+    }
