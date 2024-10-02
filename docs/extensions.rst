@@ -235,14 +235,6 @@ additional data may be stored. Should be used with ``IntermediateManyToManyField
 Fields
 ------
 
-M2MField
-^^^^^^^^
-
-This is resource field for M2M fields. Provides faster import of related fields.
-
-    This implementation deletes intermediate models, which were excluded
-    and creates intermediate models only for newly added models.
-
 IntermediateManyToManyField
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
