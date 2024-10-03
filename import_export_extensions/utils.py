@@ -94,7 +94,7 @@ def remove_illegal_characters(value: str) -> str:
 
 
 def get_clear_q_filter(str_value: str, attribute_name: str) -> Q:
-    """Make clear Q filter for ``str_value``.
+    r"""Make clear Q filter for ``str_value``.
 
     For given string we must create regex pattern that isn't
     dependent on word's cases and extra whitespaces.
@@ -114,7 +114,7 @@ def get_clear_q_filter(str_value: str, attribute_name: str) -> Q:
         str_value: some string
         attribute_name: model's attribute name
 
-    """  # noqa: W605
+    """
     q_regex_attr = f"{attribute_name}__iregex"
 
     words = [re.escape(value) for value in str_value.split()]

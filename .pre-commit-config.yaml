@@ -7,34 +7,33 @@ repos:
       - id: debug-statements
       - id: check-merge-conflict
       - id: detect-private-key
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.6.2
     hooks:
       - id: ruff
-        args: [ --fix ]
+        args: [--fix]
       - id: ruff-format
-
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.13.0
+    hooks:
+      - id: yamlfmt
   - repo: https://github.com/asottile/add-trailing-comma
     rev: v2.4.0
     hooks:
       - id: add-trailing-comma
-
   - repo: https://github.com/jorisroovers/gitlint
-    rev:  v0.19.1
+    rev: v0.19.1
     hooks:
-    -   id: gitlint
-
+      - id: gitlint
   - repo: https://github.com/rtts/djhtml
     rev: v1.5.2
     hooks:
       - id: djhtml
-        args: [ "--tabwidth=2" ]
+        args: ["--tabwidth=2"]
       - id: djcss
-        args: [ "--tabwidth=2" ]
+        args: ["--tabwidth=2"]
       - id: djjs
-        args: [ "--tabwidth=2" ]
-
+        args: ["--tabwidth=2"]
   - repo: local
     hooks:
       - id: check_new_migrations
@@ -42,29 +41,26 @@ repos:
         entry: inv django.check-new-migrations
         language: system
         pass_filenames: false
-        types: [ file ]
-        stages: [ push ]
-
+        types: [file]
+        stages: [push]
       - id: tests
         name: run tests
         entry: inv ci.coverage
         language: system
         pass_filenames: false
-        types: [ python ]
-        stages: [ push ]
-
+        types: [python]
+        stages: [push]
       - id: mypy
         name: mypy
         entry: inv mypy.run
         language: system
         pass_filenames: false
-        types: [ file ]
-        stages: [ push ]
-
+        types: [file]
+        stages: [push]
       - id: package_installation_verify
         name: verify package can be installed
         entry: pip install --dry-run .
         language: system
         pass_filenames: false
-        types: [ python ]
-        stages: [ push ]
+        types: [python]
+        stages: [push]

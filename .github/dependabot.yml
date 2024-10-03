@@ -1,24 +1,24 @@
 # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 version: 2
 updates:
-- package-ecosystem: github-actions
-  directory: "/"
-  schedule:
-    interval: monthly
-    time: "00:00"
-  groups:
-    github-actions:
-      patterns:
-      - "*"
-- package-ecosystem: pip
-  directory: "/"
-  schedule:
-    interval: weekly
-    time: "00:00"
-  groups:
-    pip:
-      patterns:
-      - "*"
-  allow:
-    - dependency-name: "*"
-      dependency-type: "all"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+      time: "00:00"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      time: "00:00"
+    groups:
+      pip:
+        patterns:
+          - "*"
+    allow:
+      - dependency-name: "*"
+        dependency-type: "all"

@@ -160,7 +160,7 @@ class CeleryResourceMixin:
 
         """
         row_result.diff = []
-        for field in self.get_fields():
+        for field in self.fields.values():
             row_result.diff.append(row_data.get(field.column_name, ""))
 
         row_result.non_field_skipped_errors.extend(
