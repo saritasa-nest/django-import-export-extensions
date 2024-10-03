@@ -8,6 +8,7 @@ maintainers = [
   "Nikita Azanov <nikita.azanov@saritasa.com>",
   "Andrey Otto <andrey.otto@saritasa.com>",
   "Stanislav Khlud <stanislav.khlud@saritasa.com>",
+  "Egor Toryshak <egor.toryshak@saritasa.com",
 ]
 readme = "README.rst"
 repository = "https://github.com/saritasa-nest/django-import-export-extensions"
