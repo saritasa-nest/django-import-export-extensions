@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-import-export-extensions"
-version = "0.5.0"
+version = "0.6.0"
 description = "Extend functionality of `django-import-export`"
 license = "MIT"
 authors = ["Saritasa <pypi@saritasa.com>"]
@@ -24,7 +24,7 @@ keywords = [
   "django_import_export_extensions",
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "Natural Language :: English",
   "Framework :: Django",
@@ -37,7 +37,7 @@ packages = [{ include = "import_export_extensions" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django = ">=4.2"
+django = ">=4.0"
 django-import-export = { extras = ["xls", "xlsx"], version = ">=4.0" }
 # Django REST Framework
 # https://www.django-rest-framework.org/

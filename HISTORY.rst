@@ -2,7 +2,7 @@
 History
 =======
 
-UNRELEASED
+0.6.0 (2024-10-04)
 ----------
 * Extend response of import job api
 * Added support for django-import-export >= 4.0
