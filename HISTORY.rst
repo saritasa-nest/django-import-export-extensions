@@ -2,6 +2,10 @@
 History
 =======
 
+0.6.1 (2024-10-04)
+----------
+* Update requirements version and internal naming
+
 0.6.0 (2024-10-04)
 ----------
 * Extend response of import job api
