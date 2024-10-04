@@ -11,7 +11,7 @@ django-import-export-extensions is a Django application and library based on
 * Manage import/export :ref:`jobs<ImportJob/ExportJob models>` via Django Admin
 * :ref:`DRF integration<ViewSets>` that allows to work with import/export jobs via API
 * Support `drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_ generated API schema
-* Additional :ref:`fields<Fields>` and :ref:`widgets<Widgets>` (FileWidget, IntermediateM2MWidget, M2MField)
+* Additional :ref:`fields<Fields>` and :ref:`widgets<Widgets>` (FileWidget, IntermediateManyToManyWidget, IntermediateManyToManyField)
 
 .. toctree::
    :maxdepth: 2

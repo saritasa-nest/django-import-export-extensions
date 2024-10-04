@@ -87,6 +87,9 @@ pytest-django = "^4.9.0"
 # This plugin provides a mocker fixture for pytest
 # https://pypi.org/project/pytest-mock/
 pytest-mock = "^3.14.0"
+# Allows you to use fixtures in @pytest.mark.parametrize.
+# https://pypi.org/project/pytest-lazy-fixtures/
+pytest-lazy-fixtures = "^1.1.1"
 # Package for generating test data
 # https://factoryboy.readthedocs.io/en/stable/
 factory-boy = "^3.3.1"

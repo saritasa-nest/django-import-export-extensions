@@ -8,6 +8,7 @@ UNRELEASED
 * Added support for django-import-export >= 4.0
 * Removed support for django 3.2
 * Add search and ordering to API views
+* Removed `M2MField` since `import_export.fields.Field` supports `m2m_add`
 
 0.5.0 (2023-12-19)
 ------------------

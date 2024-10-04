@@ -39,3 +39,37 @@ class ArtistResourceWithM2M(CeleryModelResource):
         model = Artist
         clean_model_instances = True
         fields = ["id", "name", "bands", "instrument"]
+
+    def get_queryset(self):
+        """Return a queryset."""
+        return Artist.objects.all().prefetch_related(
+            "membership_set__band",
+            "bands",
+        )
+
+
+class BandResourceWithM2M(CeleryModelResource):
+    """Band resource with Many2Many field."""
+
+    artists = IntermediateManyToManyField(
+        attribute="artists",
+        column_name="Artists in band",
+        widget=IntermediateManyToManyWidget(
+            rem_model=Artist,
+            rem_field="name",
+            extra_fields=["date_joined"],
+            instance_separator=";",
+        ),
+    )
+
+    class Meta:
+        model = Band
+        clean_model_instances = True
+        fields = ["id", "title", "artists"]
+
+    def get_queryset(self):
+        """Return a queryset."""
+        return Band.objects.all().prefetch_related(
+            "membership_set__artist",
+            "artists",
+        )
