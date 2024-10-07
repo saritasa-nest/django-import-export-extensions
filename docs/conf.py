@@ -9,7 +9,7 @@ import django
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.append(str(pathlib.Path.cwd()))
 sys.path.append(str(pathlib.Path("..").resolve()))
-sys.path.append(str(pathlib.Path("../tests").resolve()))
+sys.path.append(str(pathlib.Path("../test_project").resolve()))
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 django.setup()

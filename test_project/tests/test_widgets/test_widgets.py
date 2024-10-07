@@ -11,13 +11,13 @@ from import_export_extensions.widgets import (
     FileWidget,
     IntermediateManyToManyWidget,
 )
-from tests.fake_app.factories import (
+from test_project.fake_app.factories import (
     ArtistFactory,
     ArtistImportJobFactory,
     BandFactory,
     MembershipFactory,
 )
-from tests.fake_app.models import Band, Membership
+from test_project.fake_app.models import Band, Membership
 
 
 @pytest.fixture

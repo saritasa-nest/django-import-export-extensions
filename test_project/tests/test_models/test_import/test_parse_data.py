@@ -3,8 +3,8 @@ from pytest_mock import MockerFixture
 
 from import_export_extensions.models import ImportJob
 
-from ...fake_app.factories import ArtistImportJobFactory
-from ...fake_app.models import Artist
+from ....fake_app.factories import ArtistImportJobFactory
+from ....fake_app.models import Artist
 
 
 def test_parse_valid_data_file(artist_import_job: ImportJob):
@@ -46,7 +46,7 @@ def test_parse_data_import_errors(
 
     """
     mocker.patch(
-        target="tests.fake_app.resources.SimpleArtistResource.import_field",
+        target="test_project.fake_app.resources.SimpleArtistResource.import_field",
         side_effect=ValueError("Invalid data"),
     )
 

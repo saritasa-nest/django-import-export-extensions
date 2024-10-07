@@ -28,12 +28,12 @@ ns.configure(
         "saritasa_invocations": saritasa_invocations.Config(
             project_name="django-import-export-extensions",
             celery=saritasa_invocations.CelerySettings(
-                app="tests.celery_app:app",
+                app="test_project.celery_app:app",
             ),
             django=saritasa_invocations.DjangoSettings(
-                manage_file_path="tests/manage.py",
-                settings_path="tests.settings",
-                apps_path="tests",
+                manage_file_path="test_project/manage.py",
+                settings_path="test_project.settings",
+                apps_path="test_project",
             ),
             github_actions=saritasa_invocations.GitHubActionsSettings(
                 hosts=("postgres", "redis"),

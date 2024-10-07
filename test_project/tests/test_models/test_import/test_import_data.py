@@ -2,8 +2,8 @@ import pytest
 
 from import_export_extensions.models import ImportJob
 
-from ...fake_app.factories import ArtistFactory, ArtistImportJobFactory
-from ...fake_app.models import Artist
+from ....fake_app.factories import ArtistFactory, ArtistImportJobFactory
+from ....fake_app.models import Artist
 
 
 @pytest.mark.django_db(transaction=True)

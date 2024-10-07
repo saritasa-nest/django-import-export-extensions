@@ -6,8 +6,8 @@ from pytest_lazy_fixtures import lf
 
 from import_export_extensions.fields import IntermediateManyToManyField
 
-from ..fake_app import factories
-from ..fake_app.models import Artist, Band, Instrument, Membership
+from ...fake_app import factories
+from ...fake_app.models import Artist, Band, Instrument, Membership
 
 
 def test_save_method(

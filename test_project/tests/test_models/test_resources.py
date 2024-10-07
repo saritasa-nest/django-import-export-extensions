@@ -1,9 +1,9 @@
 import pytest
 
 from import_export_extensions.resources import CeleryModelResource
-from tests.fake_app.factories import MembershipFactory
-from tests.fake_app.models import Artist, Membership
-from tests.fake_app.resources import ArtistResourceWithM2M
+from test_project.fake_app.factories import MembershipFactory
+from test_project.fake_app.models import Artist, Membership
+from test_project.fake_app.resources import ArtistResourceWithM2M
 
 
 @pytest.fixture
