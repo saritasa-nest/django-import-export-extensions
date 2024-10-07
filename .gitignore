@@ -43,6 +43,7 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+coverage.lcov
 *.cover
 .hypothesis/
 .pytest_cache/
@@ -106,6 +107,9 @@ ENV/
 .idea/
 
 # Test files
-tests/media
-tests/static
-tests/db.sqlite3
+test_project/media
+test_project/static
+test_project/db.sqlite3
+
+# Database dumps
+*.sql

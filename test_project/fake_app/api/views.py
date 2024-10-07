@@ -1,5 +1,6 @@
 from import_export_extensions.api import views
-from tests.fake_app.resources import SimpleArtistResource
+
+from ..resources import SimpleArtistResource
 
 
 class ArtistExportViewSet(views.ExportJobViewSet):

@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -8,29 +7,10 @@ from rest_framework import test
 import pytest
 
 from import_export_extensions.models import ExportJob, ImportJob
-from tests.fake_app.models import Artist, Band, Membership
 
-from .fake_app import factories
-from .fake_app.factories import ArtistImportJobFactory
-
-
-def pytest_configure() -> None:
-    """Set up Django settings for tests.
-
-    `pytest` automatically calls this function once when tests are run.
-
-    """
-    settings.TESTING = True
-
-
-@pytest.fixture(scope="session", autouse=True)
-def django_db_setup(django_db_setup):  # noqa: PT004
-    """Set up test db for testing."""
-
-
-@pytest.fixture(autouse=True)
-def enable_db_access_for_all_tests(django_db_setup, db):  # noqa: PT004
-    """Allow all tests to access DB."""
+from ..fake_app import factories
+from ..fake_app.factories import ArtistImportJobFactory
+from ..fake_app.models import Artist, Band, Membership
 
 
 @pytest.fixture
@@ -117,27 +97,6 @@ def superuser():
         is_staff=True,
         is_superuser=True,
     )
-
-
-@pytest.fixture(scope="session", autouse=True)
-def _temp_directory_for_media(tmpdir_factory):
-    """Fixture that set temp directory for all media files.
-
-    This fixture changes DEFAULT_FILE_STORAGE or STORAGES variable
-    to filesystem and provides temp dir for media.
-    PyTest cleans up this temp dir by itself after few test runs
-
-    """
-    if hasattr(settings, "STORAGES"):
-        settings.STORAGES["default"]["BACKEND"] = (
-            "django.core.files.storage.FileSystemStorage"
-        )
-    else:
-        settings.DEFAULT_FILE_STORAGE = (
-            "django.core.files.storage.FileSystemStorage"
-        )
-    media = tmpdir_factory.mktemp("tmp_media")
-    settings.MEDIA_ROOT = media
 
 
 @pytest.fixture

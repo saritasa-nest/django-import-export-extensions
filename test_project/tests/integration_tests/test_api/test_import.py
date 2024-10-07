@@ -16,6 +16,7 @@ def test_import_api_creates_import_job(
     uploaded_file: SimpleUploadedFile,
 ):
     """Ensure import start api creates new import job."""
+    import_job_count = ImportJob.objects.count()
     response = admin_api_client.post(
         path=reverse("import-artist-start"),
         data={
@@ -25,7 +26,7 @@ def test_import_api_creates_import_job(
 
     assert response.status_code == status.HTTP_201_CREATED
     assert response.data["import_status"] == "CREATED"
-    assert ImportJob.objects.first()
+    assert ImportJob.objects.count() == import_job_count + 1
 
 
 @pytest.mark.django_db(transaction=True)

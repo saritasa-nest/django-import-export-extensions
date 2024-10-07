@@ -4,7 +4,7 @@ from django.conf import settings
 
 from celery import Celery
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tests.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "test_project.settings")
 
 app = Celery(
     "import_export_extensions",

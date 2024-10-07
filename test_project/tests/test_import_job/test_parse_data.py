@@ -46,7 +46,7 @@ def test_parse_data_import_errors(
 
     """
     mocker.patch(
-        target="tests.fake_app.resources.SimpleArtistResource.import_field",
+        target="test_project.fake_app.resources.SimpleArtistResource.import_field",
         side_effect=ValueError("Invalid data"),
     )
 
