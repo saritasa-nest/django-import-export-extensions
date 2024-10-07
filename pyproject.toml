@@ -96,9 +96,9 @@ factory-boy = "^3.3.1"
 # Werkzeug is a comprehensive WSGI web application library
 # https://werkzeug.palletsprojects.com/en/3.0.x/
 werkzeug = "^3.0.4"
-# Tool for measuring code coverage of Python programs
-# https://coverage.readthedocs.io/en/7.3.2/
-coverage = "^7.6.1"
+# This plugin produces coverage reports.
+# https://pytest-cov.readthedocs.io/en/latest/index.html
+pytest-cov = "^5.0.0"
 # Psycopg is a PostgreSQL adapter for the Python
 # https://www.psycopg.org/docs/install.html
 psycopg2-binary = "^2.9.9"
@@ -394,6 +394,14 @@ python_files = [
   "tests.py",
   "test_*.py",
   "*_tests.py",
+]
+addopts = [
+    "--ff",
+    "--capture=no",
+    "--verbose",
+    "--cov-config=pyproject.toml",
+    "--cov-report=lcov:coverage.lcov",
+    "--cov-report=term-missing:skip-covered",
 ]
 
 [tool.coverage.run]

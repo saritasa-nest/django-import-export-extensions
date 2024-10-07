@@ -45,7 +45,7 @@ repos:
         stages: [push]
       - id: tests
         name: run tests
-        entry: inv ci.coverage
+        entry: inv pytest.run --params="--cov=."
         language: system
         pass_filenames: false
         types: [python]

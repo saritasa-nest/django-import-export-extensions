@@ -50,23 +50,19 @@ jobs:
           poetry run inv ci.prepare
       - name: Run checks ${{ matrix.python-version }}
         run: poetry run inv pre-commit.run-hooks
-      - name: Upload results to coveralls
-        run: |
-          poetry run pip install coveralls
-          poetry run coveralls --service=github
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_FLAG_NAME: python ${{ matrix.python-version }} - django ${{ matrix.django-version }}
-          COVERALLS_PARALLEL: true
+      - name: Coveralls Upload
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: Python${{ matrix.python-version }} - Django${{ matrix.django-version }}
+          parallel: true
   coveralls-finish:
     needs: test
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
-        run: |
-          pip install coveralls
-          coveralls --service=github --finish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
