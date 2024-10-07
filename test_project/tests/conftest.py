@@ -7,26 +7,10 @@ from rest_framework import test
 import pytest
 
 from import_export_extensions.models import ExportJob, ImportJob
-from test_project.fake_app.models import Artist, Band, Membership
 
 from ..fake_app import factories
 from ..fake_app.factories import ArtistImportJobFactory
-
-
-@pytest.fixture
-def api_client() -> test.APIClient:
-    """Create api client."""
-    return test.APIClient()
-
-
-@pytest.fixture
-def admin_api_client(
-    superuser: User,
-    api_client: test.APIClient,
-) -> test.APIClient:
-    """Authenticate admin_user and return api client."""
-    api_client.force_authenticate(user=superuser)
-    return api_client
+from ..fake_app.models import Artist, Band, Membership
 
 
 @pytest.fixture
@@ -113,3 +97,19 @@ def superuser():
         is_staff=True,
         is_superuser=True,
     )
+
+
+@pytest.fixture
+def api_client() -> test.APIClient:
+    """Create api client."""
+    return test.APIClient()
+
+
+@pytest.fixture
+def admin_api_client(
+    superuser: User,
+    api_client: test.APIClient,
+) -> test.APIClient:
+    """Authenticate admin_user and return api client."""
+    api_client.force_authenticate(user=superuser)
+    return api_client

@@ -3,8 +3,8 @@ from pytest_mock import MockerFixture
 
 from import_export_extensions.models import ImportJob
 
-from ....fake_app.factories import ArtistImportJobFactory
-from ....fake_app.models import Artist
+from ...fake_app.factories import ArtistImportJobFactory
+from ...fake_app.models import Artist
 
 
 def test_parse_valid_data_file(artist_import_job: ImportJob):

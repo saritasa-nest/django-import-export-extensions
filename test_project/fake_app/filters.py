@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from test_project.fake_app.models import Artist
+from .models import Artist
 
 
 class ArtistFilterSet(filters.FilterSet):

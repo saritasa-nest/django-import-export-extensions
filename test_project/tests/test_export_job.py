@@ -2,7 +2,7 @@ from pytest_mock import MockerFixture
 
 from import_export_extensions.models import ExportJob
 
-from ...fake_app.factories import ArtistExportJobFactory
+from ..fake_app.factories import ArtistExportJobFactory
 
 
 def test_export_data_exported(artist_export_job: ExportJob):
