@@ -117,7 +117,7 @@ sphinx-rtd-theme = "^2.0.0"
 toml = "^0.10.2"
 # A framework for managing and maintaining multi-language pre-commit hooks.
 # https://pre-commit.com/
-pre-commit = "^3.8.0"
+pre-commit = ">=3.8,<5.0"
 # Collection of invoke commands which used in Saritasa organization
 # https://github.com/saritasa-nest/saritasa-python-invocations/
 saritasa-invocations = "^1.2.1"
