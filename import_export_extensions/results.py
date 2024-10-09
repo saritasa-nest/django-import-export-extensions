@@ -16,7 +16,7 @@ class Error(results.Error):
     def __reduce__(self):
         """Simplify Exception object for pickling.
 
-        `error` object may contain not pickable objects (for example, django's
+        `error` object may contain not picklable objects (for example, django's
         lazy text), so here it replaced with simple string.
 
         """

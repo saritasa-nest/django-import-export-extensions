@@ -39,7 +39,7 @@ def get_mime_type_by_file_url(file_url: str) -> str:
     for binary files
 
     """
-    file_extension = f".{get_file_extension(file_url)}"
+    file_extension = get_file_extension(file_url)
     if file_extension in settings.MIME_TYPES_MAP:
         return settings.MIME_TYPES_MAP[file_extension]
 
@@ -68,7 +68,7 @@ def get_file_extension(url: str, lower: bool = True) -> str:
         String: extension of the file (lower or not)
 
     Example:
-        'dir/subdir/file.ext' -> 'ext'
+        'dir/subdir/file.ext' -> '.ext'
 
     """
     get_index = url.find("?")

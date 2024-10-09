@@ -86,7 +86,7 @@ class ArtistImportJobFactory(factory.django.DjangoModelFactory):
 class ArtistExportJobFactory(factory.django.DjangoModelFactory):
     """Factory for creating ExportJob for Artist."""
 
-    resource_path = "test_project.fake_app." "resources.SimpleArtistResource"
+    resource_path = "test_project.fake_app.resources.SimpleArtistResource"
     resource_kwargs: dict[str, str] = {}
     file_format_path = "import_export.formats.base_formats.CSV"
 

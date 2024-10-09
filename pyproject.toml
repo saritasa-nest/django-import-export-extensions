@@ -409,8 +409,11 @@ source = [
   "import_export_extensions",
 ]
 omit = [
-  "import_export_extensions/migrations",
-  "*/__init__.py",
+  "**/invocations/**",
+  "**/migrations/**",
+  "**/__init__.py",
+  "test_project/**",
+  "tasks.py",
 ]
 
 [tool.coverage.report]
