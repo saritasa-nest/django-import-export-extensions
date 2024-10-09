@@ -42,25 +42,25 @@ repos:
         language: system
         pass_filenames: false
         types: [file]
-        stages: [push]
+        stages: [pre-push]
       - id: tests
         name: run tests
         entry: inv pytest.run --params="--cov=."
         language: system
         pass_filenames: false
         types: [python]
-        stages: [push]
+        stages: [pre-push]
       - id: mypy
         name: mypy
         entry: inv mypy.run
         language: system
         pass_filenames: false
         types: [file]
-        stages: [push]
+        stages: [pre-push]
       - id: package_installation_verify
         name: verify package can be installed
         entry: pip install --dry-run .
         language: system
         pass_filenames: false
         types: [python]
-        stages: [push]
+        stages: [pre-push]
