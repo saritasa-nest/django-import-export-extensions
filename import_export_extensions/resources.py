@@ -252,8 +252,6 @@ class CeleryResourceMixin:
             return
 
         async_result = result.AsyncResult(current_task.request.get("id"))
-        if not async_result.result:
-            return
 
         self._update_current_task_state(
             state=state,
