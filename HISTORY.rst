@@ -2,12 +2,16 @@
 History
 =======
 
-0.6.1 (2024-10-04)
+UNRELEASED
 ----------
+* Replaced `sphinx-rtd-theme` by `furo`
+
+0.6.1 (2024-10-04)
+------------------
 * Update requirements version and internal naming
 
 0.6.0 (2024-10-04)
-----------
+------------------
 * Extend response of import job api
 * Added support for django-import-export >= 4.0
 * Removed support for django 3.2
