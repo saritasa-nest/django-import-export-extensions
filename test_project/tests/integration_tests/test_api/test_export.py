@@ -32,7 +32,7 @@ def test_export_api_creates_export_job(
             "file_format": "csv",
         },
     )
-    assert response.status_code == status.HTTP_201_CREATED
+    assert response.status_code == status.HTTP_201_CREATED, response.data
     assert response.data["export_status"] == ExportJob.ExportStatus.CREATED
     assert ExportJob.objects.filter(id=response.data["id"]).exists()
 
@@ -48,7 +48,7 @@ def test_export_api_create_export_job_with_invalid_filter_kwargs(
             "file_format": "csv",
         },
     )
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.status_code == status.HTTP_400_BAD_REQUEST, response.data
     assert str(response.data["id"][0]) == "Enter a number."
 
 
@@ -64,5 +64,5 @@ def test_export_api_detail(
             kwargs={"pk": artist_export_job.id},
         ),
     )
-    assert response.status_code == status.HTTP_200_OK
+    assert response.status_code == status.HTTP_200_OK, response.data
     assert response.data["export_finished"]
