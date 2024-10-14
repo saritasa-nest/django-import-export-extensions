@@ -31,6 +31,14 @@ class Artist(models.Model):
         on_delete=models.CASCADE,
     )
 
+    external_id = models.CharField(  # noqa DJ01
+        verbose_name=_("External ID"),
+        help_text=_("External ID for sync import objects."),
+        null=True,
+        unique=True,
+        editable=False,
+    )
+
     class Meta:
         verbose_name = _("Artist")
         verbose_name_plural = _("Artists")

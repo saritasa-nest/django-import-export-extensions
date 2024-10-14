@@ -3,8 +3,6 @@ import typing
 
 from rest_framework import serializers
 
-from import_export.results import RowResult
-
 from ... import models
 
 
@@ -62,10 +60,6 @@ class ImportingDataSerializer(serializers.Serializer):
         rows = []
         resource = instance.resource
         for row in instance.result.rows:
-            # errors displayed in input_error.row_errors(InputErrorSerializer)
-            if row.import_type == RowResult.IMPORT_TYPE_ERROR:
-                continue
-
             original_fields = [
                 resource.export_field(field, row.original)
                 if row.original
