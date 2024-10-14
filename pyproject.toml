@@ -109,7 +109,7 @@ psycopg2-binary = "^2.9.9"
 sphinx = "<8"
 # Theme for documentation
 # https://pypi.org/project/sphinx-rtd-theme/
-sphinx-rtd-theme = "^2.0.0"
+sphinx-rtd-theme = ">=2,<4"
 
 [tool.poetry.group.local.dependencies]
 # A Python library for parsing and creating TOML
