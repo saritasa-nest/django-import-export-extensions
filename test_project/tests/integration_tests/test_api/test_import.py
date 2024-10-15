@@ -107,7 +107,7 @@ def test_import_api_detail_with_row_errors(
     """Ensure import detail api shows row errors."""
     expected_error_message = "Instrument matching query does not exist."
     invalid_row_values = [
-        str(existing_artist.id),
+        str(existing_artist.pk),
         existing_artist.external_id,
         existing_artist.name,
         str(existing_artist.instrument_id),
@@ -123,7 +123,7 @@ def test_import_api_detail_with_row_errors(
     response = admin_api_client.get(
         path=reverse(
             "import-artist-detail",
-            kwargs={"pk": import_artist_job.id},
+            kwargs={"pk": import_artist_job.pk},
         ),
     )
 
@@ -149,7 +149,7 @@ def test_import_api_detail_with_base_errors(
     # Create file with missing external_id header
     file_content = django_files.ContentFile(
         "id,name,instrument\n"
-        f"{existing_artist.id},{existing_artist.name},"
+        f"{existing_artist.pk},{existing_artist.name},"
         f"{existing_artist.instrument_id}\n",
     )
     uploaded_file = django_files.File(file_content.file, "data.csv")
@@ -164,7 +164,7 @@ def test_import_api_detail_with_base_errors(
     response = admin_api_client.get(
         path=reverse(
             "import-artist-detail",
-            kwargs={"pk": import_artist_job.id},
+            kwargs={"pk": import_artist_job.pk},
         ),
     )
 
@@ -174,3 +174,178 @@ def test_import_api_detail_with_base_errors(
         response.data["input_error"]["base_errors"][0]
         == expected_error_message
     )
+
+
+@pytest.mark.django_db(transaction=True)
+def test_import_api_confirm_parsed_job(
+    admin_api_client: APIClient,
+    artist_import_job: ImportJob,
+):
+    """Check that parsed import job can be confirmed."""
+    artist_import_job.parse_data()
+    artist_import_job.refresh_from_db()
+    response = admin_api_client.post(
+        path=reverse(
+            "import-artist-confirm",
+            kwargs={"pk": artist_import_job.pk},
+        ),
+    )
+
+    assert response.status_code == status.HTTP_200_OK, response.data
+    assert response.data["import_status"] == ImportJob.ImportStatus.CONFIRMED
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames=["incorrect_job_status"],
+    argvalues=[
+        pytest.param(
+            ImportJob.ImportStatus.CREATED,
+            id="Confirm import job with `CREATED` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.PARSING,
+            id="Confirm import job with `PARSING` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.PARSE_ERROR,
+            id="Confirm import job with `PARSE_ERROR` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.CONFIRMED,
+            id="Confirm import job with `CONFIRMED` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.INPUT_ERROR,
+            id="Confirm import job with `INPUT_ERROR` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORTING,
+            id="Confirm import job with `IMPORTING` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORT_ERROR,
+            id="Confirm import job with `IMPORT_ERROR` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORTED,
+            id="Confirm import job with `IMPORTED` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.CANCELLED,
+            id="Confirm import job with `CANCELLED` status",
+        ),
+    ],
+)
+def test_import_api_confirm_incorrect_job_status(
+    admin_api_client: APIClient,
+    artist_import_job: ImportJob,
+    incorrect_job_status: ImportJob.ImportStatus,
+):
+    """Ensure that not parsed job can't be confirmed."""
+    artist_import_job.import_status = incorrect_job_status
+    artist_import_job.save()
+
+    response = admin_api_client.post(
+        path=reverse(
+            "import-artist-confirm",
+            kwargs={"pk": artist_import_job.pk},
+        ),
+    )
+    expected_error_message = (
+        f"ImportJob with id {artist_import_job.pk} has incorrect status: "
+        f"`{incorrect_job_status.value}`. Expected statuses: ['PARSED']"
+    )
+    assert response.status_code == status.HTTP_400_BAD_REQUEST, response.data
+    assert str(response.data[0]) == expected_error_message
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames=["allowed_cancel_status"],
+    argvalues=[
+        pytest.param(
+            ImportJob.ImportStatus.CREATED,
+            id="Cancel import job with `CREATED` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.PARSING,
+            id="Cancel import job with `PARSING` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORTING,
+            id="Cancel import job with `IMPORTING` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.CONFIRMED,
+            id="Cancel import job with `CONFIRMED` status",
+        ),
+    ],
+)
+def test_import_api_cancel_job(
+    admin_api_client: APIClient,
+    artist_import_job: ImportJob,
+    allowed_cancel_status: ImportJob.ImportStatus,
+):
+    """Check that import job with allowed statuses can be cancelled."""
+    artist_import_job.import_status = allowed_cancel_status
+    artist_import_job.save()
+    response = admin_api_client.post(
+        path=reverse(
+            "import-artist-cancel",
+            kwargs={"pk": artist_import_job.pk},
+        ),
+    )
+
+    assert response.status_code == status.HTTP_200_OK, response.data
+    assert response.data["import_status"] == ImportJob.ImportStatus.CANCELLED
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames=["incorrect_job_status"],
+    argvalues=[
+        pytest.param(
+            ImportJob.ImportStatus.INPUT_ERROR,
+            id="Cancel import job with `INPUT_ERROR` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.PARSE_ERROR,
+            id="Cancel import job with `PARSE_ERROR` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORT_ERROR,
+            id="Cancel import job with `IMPORT_ERROR` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORTED,
+            id="Cancel import job with `IMPORTED` status",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.CANCELLED,
+            id="Cancel import job with `CANCELLED` status",
+        ),
+    ],
+)
+def test_import_api_cancel_incorrect_job_status(
+    admin_api_client: APIClient,
+    artist_import_job: ImportJob,
+    incorrect_job_status: ImportJob.ImportStatus,
+):
+    """Ensure that import job with incorrect statuses cannot be canceled."""
+    artist_import_job.import_status = incorrect_job_status
+    artist_import_job.save()
+
+    response = admin_api_client.post(
+        path=reverse(
+            "import-artist-cancel",
+            kwargs={"pk": artist_import_job.pk},
+        ),
+    )
+    expected_error_message = (
+        f"ImportJob with id {artist_import_job.pk} has incorrect status: "
+        f"`{incorrect_job_status.value}`. Expected statuses: "
+        "['CREATED', 'PARSING', 'CONFIRMED', 'IMPORTING']"
+    )
+    assert response.status_code == status.HTTP_400_BAD_REQUEST, response.data
+    assert str(response.data[0]) == expected_error_message
