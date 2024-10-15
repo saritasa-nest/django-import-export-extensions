@@ -255,10 +255,10 @@ class ExportJob(BaseJob):
 
         """
         self._check_export_status_correctness(
-            expected_statuses=[
-                self.ExportStatus.CREATED.value,
-                self.ExportStatus.EXPORTING.value,
-            ],
+            expected_statuses=(  # type: ignore
+                self.ExportStatus.CREATED,
+                self.ExportStatus.EXPORTING,
+            ),
         )
 
         # send signal to celery to revoke task

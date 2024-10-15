@@ -155,9 +155,7 @@ class ImportJobViewSet(
         try:
             job.confirm_import()
         except ValueError as error:
-            raise exceptions.ValidationError(
-                f"Wrong import job status: {job.import_status}",
-            ) from error
+            raise exceptions.ValidationError(error.args[0]) from error
 
         serializer = self.get_serializer(instance=job)
         return response.Response(
@@ -173,9 +171,7 @@ class ImportJobViewSet(
         try:
             job.cancel_import()
         except ValueError as error:
-            raise exceptions.ValidationError(
-                f"Wrong import job status: {job.import_status}",
-            ) from error
+            raise exceptions.ValidationError(error.args[0]) from error
 
         serializer = self.get_serializer(instance=job)
         return response.Response(
