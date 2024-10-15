@@ -22,6 +22,7 @@ class ArtistFactory(factory.django.DjangoModelFactory):
     """Simple factory for ``Artist`` model."""
 
     name = factory.Faker("name")
+    external_id = factory.Faker("uuid4")
     instrument = factory.SubFactory(InstrumentFactory)
 
     class Meta:

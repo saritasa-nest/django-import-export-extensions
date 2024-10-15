@@ -13,9 +13,11 @@ class SimpleArtistResource(CeleryModelResource):
 
     class Meta:
         model = Artist
+        import_id_fields = ["external_id"]
         clean_model_instances = True
         fields = [
             "id",
+            "external_id",
             "name",
             "instrument",
         ]
