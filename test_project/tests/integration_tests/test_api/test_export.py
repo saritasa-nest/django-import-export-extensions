@@ -66,3 +66,77 @@ def test_export_api_detail(
     )
     assert response.status_code == status.HTTP_200_OK, response.data
     assert response.data["export_finished"]
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames=["allowed_cancel_status"],
+    argvalues=[
+        pytest.param(
+            ExportJob.ExportStatus.CREATED,
+            id="Cancel job with `CREATED` status",
+        ),
+        pytest.param(
+            ExportJob.ExportStatus.EXPORTING,
+            id="Cancel job with `EXPORTING` status",
+        ),
+    ],
+)
+def test_export_api_cancel(
+    admin_api_client: test.APIClient,
+    artist_export_job: ExportJob,
+    allowed_cancel_status: ExportJob.ExportStatus,
+):
+    """Ensure that export canceled with allowed statuses."""
+    artist_export_job.export_status = allowed_cancel_status
+    artist_export_job.save()
+    response = admin_api_client.post(
+        path=reverse(
+            "export-artist-cancel",
+            kwargs={"pk": artist_export_job.pk},
+        ),
+    )
+    assert response.status_code == status.HTTP_200_OK, response.data
+    assert response.data["export_status"] == ExportJob.ExportStatus.CANCELLED
+    assert not response.data["export_finished"]
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames=["incorrect_job_status"],
+    argvalues=[
+        pytest.param(
+            ExportJob.ExportStatus.EXPORT_ERROR,
+            id="Cancel export job with `EXPORT_ERROR` status",
+        ),
+        pytest.param(
+            ExportJob.ExportStatus.EXPORTED,
+            id="Cancel export job with `EXPORTED` status",
+        ),
+        pytest.param(
+            ExportJob.ExportStatus.CANCELLED,
+            id="Cancel export job with `CANCELLED` status",
+        ),
+    ],
+)
+def test_export_api_cancel_with_errors(
+    admin_api_client: test.APIClient,
+    artist_export_job: ExportJob,
+    incorrect_job_status: ExportJob.ExportStatus,
+):
+    """Ensure that export job with incorrect statuses cannot be canceled."""
+    artist_export_job.export_status = incorrect_job_status
+    artist_export_job.save()
+    response = admin_api_client.post(
+        path=reverse(
+            "export-artist-cancel",
+            kwargs={"pk": artist_export_job.pk},
+        ),
+    )
+    expected_error_message = (
+        f"ExportJob with id {artist_export_job.pk} has incorrect status: "
+        f"`{incorrect_job_status.value}`. Expected statuses: "
+        "['CREATED', 'EXPORTING']"
+    )
+    assert response.status_code == status.HTTP_400_BAD_REQUEST, response.data
+    assert str(response.data[0]) == expected_error_message
