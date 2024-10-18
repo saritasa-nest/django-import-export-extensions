@@ -159,13 +159,6 @@ class ExportJob(BaseJob):
     def progress(self) -> TaskStateInfo | None:
         """Return dict with parsing state.
 
-        Example for sync mode::
-
-            {
-                'state': 'EXPORTING',
-                'info': None
-            }
-
         Example for celery (celery) mode::
 
             {
@@ -182,16 +175,13 @@ class ExportJob(BaseJob):
         https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
 
         """
-        if self.export_status not in (self.ExportStatus.EXPORTING,):
-            return None
+        if (
+            self.export_task_id
+            and self.export_status == self.ExportStatus.EXPORTING
+        ):
+            return self._get_task_state(self.export_task_id)
 
-        if not self.export_task_id or current_app.conf.task_always_eager:
-            return dict(
-                state=self.export_status.upper(),
-                info=None,
-            )
-
-        return self._get_task_state(self.export_task_id)
+        return None
 
     def _check_export_status_correctness(
         self,

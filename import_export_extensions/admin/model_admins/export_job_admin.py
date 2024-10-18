@@ -102,7 +102,8 @@ class ExportJobAdmin(
         percent = 0
         total = 0
         current = 0
-        info = job.progress["info"]
+        job_progress = job.progress
+        info = job_progress["info"]
 
         if info and info["total"]:
             percent = int(100 / info["total"] * info["current"])
@@ -111,7 +112,7 @@ class ExportJobAdmin(
 
         response_data.update(
             dict(
-                state=job.progress["state"],
+                state=job_progress["state"],
                 percent=percent,
                 total=total,
                 current=current,
