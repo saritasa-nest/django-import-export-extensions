@@ -1,3 +1,5 @@
+import django.test
+
 import pytest
 
 from import_export_extensions.models import ImportJob
@@ -156,3 +158,26 @@ def test_import_data_with_validation_error(existing_artist: Artist):
     job.parse_data()
     job.refresh_from_db()
     assert job.import_status == ImportJob.ImportStatus.INPUT_ERROR
+
+
+@django.test.override_settings(
+    IMPORT_EXPORT_MAX_DATASET_ROWS=1,
+)
+def test_import_create_with_max_rows(
+    new_artist: Artist,
+):
+    """Test import job max dataset rows validation."""
+    import_job: ImportJob = ArtistImportJobFactory(
+        artists=[new_artist],
+        skip_parse_step=True,
+        is_valid_file=False,
+    )
+    expected_error_message = (
+        "Too many rows `2`(Max: 1). Input file may be broken. If it's "
+        "spreadsheet file, please delete empty rows."
+    )
+
+    import_job.import_data()
+    import_job.refresh_from_db()
+    assert import_job.import_status == import_job.ImportStatus.IMPORT_ERROR
+    assert import_job.error_message in expected_error_message
