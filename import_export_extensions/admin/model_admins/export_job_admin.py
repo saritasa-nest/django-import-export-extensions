@@ -1,5 +1,5 @@
 
-from http import HTTPStatus
+import http
 
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
@@ -96,7 +96,7 @@ class ExportJobAdmin(
         except self.export_job_model.DoesNotExist as error:
             return JsonResponse(
                 dict(validation_error=error.args[0]),
-                status=HTTPStatus.NOT_FOUND,
+                status=http.HTTPStatus.NOT_FOUND,
             )
 
         response_data = dict(status=job.export_status.title())
@@ -131,7 +131,9 @@ class ExportJobAdmin(
         Some fields are editable for new ExportJob.
 
         """
-        readonly_fields = [
+        base_readonly_fields = super().get_readonly_fields(request, obj)
+        readonly_fields = (
+            *base_readonly_fields,
             "export_status",
             "traceback",
             "file_format_path",
@@ -140,15 +142,10 @@ class ExportJobAdmin(
             "export_finished",
             "error_message",
             "_model",
-        ]
-        if obj:
-            readonly_fields.extend(
-                [
-                    "resource_path",
-                    "data_file",
-                    "resource_kwargs",
-                ],
-            )
+            "resource_path",
+            "data_file",
+            "resource_kwargs",
+        )
 
         return readonly_fields
 
