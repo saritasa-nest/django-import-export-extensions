@@ -55,7 +55,17 @@ class TimeStampedModel(models.Model):
 
 
 class TaskStateInfo(typing.TypedDict):
-    """Class representing task state dict."""
+    """Class representing task state dict.
+
+    Possible states:
+        1. PENDING
+        2. STARTED
+        3. SUCCESS
+        4. EXPORTING - custom status that also set export info
+
+    https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
+
+    """
 
     state: str
     info: dict[str, int] | None

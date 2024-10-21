@@ -172,12 +172,8 @@ def test_import_create_with_max_rows(
         skip_parse_step=True,
         is_valid_file=False,
     )
-    expected_error_message = (
-        "Too many rows `2`(Max: 1). Input file may be broken. If it's "
-        "spreadsheet file, please delete empty rows."
-    )
 
     import_job.import_data()
     import_job.refresh_from_db()
     assert import_job.import_status == import_job.ImportStatus.IMPORT_ERROR
-    assert import_job.error_message in expected_error_message
+    assert "Too many rows `2`" in import_job.error_message

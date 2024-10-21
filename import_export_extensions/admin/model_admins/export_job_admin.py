@@ -1,4 +1,6 @@
 
+from http import HTTPStatus
+
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
@@ -92,7 +94,10 @@ class ExportJobAdmin(
                 id=job_id,
             )
         except self.export_job_model.DoesNotExist as error:
-            return JsonResponse(dict(validation_error=error.args[0]))
+            return JsonResponse(
+                dict(validation_error=error.args[0]),
+                status=HTTPStatus.NOT_FOUND,
+            )
 
         response_data = dict(status=job.export_status.title())
 
@@ -103,12 +108,12 @@ class ExportJobAdmin(
         total = 0
         current = 0
         job_progress = job.progress
-        info = job_progress["info"]
+        progress_info = job_progress["info"]
 
-        if info and info["total"]:
-            percent = int(100 / info["total"] * info["current"])
-            total = info["total"]
-            current = info["current"]
+        if progress_info and progress_info["total"]:
+            total = progress_info["total"]
+            current = progress_info["current"]
+            percent = int(100 / total * current)
 
         response_data.update(
             dict(

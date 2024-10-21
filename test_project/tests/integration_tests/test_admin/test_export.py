@@ -55,41 +55,27 @@ def test_export_using_admin_model(client: Client, superuser: User):
 
 
 @pytest.mark.django_db(transaction=True)
-def test_export_progress_for_sync_mode(
-    client: Client,
-    superuser: User,
-):
-    """Test export job admin progress page."""
-    client.force_login(superuser)
-
-    artist_export_job = ArtistExportJobFactory()
-    artist_export_job.refresh_from_db()
-
-    response = client.post(
-        path=reverse(
-            "admin:export_job_progress",
-            kwargs={"job_id": artist_export_job.pk},
-        ),
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()["status"] == artist_export_job.export_status.title()
-
-
-@pytest.mark.django_db(transaction=True)
-def test_export_progress_for_async_mode(
+def test_export_progress_during_export(
     client: Client,
     superuser: User,
     mocker: pytest_mock.MockerFixture,
 ):
-    """Test export job admin progress page."""
+    """Test export job admin progress page during export."""
     client.force_login(superuser)
 
     # Prepare data to imitate intermediate task state
+    fake_progress_info = {
+        "current": 2,
+        "total": 3,
+    }
     mocker.patch(
         "celery.result.AsyncResult.info",
-        new={"current": 2, "total": 3},
+        new=fake_progress_info,
     )
-    expected_percent = 66
+    expected_percent = int(
+        fake_progress_info["current"] / fake_progress_info["total"] * 100,
+    )
+
     artist_export_job = ArtistExportJobFactory()
     artist_export_job.export_status = ExportJob.ExportStatus.EXPORTING
     artist_export_job.save()
@@ -102,9 +88,36 @@ def test_export_progress_for_async_mode(
     )
     assert response.status_code == status.HTTP_200_OK
     json_data = response.json()
-    assert "total" in json_data
-    assert "current" in json_data
-    assert response.json()["percent"] == expected_percent
+
+    assert json_data == {
+        "status": ExportJob.ExportStatus.EXPORTING.title(),
+        "state": "SUCCESS",
+        "percent": expected_percent,
+        **fake_progress_info,
+    }
+
+
+@pytest.mark.django_db(transaction=True)
+def test_export_progress_after_complete_export(
+    client: Client,
+    superuser: User,
+):
+    """Test export job admin progress page after complete export."""
+    client.force_login(superuser)
+
+    artist_export_job = ArtistExportJobFactory()
+    artist_export_job.refresh_from_db()
+
+    response = client.post(
+        path=reverse(
+            "admin:export_job_progress",
+            kwargs={"job_id": artist_export_job.pk},
+        ),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        "status": artist_export_job.export_status.title(),
+    }
 
 
 @pytest.mark.django_db(transaction=True)
@@ -113,7 +126,11 @@ def test_export_progress_with_deleted_export_job(
     superuser: User,
     mocker: pytest_mock.MockerFixture,
 ):
-    """Test export job admin progress page with deleted export job."""
+    """Test export job admin progress page with deleted export job.
+
+    Check that page available, but return an error message.
+
+    """
     client.force_login(superuser)
 
     mocker.patch("import_export_extensions.tasks.export_data_task.apply_async")
@@ -132,7 +149,7 @@ def test_export_progress_with_deleted_export_job(
         ),
     )
 
-    assert response.status_code == status.HTTP_200_OK
+    assert response.status_code == status.HTTP_404_NOT_FOUND
     assert response.json()["validation_error"] == expected_error_message
 
 
@@ -142,16 +159,17 @@ def test_export_progress_with_failed_celery_task(
     superuser: User,
     mocker: pytest_mock.MockerFixture,
 ):
-    """Test export job admin progress page with deleted export job."""
+    """Test than after celery fail ExportJob will be in export error status."""
     client.force_login(superuser)
 
+    expected_error_message = "Mocked Error Message"
     mocker.patch(
         "celery.result.AsyncResult.state",
         new=states.FAILURE,
     )
     mocker.patch(
         "celery.result.AsyncResult.info",
-        new="Mocked Error Message",
+        new=ValueError(expected_error_message),
     )
     artist_export_job = ArtistExportJobFactory()
     artist_export_job.export_status = ExportJob.ExportStatus.EXPORTING
@@ -172,3 +190,4 @@ def test_export_progress_with_failed_celery_task(
     assert (
         artist_export_job.export_status == ExportJob.ExportStatus.EXPORT_ERROR
     )
+    assert artist_export_job.error_message == expected_error_message
