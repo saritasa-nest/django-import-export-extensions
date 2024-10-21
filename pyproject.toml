@@ -106,7 +106,7 @@ psycopg2-binary = "^2.9.9"
 [tool.poetry.group.docs.dependencies]
 # Package for documnation generation
 # https://www.sphinx-doc.org/en/master/
-sphinx = "<8"
+sphinx = "<9"
 # Theme for documentation
 # https://pypi.org/project/sphinx-rtd-theme/
 sphinx-rtd-theme = ">=2,<4"
