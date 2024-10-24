@@ -1,4 +1,6 @@
 
+import http
+
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
@@ -92,7 +94,10 @@ class ExportJobAdmin(
                 id=job_id,
             )
         except self.export_job_model.DoesNotExist as error:
-            return JsonResponse(dict(validation_error=error.args[0]))
+            return JsonResponse(
+                dict(validation_error=error.args[0]),
+                status=http.HTTPStatus.NOT_FOUND,
+            )
 
         response_data = dict(status=job.export_status.title())
 
@@ -102,16 +107,17 @@ class ExportJobAdmin(
         percent = 0
         total = 0
         current = 0
-        info = job.progress["info"]
+        job_progress = job.progress
+        progress_info = job_progress["info"]
 
-        if info and info["total"]:
-            percent = int(100 / info["total"] * info["current"])
-            total = info["total"]
-            current = info["current"]
+        if progress_info and progress_info["total"]:
+            total = progress_info["total"]
+            current = progress_info["current"]
+            percent = int(100 / total * current)
 
         response_data.update(
             dict(
-                state=job.progress["state"],
+                state=job_progress["state"],
                 percent=percent,
                 total=total,
                 current=current,
@@ -125,7 +131,9 @@ class ExportJobAdmin(
         Some fields are editable for new ExportJob.
 
         """
-        readonly_fields = [
+        base_readonly_fields = super().get_readonly_fields(request, obj)
+        readonly_fields = (
+            *base_readonly_fields,
             "export_status",
             "traceback",
             "file_format_path",
@@ -134,15 +142,10 @@ class ExportJobAdmin(
             "export_finished",
             "error_message",
             "_model",
-        ]
-        if obj:
-            readonly_fields.extend(
-                [
-                    "resource_path",
-                    "data_file",
-                    "resource_kwargs",
-                ],
-            )
+            "resource_path",
+            "data_file",
+            "resource_kwargs",
+        )
 
         return readonly_fields
 
