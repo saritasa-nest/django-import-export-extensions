@@ -239,7 +239,7 @@ class CeleryImportAdminMixin(
             )
 
         context = self.get_context_data(request)
-        job_url = reverse("admin:import_job_progress", args=(job.id,))
+        job_url = reverse(f"{self.admin_site.name}:import_job_progress", args=(job.id,))
         context.update(
             dict(
                 title=_("Import status"),
@@ -362,7 +362,7 @@ class CeleryImportAdminMixin(
     ) -> HttpResponseRedirect:
         """Shortcut for redirecting to job's status page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_import_job_status"
+            f"{self.admin_site.name}:{self.model_info.app_model_name}_import_job_status"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
@@ -376,7 +376,7 @@ class CeleryImportAdminMixin(
     ) -> HttpResponseRedirect:
         """Shortcut for redirecting to job's results page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_import_job_results"
+            f"{self.admin_site.name}:{self.model_info.app_model_name}_import_job_results"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
