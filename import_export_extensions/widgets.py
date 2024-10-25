@@ -86,7 +86,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
     ) -> str:
         """Return an export representation of a intermediate instances.
 
-        For atrists example should be returned something like
+        For artists example should be returned something like
             "5:1990-12-12;19:2005-08-16"
             where 5 is band id
 

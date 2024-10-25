@@ -126,11 +126,7 @@ def test_export_progress_with_deleted_export_job(
     superuser: User,
     mocker: pytest_mock.MockerFixture,
 ):
-    """Test export job admin progress page with deleted export job.
-
-    Check that page available, but return an error message.
-
-    """
+    """Test export job admin progress page with deleted export job."""
     client.force_login(superuser)
 
     mocker.patch("import_export_extensions.tasks.export_data_task.apply_async")
@@ -213,13 +209,14 @@ def test_cancel_export_admin_action(
             "action": "cancel_jobs",
             "_selected_action": [job.pk],
         },
+        follow=True,
     )
     job.refresh_from_db()
 
-    assert response.status_code == status.HTTP_302_FOUND
+    assert response.status_code == status.HTTP_200_OK
     assert job.export_status == ExportJob.ExportStatus.CANCELLED
     assert (
-        response.wsgi_request._messages._queued_messages[0].message
+        response.context["messages"]._loaded_data[0].message
         == f"Export of {job} canceled"
     )
     export_data_mock.assert_called_once()
@@ -246,14 +243,15 @@ def test_cancel_export_admin_action_with_incorrect_export_job_status(
             "action": "cancel_jobs",
             "_selected_action": [job.pk],
         },
+        follow=True,
     )
     job.refresh_from_db()
 
-    assert response.status_code == status.HTTP_302_FOUND
+    assert response.status_code == status.HTTP_200_OK
     assert job.export_status == ExportJob.ExportStatus.EXPORTED
     assert (
         expected_error_message
-        in response.wsgi_request._messages._queued_messages[0].message
+        in response.context["messages"]._loaded_data[0].message
     )
     revoke_mock.assert_not_called()
 

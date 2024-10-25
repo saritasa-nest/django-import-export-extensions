@@ -165,3 +165,15 @@ def test_parse_data_invalid_row_file(
     assert import_job.import_status == expected_status
     if expected_status == ImportJob.ImportStatus.INPUT_ERROR:
         assert import_job.input_errors_file is not None
+
+
+def test_parse_data_with_incorrect_input_file_format():
+    """Test that if file extension is incorrect."""
+    incorrect_file_ext = ".incorrect_ext"
+    expected_error_message = f"Incorrect import format: {incorrect_file_ext}."
+    import_job: ImportJob = ArtistImportJobFactory(
+        data_file=f"input_file{incorrect_file_ext}",
+    )
+    import_job.parse_data()
+    assert import_job.import_status == ImportJob.ImportStatus.PARSE_ERROR
+    assert expected_error_message in import_job.error_message

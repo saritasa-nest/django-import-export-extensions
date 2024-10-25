@@ -1,3 +1,4 @@
+import http
 
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
@@ -41,6 +42,22 @@ class ImportJobAdmin(
     actions = (
         "cancel_jobs",
         "confirm_jobs",
+    )
+    readonly_fields = (
+        "import_status",
+        "_model",
+        "created_by",
+        "traceback",
+        "_show_results",
+        "_input_errors",
+        "created",
+        "parse_finished",
+        "import_started",
+        "import_finished",
+        "resource_path",
+        "input_errors_file",
+        "data_file",
+        "resource_kwargs",
     )
 
     def get_queryset(self, request: WSGIRequest):
@@ -88,65 +105,35 @@ class ImportJobAdmin(
                 id=job_id,
             )
         except self.import_job_model.DoesNotExist as error:
-            return JsonResponse(dict(validation_error=error.args[0]))
+            return JsonResponse(
+                dict(validation_error=error.args[0]),
+                status=http.HTTPStatus.NOT_FOUND,
+            )
 
         response_data = dict(status=job.import_status.title())
 
-        if job.import_status in models.ImportJob.progress_statuses:
-            percent = 0
-            total = 0
-            current = 0
-            info = job.progress["info"]
+        if job.import_status not in models.ImportJob.progress_statuses:
+            return JsonResponse(response_data)
 
-            if info and info["total"]:
-                percent = int(100 / info["total"] * info["current"])
-                total = info["total"]
-                current = info["current"]
+        percent = 0
+        total = 0
+        current = 0
+        job_progress = job.progress
+        progress_info = job_progress["info"]
 
-            response_data.update(
-                dict(
-                    state=job.progress["state"],
-                    percent=percent,
-                    total=total,
-                    current=current,
-                ),
-            )
+        if progress_info and progress_info["total"]:
+            total = progress_info["total"]
+            current = progress_info["current"]
+            percent = int(100 / total * current)
+
+        response_data.update(
+            state=job_progress["state"],
+            percent=percent,
+            total=total,
+            current=current,
+        )
 
         return JsonResponse(response_data)
-
-    def get_readonly_fields(
-        self,
-        request: WSGIRequest,
-        obj: models.ImportJob | None = None,
-    ) -> list[str]:
-        """Return readonly fields.
-
-        Some fields are editable for new ImportJob.
-
-        """
-        readonly_fields = [
-            "import_status",
-            "_model",
-            "created_by",
-            "traceback_str",
-            "_show_results",
-            "_input_errors",
-            "created",
-            "parse_finished",
-            "import_started",
-            "import_finished",
-        ]
-        if obj:
-            readonly_fields.extend(
-                [
-                    "resource_path",
-                    "input_errors_file",
-                    "data_file",
-                    "resource_kwargs",
-                ],
-            )
-
-        return readonly_fields
 
     def _show_results(
         self,
@@ -188,7 +175,7 @@ class ImportJobAdmin(
     def get_fieldsets(
         self,
         request: WSGIRequest,
-        obj: models.ImportJob | None = None,
+        obj: models.ImportJob,
     ):
         """Get fieldsets depending on object status."""
         status = (
@@ -249,13 +236,10 @@ class ImportJobAdmin(
             },
         )
 
-        if not obj:
-            return [status, import_params]
-
         if obj.import_status == models.ImportJob.ImportStatus.CREATED:
             return [status, import_params]
 
-        if obj.import_status in models.ImportJob.results_statuses:
+        if obj.import_status in models.ImportJob.success_statuses:
             return [status, result, data, import_params]
 
         if obj.import_status in models.ImportJob.progress_statuses:
