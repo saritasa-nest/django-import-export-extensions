@@ -2,6 +2,11 @@
 History
 =======
 
+UNRELEASED
+----------
+* Add support django-import-export >= 4.2
+* Removed support for django-import-export < 4.2
+
 0.6.1 (2024-10-04)
 ----------
 * Update requirements version and internal naming
