@@ -38,7 +38,7 @@ packages = [{ include = "import_export_extensions" }]
 [tool.poetry.dependencies]
 python = "^3.10"
 django = ">=4.0"
-django-import-export = { extras = ["xls", "xlsx"], version = ">=4.0" }
+django-import-export = { extras = ["xls", "xlsx"], version = ">=4.2" }
 # Django REST Framework
 # https://www.django-rest-framework.org/
 djangorestframework = "^3.15.2"

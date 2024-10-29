@@ -77,7 +77,13 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         self.extra_fields = extra_fields or []
         self.render_empty = render_empty
 
-    def render(self, value: typing.Iterable[Model], *args, **kwargs) -> str:
+    def render(
+        self,
+        value: typing.Iterable[Model],
+        obj=None,
+        *args,
+        **kwargs,
+    ) -> str:
         """Return an export representation of a intermediate instances.
 
         For atrists example should be returned something like
@@ -289,7 +295,7 @@ class FileWidget(CharWidget):
     def render(
         self,
         value: Model | None,
-        *args,
+        obj=None,
         **kwargs,
     ) -> str | None:
         """Convert DB value to URL to file."""

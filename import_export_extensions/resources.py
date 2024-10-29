@@ -188,8 +188,7 @@ class CeleryResourceMixin:
 
     def export(
         self,
-        queryset: QuerySet = None,
-        *args,
+        queryset: QuerySet | None = None,
         **kwargs,
     ) -> tablib.Dataset:
         """Init task state before exporting."""
@@ -200,14 +199,18 @@ class CeleryResourceMixin:
             queryset=queryset,
         )
         return super().export(  # type: ignore
-            *args,
-            **kwargs,
             queryset=queryset,
+            **kwargs,
         )
 
-    def export_resource(self, obj, fields: list[fields.Field] | None = None):
+    def export_resource(
+        self,
+        obj,
+        selected_fields: list[fields.Field] | None = None,
+        **kwargs,
+    ):
         """Update task status as we export rows."""
-        resource = super().export_resource(obj, fields)  # type: ignore
+        resource = super().export_resource(obj, selected_fields, **kwargs)  # type: ignore
         self.update_task_state(state=TaskState.EXPORTING.name)
         return resource
 
