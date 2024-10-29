@@ -2,10 +2,11 @@
 History
 =======
 
-UNRELEASED
+0.7.0 (2024-10-29)
 ----------
 * Add support django-import-export >= 4.2
 * Removed support for django-import-export < 4.2
+* Improve test coverage
 
 0.6.1 (2024-10-04)
 ----------

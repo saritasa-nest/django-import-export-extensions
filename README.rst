@@ -14,7 +14,7 @@ django-import-export-extensions
     :target: https://pypi.org/project/django-import-export-extensions/
     :alt: Supported python versions
 
-.. image:: https://img.shields.io/badge/django--versions-3.2_%7C_4.0_%7C_4.1_%7C_4.2_%7C_5.0-blue
+.. image:: https://img.shields.io/badge/django--versions-4.0_%7C_4.1_%7C_4.2_%7C_5.0-blue
     :target: https://pypi.org/project/django-import-export-extensions/
     :alt: Supported django versions
 
@@ -53,7 +53,7 @@ Add ``import_export`` and ``import_export_extensions`` to ``INSTALLED_APPS``
 
     # settings.py
     INSTALLED_APPS = (
-        ...
+        ...,
         "import_export",
         "import_export_extensions",
     )
