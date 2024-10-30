@@ -249,47 +249,20 @@ class ImportJob(BaseJob):
 
     @property
     def progress(self) -> TaskStateInfo | None:
-        """Return dict with parsing state.
-
-        Example for sync mode::
-
-            {
-                'state': 'PARSING',
-                'info': None
-            }
-
-        Example for background (celery) mode::
-
-            {
-                'state': 'PARSING',
-                'info': {'current': 15, 'total': 100}
-            }
-
-        Possible states:
-            1. PENDING
-            2. STARTED
-            3. SUCCESS
-            4. PARSING - custom status that also set importing info
-
-        https://docs.celeryproject.org/en/latest/userguide/tasks.html#states
-
-        """
-        if self.import_status not in self.progress_statuses:
-            return None
-
-        current_task = (
+        """Return dict with parsing state."""
+        current_task_id = (
             self.parse_task_id
             if self.import_status == self.ImportStatus.PARSING
             else self.import_task_id
         )
 
-        if not current_task or current_app.conf.task_always_eager:
-            return dict(
-                state=self.import_status.upper(),
-                info=None,
-            )
+        if (
+            not current_task_id
+            or self.import_status not in self.progress_statuses
+        ):
+            return None
 
-        return self._get_task_state(current_task)
+        return self._get_task_state(current_task_id)
 
     def _check_import_status_correctness(
         self,

@@ -41,6 +41,19 @@ class ExportJobAdmin(
     actions = (
         "cancel_jobs",
     )
+    readonly_fields = (
+        "export_status",
+        "traceback",
+        "file_format_path",
+        "created",
+        "export_started",
+        "export_finished",
+        "error_message",
+        "_model",
+        "resource_path",
+        "data_file",
+        "resource_kwargs",
+    )
 
     def export_data_action(
         self,
@@ -116,43 +129,17 @@ class ExportJobAdmin(
             percent = int(100 / total * current)
 
         response_data.update(
-            dict(
-                state=job_progress["state"],
-                percent=percent,
-                total=total,
-                current=current,
-            ),
+            state=job_progress["state"],
+            percent=percent,
+            total=total,
+            current=current,
         )
         return JsonResponse(response_data)
-
-    def get_readonly_fields(self, request, obj=None):
-        """Return readonly fields.
-
-        Some fields are editable for new ExportJob.
-
-        """
-        base_readonly_fields = super().get_readonly_fields(request, obj)
-        readonly_fields = (
-            *base_readonly_fields,
-            "export_status",
-            "traceback",
-            "file_format_path",
-            "created",
-            "export_started",
-            "export_finished",
-            "error_message",
-            "_model",
-            "resource_path",
-            "data_file",
-            "resource_kwargs",
-        )
-
-        return readonly_fields
 
     def get_fieldsets(
         self,
         request: WSGIRequest,
-        obj: models.ExportJob | None = None,
+        obj: models.ExportJob,
     ):
         """Get fieldsets depending on object status."""
         status = (
@@ -203,10 +190,7 @@ class ExportJobAdmin(
             },
         )
 
-        if (
-            not obj
-            or obj.export_status == models.ExportJob.ExportStatus.CREATED
-        ):
+        if obj.export_status == models.ExportJob.ExportStatus.CREATED:
             return [status, export_params]
 
         if obj.export_status == models.ExportJob.ExportStatus.EXPORTED:

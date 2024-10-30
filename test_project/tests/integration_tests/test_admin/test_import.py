@@ -8,8 +8,11 @@ from django.urls import reverse
 from rest_framework import status
 
 import pytest
+import pytest_mock
+from celery import states
 
 from import_export_extensions.models import ImportJob
+from test_project.fake_app.factories import ArtistImportJobFactory
 
 
 @pytest.mark.usefixtures("existing_artist")
@@ -111,4 +114,368 @@ def test_import_admin_has_same_formats(
     assert (
         import_response_form.fields["format"].choices
         == import_response_result_form.fields["format"].choices
+    )
+
+
+@pytest.mark.django_db(transaction=True)
+def test_import_progress_during_import(
+    client: Client,
+    superuser: User,
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test import job admin progress page during import."""
+    client.force_login(superuser)
+
+    # Prepare data to imitate intermediate task state
+    fake_progress_info = {
+        "current": 2,
+        "total": 3,
+    }
+    mocker.patch(
+        "celery.result.AsyncResult.info",
+        new=fake_progress_info,
+    )
+    expected_percent = int(
+        fake_progress_info["current"] / fake_progress_info["total"] * 100,
+    )
+
+    artist_import_job = ArtistImportJobFactory(
+        skip_parse_step=True,
+    )
+    artist_import_job.import_status = ImportJob.ImportStatus.IMPORTING
+    artist_import_job.save()
+
+    response = client.post(
+        path=reverse(
+            "admin:import_job_progress",
+            kwargs={"job_id": artist_import_job.pk},
+        ),
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        "status": ImportJob.ImportStatus.IMPORTING.title(),
+        "state": "SUCCESS",
+        "percent": expected_percent,
+        **fake_progress_info,
+    }
+
+
+@pytest.mark.django_db(transaction=True)
+def test_import_progress_after_complete_import(
+    client: Client,
+    superuser: User,
+):
+    """Test import job admin progress page after complete import."""
+    client.force_login(superuser)
+
+    artist_import_job = ArtistImportJobFactory(
+        skip_parse_step=True,
+    )
+    artist_import_job.refresh_from_db()
+
+    response = client.post(
+        path=reverse(
+            "admin:import_job_progress",
+            kwargs={"job_id": artist_import_job.pk},
+        ),
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        "status": artist_import_job.import_status.title(),
+    }
+
+
+@pytest.mark.django_db(transaction=True)
+def test_import_progress_with_deleted_import_job(
+    client: Client,
+    superuser: User,
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test import job admin progress page with deleted import job."""
+    client.force_login(superuser)
+
+    mocker.patch("import_export_extensions.tasks.import_data_task.apply_async")
+    artist_import_job = ArtistImportJobFactory()
+    job_id = artist_import_job.id
+    artist_import_job.delete()
+
+    expected_error_message = "ImportJob matching query does not exist."
+
+    response = client.post(
+        path=reverse(
+            "admin:import_job_progress",
+            kwargs={
+                "job_id": job_id,
+            },
+        ),
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.json()["validation_error"] == expected_error_message
+
+
+@pytest.mark.django_db(transaction=True)
+def test_import_progress_with_failed_celery_task(
+    client: Client,
+    superuser: User,
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test than after celery fail ImportJob will be in import error status."""
+    client.force_login(superuser)
+
+    expected_error_message = "Mocked Error Message"
+    mocker.patch(
+        "celery.result.AsyncResult.state",
+        new=states.FAILURE,
+    )
+    mocker.patch(
+        "celery.result.AsyncResult.info",
+        new=ValueError(expected_error_message),
+    )
+    artist_import_job = ArtistImportJobFactory()
+    artist_import_job.refresh_from_db()
+    artist_import_job.confirm_import()
+    artist_import_job.import_status = ImportJob.ImportStatus.IMPORTING
+    artist_import_job.save()
+
+    response = client.post(
+        path=reverse(
+            "admin:import_job_progress",
+            kwargs={
+                "job_id": artist_import_job.id,
+            },
+        ),
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["state"] == states.FAILURE
+    artist_import_job.refresh_from_db()
+    assert (
+        artist_import_job.import_status == ImportJob.ImportStatus.IMPORT_ERROR
+    )
+
+
+@pytest.mark.django_db(transaction=True)
+def test_cancel_import_admin_action(
+    client: Client,
+    superuser: User,
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test `cancel_import` via admin action."""
+    client.force_login(superuser)
+
+    revoke_mock = mocker.patch("celery.current_app.control.revoke")
+    import_data_mock = mocker.patch(
+        "import_export_extensions.models.ImportJob.import_data",
+    )
+    artist_import_job = ArtistImportJobFactory()
+    artist_import_job.refresh_from_db()
+    artist_import_job.confirm_import()
+
+    response = client.post(
+        reverse("admin:import_export_extensions_importjob_changelist"),
+        data={
+            "action": "cancel_jobs",
+            "_selected_action": [artist_import_job.pk],
+        },
+        follow=True,
+    )
+    artist_import_job.refresh_from_db()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert artist_import_job.import_status == ImportJob.ImportStatus.CANCELLED
+    assert (
+        response.context["messages"]._loaded_data[0].message
+        == f"Import of {artist_import_job} canceled"
+    )
+    import_data_mock.assert_called_once()
+    revoke_mock.assert_called_once_with(
+        artist_import_job.import_task_id,
+        terminate=True,
+    )
+
+
+@pytest.mark.django_db(transaction=True)
+def test_cancel_import_admin_action_with_incorrect_import_job_status(
+    client: Client,
+    superuser: User,
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test `cancel_import` via admin action with wrong import job status."""
+    client.force_login(superuser)
+
+    revoke_mock = mocker.patch("celery.current_app.control.revoke")
+    artist_import_job = ArtistImportJobFactory()
+
+    expected_error_message = (
+        f"ImportJob with id {artist_import_job.pk} has incorrect status"
+    )
+
+    response = client.post(
+        reverse("admin:import_export_extensions_importjob_changelist"),
+        data={
+            "action": "cancel_jobs",
+            "_selected_action": [artist_import_job.pk],
+        },
+        follow=True,
+    )
+    artist_import_job.refresh_from_db()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert artist_import_job.import_status == ImportJob.ImportStatus.PARSED
+    assert (
+        expected_error_message
+        in response.context["messages"]._loaded_data[0].message
+    )
+    revoke_mock.assert_not_called()
+
+
+@pytest.mark.django_db(transaction=True)
+def test_confirm_import_admin_action(
+    client: Client,
+    superuser: User,
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test `confirm_import` via admin action."""
+    client.force_login(superuser)
+
+    import_data_mock = mocker.patch(
+        "import_export_extensions.models.ImportJob.import_data",
+    )
+    artist_import_job = ArtistImportJobFactory()
+    artist_import_job.refresh_from_db()
+
+    response = client.post(
+        reverse("admin:import_export_extensions_importjob_changelist"),
+        data={
+            "action": "confirm_jobs",
+            "_selected_action": [artist_import_job.pk],
+        },
+        follow=True,
+    )
+    artist_import_job.refresh_from_db()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert artist_import_job.import_status == ImportJob.ImportStatus.CONFIRMED
+    assert (
+        response.context["messages"]._loaded_data[0].message
+        == f"Import of {artist_import_job} confirmed"
+    )
+    import_data_mock.assert_called_once()
+
+
+@pytest.mark.django_db(transaction=True)
+def test_confirm_import_admin_action_with_incorrect_import_job_status(
+    client: Client,
+    superuser: User,
+):
+    """Test `confirm_import` via admin action with wrong import job status."""
+    client.force_login(superuser)
+
+    artist_import_job = ArtistImportJobFactory()
+    artist_import_job.import_status = ImportJob.ImportStatus.CANCELLED
+    artist_import_job.save()
+
+    expected_error_message = (
+        f"ImportJob with id {artist_import_job.pk} has incorrect status"
+    )
+
+    response = client.post(
+        reverse("admin:import_export_extensions_importjob_changelist"),
+        data={
+            "action": "confirm_jobs",
+            "_selected_action": [artist_import_job.pk],
+        },
+        follow=True,
+    )
+    artist_import_job.refresh_from_db()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert artist_import_job.import_status == ImportJob.ImportStatus.CANCELLED
+    assert (
+        expected_error_message
+        in response.context["messages"]._loaded_data[0].message
+    )
+
+
+@pytest.mark.parametrize(
+    argnames=["job_status", "expected_fieldsets"],
+    argvalues=[
+        pytest.param(
+            ImportJob.ImportStatus.CREATED,
+            tuple(),
+            id="Get fieldsets for job in status CREATED",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORTED,
+            (
+                ("_show_results",),
+                (
+                    "input_errors_file",
+                    "_input_errors",
+                ),
+            ),
+            id="Get fieldsets for job in status IMPORTED",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORTING,
+            (
+                (
+                    "import_status",
+                    "import_progressbar",
+                ),
+            ),
+            id="Get fieldsets for job in status IMPORTING",
+        ),
+        pytest.param(
+            ImportJob.ImportStatus.IMPORT_ERROR,
+            (("traceback",),),
+            id="Get fieldsets for job in status IMPORT_ERROR",
+        ),
+    ],
+)
+def test_get_fieldsets_by_import_job_status(
+    client: Client,
+    superuser: User,
+    job_status: ImportJob.ImportStatus,
+    expected_fieldsets: tuple[tuple[str]],
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test that appropriate fieldsets returned for different job statuses."""
+    client.force_login(superuser)
+
+    mocker.patch(
+        "import_export_extensions.models.ImportJob.import_data",
+    )
+    artist_import_job = ArtistImportJobFactory()
+    artist_import_job.import_status = job_status
+    artist_import_job.save()
+
+    response = client.get(
+        reverse(
+            "admin:import_export_extensions_importjob_change",
+            kwargs={"object_id": artist_import_job.pk},
+        ),
+    )
+
+    fieldsets = response.context["adminform"].fieldsets
+    fields = [fields["fields"] for _, fields in fieldsets]
+
+    assert tuple(fields) == (
+        (
+            "import_status",
+            "_model",
+            "created_by",
+            "created",
+            "parse_finished",
+            "import_started",
+            "import_finished",
+        ),
+        *expected_fieldsets,
+        (
+            "data_file",
+            "resource_path",
+            "resource_kwargs",
+        ),
     )
