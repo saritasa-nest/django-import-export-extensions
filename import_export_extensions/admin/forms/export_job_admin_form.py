@@ -27,7 +27,7 @@ class ExportJobAdminForm(forms.ModelForm):
     ):
         """Provide `export_progressbar` widget the `ExportJob` instance."""
         super().__init__(*args, instance=instance, **kwargs)
-        url_name = "admin:export_job_progress"
+        url_name = f"{self.admin_site.name}:export_job_progress"
         self.fields["export_progressbar"].widget = ProgressBarWidget(
             job=instance,
             url=reverse(url_name, args=(instance.id,)),

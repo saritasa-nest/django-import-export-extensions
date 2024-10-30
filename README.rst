@@ -121,6 +121,24 @@ Prepare view sets to import/export via API
         resource_class = resources.BookResource
 
 
+If you use multiple or custom admin site, register required models to them
+
+.. code-block:: python
+
+    # app/admin.py
+    from import_export_extensions.models import ExportJob
+    from import_export_extensions.admin.model_admins.export_job_admin import ExportJobAdmin
+
+    from django.apps import AppConfig
+
+    custom_admin_site = BaseAdminSite(name="custom_admin")
+    # ...
+    cutom_admin_site.register(ExportJob, ExportJobAdmin)
+
+
+
+
+
 Don't forget to `configure Celery <https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html>`_
 if you want to run import/export in background
 

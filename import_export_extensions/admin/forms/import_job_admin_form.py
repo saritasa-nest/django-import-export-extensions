@@ -26,7 +26,7 @@ class ImportJobAdminForm(forms.ModelForm):
     ):
         """Provide `import_progressbar` widget the ``ImportJob`` instance."""
         super().__init__(*args, instance=instance, **kwargs)
-        url_name = "admin:import_job_progress"
+        url_name = f"{self.admin_site.name}:import_job_progress"
         self.fields["import_progressbar"].label = (
             "Import progress" if
             instance.import_status == models.ImportJob.ImportStatus.IMPORTING

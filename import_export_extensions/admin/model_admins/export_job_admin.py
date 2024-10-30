@@ -55,6 +55,13 @@ class ExportJobAdmin(
         "resource_kwargs",
     )
 
+    def get_form(self, request: WSGIRequest, obj=None, **kwargs):
+        """Push admin site to form."""
+        form = super().get_form(request, obj, **kwargs)
+
+        form.admin_site = self.admin_site
+        return form
+
     def export_data_action(
         self,
         request: WSGIRequest,
@@ -80,7 +87,7 @@ class ExportJobAdmin(
         urls = super().get_urls()
         export_urls = [
             re_path(
-                route=r"^(?P<job_id>\d+)/progress/$",
+                route=r"^celery-export/(?P<job_id>\d+)/progress/$",
                 view=self.admin_site.admin_view(self.export_job_progress_view),
                 name="export_job_progress",
             ),

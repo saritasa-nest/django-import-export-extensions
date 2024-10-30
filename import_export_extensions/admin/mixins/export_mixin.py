@@ -197,7 +197,7 @@ class CeleryExportAdminMixin(
             )
 
         context = self.get_context_data(request)
-        job_url = reverse("admin:export_job_progress", args=(job.id,))
+        job_url = reverse(f"{self.admin_site.name}:export_job_progress", args=(job.id,))
 
         context["title"] = _("Export status")
         context["opts"] = self.model_info.meta
@@ -289,7 +289,7 @@ class CeleryExportAdminMixin(
     ) -> HttpResponse:
         """Shortcut for redirecting to job's status page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_export_job_status"
+            f"{self.admin_site.name}:{self.model_info.app_model_name}_export_job_status"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
@@ -304,7 +304,7 @@ class CeleryExportAdminMixin(
     ) -> HttpResponse:
         """Shortcut for redirecting to job's results page."""
         url_name = (
-            f"admin:{self.model_info.app_model_name}_export_job_results"
+            f"{self.admin_site.name}:{self.model_info.app_model_name}_export_job_results"
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()

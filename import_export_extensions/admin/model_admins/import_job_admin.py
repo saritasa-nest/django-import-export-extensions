@@ -60,6 +60,13 @@ class ImportJobAdmin(
         "resource_kwargs",
     )
 
+    def get_form(self, request: WSGIRequest, obj=None, **kwargs):
+        """Push admin site to form."""
+        form = super().get_form(request, obj, **kwargs)
+
+        form.admin_site = self.admin_site
+        return form
+
     def get_queryset(self, request: WSGIRequest):
         """Override `get_queryset`.
 
@@ -78,9 +85,9 @@ class ImportJobAdmin(
         urls = super().get_urls()
         import_urls = [
             re_path(
-                r"^(?P<job_id>\d+)/progress/$",
+                r"^celery-import/(?P<job_id>\d+)/progress/$",
                 self.admin_site.admin_view(self.import_job_progress_view),
-                name="import_job_progress",
+                name= "import_job_progress",
             ),
         ]
         return import_urls + urls
