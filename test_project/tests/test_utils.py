@@ -65,8 +65,8 @@ def test_clear_q_filter():
             f"http://{AWS_STORAGE_BUCKET_NAME}.s3.region.com/dir/file.csv",
             "dir/file.csv",
             id=(
-                "File from s3 bucket if using virtual addressing style:"
-                "https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html"
+                # https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html
+                "File from s3 bucket if using virtual addressing style."
             ),
         ),
     ],

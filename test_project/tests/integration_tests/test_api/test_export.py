@@ -70,16 +70,10 @@ def test_export_api_detail(
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
-    argnames=["allowed_cancel_status"],
+    argnames="allowed_cancel_status",
     argvalues=[
-        pytest.param(
-            ExportJob.ExportStatus.CREATED,
-            id="Cancel job with `CREATED` status",
-        ),
-        pytest.param(
-            ExportJob.ExportStatus.EXPORTING,
-            id="Cancel job with `EXPORTING` status",
-        ),
+        ExportJob.ExportStatus.CREATED,
+        ExportJob.ExportStatus.EXPORTING,
     ],
 )
 def test_export_api_cancel(
@@ -103,20 +97,11 @@ def test_export_api_cancel(
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
-    argnames=["incorrect_job_status"],
+    argnames="incorrect_job_status",
     argvalues=[
-        pytest.param(
-            ExportJob.ExportStatus.EXPORT_ERROR,
-            id="Cancel export job with `EXPORT_ERROR` status",
-        ),
-        pytest.param(
-            ExportJob.ExportStatus.EXPORTED,
-            id="Cancel export job with `EXPORTED` status",
-        ),
-        pytest.param(
-            ExportJob.ExportStatus.CANCELLED,
-            id="Cancel export job with `CANCELLED` status",
-        ),
+        ExportJob.ExportStatus.EXPORT_ERROR,
+        ExportJob.ExportStatus.EXPORTED,
+        ExportJob.ExportStatus.CANCELLED,
     ],
 )
 def test_export_api_cancel_with_errors(

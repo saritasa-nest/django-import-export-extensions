@@ -137,7 +137,7 @@ class ImportJobAdmin(
 
     def _show_results(
         self,
-        obj: models.ImportJob | None = None,
+        obj: models.ImportJob,
     ) -> str:
         """Show results totals.
 
@@ -149,9 +149,6 @@ class ImportJobAdmin(
         Error: 0
 
         """
-        if not obj:
-            return ""
-
         result_sections = []
         for key, value in obj.result.totals.items():
             status_template = f"{key.title()}: {value}"
