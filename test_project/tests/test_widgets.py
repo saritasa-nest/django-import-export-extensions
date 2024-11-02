@@ -2,8 +2,10 @@ import io
 
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.forms import ValidationError
 
 import pytest
+import pytest_mock
 from import_export.exceptions import ImportExportError
 from pytest_mock import MockerFixture
 
@@ -341,6 +343,31 @@ def test_render_empty_values(membership: Membership):
     assert expected_result == result
 
 
+@pytest.mark.parametrize(
+    argnames="rem_field_lookup",
+    argvalues=[
+        "regex",
+        "icontains",
+    ],
+)
+def test_intermediate_widget_filter_with_lookup(rem_field_lookup: str):
+    """Test widget filter rem model with lookup."""
+    founded_band = BandFactory(title="In result band")
+    ignored_band = BandFactory(title="This band will be ignored")
+
+    widget = IntermediateManyToManyWidget(
+        rem_model=Band,
+        rem_field="title",
+        rem_field_lookup=rem_field_lookup,
+        instance_separator=";",
+    )
+    result = widget.filter_instances(founded_band.title)
+
+    assert len(result) == 1
+    assert founded_band in result
+    assert ignored_band not in result
+
+
 def test_file_widget_render_link(import_file):
     """Test FileWidget `render` method."""
     widget = FileWidget(
@@ -351,6 +378,22 @@ def test_file_widget_render_link(import_file):
     assert import_file.url in result
 
 
+def test_file_widget_render_link_for_non_local_env(
+    import_file,
+    mocker: pytest_mock.MockerFixture,
+):
+    """Test FileWidget `render` method."""
+    widget = FileWidget(filename="test_widget")
+    mocker.patch.object(
+        widget,
+        "_get_default_storage",
+        return_value="non_local_storage",
+    )
+    result = widget.render(import_file)
+
+    assert import_file.url == result
+
+
 def test_file_widget_clean_url():
     """Test FileWidget `clean` method."""
     filename = default_storage.save("original", File(io.BytesIO(b"testvalue")))
@@ -358,6 +401,13 @@ def test_file_widget_clean_url():
     cleaned_result = widget.clean(f"http://localhost/media/{filename}")
 
     assert cleaned_result == filename
+
+
+def test_file_widget_clean_with_invalid_file_path():
+    """Test that FileWidget.clean raise error with invalid file path."""
+    widget = FileWidget(filename="imported_file")
+    with pytest.raises(ValidationError, match="Invalid file path"):
+        widget.clean("invalid_value")
 
 
 def test_file_widget_clean_non_existed_url(mocker: MockerFixture):
