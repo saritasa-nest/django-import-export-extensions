@@ -2,6 +2,7 @@ import io
 
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.db.models.fields.files import FieldFile
 from django.forms import ValidationError
 
 import pytest
@@ -24,7 +25,7 @@ from ..fake_app.models import Band, Membership
 
 
 @pytest.fixture
-def import_file():
+def import_file() -> FieldFile:
     """Prepare import file from import job."""
     import_job = ArtistImportJobFactory.build(artists=[ArtistFactory()])
     return import_job.data_file
@@ -368,18 +369,19 @@ def test_intermediate_widget_filter_with_lookup(rem_field_lookup: str):
     assert ignored_band not in result
 
 
-def test_file_widget_render_link(import_file):
+def test_file_widget_render_link(import_file: FieldFile):
     """Test FileWidget `render` method."""
     widget = FileWidget(
         filename="test_widget",
     )
     result = widget.render(import_file)
 
+    assert result
     assert import_file.url in result
 
 
 def test_file_widget_render_link_for_non_local_env(
-    import_file,
+    import_file: FieldFile,
     mocker: pytest_mock.MockerFixture,
 ):
     """Test FileWidget `render` method."""
