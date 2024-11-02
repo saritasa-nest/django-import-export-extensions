@@ -4,7 +4,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
 
-from ... import models
+from ...models.core import BaseJob
 
 
 class BaseImportExportJobAdminMixin:
@@ -32,20 +32,20 @@ class BaseImportExportJobAdminMixin:
         """
         return False
 
-    def _model(self, obj: models.ImportJob) -> str:
+    def _model(self, obj: BaseJob) -> str:
         """Add `model` field of import/export job."""
         try:
             resource_class = import_string(obj.resource_path)
             model = resource_class.Meta.model._meta.verbose_name_plural
         # In case resource has no Meta or model we need to catch AttributeError
-        except (ImportError, AttributeError):
+        except (ImportError, AttributeError):  # pragma: no cover
             model = _("Unknown")
         return model
 
     def get_from_content_type(
         self,
-        obj: models.ImportJob | models.ExportJob,
-    ) -> ContentType | None:
+        obj: BaseJob,
+    ) -> ContentType | None:  # pragma: no cover
         """Shortcut to get object from content_type."""
         content_type = obj.resource_kwargs.get("content_type")
         obj_id = obj.resource_kwargs.get("object_id")

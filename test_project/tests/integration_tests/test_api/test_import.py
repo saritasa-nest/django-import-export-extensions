@@ -197,44 +197,17 @@ def test_import_api_confirm_parsed_job(
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
-    argnames=["incorrect_job_status"],
+    argnames="incorrect_job_status",
     argvalues=[
-        pytest.param(
-            ImportJob.ImportStatus.CREATED,
-            id="Confirm import job with `CREATED` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.PARSING,
-            id="Confirm import job with `PARSING` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.PARSE_ERROR,
-            id="Confirm import job with `PARSE_ERROR` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.CONFIRMED,
-            id="Confirm import job with `CONFIRMED` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.INPUT_ERROR,
-            id="Confirm import job with `INPUT_ERROR` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.IMPORTING,
-            id="Confirm import job with `IMPORTING` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.IMPORT_ERROR,
-            id="Confirm import job with `IMPORT_ERROR` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.IMPORTED,
-            id="Confirm import job with `IMPORTED` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.CANCELLED,
-            id="Confirm import job with `CANCELLED` status",
-        ),
+        ImportJob.ImportStatus.CREATED,
+        ImportJob.ImportStatus.PARSING,
+        ImportJob.ImportStatus.PARSE_ERROR,
+        ImportJob.ImportStatus.CONFIRMED,
+        ImportJob.ImportStatus.INPUT_ERROR,
+        ImportJob.ImportStatus.IMPORTING,
+        ImportJob.ImportStatus.IMPORT_ERROR,
+        ImportJob.ImportStatus.IMPORTED,
+        ImportJob.ImportStatus.CANCELLED,
     ],
 )
 def test_import_api_confirm_incorrect_job_status(
@@ -262,24 +235,12 @@ def test_import_api_confirm_incorrect_job_status(
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
-    argnames=["allowed_cancel_status"],
+    argnames="allowed_cancel_status",
     argvalues=[
-        pytest.param(
-            ImportJob.ImportStatus.CREATED,
-            id="Cancel import job with `CREATED` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.PARSING,
-            id="Cancel import job with `PARSING` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.IMPORTING,
-            id="Cancel import job with `IMPORTING` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.CONFIRMED,
-            id="Cancel import job with `CONFIRMED` status",
-        ),
+        ImportJob.ImportStatus.CREATED,
+        ImportJob.ImportStatus.PARSING,
+        ImportJob.ImportStatus.IMPORTING,
+        ImportJob.ImportStatus.CONFIRMED,
     ],
 )
 def test_import_api_cancel_job(
@@ -303,28 +264,13 @@ def test_import_api_cancel_job(
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
-    argnames=["incorrect_job_status"],
+    argnames="incorrect_job_status",
     argvalues=[
-        pytest.param(
-            ImportJob.ImportStatus.INPUT_ERROR,
-            id="Cancel import job with `INPUT_ERROR` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.PARSE_ERROR,
-            id="Cancel import job with `PARSE_ERROR` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.IMPORT_ERROR,
-            id="Cancel import job with `IMPORT_ERROR` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.IMPORTED,
-            id="Cancel import job with `IMPORTED` status",
-        ),
-        pytest.param(
-            ImportJob.ImportStatus.CANCELLED,
-            id="Cancel import job with `CANCELLED` status",
-        ),
+        ImportJob.ImportStatus.INPUT_ERROR,
+        ImportJob.ImportStatus.PARSE_ERROR,
+        ImportJob.ImportStatus.IMPORT_ERROR,
+        ImportJob.ImportStatus.IMPORTED,
+        ImportJob.ImportStatus.CANCELLED,
     ],
 )
 def test_import_api_cancel_incorrect_job_status(

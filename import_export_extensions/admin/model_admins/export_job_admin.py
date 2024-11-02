@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.urls import re_path
 from django.utils.translation import gettext_lazy as _
 
-from ... import models, tasks
+from ... import models
 from .. import forms
 from . import mixins
 
@@ -54,22 +54,6 @@ class ExportJobAdmin(
         "data_file",
         "resource_kwargs",
     )
-
-    def export_data_action(
-        self,
-        request: WSGIRequest,
-        obj: models.ExportJob,
-    ):
-        """Admin action for starting data export.
-
-        Data export should auto start after export confirmation. But there
-        may be issues with celery and task did not start. So this action
-        for such cases.
-
-        """
-        tasks.export_data_task.delay(obj.id)
-
-    export_data_action.label = _("Start Export")
 
     def get_urls(self):
         """Add url to get current export job progress in JSON representation.

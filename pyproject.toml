@@ -417,7 +417,7 @@ omit = [
 ]
 
 [tool.coverage.report]
-exclude_lines = [
+exclude_also = [
   "def __repr__",
   "def __str__",
   "pass",

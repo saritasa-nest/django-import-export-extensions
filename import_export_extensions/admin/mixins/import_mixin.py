@@ -1,7 +1,6 @@
 import typing
 
 from django.conf import settings
-from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIRequest
 from django.forms.forms import Form
@@ -15,17 +14,17 @@ from django.template.response import TemplateResponse
 from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
-from import_export import admin as base_admin
-from import_export import mixins as base_mixins
+from import_export import admin as import_export_admin
+from import_export import mixins as import_export_mixins
 
 from ... import models
 from ..forms import ForceImportForm
-from . import types
+from . import base_mixin, types
 
 
 class CeleryImportAdminMixin(
-    base_mixins.BaseImportMixin,
-    base_admin.ImportExportMixinBase,
+    import_export_mixins.BaseImportMixin,
+    base_mixin.BaseCeleryImportExportAdminMixin,
 ):
     """Admin mixin for celery import.
 
@@ -75,30 +74,17 @@ class CeleryImportAdminMixin(
 
     skip_admin_log = None
     # Copy methods of mixin from original package to reuse it here
-    generate_log_entries = base_admin.ImportMixin.generate_log_entries
-    get_skip_admin_log = base_admin.ImportMixin.get_skip_admin_log
-    has_import_permission = base_admin.ImportMixin.has_import_permission
-    _log_actions = base_admin.ImportMixin._log_actions
-    _create_log_entries = base_admin.ImportMixin._create_log_entries
-    _create_log_entry = base_admin.ImportMixin._create_log_entry
-
-    @property
-    def model_info(self) -> types.ModelInfo:
-        """Get info of imported model."""
-        return types.ModelInfo(
-            meta=self.model._meta,
-        )
-
-    def get_context_data(
-        self,
-        request: WSGIRequest,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get context data."""
-        return {}
+    generate_log_entries = import_export_admin.ImportMixin.generate_log_entries
+    get_skip_admin_log = import_export_admin.ImportMixin.get_skip_admin_log
+    has_import_permission = (
+        import_export_admin.ImportMixin.has_import_permission
+    )
+    _log_actions = import_export_admin.ImportMixin._log_actions
+    _create_log_entries = import_export_admin.ImportMixin._create_log_entries
+    _create_log_entry = import_export_admin.ImportMixin._create_log_entry
 
     def get_import_context_data(self, **kwargs):
-        """Get context for import data."""
+        """Get context data for import."""
         return self.get_context_data(**kwargs)
 
     def get_urls(self):
@@ -159,7 +145,7 @@ class CeleryImportAdminMixin(
         if not self.has_import_permission(request):
             raise PermissionDenied
 
-        context = self.get_context_data(request)
+        context = self.get_import_context_data()
         resource_classes = self.get_import_resource_classes(request)
 
         form = ForceImportForm(
@@ -238,7 +224,7 @@ class CeleryImportAdminMixin(
                 job=job,
             )
 
-        context = self.get_context_data(request)
+        context = self.get_import_context_data()
         job_url = reverse("admin:import_job_progress", args=(job.id,))
         context.update(
             dict(
@@ -283,7 +269,7 @@ class CeleryImportAdminMixin(
                 job=job,
             )
 
-        context = self.get_context_data(request=request)
+        context = self.get_import_context_data()
 
         if request.method == "GET":
             # GET request, show parse results
@@ -292,14 +278,14 @@ class CeleryImportAdminMixin(
             context["result"] = result
             context["title"] = _("Import results")
 
-            if job.import_status != models.ImportJob.ImportStatus.PARSED:
+            if job.import_status == models.ImportJob.ImportStatus.PARSED:
+                context["confirm_form"] = Form()
+            else:
                 # display import form
                 context["import_form"] = ForceImportForm(
                     formats=self.get_import_formats(),
                     resources=self.get_import_resource_classes(request),
                 )
-            else:
-                context["confirm_form"] = Form()
 
             context.update(self.admin_site.each_context(request))
             context["opts"] = self.model_info.meta
@@ -310,17 +296,21 @@ class CeleryImportAdminMixin(
                 context,
             )
 
-        # POST request. If data is invalid - error
-        if job.import_status != models.ImportJob.ImportStatus.PARSED:
-            return HttpResponseForbidden(
-                "Data invalid, before importing data "
-                "needs to be successfully parsed."
-                f"Current status: {job.import_status}",
+        # POST request
+        if job.import_status == models.ImportJob.ImportStatus.PARSED:
+            # start celery task for data importing
+            job.confirm_import()
+            return self._redirect_to_import_status_page(
+                request=request,
+                job=job,
             )
 
-        # start celery task for data importing
-        job.confirm_import()
-        return self._redirect_to_import_status_page(request=request, job=job)
+        return HttpResponseForbidden(
+            "Data invalid, before importing data "
+            "needs to be successfully parsed. "
+            f"Current status: {job.import_status}",
+        )
+
 
     def create_import_job(
         self,
@@ -383,20 +373,6 @@ class CeleryImportAdminMixin(
         url = f"{url}?{query}" if query else url
         if job.import_status != models.ImportJob.ImportStatus.PARSED:
             return HttpResponseRedirect(redirect_to=url)
-
-        # Redirections add one by one links to `redirect_to`
-        key = request.session.get("redirect_key", None)
-        session = request.session
-        if key:
-            links = cache.get(key)
-            try:
-                session["redirect_to"] = links[0]
-                del links[0]
-                cache.set(key, links)
-            except (TypeError, IndexError):
-                session.pop("redirect_to", None)
-                session.pop("redirect_key", None)
-                cache.delete(key)
 
         return HttpResponseRedirect(redirect_to=url)
 

@@ -4,7 +4,6 @@ from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import (
     HttpResponse,
-    HttpResponseForbidden,
     HttpResponseRedirect,
 )
 from django.shortcuts import get_object_or_404
@@ -12,17 +11,17 @@ from django.template.response import TemplateResponse
 from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
-from import_export import admin as base_admin
-from import_export import forms as base_forms
-from import_export import mixins as base_mixins
+from import_export import admin as import_export_admin
+from import_export import forms as import_export_forms
+from import_export import mixins as import_export_mixins
 
 from ... import models
-from . import types
+from . import base_mixin, types
 
 
 class CeleryExportAdminMixin(
-    base_mixins.BaseExportMixin,
-    base_admin.ImportExportMixinBase,
+    import_export_mixins.BaseExportMixin,
+    base_mixin.BaseCeleryImportExportAdminMixin,
 ):
     """Admin mixin for celery export.
 
@@ -63,22 +62,13 @@ class CeleryExportAdminMixin(
     export_results_statuses = models.ExportJob.export_finished_statuses
 
     # Copy methods of mixin from original package to reuse it here
-    has_export_permission = base_admin.ExportMixin.has_export_permission
+    has_export_permission = (
+        import_export_admin.ExportMixin.has_export_permission
+    )
 
-    @property
-    def model_info(self) -> types.ModelInfo:
-        """Get info of exported model."""
-        return types.ModelInfo(
-            meta=self.model._meta,
-        )
-
-    def get_context_data(
-        self,
-        request: WSGIRequest,
-        **kwargs,
-    ) -> dict[str, typing.Any]:
-        """Get context data."""
-        return {}
+    def get_export_context_data(self, **kwargs):
+        """Get context data for export."""
+        return self.get_context_data(**kwargs)
 
     def get_urls(self):
         """Return list of urls.
@@ -130,7 +120,7 @@ class CeleryExportAdminMixin(
             raise PermissionDenied
 
         formats = self.get_export_formats()
-        form = base_forms.ExportForm(
+        form = import_export_forms.ExportForm(
             formats=formats,
             resources=self.get_export_resource_classes(request),
             data=request.POST or None,
@@ -158,7 +148,7 @@ class CeleryExportAdminMixin(
             )
 
         # GET: display Export Form
-        context = self.get_context_data(request)
+        context = self.get_export_context_data()
         context.update(self.admin_site.each_context(request))
 
         context["title"] = _("Export")
@@ -196,7 +186,7 @@ class CeleryExportAdminMixin(
                 job=job,
             )
 
-        context = self.get_context_data(request)
+        context = self.get_export_context_data()
         job_url = reverse("admin:export_job_progress", args=(job.id,))
 
         context["title"] = _("Export status")
@@ -235,10 +225,7 @@ class CeleryExportAdminMixin(
                 job=job,
             )
 
-        context = self.get_context_data(request)
-
-        if request.method != "GET":
-            return HttpResponseForbidden()
+        context = self.get_export_context_data()
 
         # GET request, show export results
         context["title"] = _("Export results")
@@ -293,8 +280,7 @@ class CeleryExportAdminMixin(
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
-        if query:
-            url = f"{url}?{query}"
+        url = f"{url}?{query}" if query else url
         return HttpResponseRedirect(redirect_to=url)
 
     def _redirect_to_export_results_page(
@@ -308,8 +294,7 @@ class CeleryExportAdminMixin(
         )
         url = reverse(url_name, kwargs=dict(job_id=job.id))
         query = request.GET.urlencode()
-        if query:
-            url = f"{url}?{query}"
+        url = f"{url}?{query}" if query else url
         return HttpResponseRedirect(redirect_to=url)
 
     def changelist_view(
@@ -319,5 +304,5 @@ class CeleryExportAdminMixin(
     ):
         """Add the check for permission to changelist template context."""
         context = context or {}
-        context["has_export_permission"] = True
+        context["has_export_permission"] = self.has_export_permission(request)
         return super().changelist_view(request, context)
