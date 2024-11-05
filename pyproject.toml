@@ -98,7 +98,7 @@ factory-boy = "^3.3.1"
 werkzeug = "^3.0.4"
 # This plugin produces coverage reports.
 # https://pytest-cov.readthedocs.io/en/latest/index.html
-pytest-cov = "^5.0.0"
+pytest-cov = ">=5,<7"
 # Psycopg is a PostgreSQL adapter for the Python
 # https://www.psycopg.org/docs/install.html
 psycopg2-binary = "^2.9.9"
