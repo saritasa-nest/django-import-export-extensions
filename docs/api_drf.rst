@@ -27,7 +27,7 @@ API (Rest Framework)
        :type: ProgressInfoSerializer
        :value: {"current": 0, "total": 0}
 
-        Shows current and total imported/exported values
+       Shows current and total imported/exported values
 
 .. autoclass:: import_export_extensions.api.ProgressInfoSerializer
    :members:

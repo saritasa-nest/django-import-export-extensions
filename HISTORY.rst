@@ -2,18 +2,22 @@
 History
 =======
 
-0.7.0 (2024-10-29)
+UNRELEASED
 ----------
+* Replaced `sphinx-rtd-theme` by [furo](https://github.com/pradyunsg/furo)
+
+0.7.0 (2024-10-29)
+------------------
 * Add support django-import-export >= 4.2
 * Removed support for django-import-export < 4.2
 * Improve test coverage
 
 0.6.1 (2024-10-04)
-----------
+------------------
 * Update requirements version and internal naming
 
 0.6.0 (2024-10-04)
-----------
+------------------
 * Extend response of import job api
 * Added support for django-import-export >= 4.0
 * Removed support for django 3.2
@@ -55,11 +59,11 @@ History
 * Use admin/import_export/ templates instead of copies in admin/import_export_extensions/
 * Small improvements:
 
-    * Fix static folder name
-    * Fix invoke command to run celery
-    * Fix progress bar widget
-    * Rename filter_class to filterset_class
-    * Add cancel_job action for exporting
+  * Fix static folder name
+  * Fix invoke command to run celery
+  * Fix progress bar widget
+  * Rename filter_class to filterset_class
+  * Add cancel_job action for exporting
 
 0.1.4 (2023-05-22)
 ------------------
