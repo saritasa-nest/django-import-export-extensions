@@ -108,8 +108,8 @@ psycopg2-binary = "^2.9.9"
 # https://www.sphinx-doc.org/en/master/
 sphinx = "<9"
 # Theme for documentation
-# https://pypi.org/project/sphinx-rtd-theme/
-sphinx-rtd-theme = ">=2,<4"
+# https://github.com/pradyunsg/furo
+furo = "^2024.8.6"
 
 [tool.poetry.group.local.dependencies]
 # A Python library for parsing and creating TOML
