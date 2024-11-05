@@ -7,6 +7,7 @@ from django.core.exceptions import SuspiciousFileOperation
 from django.core.files import File
 from django.core.files.storage import default_storage
 from django.db.models import Model, Q, QuerySet
+from django.db.models.fields.files import FieldFile
 from django.forms import ValidationError
 from django.utils.encoding import smart_str
 
@@ -294,7 +295,7 @@ class FileWidget(CharWidget):
 
     def render(
         self,
-        value: Model | None,
+        value: FieldFile | None,
         obj=None,
         **kwargs,
     ) -> str | None:
@@ -320,12 +321,12 @@ class FileWidget(CharWidget):
         internal_url = utils.url_to_internal_value(urlparse(value).path)
 
         if not internal_url:
-            raise ValidationError("Invalid image path")
+            raise ValidationError("Invalid file path")
 
         try:
             if default_storage.exists(internal_url):
                 return internal_url
-        except SuspiciousFileOperation:
+        except SuspiciousFileOperation:  # pragma: no cover
             pass
 
         return self._get_file(value)
@@ -350,4 +351,4 @@ class FileWidget(CharWidget):
         """
         if hasattr(settings, "STORAGES"):
             return settings.STORAGES["default"]["BACKEND"]
-        return settings.DEFAULT_FILE_STORAGE
+        return settings.DEFAULT_FILE_STORAGE  # pragma: no cover
