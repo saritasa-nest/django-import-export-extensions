@@ -2,25 +2,26 @@
 Extensions
 ==========
 
-This package is simply an extension of the original ``django-import-export``, so if you want
-to know more about the import/export process and advanced resource utilization, you should refer to
+This package is an extension of the original ``django-import-export``, so for more information
+on the import/export process and advanced resource usage, refer
 `the official django-import-export documentation <https://django-import-export.readthedocs.io/en/latest/index.html>`_.
 
-This section describes the features that are added by this package.
+The following section describes the features added by this package.
 
 --------------------------
 ImportJob/ExportJob models
 --------------------------
 
-The ``django-import-export-extensions`` provides ``ImportJob`` and ``ExportJob`` models to store all the information
-about the import/export process. In addition, these models participate in the background import/export process.
+``django-import-export-extensions`` provides the ``ImportJob`` and ``ExportJob`` models to store all
+information related to the import/export process. Additionally, these models are involved
+in the background import/export tasks.
 
-Job models are already registered in Django Admin and have custom forms that allow to show
-all current job information including import/export status.
+The job models are already registered in Django Admin and come with custom forms that display all
+relevant job information, including the current import/export status.
 
 .. figure:: _static/images/import-job-admin.png
 
-   Example of custom form for ImportJob details in Django Admin
+  Example of custom form for ImportJob details in Django Admin
 
 ``ImportJob``/``ExportJob`` models contain useful properties and methods for managing
 the import/export process. To learn more, see the :ref:`Models API documentation<Models>`.
@@ -29,24 +30,25 @@ the import/export process. To learn more, see the :ref:`Models API documentation
 Celery admin mixins
 -------------------
 
-The mixins for admin models have been rewritten completely, although they inherit from the base mixins
-``mixins.BaseImportMixin``, ``mixins.BaseExportMixin`` and ``admin.ImportExportMixinBase``.
-The new celery admin mixins add new pages to display import/export status, and use custom
-templates for the status and results pages.
+The admin mixins have been completely rewritten, although they still inherit from the base mixins:
+``mixins.BaseImportMixin``, ``mixins.BaseExportMixin``, and ``admin.ImportExportMixinBase``.
+The new Celery admin mixins add pages for displaying import/export status and use custom templates
+for both the status and results pages.
 
-Now after starting the import/export, you will first be redirected to the status page and then,
-after the import/export is complete, to the results page.
+After starting the import/export process, you will be redirected to the status page.
+Once the import/export is complete, you will then be redirected to the results page.
 
 .. figure:: _static/images/export-status.png
 
-   A screenshot of Djagno Admin export status page
+   A screenshot of Django Admin export status page
 
 --------
 ViewSets
 --------
 
-There are ``ImportJobViewSet`` and ``ExportJobViewSet`` view sets that make it easy
-to implement import/export via API. Just create custom class with ``resource_class`` attribute:
+The ``ImportJobViewSet`` and ``ExportJobViewSet`` viewsets make it easy to implement
+import/export functionality via API. To use them, simply create a custom class
+and set the ``resource_class`` attribute:
 
 **api/views.py**
 
@@ -86,24 +88,27 @@ to implement import/export via API. Just create custom class with ``resource_cla
     urlpatterns = band_import_export_router.urls
 
 By default, all import/export jobs for the set ``resource_class`` will be available,
-but you can override ``get_queryset`` method to change it. You can also override
-``get_resource_kwargs`` method to provide some values in resource class (for ``start`` action).
+but you can override the ``get_queryset`` method to customize this behavior. Additionally, you can
+override the ``get_resource_kwargs`` method to provide custom values in the resource class
+(e.g., for the start action).
 
-These view sets provide all methods required for entire import/export workflow: start, details,
-confirm, cancel and list actions. There is also `drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_
-integrations, you can see generated openapi UI for these view sets
-(``drf-spectacular`` must be installed in your project):
+These viewsets provide all the methods required for the full import/export workflow: start, details,
+confirm, cancel, and list actions. There is also integration with
+`drf-spectacular <https://github.com/tfranzel/drf-spectacular>`_. If you have it installed,
+you can view the generated OpenAPI UI for these viewsets.
 
 .. figure:: _static/images/bands-openapi.png
+
+  A screenshot of autogenerated OpenAPI specification
 
 -------
 Filters
 -------
 
-``CeleryResource`` and ``CeleryModelResource`` also support `django-filter <https://django-filter.readthedocs.io/>`_
-to filter queryset for export. Set ``filterset_class`` attribute to your resource class and pass
-filter parameters as ``filter_kwargs`` argument to resource:
-
+The ``CeleryResource`` and ``CeleryModelResource`` classes also support
+`django-filter <https://django-filter.readthedocs.io/>`_ to filter the queryset for export.
+To use this feature, set the ``filterset_class`` attribute on your resource class and pass
+filter parameters as the ``filter_kwargs`` argument to the resource:
 
 **filters.py**
 
@@ -171,9 +176,9 @@ Pass ``filter_kwargs`` in ``resource_kwargs`` argument to create ``ExportJob`` w
     >>> len(export_job.result)
     1
 
-Since we are using the rest framework filter set, ``ExportJobViewSet`` also supports it. It takes
-the filter set from ``resource_class``. You can see that ``start`` action expects query parameters
-for filtering:
+Since we are using the Django REST Framework filter set, the ``ExportJobViewSet`` also supports it.
+It automatically uses the filter set defined in the ``resource_class``. You can see that the start
+action expects query parameters for filtering:
 
 .. figure:: _static/images/filters-openapi.png
 
@@ -182,8 +187,8 @@ for filtering:
 Force import
 ------------
 
-This package provides *force import* feature. When force import is enabled,
-then rows with errors will be skipped and rest of the rows will be handled.
+This package includes a "force import" feature. When enabled, rows with errors will be skipped,
+and the remaining rows will be processed.
 
 Admin page
 ^^^^^^^^^^
@@ -192,18 +197,18 @@ This functionality available in admin:
 
 .. figure:: _static/images/force_import_admin.png
 
-In case if some rows contain any errors it will be reported on parse/import stage:
+If any rows contain errors, they will be reported during the parse/import stage:
 
 .. figure:: _static/images/force_import_results.png
 
 API
 ^^^
 
-In api there're 2 fields: ``force_import`` and ``skip_parse_step``.
+In the API, there are two additional fields: ``force_import`` and ``skip_parse_step``.
 
-- ``force_import`` allows you to skip rows with errors.
+* ``force_import`` - Allows you to skip rows with errors.
 
-- ``skip_parse_step`` allows you to run the import task immediately, without having to call the ``confirm`` endpoint.
+* ``skip_parse_step`` - Enables you to run the import task immediately, without needing to call the ``confirm`` endpoint.
 
 .. image:: _static/images/start_api.png
 
@@ -217,12 +222,10 @@ This package also provides additional widgets for some types of data.
 FileWidget
 ^^^^^^^^^^
 
-Working with file fields is a common issue. ``FileWidget`` allows to import/export files
-including links to external resources that store files and save them in ``DEFAULT_FILE_STORAGE``.
-
-This widget loads a file from link to media dir. And it correctly render the link for export. It
-also supports ``AWS_STORAGE_BUCKET_NAME`` setting.
-
+Working with file fields is a common task. The ``FileWidget`` allows you to import/export files,
+including links to external resources, and saves them in the ``DEFAULT_FILE_STORAGE`` location.
+This widget loads a file from a URL into the media directory and correctly renders the link
+for export. It also supports the ``AWS_STORAGE_BUCKET_NAME`` setting.
 
 IntermediateManyToManyWidget
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -230,6 +233,55 @@ IntermediateManyToManyWidget
 ``IntermediateManyToManyWidget`` allows to import/export objects with related items.
 Default M2M widget store just IDs of related objects. With intermediate widget
 additional data may be stored. Should be used with ``IntermediateManyToManyField``.
+
+The ``IntermediateManyToManyWidget`` is an advanced widget that allows you to import/export objects
+with related items in a Many-to-Many relationship, while also supporting additional data beyond
+just the relationship IDs. Unlike the default M2M widget, which only stores the IDs of related
+objects, the ``IntermediateManyToManyWidget`` enables you to store additional information for each
+related object, making it more flexible for use cases where extra attributes or fields need
+to be saved alongside the relationship.
+
+This widget is designed to be used with the ``IntermediateManyToManyField`` in your model.
+
+Usage:
+
+**resources.py**
+
+.. code-block:: python
+
+  class ArtistResourceWithM2M(CeleryModelResource):
+      """Artist resource with Many2Many field."""
+
+      bands = IntermediateManyToManyField(
+          attribute="bands",
+          column_name="Bands he played in",
+          widget=IntermediateManyToManyWidget(
+              rem_model=Band,
+              rem_field="title",
+              extra_fields=["date_joined"],
+              instance_separator=";",
+          ),
+      )
+
+      class Meta:
+          model = Artist
+          clean_model_instances = True
+          fields = ["id", "name", "bands", "instrument"]
+
+      def get_queryset(self):
+          """Reduce DB queries number."""
+          return Artist.objects.all().prefetch_related(
+              "membership_set__band",
+              "bands",
+        )
+
+**result.xlsx**
+
++----+----------------+--------------------------------------------------+------------+
+| id |      name      |           Bands he played in                     | instrument |
++====+================+==================================================+============+
+|  1 | Rachel Schmidt | Walter-Hodges:1971-09-22;Ortiz-Hughes:2018-02-02 |      1     |
++----+----------------+--------------------------------------------------+------------+
 
 ------
 Fields
@@ -240,10 +292,10 @@ IntermediateManyToManyField
 
 This is resource field for M2M with custom ``through`` model.
 
-    By default, ``django-import-export`` set up object attributes using
-    ``setattr(obj, attribute_name, value)``, where ``value`` is ``QuerySet``
-    of related model objects. But django forbid this when ``ManyToManyField``
-    used with custom ``through`` model.
+By default, ``django-import-export`` set up object attributes using
+``setattr(obj, attribute_name, value)``, where ``value`` is ``QuerySet``
+of related model objects. But django forbid this when ``ManyToManyField``
+used with custom ``through`` model.
 
-    This field expects be used with custom ``IntermediateManyToManyWidget`` widget
-    that return not simple value, but dict with intermediate model attributes.
+This field expects be used with custom ``IntermediateManyToManyWidget`` widget
+that return not simple value, but dict with intermediate model attributes.

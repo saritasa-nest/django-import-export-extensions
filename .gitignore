@@ -113,3 +113,6 @@ test_project/db.sqlite3
 
 # Database dumps
 *.sql
+
+# MacOS files
+.DS_Store
