@@ -2,16 +2,16 @@
 Migrate from original `django-import-export` package
 ====================================================
 
-If you are already using ``django-import-export`` and want to use ``django-import-export-extensions``,
-you can easily switch to it and get the benefits of background import/exporting.
-First of all, install the package according to :ref:`the instruction<Installation and configuration>`.
-And now, all you need is to change base classes of resources and admin models.
+If you're already using ``django-import-export`` and want to take advantage of
+``django-import-export-extensions`` for background import/export, the transition is simple. First,
+install the package following the provided :ref:`the instruction<Installation and configuration>`.
+Then, all you need to do is update the base classes for your resource and admin models.
 
 Migrate resources
 -----------------
 
-To use resources that provides import/export via Celery just change base resource classes from
-original package to ``CeleryResource`` / ``CeleryModelResource`` from ``django-import-export-extensions``:
+To enable import/export via Celery, simply replace the base resource classes from the original package
+with ``CeleryResource`` or ``CeleryModelResource`` from ``django-import-export-extensions``:
 
 .. code-block:: diff
     :emphasize-lines: 2,6,13
@@ -65,13 +65,16 @@ Then you also need to change admin mixins to use celery import/export via Django
 If you only need import (or export) functionality, you can use ``CeleryImportAdminMixin``
 (``CeleryExportAdminMixin``) instead of ``CeleryImportExportMixin``.
 
+If you only need import (or export) functionality, you can use the ``CeleryImportAdminMixin``
+(or ``CeleryExportAdminMixin``) instead of the ``CeleryImportExportMixin``.
+
 Migrate custom import/export
 ----------------------------
 
-Background import/export is implemented based on ``ImportJob``/``ExportJob`` models. So simple
-``resource.export()`` won't trigger a celery task, it works exactly the same as the original
-``Resource.export()`` method. To start background import/export, you need to create objects of
-import/export job:
+Background import/export is implemented using the ``ImportJob`` and ``ExportJob`` models.
+As a result, calling the simple ``resource.export()`` will not trigger a Celery task — it behaves
+exactly like the original ``Resource.export()`` method. To initiate background import/export,
+you need to create instances of the import/export job:
 
 .. code-block:: python
     :linenos:
@@ -88,8 +91,9 @@ import/export job:
     >>> export_job.export_status
     'CREATED'
 
-Using the ``export_status`` (``import_status``) property of the model, you can check the current status of the job.
-There is also a ``progress`` property that returns information about the total number and number of completed rows.
+You can check the current status of the job using the ``export_status`` (or ``import_status``)
+property of the model. Additionally, the ``progress`` property provides information about the total
+number of rows and the number of rows that have been completed.
 
 .. code-block:: python
     :linenos:

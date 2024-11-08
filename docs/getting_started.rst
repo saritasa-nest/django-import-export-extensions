@@ -2,20 +2,20 @@
 Getting started
 ===============
 
-``django-import-export-extensions`` is based on ``django-import-export`` package so it have similar
-workflow and interfaces. If you already worked with original one,
-you can check :ref:`Migrate from original django-import-export package<Migrate from original \`django-import-export\` package>`
+``django-import-export-extensions`` is based on ``django-import-export`` package,
+so it follows a similar workflow and interfaces. If you are already familiar with the original package,
+you can refer to the :ref:`Migrate from original django-import-export package<Migrate from original \`django-import-export\` package>`
 section to start using background import/export.
 
-You can also read the `django-import-export documentation <https://django-import-export.readthedocs.io/en/latest/index.html>`_
-to learn how to work with import and export.
+You can also consult the `django-import-export documentation <https://django-import-export.readthedocs.io/en/latest/index.html>`_
+to learn how to work with import and export features.
 
 There are simple examples to quickly get import/export functionality.
 
-Test app model
---------------
+Django Model for tests
+----------------------
 
-Here is simple django model from test app that we gonna use in the examples above.
+There is simple django model from test app that we gonna use in the examples above.
 
 .. code-block:: python
 
@@ -38,11 +38,10 @@ Here is simple django model from test app that we gonna use in the examples abov
 Resources
 ---------
 
-The resource class is a core of import/export. This is similar to forms in Django, but
-provides methods for converting data from a file to objects and vice versa.
+The resource class is a core of import/export. It is similar to Django forms but provides methods
+for converting data between files and objects.
 
-``django-import-export-extensions`` provides ``CeleryResource`` and ``CeleryModelResource`` classes. Here
-is an example of simple model resource
+``django-import-export-extensions`` provides two key classes: ``CeleryResource`` and ``CeleryModelResource``. Below is an example of a simple model resource:
 
 .. code-block:: python
 
@@ -59,20 +58,23 @@ is an example of simple model resource
                 "title",
             ]
 
-This resource already allows you to import/export bands the same as original package. But to start
-importing/exporting in background it's necessary to create ``ImportJob``/``ExportJob`` objects.
+This resource class allows you to import/export data just like the original package. However, to
+perform imports/exports in the background, you need to create ``ImportJob`` and ``ExportJob`` objects.
 
-Resource classes just modified to interact with celery, but workflow is the same. So if you want to
-know more, read `Resources <https://django-import-export.readthedocs.io/en/latest/api_resources.html>`_ and
+The resource classes have been modified to interact with Celery, but the overall workflow
+remains the same. For more details, refer to the
+`Resources <https://django-import-export.readthedocs.io/en/latest/api_resources.html>`_
+and
 `Import data workflow <https://django-import-export.readthedocs.io/en/latest/import_workflow.html#>`_
-sections of base package documentation.
+sections of the base package documentation.
 
-Job models
+Job Models
 ----------
 
-Package provides ``ImportJob``/``ExportJob`` that are core of background import/export. This models
-stores parameters and result of import/export. Once you create an instance of the class,
-the celery task will be started and the import/export process will begin.
+The package provides the ``ImportJob`` and ``ExportJob`` models, which are at the core of background
+import/export functionality. These models store the parameters and results of the import/export process.
+Once you create an instance of one of these classes, the Celery task is triggered,
+and the import/export process begins.
 
 Example of creation:
 
@@ -98,16 +100,16 @@ Example of creation:
         resource_kwargs={}
     )
 
-    print(import_job.import_status, export_job.export_status)  # CREATED, CREATED
+    print(import_job.import_status, export_job.export_status)  # CREATED CREATED
 
-These models are also registered in Django Admin, so you can see all information about created
-jobs there.
+These models are also registered in the Django Admin, allowing you to view all information about
+the created jobs directly from the admin interface.
 
 Admin models
 ------------
 
-To import/export using celery via Django Admin, use ``CeleryImportExportMixin``
-for your admin model and set ``resource_class`` class attribute
+To perform import/export operations using Celery through Django Admin,
+use the ``CeleryImportExportMixin`` in your admin model and set the ``resource_class`` class attribute.
 
 .. code-block:: python
 
@@ -124,19 +126,19 @@ for your admin model and set ``resource_class`` class attribute
         )
         resource_classes = [resources.BandResource]
 
-There are also ``CeleryImportAdminMixin`` and ``CeleryExportAdminMixin`` available if you need
-only one operation in admin. All of these mixins add ``status`` page to check the progress of
-import/export:
+There are also the ``CeleryImportAdminMixin`` and ``CeleryExportAdminMixin`` mixins available
+if you need to perform only one operation (import or export) in the admin. All of these mixins add
+a ``status page``, where you can monitor the progress of the import/export process:
 
 .. figure:: _static/images/export-status.png
 
-   A screenshot of Djagno Admin export status page
+   A screenshot of Django Admin export status page
 
 Import/Export API
 -----------------
 
-``api.views.ExportJobViewSet`` and ``api.views.ImportJobViewSet`` are provided to create appropriate
-viewsets for the resource
+The ``api.views.ExportJobViewSet`` and ``api.views.ImportJobViewSet`` are provided to create
+the corresponding viewsets for the resource.
 
 .. code-block:: python
 
@@ -155,15 +157,15 @@ viewsets for the resource
 
 These viewsets provide the following actions to manage ``ImportJob``/``ExportJob`` objects:
 
-* ``list`` - returns list of jobs for `resource_class` set in ViewSet
-* ``retrieve`` - returns details of job for passed ID
-* ``start`` - creates job object and starts import/export
-* ``cancel`` - stops import/export and set ``CANCELLED`` status for job
-* ``confirm`` - confirms importing after parse stage. Only ``ImportJobViewSet`` has this action.
+* ``list`` - Returns a list of jobs for the ``resource_class`` set in ViewSet
+* ``retrieve`` - Returns details of a job based on the provided ID
+* ``start`` - Creates a job object and starts the import/export process
+* ``cancel`` - Stops the import/export process and sets the job's status to ``CANCELLED``.
+* ``confirm`` - Confirms the import after the parse stage. This action is available only in ``ImportJobViewSet``.
 
-There is also ``drf_spectacular`` integration so if you have this package configured the openapi
-spec will be available.
+Additionally, there is ``drf_spectacular`` integration. If you have this package configured,
+the OpenAPI specification will be available.
 
 .. figure:: _static/images/bands-openapi.png
 
-   A screenshot of a generated openapi spec
+   A screenshot of the generated OpenAPI specification

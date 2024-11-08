@@ -8,101 +8,82 @@ Installation and configuration
 Stable release
 --------------
 
-To install ``django-import-export-extensions``, run this command in your terminal:
+To install ``django-import-export-extensions``, run the following command in your terminal:
 
-.. code-block:: console
+Using pip:
 
-    $ pip install django-import-export-extensions
+.. code-block:: shell
 
-This is the preferred method to install ``django-import-export-extensions``, as it will always install the most recent stable release.
+    pip install django-import-export-extensions
 
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
+Using uv:
 
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+.. code-block:: shell
 
-Then just add ``import_export`` and ``import_export_extensions`` to INSTALLED_APPS
+    uv pip install django-import-export-extensions
+
+Using poetry:
+
+.. code-block:: shell
+
+    poetry add django-import-export-extensions
+
+This is the preferred installation method,
+as it will always install the most recent stable release of ``django-import-export-extensions``.
+
+Next, add ``import_export`` and ``import_export_extensions`` to your ``INSTALLED_APPS`` setting:
 
 .. code-block:: python
 
     # settings.py
-    INSTALLED_APPS = (
+    INSTALLED_APPS = [
         ...
         "import_export",
         "import_export_extensions",
-    )
+    ]
 
-And then run `migrate` command to create ImportJob/ExportJob models and
-`collectstatic` to let Django collect package static files to use in the admin.
+Finally, run the ``migrate`` and ``collectstatic`` commands:
+
+* ``migrate``: Creates the ImportJob and ExportJob models.
+* ``collectstatic``: Allows Django to collect static files for use in the admin interface.
 
 .. code-block:: shell
 
-    $ python manage.py migrate
-    $ python manage.py collectstatic
+    python manage.py migrate
+    python manage.py collectstatic
 
 
 Celery
 ------
 
-You need to `set up Celery <https://docs.celeryq.dev/en/latest/getting-started/first-steps-with-celery.html>`_
-to use background import/export. Just plug in Celery and you don't need additional
-settings.
-
-
-From sources
-------------
-
-The sources for django-import-export-extensions can be downloaded from the `Github repo`_.
-
-You can either clone the public repository:
-
-.. code-block:: console
-
-    $ git clone https://github.com/saritasa-nest/django-import-export-extensions
-
-Or download the `tarball`_:
-
-.. code-block:: console
-
-    $ curl -OJL https://github.com/saritasa-nest/django-import-export-extensions/tarball/master
-
-Once you have a copy of the source, you can install it with:
-
-.. code-block:: console
-
-    $ make install
-
-
-.. _Github repo: https://github.com/saritasa-nest/django-import-export-extensions
-.. _tarball: https://github.com/saritasa-nest/django-import-export-extensions/tarball/master
+To use background import/export, you need to
+`set up Celery <https://docs.celeryq.dev/en/latest/getting-started/first-steps-with-celery.html>`_.
+Once Celery is set up, no additional configuration is required.
 
 
 Settings
 -------------
 
-You can configure the following in your settings file:
+You can configure the following settings in your Django settings file:
 
 ``IMPORT_EXPORT_MAX_DATASET_ROWS``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sets the maximum number of lines in the file to import in order to avoid memory
-overflow. The default value is 10,000. If there are more lines in the file,
-a ``ValueError`` exception will be raised on import.
+Defines the maximum number of rows allowed in a file for import, helping to avoid memory overflow.
+The default value is 10,000. If the file exceeds this limit, a ``ValueError`` exception
+will be raised during the import process.
 
 ``MIME_TYPES_MAP``
 ~~~~~~~~~~~~~~~~~~
 
 Mapping file extensions to mime types to import files.
-Default is `mimetypes.types_map <https://docs.python.org/3/library/mimetypes.html#mimetypes.types_map>`_.
-
+By default, it uses the `mimetypes.types_map <https://docs.python.org/3/library/mimetypes.html#mimetypes.types_map>`_
+from Python's mimetypes module.
 
 Settings from django-import-export
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Additionally, the package supports settings from the original django-import-export package.
+For full details on these settings, refer to the `official documentation <https://django-import-export.readthedocs.io/en/latest/installation.html#settings>`_.
 
-There are also available `settings from original django-import-export
-<https://django-import-export.readthedocs.io/en/latest/installation.html#settings>`_
-package.
-
-Only ``IMPORT_EXPORT_TMP_STORAGE_CLASS`` setting does not affect anything, because the storage
-is not used in ``CeleryImportAdminMixin`` implementation.
+**Note**: The only setting that does not affect functionality in this package is ``IMPORT_EXPORT_TMP_STORAGE_CLASS``,
+as the storage is not used in the implementation of ``CeleryImportAdminMixin``.
