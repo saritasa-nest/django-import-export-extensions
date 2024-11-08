@@ -24,7 +24,7 @@ keywords = [
   "django_import_export_extensions",
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Topic :: Software Development",
   "Framework :: Django",

@@ -1,10 +1,22 @@
 # Django-import-export-extensions
 
-| Project   |     | Status |
-|-----------|:----|--------|
-| Versions  |     | [![PyPI - Python Versions](https://img.shields.io/pypi/pyversions/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)<br>[![PyPI - Django Versions](https://img.shields.io/pypi/frameworkversions/django/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/) |
-| CI/CD     |     | [![Build status on Github](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml/badge.svg)](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml)<br>[![Test coverage](https://coveralls.io/repos/github/saritasa-nest/django-import-export-extensions/badge.svg?branch=main)](https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main)<br>[![Documentation Status](https://readthedocs.org/projects/django-import-export-extensions/badge/?version=latest)](https://django-import-export-extensions.readthedocs.io/en/latest/?badge=latest) |
-| Statistic |     | ![PyPI Downloads](https://static.pepy.tech/badge/django-import-export-extensions/month) |
+[![PyPI - Python Versions](https://img.shields.io/pypi/pyversions/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)
+[![PyPI - Django Versions](https://img.shields.io/pypi/frameworkversions/django/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)
+![PyPI](https://img.shields.io/pypi/v/django-import-export-extensions)
+
+[![Build status on Github](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml/badge.svg)](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml)
+[![Test coverage](https://coveralls.io/repos/github/saritasa-nest/django-import-export-extensions/badge.svg?branch=main)](https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main)
+[![Documentation Status](https://readthedocs.org/projects/django-import-export-extensions/badge/?version=latest)](https://django-import-export-extensions.readthedocs.io/en/latest/?badge=latest)
+
+ ![PyPI Downloads](https://static.pepy.tech/badge/django-import-export-extensions/month)
+
+## Links
+
+- [Documentation](<https://django-import-export-extensions.readthedocs.io>)
+- [GitHub](<https://github.com/saritasa-nest/django-import-export-extensions>)
+- [PyPI](<https://pypi.org/project/django-import-export-extensions>)
+- [Contibuting](<https://django-import-export-extensions.readthedocs.io/en/stable/contributing.html>)
+- [History](https://django-import-export-extensions.readthedocs.io/en/stable/history.html)
 
 ## Description
 
@@ -15,11 +27,8 @@ adding the following features:
 - Import/export resources in the background via Celery
 - Manage import/export jobs via Django Admin
 - DRF integration that allows to work with import/export jobs via API
-- Support
-    [drf-spectacular](https://github.com/tfranzel/drf-spectacular)
-    generated API schema
-- Additional fields and widgets (FileWidget,
-    IntermediateManyToManyWidget, IntermediateManyToManyField)
+- Support [drf-spectacular](https://github.com/tfranzel/drf-spectacular) generated API schema
+- Additional fields and widgets (FileWidget, IntermediateManyToManyWidget, IntermediateManyToManyField)
 
 ## Installation
 
@@ -101,17 +110,9 @@ class BookImportViewSet(views.ImportJobViewSet):
     resource_class = resources.BookResource
 ```
 
-Don\'t forget to [configure
+Don't forget to [configure
 Celery](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html)
 if you want to run import/export in background
-
-## Links
-
-- Documentation:
-    <https://django-import-export-extensions.readthedocs.io>.
-- GitHub:
-    <https://github.com/saritasa-nest/django-import-export-extensions/>
-- PyPI: <https://pypi.org/project/django-import-export-extensions/>
 
 ## License
 

@@ -3,7 +3,7 @@ Getting started
 ===============
 
 ``django-import-export-extensions`` is based on ``django-import-export`` package,
-so it follows a similar workflow and interfaces.f you are already familiar with the original package,
+so it follows a similar workflow and interfaces. If you are already familiar with the original package,
 you can refer to the :ref:`Migrate from original django-import-export package<Migrate from original \`django-import-export\` package>`
 section to start using background import/export.
 

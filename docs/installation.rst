@@ -14,19 +14,19 @@ Using pip:
 
 .. code-block:: shell
 
-    $ pip install django-import-export-extensions
+    pip install django-import-export-extensions
 
 Using uv:
 
 .. code-block:: shell
 
-    $ uv pip install django-import-export-extensions
+    uv pip install django-import-export-extensions
 
 Using poetry:
 
 .. code-block:: shell
 
-    $ poetry add django-import-export-extensions
+    poetry add django-import-export-extensions
 
 This is the preferred installation method,
 as it will always install the most recent stable release of ``django-import-export-extensions``.
@@ -49,8 +49,8 @@ Finally, run the ``migrate`` and ``collectstatic`` commands:
 
 .. code-block:: shell
 
-    $ python manage.py migrate
-    $ python manage.py collectstatic
+    python manage.py migrate
+    python manage.py collectstatic
 
 
 Celery

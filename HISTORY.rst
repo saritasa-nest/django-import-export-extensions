@@ -7,6 +7,7 @@ UNRELEASED
 * Replaced `sphinx-rtd-theme` by [furo](https://github.com/pradyunsg/furo)
 * Update/extend documentation
 * Support Python 3.13
+* Drop Django <4.2 support
 
 0.7.0 (2024-10-29)
 ------------------
