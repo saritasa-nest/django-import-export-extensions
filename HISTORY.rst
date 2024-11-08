@@ -5,6 +5,8 @@ History
 UNRELEASED
 ----------
 * Replaced `sphinx-rtd-theme` by [furo](https://github.com/pradyunsg/furo)
+* Update/extend documentation
+* Support Python 3.13
 
 0.7.0 (2024-10-29)
 ------------------

@@ -10,7 +10,7 @@ maintainers = [
   "Stanislav Khlud <stanislav.khlud@saritasa.com>",
   "Egor Toryshak <egor.toryshak@saritasa.com",
 ]
-readme = "README.rst"
+readme = "README.md"
 repository = "https://github.com/saritasa-nest/django-import-export-extensions"
 documentation = "https://django-import-export-extensions.readthedocs.io"
 keywords = [
@@ -26,18 +26,25 @@ keywords = [
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
-  "Natural Language :: English",
+  "Topic :: Software Development",
   "Framework :: Django",
-  "Framework :: Django :: 4.0",
-  "Framework :: Django :: 4.1",
   "Framework :: Django :: 4.2",
   "Framework :: Django :: 5.0",
+  "Framework :: Django :: 5.1",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3 :: Only",
 ]
 packages = [{ include = "import_export_extensions" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django = ">=4.0"
+django = ">=4.2"
 django-import-export = { extras = ["xls", "xlsx"], version = ">=4.2" }
 # Django REST Framework
 # https://www.django-rest-framework.org/
