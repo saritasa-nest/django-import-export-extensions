@@ -76,7 +76,7 @@ DATABASES = {
         "USER": "django-import-export-extensions-user",
         "NAME": "django-import-export-extensions-dev",
         "PASSWORD": "testpass",
-        "HOST": "postgres",
+        "HOST": "localhost",
         "PORT": 5432,
     },
 }
@@ -124,8 +124,8 @@ CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["pickle", "json"]
 
 CELERY_TASK_ROUTES = {}
-CELERY_BROKER = "redis://redis/1"
-CELERY_BACKEND = "redis://redis/1"
+CELERY_BROKER = "redis://localhost/1"
+CELERY_BACKEND = "redis://localhost/1"
 CELERY_TASK_DEFAULT_QUEUE = "development"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
