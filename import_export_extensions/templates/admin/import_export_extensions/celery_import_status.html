@@ -38,11 +38,11 @@
         <label>Status</label><p id="current-job-status">{{ import_job.import_status|title }}</p>
       </div>
 
-      {% if import_job.import_status in import_job.progress_statuses %}
+      {% if import_job.import_status not in import_job.results_statuses %}
         <div class="form-row">
           <label>Progress</label>
           <p id="progress_bar_html">
-            <progress max="100" id="progress-bar" data-url="{{ import_job_url }}"></progress>
+            <progress max="100" id="progress-bar" data-url="{{ import_job_url }}" data-label="Waiting..."></progress>
           </p>
         </div>
       {% endif %}
