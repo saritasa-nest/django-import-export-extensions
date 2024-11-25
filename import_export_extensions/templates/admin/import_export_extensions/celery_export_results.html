@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block breadcrumbs_last %}
-  <a href="{% url opts|admin_urlname:'export' %}?{{request.GET.urlencode}}">
+  <a href="{% url opts|admin_urlname:'export' %}?{{ request.GET.urlencode }}">
     {% trans "Export" %}
   </a>
   &rsaquo; {% trans "Export results" %}
@@ -40,7 +40,7 @@
       <h2>
         {% trans "You can download exported data with following link" %}
       </h2>
-      <a href="{{ export_job.data_file.url }}" id="data_file">Download export data</a>
+      <a href="{{ export_job.data_file.url }}" id="data_file">{% trans "Download export data" %}</a>
     {% endif %}
   {% endblock %}
 {% endblock %}

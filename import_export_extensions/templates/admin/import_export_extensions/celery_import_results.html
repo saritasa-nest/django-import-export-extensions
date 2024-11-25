@@ -15,12 +15,18 @@
   <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
   <script type="text/javascript" src="{% static 'import_export_extensions/js/admin/admin.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static "import_export_extensions/css/admin/import_result_diff.css" %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static "import_export/import.css"" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "import_export/import.css" %}"/>
+  <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% if confirm_form %}
+    {{ confirm_form.media }}
+  {% else %}
+    {{ import_form.media }}
+  {% endif %}
 {% endblock %}
 
 
 {% block breadcrumbs_last %}
-  <a href="{% url opts|admin_urlname:'import' %}?{{request.GET.urlencode}}">
+  <a href="{% url opts|admin_urlname:'import' %}?{{ request.GET.urlencode }}">
     {% trans "Import" %}
   </a>
   &rsaquo; {% trans "Import results" %}
@@ -49,6 +55,8 @@
   {% if import_form %}
     <form action="{% url opts|admin_urlname:"import" %}?{{ request.GET.urlencode }}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
+
+      {% include "admin/import_export/resource_fields_list.html" with import_or_export="import" %}
 
       <fieldset class="module aligned">
         {% for field in import_form %}
@@ -155,6 +163,12 @@
       </ul>
     {% endif %}
     {% if import_job.import_status in import_job.success_statuses %}
+      <h2>{% trans "Totals" %}</h2>
+      <div>
+        {% for total, stat in import_job.result.totals.items %}
+          {{ total.title }}: <b>{{ stat }}</b><br>
+        {% endfor %}
+      </div>
       <h2>
         {% if import_job.import_status == "PARSED" %}
           {% trans "These elements will be imported successfully" %}
