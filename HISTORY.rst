@@ -5,11 +5,13 @@ UNRELEASED
 ------------------
 * Fix progress bar on changeview for ImportJob and ExportJob
 * Improve celery-import-result page
+
   * Add displaying resources for import form
   * Fix autofill `Format` by file extension
   * Add `Totals` section
-* Fixed display of progress bar when task is waiting to run (#68)
-* Improve progress bar style (#72)
+
+* Fixed display of progress bar when task is waiting to run (https://github.com/saritasa-nest/django-import-export-extensions/issues/68)
+* Improve progress bar style (https://github.com/saritasa-nest/django-import-export-extensions/issues/72)
 
 1.0.1 (2024-11-08)
 ------------------
