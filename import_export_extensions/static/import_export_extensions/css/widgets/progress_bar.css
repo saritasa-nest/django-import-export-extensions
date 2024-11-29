@@ -4,7 +4,7 @@ progress {
   width: 100%;
   -webkit-appearance: none;
   border: none;
-  position:relative;
+  position: relative;
 }
 progress:before {
   content: attr(data-label);
@@ -24,8 +24,13 @@ progress::-webkit-progress-bar {
   background-color: var(--breadcrumbs-fg);
 }
 progress::-webkit-progress-value {
-  background-color: var(--breadcrumbs-bg);
+  background-color: var(--primary);
 }
 progress::-moz-progress-bar {
   background-color: var(--breadcrumbs-bg);
+}
+
+html[data-theme="dark"]
+progress::-webkit-progress-bar {
+  background-color: var(--darkened-bg);
 }
