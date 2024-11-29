@@ -16,6 +16,7 @@ from django.utils.translation import gettext_lazy as _
 
 from import_export import admin as import_export_admin
 from import_export import mixins as import_export_mixins
+from import_export import resources as import_export_resources
 
 from ... import models
 from ..forms import ForceImportForm
@@ -170,24 +171,16 @@ class CeleryImportAdminMixin(
             )
 
         # GET: display Import Form
-        resources = [
-            resource_class(**resource_kwargs)
-            for resource_class in resource_classes
-        ]
-
         context.update(self.admin_site.each_context(request))
 
         context["title"] = _("Import")
         context["form"] = form
         context["opts"] = self.model_info.meta
         context["media"] = self.media + form.media
-        context["fields_list"] = [
-            (
-                resource.get_display_name(),
-                [f.column_name for f in resource.get_user_visible_fields()],
-            )
-            for resource in resources
-        ]
+        context["fields_list"] = self._get_fields_list_for_resources(
+            resource_classes=resource_classes,
+            resource_kwargs=resource_kwargs,
+        )
 
         request.current_app = self.admin_site.name
         return TemplateResponse(
@@ -282,9 +275,16 @@ class CeleryImportAdminMixin(
                 context["confirm_form"] = Form()
             else:
                 # display import form
+                resource_classes = self.get_import_resource_classes(request)
+                resource_kwargs = self.get_import_resource_kwargs(request)
+
                 context["import_form"] = ForceImportForm(
                     formats=self.get_import_formats(),
-                    resources=self.get_import_resource_classes(request),
+                    resources=resource_classes,
+                )
+                context["fields_list"] = self._get_fields_list_for_resources(
+                    resource_classes=resource_classes,
+                    resource_kwargs=resource_kwargs,
                 )
 
             context.update(self.admin_site.each_context(request))
@@ -375,6 +375,27 @@ class CeleryImportAdminMixin(
             return HttpResponseRedirect(redirect_to=url)
 
         return HttpResponseRedirect(redirect_to=url)
+
+    def _get_fields_list_for_resources(
+        self,
+        resource_classes: list[type[import_export_resources.ModelResource]],
+        resource_kwargs,
+    ) -> list[tuple[str, list[str]]]:
+        """Get fields list for resource classes."""
+        resources = [
+            resource_class(**resource_kwargs)
+            for resource_class in resource_classes
+        ]
+        return [
+            (
+                resource.get_display_name(),
+                [
+                    field.column_name
+                    for field in resource.get_user_visible_fields()
+                ],
+            )
+            for resource in resources
+        ]
 
     def changelist_view(
         self,

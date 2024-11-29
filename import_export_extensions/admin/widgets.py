@@ -1,5 +1,6 @@
 
 from django import forms
+from django.template.loader import render_to_string
 
 
 class ProgressBarWidget(forms.Widget):
@@ -8,6 +9,8 @@ class ProgressBarWidget(forms.Widget):
     Value for `progress_bar` element is changed using JS code.
 
     """
+
+    template_name = "admin/import_export_extensions/progress_bar.html"
 
     def __init__(self, *args, **kwargs):
         """Get ``ImportJob`` or ``ExportJob`` instance from kwargs.
@@ -28,16 +31,7 @@ class ProgressBarWidget(forms.Widget):
         to send GET requests.
 
         """
-        progress_bar = f"""
-            <progress
-                value="0"
-                max="100"
-                id="progress-bar"
-                data-url="{self.url}">
-            </progress>
-        """
-
-        return progress_bar
+        return render_to_string(self.template_name, {"job_url": self.url})
 
     class Media:
         """Class with custom assets for widget."""
