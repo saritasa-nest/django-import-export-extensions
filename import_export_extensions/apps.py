@@ -14,6 +14,7 @@ class CeleryImportExport(AppConfig):
 
     name = "import_export_extensions"
     verbose_name = _("Celery Import/Export")
+    default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self):
         """Set up default settings."""
