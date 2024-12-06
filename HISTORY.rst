@@ -1,7 +1,8 @@
 =======
 History
 =======
-UNRELEASED
+
+1.1.0 (2024-12-06)
 ------------------
 * Fix progress bar on changeview for ImportJob and ExportJob
 * Improve celery-import-result page
