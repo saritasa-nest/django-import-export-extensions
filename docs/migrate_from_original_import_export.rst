@@ -4,7 +4,7 @@ Migrate from original `django-import-export` package
 
 If you're already using ``django-import-export`` and want to take advantage of
 ``django-import-export-extensions`` for background import/export, the transition is simple. First,
-install the package following the provided :ref:`the instruction<Installation and configuration>`.
+install the package by following the :ref:`the installation guide<Installation and configuration>`.
 Then, all you need to do is update the base classes for your resource and admin models.
 
 Migrate resources
@@ -109,3 +109,9 @@ number of rows and the number of rows that have been completed.
     'EXPORTED'
     >>> export_job.data_file.path
     '../media/import_export_extensions/export/3dfb7510-5593-4dc6-9d7d-bbd907cd3eb6/Artists-2020-02-22.csv'
+
+Other configuration
+-------------------
+
+You may need to configure `MEDIA_URL <https://docs.djangoproject.com/en/stable/ref/settings/#media-url>`_ in your
+project settings, otherwise you may see a 404 error when attempting to download exported files.

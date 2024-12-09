@@ -169,9 +169,9 @@
       </div>
       <h2>
         {% if import_job.import_status == "PARSED" %}
-          {% trans "These elements will be imported successfully" %}
+          {% trans "These elements will be imported" %}
         {% elif import_job.import_status == "IMPORTED"%}
-          {% trans "These elements are imported successfully" %}
+          {% trans "These elements were imported successfully" %}
         {% endif %}
       </h2>
       <table class="import-preview">
