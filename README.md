@@ -90,7 +90,7 @@ from .. import resources
 
 @admin.register(models.Book)
 class BookAdmin(CeleryImportExportMixin, admin.ModelAdmin):
-    resource_class = resources.BookResource
+    resource_classes = [resources.BookResource]
 ```
 
 Prepare view sets to import/export via API

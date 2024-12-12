@@ -109,7 +109,7 @@ Admin models
 ------------
 
 To perform import/export operations using Celery through Django Admin,
-use the ``CeleryImportExportMixin`` in your admin model and set the ``resource_class`` class attribute.
+use the ``CeleryImportExportMixin`` in your admin model and set the ``resource_classes`` class attribute.
 
 .. code-block:: python
 
