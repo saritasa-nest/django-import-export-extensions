@@ -1,14 +1,16 @@
 import collections
 import typing
 from enum import Enum
+from functools import cached_property
 
+from django.conf import settings
 from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
 
 import tablib
-from celery import current_task, result
+from celery import current_task
 from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
 from import_export import fields, resources
@@ -41,7 +43,18 @@ class CeleryResourceMixin:
         """Remember init kwargs."""
         self._filter_kwargs = filter_kwargs
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
+        self.total_objects_count = 0
+        self.current_object_number = 0
         super().__init__()
+
+    @cached_property
+    def status_update_row_count(self):
+        """Rows count after which to update celery task status."""
+        return getattr(
+            self._meta,
+            "status_update_row_count",
+            settings.STATUS_UPDATE_ROW_COUNT,
+        )
 
     def get_queryset(self):
         """Filter export queryset via filterset class."""
@@ -194,6 +207,8 @@ class CeleryResourceMixin:
         """Init task state before exporting."""
         if queryset is None:
             queryset = self.get_queryset()
+
+        queryset = self.filter_export(queryset, **kwargs)
         self.initialize_task_state(
             state=TaskState.EXPORTING.name,
             queryset=queryset,
@@ -229,15 +244,15 @@ class CeleryResourceMixin:
             return
 
         if isinstance(queryset, QuerySet):
-            total = queryset.count()
+            self.total_objects_count = queryset.count()
         else:
-            total = len(queryset)
+            self.total_objects_count = len(queryset)
 
         self._update_current_task_state(
             state=state,
             meta=dict(
-                current=0,
-                total=total,
+                current=self.current_object_number,
+                total=self.total_objects_count,
             ),
         )
 
@@ -254,15 +269,18 @@ class CeleryResourceMixin:
         if not current_task or current_task.request.called_directly:
             return
 
-        async_result = result.AsyncResult(current_task.request.get("id"))
-
-        self._update_current_task_state(
-            state=state,
-            meta=dict(
-                current=async_result.result.get("current", 0) + 1,
-                total=async_result.result.get("total", 0),
-            ),
-        )
+        self.current_object_number += 1
+        if (
+            self.current_object_number % self.status_update_row_count == 0
+            or self.current_object_number == self.total_objects_count
+        ):
+            self._update_current_task_state(
+                state=state,
+                meta=dict(
+                    current=self.current_object_number,
+                    total=self.total_objects_count,
+                ),
+            )
 
     def _update_current_task_state(self, state: str, meta: dict[str, int]):
         """Update state of task where resource is executed."""
