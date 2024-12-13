@@ -1,7 +1,7 @@
 import collections
+import enum
+import functools
 import typing
-from enum import Enum
-from functools import cached_property
 
 from django.conf import settings
 from django.db.models import QuerySet
@@ -19,7 +19,7 @@ from import_export.formats import base_formats
 from .results import Error, Result, RowResult
 
 
-class TaskState(Enum):
+class TaskState(enum.Enum):
     """Class with possible task state values."""
 
     IMPORTING = _("Importing")
@@ -47,7 +47,7 @@ class CeleryResourceMixin:
         self.current_object_number = 0
         super().__init__()
 
-    @cached_property
+    @functools.cached_property
     def status_update_row_count(self):
         """Rows count after which to update celery task status."""
         return getattr(
@@ -208,7 +208,10 @@ class CeleryResourceMixin:
         if queryset is None:
             queryset = self.get_queryset()
 
+        # Necessary for correct calculation of the total, this method is called
+        # later inside parent resource class
         queryset = self.filter_export(queryset, **kwargs)
+
         self.initialize_task_state(
             state=TaskState.EXPORTING.name,
             queryset=queryset,
@@ -243,17 +246,18 @@ class CeleryResourceMixin:
         if not current_task or current_task.request.called_directly:
             return
 
-        if isinstance(queryset, QuerySet):
-            self.total_objects_count = queryset.count()
-        else:
-            self.total_objects_count = len(queryset)
+        self.total_objects_count = (
+            queryset.count()
+            if isinstance(queryset, QuerySet)
+            else len(queryset)
+        )
 
         self._update_current_task_state(
             state=state,
-            meta=dict(
-                current=self.current_object_number,
-                total=self.total_objects_count,
-            ),
+            meta={
+                "current": self.current_object_number,
+                "total": self.total_objects_count,
+            },
         )
 
     def update_task_state(
@@ -262,8 +266,7 @@ class CeleryResourceMixin:
     ):
         """Update state of the current event.
 
-        Receives meta of the current task and increase the `current`
-        field by 1.
+        Receives meta of the current task and increase the `current`.
 
         """
         if not current_task or current_task.request.called_directly:
@@ -276,10 +279,10 @@ class CeleryResourceMixin:
         ):
             self._update_current_task_state(
                 state=state,
-                meta=dict(
-                    current=self.current_object_number,
-                    total=self.total_objects_count,
-                ),
+                meta={
+                    "current": self.current_object_number,
+                    "total": self.total_objects_count,
+                },
             )
 
     def _update_current_task_state(self, state: str, meta: dict[str, int]):

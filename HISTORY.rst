@@ -5,7 +5,7 @@ UNRELEASED
 ------------------
 * Fix issue with slow export duration (https://github.com/saritasa-nest/django-import-export-extensions/issues/79):
 
-  * Add setting ``STATUS_UPDATE_ROW_COUNT`` which defines the number of rows after import/export of which the task status is updated;
+  * Add setting ``STATUS_UPDATE_ROW_COUNT`` (default: 100) which defines the number of rows after import/export of which the task status is updated;
   * Add ability to specify ``status_update_row_count`` for each resource;
 
 1.1.0 (2024-12-06)
