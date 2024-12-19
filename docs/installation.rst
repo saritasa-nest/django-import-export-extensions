@@ -80,6 +80,14 @@ Mapping file extensions to mime types to import files.
 By default, it uses the `mimetypes.types_map <https://docs.python.org/3/library/mimetypes.html#mimetypes.types_map>`_
 from Python's mimetypes module.
 
+``STATUS_UPDATE_ROW_COUNT``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Defines the number of rows after import/export of which the task status is
+updated. This helps to increase the speed of import/export. The default value
+is 100. This parameter can be specified separately for each resource by adding
+``status_update_row_count`` to its ``Meta``.
+
 Settings from django-import-export
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Additionally, the package supports settings from the original django-import-export package.
