@@ -266,7 +266,16 @@ class CeleryResourceMixin:
     ):
         """Update state of the current event.
 
-        Receives meta of the current task and increase the `current`.
+        Receives meta of the current task and increase the `current`. Task
+        state is updated when current item is a multiple of
+        `self.status_update_row_count` or equal to  total number of items.
+
+        For example: once every 1000 objects (if the current object is 1000,
+        2000, 3000) or when current object is the last object, in order to
+        complete the import/export.
+
+        This needed to increase the speed of import/export by reducing number
+        of status updates.
 
         """
         if not current_task or current_task.request.called_directly:
