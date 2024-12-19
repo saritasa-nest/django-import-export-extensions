@@ -1,7 +1,8 @@
 =======
 History
 =======
-UNRELEASED
+
+1.1.0 (2024-12-06)
 ------------------
 * Fix progress bar on changeview for ImportJob and ExportJob
 * Improve celery-import-result page
@@ -13,6 +14,7 @@ UNRELEASED
 
 * Fixed display of progress bar when task is waiting to run (https://github.com/saritasa-nest/django-import-export-extensions/issues/68)
 * Improve progress bar style (https://github.com/saritasa-nest/django-import-export-extensions/issues/72)
+* Set `default_auto_field` for `import-export-extensions` app to `django.db.models.BigAutoField` (https://github.com/saritasa-nest/django-import-export-extensions/issues/69)
 
 1.0.1 (2024-11-08)
 ------------------

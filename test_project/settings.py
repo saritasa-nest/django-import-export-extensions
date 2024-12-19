@@ -131,7 +131,7 @@ CELERY_BROKER = f"redis://{REDIS_HOST}/1"
 CELERY_BACKEND = f"redis://{REDIS_HOST}/1"
 CELERY_TASK_DEFAULT_QUEUE = "development"
 
-DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if DEBUG:
     INSTALLED_APPS += ("debug_toolbar",)
