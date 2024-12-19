@@ -1,4 +1,3 @@
-import os
 import pathlib
 
 # Build paths inside the project like this: BASE_DIR / "subdir"
@@ -69,7 +68,6 @@ WSGI_APPLICATION = "test_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DB_HOST = os.environ.get("DB_HOST", "postgres")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -78,7 +76,7 @@ DATABASES = {
         "USER": "django-import-export-extensions-user",
         "NAME": "django-import-export-extensions-dev",
         "PASSWORD": "testpass",
-        "HOST": DB_HOST,
+        "HOST": "postgres",
         "PORT": 5432,
     },
 }
@@ -125,10 +123,9 @@ CELERY_TASK_STORE_EAGER_RESULT = True
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["pickle", "json"]
 
-REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
 CELERY_TASK_ROUTES = {}
-CELERY_BROKER = f"redis://{REDIS_HOST}/1"
-CELERY_BACKEND = f"redis://{REDIS_HOST}/1"
+CELERY_BROKER = "redis://redis/1"
+CELERY_BACKEND = "redis://redis/1"
 CELERY_TASK_DEFAULT_QUEUE = "development"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

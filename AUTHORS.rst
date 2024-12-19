@@ -15,4 +15,3 @@ Contributors
 * NikAzanov (Nikita Azanov)
 * ron8mcr (Roman Gorbil)
 * Eg0ra (Egor Toryshak)
-* matthewhegarty (Matthew Hegarty)
