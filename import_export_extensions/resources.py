@@ -1,14 +1,16 @@
 import collections
+import enum
+import functools
 import typing
-from enum import Enum
 
+from django.conf import settings
 from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
 
 import tablib
-from celery import current_task, result
+from celery import current_task
 from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
 from import_export import fields, resources
@@ -17,7 +19,7 @@ from import_export.formats import base_formats
 from .results import Error, Result, RowResult
 
 
-class TaskState(Enum):
+class TaskState(enum.Enum):
     """Class with possible task state values."""
 
     IMPORTING = _("Importing")
@@ -41,7 +43,18 @@ class CeleryResourceMixin:
         """Remember init kwargs."""
         self._filter_kwargs = filter_kwargs
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
+        self.total_objects_count = 0
+        self.current_object_number = 0
         super().__init__()
+
+    @functools.cached_property
+    def status_update_row_count(self):
+        """Rows count after which to update celery task status."""
+        return getattr(
+            self._meta,
+            "status_update_row_count",
+            settings.STATUS_UPDATE_ROW_COUNT,
+        )
 
     def get_queryset(self):
         """Filter export queryset via filterset class."""
@@ -194,6 +207,11 @@ class CeleryResourceMixin:
         """Init task state before exporting."""
         if queryset is None:
             queryset = self.get_queryset()
+
+        # Necessary for correct calculation of the total, this method is called
+        # later inside parent resource class
+        queryset = self.filter_export(queryset, **kwargs)
+
         self.initialize_task_state(
             state=TaskState.EXPORTING.name,
             queryset=queryset,
@@ -228,17 +246,18 @@ class CeleryResourceMixin:
         if not current_task or current_task.request.called_directly:
             return
 
-        if isinstance(queryset, QuerySet):
-            total = queryset.count()
-        else:
-            total = len(queryset)
+        self.total_objects_count = (
+            queryset.count()
+            if isinstance(queryset, QuerySet)
+            else len(queryset)
+        )
 
         self._update_current_task_state(
             state=state,
-            meta=dict(
-                current=0,
-                total=total,
-            ),
+            meta={
+                "current": self.current_object_number,
+                "total": self.total_objects_count,
+            },
         )
 
     def update_task_state(
@@ -247,22 +266,36 @@ class CeleryResourceMixin:
     ):
         """Update state of the current event.
 
-        Receives meta of the current task and increase the `current`
-        field by 1.
+        Receives meta of the current task and increase the `current`. Task
+        state is updated when current item is a multiple of
+        `self.status_update_row_count` or equal to total number of items.
+
+        For example: once every 1000 objects (if the current object is 1000,
+        2000, 3000) or when current object is the last object, in order to
+        complete the import/export.
+
+        This needed to increase the speed of import/export by reducing number
+        of task status updates.
 
         """
         if not current_task or current_task.request.called_directly:
             return
 
-        async_result = result.AsyncResult(current_task.request.get("id"))
+        self.current_object_number += 1
 
-        self._update_current_task_state(
-            state=state,
-            meta=dict(
-                current=async_result.result.get("current", 0) + 1,
-                total=async_result.result.get("total", 0),
-            ),
+        is_reached_update_count = (
+            self.current_object_number % self.status_update_row_count == 0
         )
+        is_last_object = self.current_object_number == self.total_objects_count
+
+        if is_reached_update_count or is_last_object:
+            self._update_current_task_state(
+                state=state,
+                meta={
+                    "current": self.current_object_number,
+                    "total": self.total_objects_count,
+                },
+            )
 
     def _update_current_task_state(self, state: str, meta: dict[str, int]):
         """Update state of task where resource is executed."""
