@@ -268,7 +268,7 @@ class CeleryResourceMixin:
 
         Receives meta of the current task and increase the `current`. Task
         state is updated when current item is a multiple of
-        `self.status_update_row_count` or equal to  total number of items.
+        `self.status_update_row_count` or equal to total number of items.
 
         For example: once every 1000 objects (if the current object is 1000,
         2000, 3000) or when current object is the last object, in order to
