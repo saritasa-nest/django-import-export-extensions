@@ -97,6 +97,40 @@ Ready to contribute? Here's how to set up `django-import-export-extensions` for 
 
 7. Submit a pull request through the GitHub website.
 
+Starting test project
+------------
+
+To check your changes, you can run test_project:
+
+1. Set up aliases for docker hosts in `/etc/hosts`:
+
+    ```bash
+    127.0.0.1 postgres
+    127.0.0.1 redis
+    ```
+
+    or specify values required for database and redis in the `.env` file.
+    Example:
+
+    ```.env
+    DB_HOST=localhost
+    REDIS_HOST=localhost
+    ```
+
+2. Run the project and go to `localhost:8000` page in browser to check whether
+it was started:
+
+    ```bash
+    inv django.run
+    ```
+
+3. Run celery for import/export in background change `CELERY_TASK_ALWAYS_EAGER`
+to `False` and start celery with:
+
+    ```bash
+    inv celery.run
+    ```
+
 Pull Request Guidelines
 -----------------------
 
