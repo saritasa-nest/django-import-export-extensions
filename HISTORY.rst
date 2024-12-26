@@ -1,7 +1,8 @@
 =======
 History
 =======
-UNRELEASED
+
+1.2.0 (2024-12-26)
 ------------------
 * Fix issue with slow export duration (https://github.com/saritasa-nest/django-import-export-extensions/issues/79):
 
