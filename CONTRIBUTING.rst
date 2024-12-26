@@ -65,14 +65,14 @@ Ready to contribute? Here's how to set up `django-import-export-extensions` for 
 
 3. Setup virtual environment:
 
-  Using pyenv::
+Using pyenv::
 
     pyenv install 3.13
     pyenv shell $(pyenv latest 3.13)
     poetry config virtualenvs.in-project true
     source .venv/bin/activate && poetry install
 
-  Using uv::
+Using uv::
 
     uv venv --python 3.13 --prompt django-import-export-extensions --seed
     poetry config virtualenvs.in-project true
@@ -96,6 +96,32 @@ Ready to contribute? Here's how to set up `django-import-export-extensions` for 
     git push origin name-of-your-bugfix-or-feature
 
 7. Submit a pull request through the GitHub website.
+
+Starting test project
+---------------------
+
+To check your changes, you can run test_project:
+
+1. Set up aliases for docker hosts in ``/etc/hosts``::
+
+    inv ci.prepare
+
+or specify values required for database and redis in the ``.env`` file.
+Example::
+
+    DB_HOST=localhost
+    REDIS_HOST=localhost
+
+2. Run the project and go to ``localhost:8000`` page in browser to check whether
+   it was started::
+
+    inv django.run
+
+.. note::
+    To run import/export in background, change `CELERY_TASK_ALWAYS_EAGER <https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-always-eager>`_
+    to ``False`` and start celery with::
+
+        inv celery.run
 
 Pull Request Guidelines
 -----------------------

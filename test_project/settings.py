@@ -1,17 +1,14 @@
 import pathlib
 
+import decouple
+
 # Build paths inside the project like this: BASE_DIR / "subdir"
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "a87082n4v52u4rnvk2edv128eudfvn5"  # noqa: S105
 
 ALLOWED_HOSTS = ["*"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TESTING = False
 
@@ -66,38 +63,40 @@ TEMPLATES = [
 WSGI_APPLICATION = "test_project.wsgi.application"
 
 # Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+# https://docs.djangoproject.com/en/dev/ref/settings/#std-setting-DATABASES
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "ATOMIC_REQUESTS": True,
         "CONN_MAX_AGE": 600,
-        "USER": "django-import-export-extensions-user",
-        "NAME": "django-import-export-extensions-dev",
-        "PASSWORD": "testpass",
-        "HOST": "postgres",
-        "PORT": 5432,
+        "USER": decouple.config(
+            "DB_USER",
+            default="django-import-export-extensions-user",
+        ),
+        "NAME": decouple.config(
+            "DB_NAME",
+            default="django-import-export-extensions-dev",
+        ),
+        "PASSWORD": decouple.config("DB_PASSWORD", default="testpass"),
+        "HOST": decouple.config("DB_HOST", default="postgres"),
+        "PORT": decouple.config("DB_PORT", default=5432, cast=int),
     },
 }
 
 AUTH_USER_MODEL = "auth.User"
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
+# https://docs.djangoproject.com/en/dev/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/
 
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
@@ -116,7 +115,12 @@ REST_FRAMEWORK = {
     "COMPONENT_SPLIT_REQUEST": True,  # Allows to upload import file from Swagger UI
 }
 
-# Don't use celery when you're local
+# Celery settings
+
+redis_host = decouple.config("REDIS_HOST", default="redis")
+redis_port = decouple.config("REDIS_PORT", default=6379, cast=int)
+redis_db = decouple.config("REDIS_DB", default=1, cast=int)
+
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_STORE_EAGER_RESULT = True
 
@@ -124,10 +128,11 @@ CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ACCEPT_CONTENT = ["pickle", "json"]
 
 CELERY_TASK_ROUTES = {}
-CELERY_BROKER = "redis://redis/1"
-CELERY_BACKEND = "redis://redis/1"
+CELERY_BROKER = f"redis://{redis_host}:{redis_port}/{redis_db}"
+CELERY_BACKEND = f"redis://{redis_host}:{redis_port}/{redis_db}"
 CELERY_TASK_DEFAULT_QUEUE = "development"
 
+# https://docs.djangoproject.com/en/dev/ref/settings/#std-setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if DEBUG:
