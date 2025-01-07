@@ -103,7 +103,14 @@ ENV/
 .ruff_cache/
 
 # IDE settings
-.vscode/
+.vscode/*
+!.vscode/recommended_settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/boilerplate-words.txt
+!.vscode/project-related-words.txt
+!.vscode/cspell.json
 .idea/
 
 # Test files

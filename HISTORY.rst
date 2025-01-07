@@ -2,6 +2,12 @@
 History
 =======
 
+UNRELEASED
+------------------
+
+* Add base import/export views that only allow users to work with their own jobs (`ImportJobForUserViewSet` and `ExportJobForUserViewSet`).
+* Small actions definition refactor in `ExportJobViewSet/ExportJobViewSet` to allow easier overriding.
+
 1.2.0 (2024-12-26)
 ------------------
 * Fix issue with slow export duration (https://github.com/saritasa-nest/django-import-export-extensions/issues/79):

@@ -100,15 +100,21 @@ pytest-mock = "^3.14.0"
 # Allows you to use fixtures in @pytest.mark.parametrize.
 # https://pypi.org/project/pytest-lazy-fixtures/
 pytest-lazy-fixtures = "^1.1.1"
+# This plugin produces coverage reports.
+# https://pytest-cov.readthedocs.io/en/latest/index.html
+pytest-cov = "^6.0.0"
+# To prettify pytest output
+# https://github.com/Teemu/pytest-sugar
+pytest-sugar = "^1.0.0"
+# To run test in parallel
+# Docs: https://pypi.org/project/pytest-xdist/
+pytest-xdist = "^3.6.1"
 # Package for generating test data
 # https://factoryboy.readthedocs.io/en/stable/
 factory-boy = "^3.3.1"
 # Werkzeug is a comprehensive WSGI web application library
 # https://werkzeug.palletsprojects.com/en/3.0.x/
 werkzeug = "^3.0.4"
-# This plugin produces coverage reports.
-# https://pytest-cov.readthedocs.io/en/latest/index.html
-pytest-cov = ">=5,<7"
 # Psycopg is a PostgreSQL adapter for the Python
 # https://www.psycopg.org/docs/install.html
 psycopg2-binary = "^2.9.9"

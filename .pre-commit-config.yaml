@@ -45,7 +45,7 @@ repos:
         stages: [pre-push]
       - id: tests
         name: run tests
-        entry: inv pytest.run --params="--cov=."
+        entry: inv pytest.run --params="--numprocesses auto --create-db --cov=."
         language: system
         pass_filenames: false
         types: [python]

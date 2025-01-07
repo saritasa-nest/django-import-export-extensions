@@ -10,6 +10,7 @@ def init(context: invoke.Context, clean: bool = False):
     """Prepare env for working with project."""
     saritasa_invocations.print_success("Setting up git config")
     saritasa_invocations.git.setup(context)
+    saritasa_invocations.system.copy_vscode_settings(context)
     saritasa_invocations.print_success("Initial assembly of all dependencies")
     saritasa_invocations.poetry.install(context)
     if clean:

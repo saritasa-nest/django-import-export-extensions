@@ -1,0 +1,57 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Django",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_project/manage.py",
+      "preLaunchTask": "Launch containers and wait for DB",
+      "args": [
+        "runserver_plus",
+        "localhost:8000",
+      ],
+      "django": true,
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Django With SQL Logs",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/test_project/manage.py",
+      "preLaunchTask": "Launch containers and wait for DB",
+      "args": [
+        "runserver_plus",
+        "localhost:8000",
+        "--print-sql"
+      ],
+      "django": true,
+      "justMyCode": false
+    },
+    {
+        "name": "Python: Celery",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "celery",
+        "preLaunchTask": "Launch containers and wait for DB",
+        "args": [
+            "--app",
+            "test_project.celery_app.app",
+            "worker",
+            "--beat",
+            "--scheduler=django",
+            "--loglevel=info",
+        ],
+        "justMyCode": false
+    },
+    {
+      "name": "Python: Debug Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "purpose": ["debug-test"],
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+  ]
+}
