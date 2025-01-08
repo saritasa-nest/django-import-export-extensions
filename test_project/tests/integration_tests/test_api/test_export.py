@@ -54,6 +54,24 @@ def test_export_api_create_export_job_with_invalid_filter_kwargs(
 
 
 @pytest.mark.django_db(transaction=True)
+def test_export_api_create_export_job_with_invalid_ordering(
+    admin_api_client: test.APIClient,
+):
+    """Ensure export start API with invalid ordering return an error."""
+    response = admin_api_client.post(
+        path=f"{reverse('export-artist-start')}?ordering=invalid_id",
+        data={
+            "file_format": "csv",
+        },
+    )
+    assert response.status_code == status.HTTP_400_BAD_REQUEST, response.data
+    assert (
+        str(response.data["ordering"][0])
+        == "Cannot resolve keyword 'invalid_id' into field."
+    ), response.data
+
+
+@pytest.mark.django_db(transaction=True)
 def test_export_api_detail(
     admin_api_client: test.APIClient,
     artist_export_job: ExportJob,

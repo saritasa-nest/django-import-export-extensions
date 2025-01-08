@@ -4,6 +4,7 @@ import functools
 import typing
 
 from django.conf import settings
+from django.core.exceptions import FieldError, ValidationError
 from django.db.models import QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
@@ -38,10 +39,12 @@ class CeleryResourceMixin:
     def __init__(
         self,
         filter_kwargs: dict[str, typing.Any] | None = None,
+        ordering: collections.abc.Sequence[str] | None = None,
         **kwargs,
     ):
         """Remember init kwargs."""
         self._filter_kwargs = filter_kwargs
+        self._ordering = ordering
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
         self.total_objects_count = 0
         self.current_object_number = 0
@@ -59,6 +62,15 @@ class CeleryResourceMixin:
     def get_queryset(self):
         """Filter export queryset via filterset class."""
         queryset = super().get_queryset()
+        try:
+            queryset = queryset.order_by(*(self._ordering or ()))
+        except FieldError as error:
+            raise ValidationError(
+                {
+                    # Split error text not to expose all fields to api clients.
+                    "ordering": str(error).split("Choices are:")[0].strip(),
+                },
+            ) from error
         if not self._filter_kwargs:
             return queryset
         filter_instance = self.filterset_class(

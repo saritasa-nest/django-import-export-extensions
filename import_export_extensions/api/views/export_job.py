@@ -1,5 +1,9 @@
+import collections.abc
 import contextlib
 import typing
+
+from django.conf import settings
+from django.utils import module_loading
 
 from rest_framework import (
     decorators,
@@ -41,7 +45,13 @@ class ExportBase(type):
         # Skip if it is has no resource_class specified
         if not hasattr(viewset, "resource_class"):
             return viewset
-
+        filter_backends = [
+            module_loading.import_string(settings.DRF_EXPORT_DJANGO_FILTERS_BACKEND),
+        ]
+        if viewset.export_ordering_fields:
+            filter_backends.append(
+                module_loading.import_string(settings.DRF_EXPORT_ORDERING_BACKEND),
+            )
         decorators.action(
             methods=["POST"],
             detail=False,
@@ -49,9 +59,9 @@ class ExportBase(type):
             filterset_class=getattr(
                 viewset.resource_class, "filterset_class", None,
             ),
-            filter_backends=[
-                django_filters.rest_framework.DjangoFilterBackend,
-            ],
+            filter_backends=filter_backends,
+            ordering=viewset.export_ordering,
+            ordering_fields=viewset.export_ordering_fields,
         )(viewset.start)
         decorators.action(
             methods=["POST"],
@@ -101,15 +111,17 @@ class ExportJobViewSet(
     serializer_class = serializers.ExportJobSerializer
     resource_class: type[resources.CeleryModelResource]
     filterset_class: django_filters.rest_framework.FilterSet | None = None
-    search_fields = ("id",)
-    ordering = (
+    search_fields: collections.abc.Sequence[str] = ("id",)
+    ordering: collections.abc.Sequence[str] = (
         "id",
     )
-    ordering_fields = (
+    ordering_fields: collections.abc.Sequence[str] = (
         "id",
         "created",
         "modified",
     )
+    export_ordering: collections.abc.Sequence[str] = ()
+    export_ordering_fields: collections.abc.Sequence[str] = ()
 
     def get_queryset(self):
         """Filter export jobs by resource used in viewset."""
@@ -145,9 +157,12 @@ class ExportJobViewSet(
 
     def start(self, request: Request):
         """Validate request data and start ExportJob."""
+        query_params = dict(request.query_params)
+        ordering = query_params.pop("ordering", self.ordering)
         serializer = self.get_serializer(
             data=request.data,
-            filter_kwargs=request.query_params,
+            ordering=ordering,
+            filter_kwargs=query_params,
         )
         serializer.is_valid(raise_exception=True)
         export_job = serializer.save()
