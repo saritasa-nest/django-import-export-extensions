@@ -15,6 +15,7 @@ from rest_framework.request import Request
 import django_filters
 
 from ... import models, resources
+from .. import mixins as core_mixins
 from .. import serializers
 
 
@@ -37,27 +38,11 @@ class ExportBase(type):
             attrs,
             **kwargs,
         )
-        # Skip if it is a base viewset, since none of needed class attrs are
-        # specified
-        if name == "ExportJobViewSet":
+        # Skip if it is has no resource_class specified
+        if not hasattr(viewset, "resource_class"):
             return viewset
 
-        def start(self: "ExportJobViewSet", request: Request):
-            """Validate request data and start ExportJob."""
-            serializer = self.get_serializer(
-                data=request.data,
-                filter_kwargs=request.query_params,
-            )
-            serializer.is_valid(raise_exception=True)
-            export_job = serializer.save()
-            return response.Response(
-                data=self.get_detail_serializer_class()(
-                    instance=export_job,
-                ).data,
-                status=status.HTTP_201_CREATED,
-            )
-
-        viewset.start = decorators.action(
+        decorators.action(
             methods=["POST"],
             detail=False,
             queryset=viewset.resource_class.get_model_queryset(),
@@ -67,7 +52,11 @@ class ExportBase(type):
             filter_backends=[
                 django_filters.rest_framework.DjangoFilterBackend,
             ],
-        )(start)
+        )(viewset.start)
+        decorators.action(
+            methods=["POST"],
+            detail=True,
+        )(viewset.cancel)
         # Correct specs of drf-spectacular if it is installed
         with contextlib.suppress(ImportError):
             from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -110,8 +99,8 @@ class ExportJobViewSet(
     permission_classes = (permissions.IsAuthenticated,)
     queryset = models.ExportJob.objects.all()
     serializer_class = serializers.ExportJobSerializer
-    resource_class: type[resources.CeleryModelResource] | None = None
-    filterset_class: django_filters.rest_framework.FilterSet = None
+    resource_class: type[resources.CeleryModelResource]
+    filterset_class: django_filters.rest_framework.FilterSet | None = None
     search_fields = ("id",)
     ordering = (
         "id",
@@ -154,7 +143,21 @@ class ExportJobViewSet(
             self.resource_class,
         )
 
-    @decorators.action(methods=["POST"], detail=True)
+    def start(self, request: Request):
+        """Validate request data and start ExportJob."""
+        serializer = self.get_serializer(
+            data=request.data,
+            filter_kwargs=request.query_params,
+        )
+        serializer.is_valid(raise_exception=True)
+        export_job = serializer.save()
+        return response.Response(
+            data=self.get_detail_serializer_class()(
+                instance=export_job,
+            ).data,
+            status=status.HTTP_201_CREATED,
+        )
+
     def cancel(self, *args, **kwargs):
         """Cancel export job that is in progress."""
         job: models.ExportJob = self.get_object()
@@ -169,3 +172,10 @@ class ExportJobViewSet(
             status=status.HTTP_200_OK,
             data=serializer.data,
         )
+
+
+class ExportJobForUserViewSet(
+    core_mixins.LimitQuerySetToCurrentUserMixin,
+    ExportJobViewSet,
+):
+    """Viewset for providing export feature to users."""

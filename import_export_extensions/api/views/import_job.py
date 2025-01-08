@@ -12,6 +12,7 @@ from rest_framework import (
 )
 
 from ... import models, resources
+from .. import mixins as core_mixins
 from .. import serializers
 
 
@@ -32,10 +33,22 @@ class ImportBase(type):
             attrs,
             **kwargs,
         )
-        # Skip if it is a base viewset, since none of needed class attrs are
-        # specified
-        if name == "ImportJobViewSet":
+        # Skip if it is has no resource_class specified
+        if not hasattr(viewset, "resource_class"):
             return viewset
+
+        decorators.action(
+            methods=["POST"],
+            detail=False,
+        )(viewset.start)
+        decorators.action(
+            methods=["POST"],
+            detail=True,
+        )(viewset.confirm)
+        decorators.action(
+            methods=["POST"],
+            detail=True,
+        )(viewset.cancel)
 
         # Correct specs of drf-spectacular if it is installed
         with contextlib.suppress(ImportError):
@@ -89,7 +102,7 @@ class ImportJobViewSet(
     permission_classes = (permissions.IsAuthenticated,)
     queryset = models.ImportJob.objects.all()
     serializer_class = serializers.ImportJobSerializer
-    resource_class: type[resources.CeleryModelResource] | None = None
+    resource_class: type[resources.CeleryModelResource]
     search_fields = ("id",)
     ordering = (
         "id",
@@ -132,7 +145,6 @@ class ImportJobViewSet(
             self.resource_class,
         )
 
-    @decorators.action(methods=["POST"], detail=False)
     def start(self, request, *args, **kwargs):
         """Validate request data and start ImportJob."""
         serializer = self.get_serializer(data=request.data)
@@ -147,7 +159,6 @@ class ImportJobViewSet(
             status=status.HTTP_201_CREATED,
         )
 
-    @decorators.action(methods=["POST"], detail=True)
     def confirm(self, *args, **kwargs):
         """Confirm import job that has `parsed` status."""
         job: models.ImportJob = self.get_object()
@@ -163,7 +174,6 @@ class ImportJobViewSet(
             data=serializer.data,
         )
 
-    @decorators.action(methods=["POST"], detail=True)
     def cancel(self, *args, **kwargs):
         """Cancel import job that is in progress."""
         job: models.ImportJob = self.get_object()
@@ -178,3 +188,9 @@ class ImportJobViewSet(
             status=status.HTTP_200_OK,
             data=serializer.data,
         )
+
+class ImportJobForUserViewSet(
+    core_mixins.LimitQuerySetToCurrentUserMixin,
+    ImportJobViewSet,
+):
+    """Viewset for providing import feature to users."""

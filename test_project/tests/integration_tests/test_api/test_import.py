@@ -61,6 +61,32 @@ def test_import_api_detail(
 
 
 @pytest.mark.django_db(transaction=True)
+def test_import_user_api_get_detail(
+    user: User,
+    admin_api_client: APIClient,
+    artist_import_job: ImportJob,
+):
+    """Ensure import detail api for user returns only users jobs."""
+    response = admin_api_client.get(
+        path=reverse(
+            "import-artist-detail",
+            kwargs={"pk": artist_import_job.id},
+        ),
+    )
+    assert response.status_code == status.HTTP_200_OK, response.data
+
+    artist_import_job.created_by = user
+    artist_import_job.save()
+    response = admin_api_client.get(
+        path=reverse(
+            "import-artist-detail",
+            kwargs={"pk": artist_import_job.id},
+        ),
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND, response.data
+
+
+@pytest.mark.django_db(transaction=True)
 def test_force_import_api_detail(
     admin_api_client: APIClient,
     superuser: User,
@@ -103,6 +129,7 @@ def test_force_import_api_detail(
 def test_import_api_detail_with_row_errors(
     admin_api_client: APIClient,
     existing_artist: Artist,
+    superuser: User,
 ):
     """Ensure import detail api shows row errors."""
     expected_error_message = "Instrument matching query does not exist."
@@ -115,6 +142,7 @@ def test_import_api_detail_with_row_errors(
 
     import_artist_job = ArtistImportJobFactory(
         artists=[existing_artist],
+        created_by=superuser,
     )
     # Remove instrument to trigger row error
     existing_artist.instrument.delete()
@@ -137,6 +165,7 @@ def test_import_api_detail_with_row_errors(
 
 @pytest.mark.django_db(transaction=True)
 def test_import_api_detail_with_base_errors(
+    superuser: User,
     admin_api_client: APIClient,
     existing_artist: Artist,
 ):
@@ -158,6 +187,7 @@ def test_import_api_detail_with_base_errors(
         artists=[existing_artist],
         data_file=uploaded_file,
         force_import=True,
+        created_by=superuser,
     )
     import_artist_job.parse_data()
 

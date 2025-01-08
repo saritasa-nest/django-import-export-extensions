@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.urls import reverse
 
 from rest_framework import status, test
@@ -66,6 +67,32 @@ def test_export_api_detail(
     )
     assert response.status_code == status.HTTP_200_OK, response.data
     assert response.data["export_finished"]
+
+
+@pytest.mark.django_db(transaction=True)
+def test_import_user_api_get_detail(
+    user: User,
+    admin_api_client: test.APIClient,
+    artist_export_job: ExportJob,
+):
+    """Ensure import detail api for user returns only users jobs."""
+    response = admin_api_client.get(
+        path=reverse(
+            "export-artist-detail",
+            kwargs={"pk": artist_export_job.id},
+        ),
+    )
+    assert response.status_code == status.HTTP_200_OK, response.data
+
+    artist_export_job.created_by = user
+    artist_export_job.save()
+    response = admin_api_client.get(
+        path=reverse(
+            "export-artist-detail",
+            kwargs={"pk": artist_export_job.id},
+        ),
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND, response.data
 
 
 @pytest.mark.django_db(transaction=True)
