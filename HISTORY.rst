@@ -2,7 +2,7 @@
 History
 =======
 
-UNRELEASED
+1.3.0 (2025-01-09)
 ------------------
 
 * Add base import/export views that only allow users to work with their own jobs (`ImportJobForUserViewSet` and `ExportJobForUserViewSet`).
