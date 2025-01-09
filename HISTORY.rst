@@ -7,6 +7,10 @@ UNRELEASED
 
 * Add base import/export views that only allow users to work with their own jobs (`ImportJobForUserViewSet` and `ExportJobForUserViewSet`).
 * Small actions definition refactor in `ExportJobViewSet/ExportJobViewSet` to allow easier overriding.
+* Add support for ordering in `export`
+* Add settings for DjangoFilterBackend and OrderingFilter in export api.
+`DRF_EXPORT_DJANGO_FILTERS_BACKEND` with default `django_filters.rest_framework.DjangoFilterBackend` and
+`DRF_EXPORT_ORDERING_BACKEND` with default `rest_framework.filters.OrderingFilter`.
 
 1.2.0 (2024-12-26)
 ------------------

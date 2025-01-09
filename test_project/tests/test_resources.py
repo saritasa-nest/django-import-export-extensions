@@ -1,3 +1,7 @@
+import re
+
+from django.core.exceptions import ValidationError as DjangoValidationError
+
 from rest_framework.exceptions import ValidationError
 
 import pytest
@@ -37,6 +41,29 @@ def test_resource_with_invalid_filter_kwargs():
         SimpleArtistResource(
             filter_kwargs={"id": "invalid_id"},
         ).get_queryset()
+
+
+def test_resource_with_ordering():
+    """Check that `get_queryset` with ordering will apply correct ordering."""
+    artists = [ArtistFactory(name=str(num)) for num in range(5)]
+    resource_queryset = SimpleArtistResource(
+        ordering=("-name",),
+    ).get_queryset()
+    assert resource_queryset.last() == artists[0]
+    assert resource_queryset.first() == artists[-1]
+
+
+def test_resource_with_invalid_ordering():
+    """Check that `get_queryset` raise error if ordering is invalid."""
+    with pytest.raises(
+        DjangoValidationError,
+        match=(
+            re.escape(
+                "{'ordering': [\"Cannot resolve keyword 'invalid_id' into field.\"]}",  # noqa: E501
+            )
+        ),
+    ):
+        SimpleArtistResource(ordering=("invalid_id",)).get_queryset()
 
 
 def test_resource_get_error_class():

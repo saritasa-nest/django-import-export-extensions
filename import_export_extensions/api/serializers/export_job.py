@@ -1,9 +1,9 @@
+import collections.abc
 import typing
 
 from rest_framework import request, serializers
 
 from celery import states
-from django_filters.utils import translate_validation
 
 from ... import models, resources
 from .progress import ProgressSerializer
@@ -53,27 +53,26 @@ class CreateExportJob(serializers.Serializer):
     def __init__(
         self,
         *args,
+        ordering: collections.abc.Sequence[str] | None = None,
         filter_kwargs: dict[str, typing.Any] | None = None,
         resource_kwargs: dict[str, typing.Any] | None = None,
         **kwargs,
     ):
-        """Set filter kwargs and current user."""
+        """Set ordering, filter kwargs and current user."""
         super().__init__(*args, **kwargs)
+        self._ordering = ordering
         self._filter_kwargs = filter_kwargs
         self._resource_kwargs = resource_kwargs or {}
         self._request: request.Request = self.context.get("request")
         self._user = getattr(self._request, "user", None)
 
     def validate(self, attrs: dict[str, typing.Any]) -> dict[str, typing.Any]:
-        """Check that filter kwargs are valid."""
-        if not self._filter_kwargs:
-            return attrs
-
-        filter_instance = self.resource_class.filterset_class(
-            data=self._filter_kwargs,
-        )
-        if not filter_instance.is_valid():
-            raise translate_validation(error_dict=filter_instance.errors)
+        """Check that ordering and filter kwargs are valid."""
+        self.resource_class(
+            ordering=self._ordering,
+            filter_kwargs=self._filter_kwargs,
+            **self._resource_kwargs,
+        ).get_queryset()
         return attrs
 
     def create(
@@ -88,6 +87,7 @@ class CreateExportJob(serializers.Serializer):
             resource_path=self.resource_class.class_path,
             file_format_path=f"{file_format_class.__module__}.{file_format_class.__name__}",
             resource_kwargs=dict(
+                ordering=self._ordering,
                 filter_kwargs=self._filter_kwargs,
                 **self._resource_kwargs,
             ),
