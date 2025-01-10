@@ -127,7 +127,7 @@ class ExportJobViewSet(
         """Filter export jobs by resource used in viewset."""
         if self.action == "start":
             # To make it consistent and for better support of drf-spectacular
-            return super().get_queryset()
+            return super().get_queryset() # pragma: no cover
         return super().get_queryset().filter(
             resource_path=self.resource_class.class_path,
         )
