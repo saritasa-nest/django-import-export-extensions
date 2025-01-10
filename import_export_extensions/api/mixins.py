@@ -3,6 +3,9 @@ class LimitQuerySetToCurrentUserMixin:
 
     def get_queryset(self):
         """Return user's jobs."""
+        if self.action == "start":
+            # To make it consistent and for better support of drf-spectacular
+            return super().get_queryset()
         return (
             super()
             .get_queryset()
