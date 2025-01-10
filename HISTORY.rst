@@ -2,6 +2,12 @@
 History
 =======
 
+UNRELEASED
+------------------
+
+* Fix issues with query params parsing
+* Make `get_queryset` consistent for start actions
+
 1.3.0 (2025-01-09)
 ------------------
 
