@@ -1,3 +1,5 @@
+import collections.abc
+
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -9,26 +11,12 @@ from import_export_extensions.models import ExportJob
 
 
 @pytest.mark.django_db(transaction=True)
-@pytest.mark.parametrize(
-    argnames=["export_url"],
-    argvalues=[
-        pytest.param(
-            reverse("export-artist-start"),
-            id="Url without filter_kwargs",
-        ),
-        pytest.param(
-            f"{reverse('export-artist-start')}?name=Artist",
-            id="Url with valid filter_kwargs",
-        ),
-    ],
-)
 def test_export_api_creates_export_job(
     admin_api_client: test.APIClient,
-    export_url: str,
 ):
     """Ensure export start API creates new export job."""
     response = admin_api_client.post(
-        path=export_url,
+        path=reverse("export-artist-start"),
         data={
             "file_format": "csv",
         },
@@ -36,6 +24,102 @@ def test_export_api_creates_export_job(
     assert response.status_code == status.HTTP_201_CREATED, response.data
     assert response.data["export_status"] == ExportJob.ExportStatus.CREATED
     assert ExportJob.objects.filter(id=response.data["id"]).exists()
+
+
+@pytest.mark.parametrize(
+    argnames=[
+        "filter_query",
+        "filter_name",
+        "filter_value",
+    ],
+    argvalues=[
+        pytest.param(
+            "name=Artist",
+            "name",
+            "Artist",
+            id="Simple str filter",
+        ),
+        pytest.param(
+            "id=1",
+            "id",
+            "1",
+            id="Simple int filter",
+        ),
+        pytest.param(
+            "name__in=Some,Artist",
+            "name__in",
+            "Some,Artist",
+            id="Simple `in` filter",
+        ),
+    ],
+)
+def test_export_api_filtering(
+    admin_api_client: test.APIClient,
+    filter_query: str,
+    filter_name: str,
+    filter_value: str,
+):
+    """Ensure export start API passes filter kwargs correctly."""
+    response = admin_api_client.post(
+        path=f"{reverse('export-artist-start')}?{filter_query}",
+        data={
+            "file_format": "csv",
+        },
+    )
+    assert response.status_code == status.HTTP_201_CREATED, response.data
+    assert response.data["export_status"] == ExportJob.ExportStatus.CREATED
+    assert (
+        export_job := ExportJob.objects.filter(id=response.data["id"]).first()
+    )
+    assert (
+        export_job.resource_kwargs["filter_kwargs"][filter_name]
+        == filter_value
+    ), export_job.resource_kwargs["filter_kwargs"]
+
+
+@pytest.mark.parametrize(
+    argnames=[
+        "ordering_query",
+        "ordering_value",
+    ],
+    argvalues=[
+        pytest.param(
+            "ordering=name",
+            [
+                "name",
+            ],
+            id="One field",
+        ),
+        pytest.param(
+            "ordering=name%2C-id",
+            [
+                "name",
+                "-id",
+            ],
+            id="Many fields",
+        ),
+    ],
+)
+def test_export_api_ordering(
+    admin_api_client: test.APIClient,
+    ordering_query: str,
+    ordering_value: collections.abc.Sequence[str],
+):
+    """Ensure export start API passes ordering correctly."""
+    response = admin_api_client.post(
+        path=f"{reverse('export-artist-start')}?{ordering_query}",
+        data={
+            "file_format": "csv",
+        },
+    )
+    assert response.status_code == status.HTTP_201_CREATED, response.data
+    assert response.data["export_status"] == ExportJob.ExportStatus.CREATED
+    assert (
+        export_job := ExportJob.objects.filter(id=response.data["id"]).first()
+    )
+    assert (
+        export_job.resource_kwargs["ordering"] == ordering_value
+    ), export_job.resource_kwargs["ordering"]
 
 
 @pytest.mark.django_db(transaction=True)

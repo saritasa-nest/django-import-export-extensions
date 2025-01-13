@@ -8,7 +8,13 @@ class ArtistFilterSet(filters.FilterSet):
 
     class Meta:
         model = Artist
-        fields = [
-            "id",
-            "name",
-        ]
+        fields = {
+            "id": (
+                "exact",
+                "in",
+            ),
+            "name": (
+                "exact",
+                "in",
+            ),
+        }

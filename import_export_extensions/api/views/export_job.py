@@ -125,6 +125,9 @@ class ExportJobViewSet(
 
     def get_queryset(self):
         """Filter export jobs by resource used in viewset."""
+        if self.action == "start":
+            # To make it consistent and for better support of drf-spectacular
+            return super().get_queryset() # pragma: no cover
         return super().get_queryset().filter(
             resource_path=self.resource_class.class_path,
         )
@@ -157,12 +160,13 @@ class ExportJobViewSet(
 
     def start(self, request: Request):
         """Validate request data and start ExportJob."""
-        query_params = dict(request.query_params)
-        ordering = query_params.pop("ordering", self.ordering)
+        ordering = request.query_params.get("ordering", "")
+        if ordering:
+            ordering = ordering.split(",")
         serializer = self.get_serializer(
             data=request.data,
             ordering=ordering,
-            filter_kwargs=query_params,
+            filter_kwargs=request.query_params,
         )
         serializer.is_valid(raise_exception=True)
         export_job = serializer.save()
