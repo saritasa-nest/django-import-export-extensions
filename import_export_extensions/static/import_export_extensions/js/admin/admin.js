@@ -6,9 +6,9 @@ This script show/hide error detail info by clicking appropriate link:
 (function($) {
   $(document).ready(function() {
     const showRowData = $('.show-error-detail'),
-    dataStateAttr = 'state',
-    openedState = 'opened',
-    closedState = 'closed';
+          dataStateAttr = 'state',
+          openedState = 'opened',
+          closedState = 'closed';
 
     showRowData.click(function(e) {
       const self = $(this);

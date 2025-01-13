@@ -117,9 +117,9 @@ def test_export_api_ordering(
     assert (
         export_job := ExportJob.objects.filter(id=response.data["id"]).first()
     )
-    assert (
-        export_job.resource_kwargs["ordering"] == ordering_value
-    ), export_job.resource_kwargs["ordering"]
+    assert export_job.resource_kwargs["ordering"] == ordering_value, (
+        export_job.resource_kwargs["ordering"]
+    )
 
 
 @pytest.mark.django_db(transaction=True)
