@@ -246,6 +246,8 @@ ignore = [
   "C408",
   # https://docs.astral.sh/ruff/rules/mutable-class-default
   "RUF012",
+  # https://docs.astral.sh/ruff/rules/assignment-in-assert/
+  "RUF018",
   # https://docs.astral.sh/ruff/rules/raise-vanilla-args
   "TRY003",
   # https://docs.astral.sh/ruff/rules/try-consider-else

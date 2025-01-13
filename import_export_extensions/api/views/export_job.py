@@ -160,7 +160,9 @@ class ExportJobViewSet(
 
     def start(self, request: Request):
         """Validate request data and start ExportJob."""
-        ordering = request.query_params.getlist("ordering", default=())
+        ordering = request.query_params.get("ordering", "")
+        if ordering:
+            ordering = ordering.split(",")
         serializer = self.get_serializer(
             data=request.data,
             ordering=ordering,
