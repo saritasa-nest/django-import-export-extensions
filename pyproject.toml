@@ -208,12 +208,10 @@ extend-select = [
   "RUF",
 ]
 ignore = [
+  # https://docs.astral.sh/ruff/rules/builtin-module-shadowing
+  "A005",
   # https://docs.astral.sh/ruff/rules/missing-type-args
   "ANN002",
-  # https://docs.astral.sh/ruff/rules/missing-type-self
-  "ANN101",
-  # https://docs.astral.sh/ruff/rules/missing-type-cls
-  "ANN102",
   # https://docs.astral.sh/ruff/rules/missing-type-kwargs
   "ANN003",
   # https://docs.astral.sh/ruff/rules/any-type
