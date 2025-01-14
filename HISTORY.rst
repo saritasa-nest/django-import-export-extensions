@@ -2,6 +2,12 @@
 History
 =======
 
+UNRELEASED
+------------------
+
+* Add explicit `created_by` argument to `CeleryResourceMixin` and pass it in
+`ExportJobSerializer` validation
+
 1.3.1 (2025-01-13)
 ------------------
 
