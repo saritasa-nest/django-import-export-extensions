@@ -40,11 +40,13 @@ class CeleryResourceMixin:
         self,
         filter_kwargs: dict[str, typing.Any] | None = None,
         ordering: collections.abc.Sequence[str] | None = None,
+        created_by: typing.Any | None = None,
         **kwargs,
     ):
         """Remember init kwargs."""
         self._filter_kwargs = filter_kwargs
         self._ordering = ordering
+        self._created_by = created_by
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
         self.total_objects_count = 0
         self.current_object_number = 0

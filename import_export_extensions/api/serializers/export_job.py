@@ -71,6 +71,7 @@ class CreateExportJob(serializers.Serializer):
         self.resource_class(
             ordering=self._ordering,
             filter_kwargs=self._filter_kwargs,
+            created_by=self._user,
             **self._resource_kwargs,
         ).get_queryset()
         return attrs
