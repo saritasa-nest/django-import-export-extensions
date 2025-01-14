@@ -126,18 +126,28 @@ class CreateImportJob(serializers.Serializer):
         """Empty method to pass linters checks."""
 
 
+# Use it to cache already generated serializers to avoid duplication
+_GENERATED_IMPORT_JOB_SERIALIZERS: dict[
+    type[resources.CeleryModelResource],
+    type,
+] = {}
+
+
 def get_create_import_job_serializer(
     resource: type[resources.CeleryModelResource],
 ) -> type:
     """Create serializer for ImportJobs creation."""
+    if resource in _GENERATED_IMPORT_JOB_SERIALIZERS:
+        return _GENERATED_IMPORT_JOB_SERIALIZERS[resource]
 
     class _CreateImportJob(CreateImportJob):
         """Serializer to start import job."""
 
         resource_class: type[resources.CeleryModelResource] = resource
 
-    return type(
+    _GENERATED_IMPORT_JOB_SERIALIZERS[resource] = type(
         f"{resource.__name__}CreateImportJob",
         (_CreateImportJob,),
         {},
     )
+    return _GENERATED_IMPORT_JOB_SERIALIZERS[resource]

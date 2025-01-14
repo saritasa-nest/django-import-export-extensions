@@ -44,9 +44,13 @@ class ArtistResourceWithM2M(CeleryModelResource):
 
     def get_queryset(self):
         """Return a queryset."""
-        return Artist.objects.all().prefetch_related(
-            "membership_set__band",
-            "bands",
+        return (
+            super()
+            .get_queryset()
+            .prefetch_related(
+                "membership_set__band",
+                "bands",
+            )
         )
 
 
@@ -71,7 +75,11 @@ class BandResourceWithM2M(CeleryModelResource):
 
     def get_queryset(self):
         """Return a queryset."""
-        return Band.objects.all().prefetch_related(
-            "membership_set__artist",
-            "artists",
+        return (
+            super()
+            .get_queryset()
+            .prefetch_related(
+                "membership_set__artist",
+                "artists",
+            )
         )

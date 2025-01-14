@@ -99,10 +99,19 @@ class CreateExportJob(serializers.Serializer):
         """Empty method to pass linters checks."""
 
 
+# Use it to cache already generated serializers to avoid duplication
+_GENERATED_EXPORT_JOB_SERIALIZERS: dict[
+    type[resources.CeleryModelResource],
+    type,
+] = {}
+
+
 def get_create_export_job_serializer(
     resource: type[resources.CeleryModelResource],
 ) -> type:
     """Create serializer for ExportJobs creation."""
+    if resource in _GENERATED_EXPORT_JOB_SERIALIZERS:
+        return _GENERATED_EXPORT_JOB_SERIALIZERS[resource]
 
     class _CreateExportJob(CreateExportJob):
         """Serializer to start export job."""
@@ -116,8 +125,9 @@ def get_create_export_job_serializer(
             ],
         )
 
-    return type(
+    _GENERATED_EXPORT_JOB_SERIALIZERS[resource] = type(
         f"{resource.__name__}CreateExportJob",
         (_CreateExportJob,),
         {},
     )
+    return _GENERATED_EXPORT_JOB_SERIALIZERS[resource]

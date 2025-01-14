@@ -8,7 +8,7 @@ install the package by following the :ref:`the installation guide<Installation a
 Then, all you need to do is update the base classes for your resource and admin models.
 
 Migrate resources
------------------
+----------------------------------------------------------------
 
 To enable import/export via Celery, simply replace the base resource classes from the original package
 with ``CeleryResource`` or ``CeleryModelResource`` from ``django-import-export-extensions``:

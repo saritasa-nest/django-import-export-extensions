@@ -7,6 +7,8 @@ from rest_framework.routers import DefaultRouter
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+from import_export_extensions import api
+
 from .fake_app.api import views
 
 ie_router = DefaultRouter()
@@ -16,9 +18,24 @@ ie_router.register(
     basename="export-artist",
 )
 ie_router.register(
+    "export-jobs",
+    api.BaseExportJobForUserViewSet,
+    basename="export-jobs",
+)
+ie_router.register(
+    "import-jobs",
+    api.BaseImportJobForUserViewSet,
+    basename="import-jobs",
+)
+ie_router.register(
     "import-artist",
     views.ArtistImportViewSet,
     basename="import-artist",
+)
+ie_router.register(
+    "artists",
+    views.ArtistViewSet,
+    basename="artists",
 )
 
 urlpatterns = [re_path("^admin/", admin.site.urls), *ie_router.urls]

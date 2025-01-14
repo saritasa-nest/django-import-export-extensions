@@ -6,7 +6,12 @@ UNRELEASED
 ------------------
 
 * Add explicit `created_by` argument to `CeleryResourceMixin` and pass it in
-`ExportJobSerializer` validation
+  `ExportJobSerializer` validation
+* Add export/import action mixins `api.mixins.ExportStartActionMixin`
+  and `api.mixins.ImportStartActionMixin`
+* Add `api.views.BaseExportJobViewSet`, `BaseExportJobForUsersViewSet`,
+  `api.views.BaseImportJobViewSet` and `BaseImportJobForUsersViewSet` for
+  job management
 
 1.3.1 (2025-01-13)
 ------------------
@@ -21,8 +26,8 @@ UNRELEASED
 * Small actions definition refactor in `ExportJobViewSet/ExportJobViewSet` to allow easier overriding.
 * Add support for ordering in `export`
 * Add settings for DjangoFilterBackend and OrderingFilter in export api.
-`DRF_EXPORT_DJANGO_FILTERS_BACKEND` with default `django_filters.rest_framework.DjangoFilterBackend` and
-`DRF_EXPORT_ORDERING_BACKEND` with default `rest_framework.filters.OrderingFilter`.
+  `DRF_EXPORT_DJANGO_FILTERS_BACKEND` with default `django_filters.rest_framework.DjangoFilterBackend` and
+  `DRF_EXPORT_ORDERING_BACKEND` with default `rest_framework.filters.OrderingFilter`.
 
 1.2.0 (2024-12-26)
 ------------------

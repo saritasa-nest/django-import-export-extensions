@@ -64,3 +64,9 @@ repos:
         pass_filenames: false
         types: [python]
         stages: [pre-push]
+      - id: doc_build_verify
+        name: verify that docs could be build
+        entry: inv docs.build
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
