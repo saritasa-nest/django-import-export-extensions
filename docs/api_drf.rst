@@ -14,7 +14,25 @@ API (Rest Framework)
 .. autoclass:: import_export_extensions.api.ExportJobForUserViewSet
    :members:
 
+.. autoclass:: import_export_extensions.api.BaseImportJobViewSet
+   :members:
+
+.. autoclass:: import_export_extensions.api.BaseExportJobViewSet
+   :members:
+
+.. autoclass:: import_export_extensions.api.BaseImportJobForUserViewSet
+   :members:
+
+.. autoclass:: import_export_extensions.api.BaseExportJobForUserViewSet
+   :members:
+
 .. autoclass:: import_export_extensions.api.LimitQuerySetToCurrentUserMixin
+   :members:
+
+.. autoclass:: import_export_extensions.api.ImportStartActionMixin
+   :members:
+
+.. autoclass:: import_export_extensions.api.ExportStartActionMixin
    :members:
 
 .. autoclass:: import_export_extensions.api.CreateExportJob

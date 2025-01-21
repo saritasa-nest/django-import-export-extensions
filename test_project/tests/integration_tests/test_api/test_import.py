@@ -14,14 +14,28 @@ from test_project.fake_app.models import Artist
 
 
 @pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            reverse("import-artist-start"),
+            id="Model url",
+        ),
+        pytest.param(
+            f"{reverse('artists-import')}",
+            id="Action url",
+        ),
+    ],
+)
 def test_import_api_creates_import_job(
     admin_api_client: APIClient,
     uploaded_file: SimpleUploadedFile,
+    import_url: str,
 ):
     """Ensure import start api creates new import job."""
     import_job_count = ImportJob.objects.count()
     response = admin_api_client.post(
-        path=reverse("import-artist-start"),
+        path=import_url,
         data={
             "file": uploaded_file,
         },
@@ -33,14 +47,28 @@ def test_import_api_creates_import_job(
 
 
 @pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-detail",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-detail",
+            id="General url",
+        ),
+    ],
+)
 def test_import_api_detail(
     admin_api_client: APIClient,
     artist_import_job: ImportJob,
+    import_url: str,
 ):
     """Ensure import detail api shows current import job status."""
     response = admin_api_client.get(
         path=reverse(
-            "import-artist-detail",
+            import_url,
             kwargs={"pk": artist_import_job.id},
         ),
     )
@@ -52,7 +80,7 @@ def test_import_api_detail(
 
     response = admin_api_client.get(
         path=reverse(
-            "import-artist-detail",
+            import_url,
             kwargs={"pk": artist_import_job.id},
         ),
     )
@@ -61,15 +89,29 @@ def test_import_api_detail(
 
 
 @pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-detail",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-detail",
+            id="General url",
+        ),
+    ],
+)
 def test_import_user_api_get_detail(
     user: User,
     admin_api_client: APIClient,
     artist_import_job: ImportJob,
+    import_url: str,
 ):
     """Ensure import detail api for user returns only users jobs."""
     response = admin_api_client.get(
         path=reverse(
-            "import-artist-detail",
+            import_url,
             kwargs={"pk": artist_import_job.id},
         ),
     )
@@ -87,10 +129,23 @@ def test_import_user_api_get_detail(
 
 
 @pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-detail",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-detail",
+            id="General url",
+        ),
+    ],
+)
 def test_force_import_api_detail(
     admin_api_client: APIClient,
-    superuser: User,
     force_import_artist_job: ImportJob,
+    import_url: str,
 ):
     """Test detail api for force import job.
 
@@ -101,7 +156,7 @@ def test_force_import_api_detail(
     """
     response = admin_api_client.get(
         path=reverse(
-            "import-artist-detail",
+            import_url,
             kwargs={"pk": force_import_artist_job.id},
         ),
     )
@@ -113,7 +168,7 @@ def test_force_import_api_detail(
 
     response = admin_api_client.get(
         path=reverse(
-            "import-artist-detail",
+            import_url,
             kwargs={"pk": force_import_artist_job.id},
         ),
     )
@@ -126,10 +181,24 @@ def test_force_import_api_detail(
 
 
 @pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-detail",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-detail",
+            id="General url",
+        ),
+    ],
+)
 def test_import_api_detail_with_row_errors(
     admin_api_client: APIClient,
     existing_artist: Artist,
     superuser: User,
+    import_url: str,
 ):
     """Ensure import detail api shows row errors."""
     expected_error_message = "Instrument matching query does not exist."
@@ -150,7 +219,7 @@ def test_import_api_detail_with_row_errors(
 
     response = admin_api_client.get(
         path=reverse(
-            "import-artist-detail",
+            import_url,
             kwargs={"pk": import_artist_job.pk},
         ),
     )
@@ -164,10 +233,24 @@ def test_import_api_detail_with_row_errors(
 
 
 @pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-detail",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-detail",
+            id="General url",
+        ),
+    ],
+)
 def test_import_api_detail_with_base_errors(
     superuser: User,
     admin_api_client: APIClient,
     existing_artist: Artist,
+    import_url: str,
 ):
     """Ensure import detail api shows base errors."""
     expected_error_message = (
@@ -193,7 +276,7 @@ def test_import_api_detail_with_base_errors(
 
     response = admin_api_client.get(
         path=reverse(
-            "import-artist-detail",
+            import_url,
             kwargs={"pk": import_artist_job.pk},
         ),
     )
@@ -207,16 +290,30 @@ def test_import_api_detail_with_base_errors(
 
 
 @pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-confirm",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-confirm",
+            id="General url",
+        ),
+    ],
+)
 def test_import_api_confirm_parsed_job(
     admin_api_client: APIClient,
     artist_import_job: ImportJob,
+    import_url: str,
 ):
     """Check that parsed import job can be confirmed."""
     artist_import_job.parse_data()
     artist_import_job.refresh_from_db()
     response = admin_api_client.post(
         path=reverse(
-            "import-artist-confirm",
+            import_url,
             kwargs={"pk": artist_import_job.pk},
         ),
     )
@@ -240,10 +337,24 @@ def test_import_api_confirm_parsed_job(
         ImportJob.ImportStatus.CANCELLED,
     ],
 )
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-confirm",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-confirm",
+            id="General url",
+        ),
+    ],
+)
 def test_import_api_confirm_incorrect_job_status(
     admin_api_client: APIClient,
     artist_import_job: ImportJob,
     incorrect_job_status: ImportJob.ImportStatus,
+    import_url: str,
 ):
     """Ensure that not parsed job can't be confirmed."""
     artist_import_job.import_status = incorrect_job_status
@@ -251,7 +362,7 @@ def test_import_api_confirm_incorrect_job_status(
 
     response = admin_api_client.post(
         path=reverse(
-            "import-artist-confirm",
+            import_url,
             kwargs={"pk": artist_import_job.pk},
         ),
     )
@@ -273,17 +384,31 @@ def test_import_api_confirm_incorrect_job_status(
         ImportJob.ImportStatus.CONFIRMED,
     ],
 )
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-cancel",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-cancel",
+            id="General url",
+        ),
+    ],
+)
 def test_import_api_cancel_job(
     admin_api_client: APIClient,
     artist_import_job: ImportJob,
     allowed_cancel_status: ImportJob.ImportStatus,
+    import_url: str,
 ):
     """Check that import job with allowed statuses can be cancelled."""
     artist_import_job.import_status = allowed_cancel_status
     artist_import_job.save()
     response = admin_api_client.post(
         path=reverse(
-            "import-artist-cancel",
+            import_url,
             kwargs={"pk": artist_import_job.pk},
         ),
     )
@@ -303,10 +428,24 @@ def test_import_api_cancel_job(
         ImportJob.ImportStatus.CANCELLED,
     ],
 )
+@pytest.mark.parametrize(
+    argnames="import_url",
+    argvalues=[
+        pytest.param(
+            "import-artist-cancel",
+            id="Model url",
+        ),
+        pytest.param(
+            "import-jobs-cancel",
+            id="General url",
+        ),
+    ],
+)
 def test_import_api_cancel_incorrect_job_status(
     admin_api_client: APIClient,
     artist_import_job: ImportJob,
     incorrect_job_status: ImportJob.ImportStatus,
+    import_url: str,
 ):
     """Ensure that import job with incorrect statuses cannot be canceled."""
     artist_import_job.import_status = incorrect_job_status
@@ -314,7 +453,7 @@ def test_import_api_cancel_incorrect_job_status(
 
     response = admin_api_client.post(
         path=reverse(
-            "import-artist-cancel",
+            import_url,
             kwargs={"pk": artist_import_job.pk},
         ),
     )

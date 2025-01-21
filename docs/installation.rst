@@ -81,12 +81,24 @@ By default, it uses the `mimetypes.types_map <https://docs.python.org/3/library/
 from Python's mimetypes module.
 
 ``STATUS_UPDATE_ROW_COUNT``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Defines the number of rows after import/export of which the task status is
 updated. This helps to increase the speed of import/export. The default value
 is 100. This parameter can be specified separately for each resource by adding
 ``status_update_row_count`` to its ``Meta``.
+
+``DRF_EXPORT_DJANGO_FILTERS_BACKEND``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Specifies filter backend class for ``django-filters`` in export action.
+Default: ``django_filters.rest_framework.DjangoFilterBackend``
+
+``DRF_EXPORT_ORDERING_BACKEND``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Specifies filter backend class for ``ordering`` in export action.
+Default: ``rest_framework.filters.OrderingFilter``
 
 Settings from django-import-export
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

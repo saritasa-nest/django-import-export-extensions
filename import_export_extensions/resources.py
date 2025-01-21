@@ -61,9 +61,21 @@ class CeleryResourceMixin:
             settings.STATUS_UPDATE_ROW_COUNT,
         )
 
+    @classmethod
+    def get_model_queryset(cls) -> QuerySet:
+        """Return a queryset of all objects for this model.
+
+        Override this if you
+        want to limit the returned queryset.
+
+        Same as resources.ModelResource get_queryset.
+
+        """
+        return cls._meta.model.objects.all()
+
     def get_queryset(self):
         """Filter export queryset via filterset class."""
-        queryset = super().get_queryset()
+        queryset = self.get_model_queryset()
         try:
             queryset = queryset.order_by(*(self._ordering or ()))
         except FieldError as error:
@@ -344,18 +356,6 @@ class CeleryResource(CeleryResourceMixin, resources.Resource):
 
 class CeleryModelResource(CeleryResourceMixin, resources.ModelResource):
     """ModelResource which supports importing via celery."""
-
-    @classmethod
-    def get_model_queryset(cls) -> QuerySet:
-        """Return a queryset of all objects for this model.
-
-        Override this if you
-        want to limit the returned queryset.
-
-        Same as resources.ModelResource get_queryset.
-
-        """
-        return cls._meta.model.objects.all()
 
     class Meta:
         store_instance = True
