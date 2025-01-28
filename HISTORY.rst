@@ -2,7 +2,7 @@
 History
 =======
 
-UNRELEASED
+1.4.0 (2025-01-28)
 ------------------
 
 * Add explicit `created_by` argument to `CeleryResourceMixin` and pass it in
