@@ -9,7 +9,7 @@ from . import models
 from .resources import SimpleArtistResource
 
 
-class InstrumentFactory(factory.django.DjangoModelFactory):
+class InstrumentFactory(factory.django.DjangoModelFactory[models.Instrument]):
     """Simple factory for ``Instrument`` model."""
 
     title = factory.Faker("name")
@@ -18,7 +18,7 @@ class InstrumentFactory(factory.django.DjangoModelFactory):
         model = models.Instrument
 
 
-class ArtistFactory(factory.django.DjangoModelFactory):
+class ArtistFactory(factory.django.DjangoModelFactory[models.Artist]):
     """Simple factory for ``Artist`` model."""
 
     name = factory.Faker("name")
@@ -29,7 +29,7 @@ class ArtistFactory(factory.django.DjangoModelFactory):
         model = models.Artist
 
 
-class BandFactory(factory.django.DjangoModelFactory):
+class BandFactory(factory.django.DjangoModelFactory[models.Band]):
     """Simple factory for ``Band`` model."""
 
     title = factory.Faker("company")
@@ -38,7 +38,7 @@ class BandFactory(factory.django.DjangoModelFactory):
         model = models.Band
 
 
-class MembershipFactory(factory.django.DjangoModelFactory):
+class MembershipFactory(factory.django.DjangoModelFactory[models.Membership]):
     """Simple factory for ``Membership`` model."""
 
     artist = factory.SubFactory(ArtistFactory)
@@ -49,7 +49,7 @@ class MembershipFactory(factory.django.DjangoModelFactory):
         model = models.Membership
 
 
-class ArtistImportJobFactory(factory.django.DjangoModelFactory):
+class ArtistImportJobFactory(factory.django.DjangoModelFactory[ImportJob]):
     """Factory for creating ImportJob for Artist.
 
     Usage:
@@ -84,7 +84,7 @@ class ArtistImportJobFactory(factory.django.DjangoModelFactory):
         return django_files.File(content.file, "data.csv")
 
 
-class ArtistExportJobFactory(factory.django.DjangoModelFactory):
+class ArtistExportJobFactory(factory.django.DjangoModelFactory[ExportJob]):
     """Factory for creating ExportJob for Artist."""
 
     resource_path = "test_project.fake_app.resources.SimpleArtistResource"

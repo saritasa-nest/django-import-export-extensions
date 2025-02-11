@@ -33,7 +33,7 @@ def artist_import_job(
     existing_artist: Artist,
 ) -> ImportJob:
     """Return `ImportJob` instance with specified artist."""
-    return factories.ArtistImportJobFactory(
+    return factories.ArtistImportJobFactory.create(
         created_by=superuser,
         artists=[existing_artist],
     )
@@ -44,19 +44,19 @@ def artist_export_job(
     superuser: User,
 ) -> ExportJob:
     """Return `ExportJob` instance."""
-    return factories.ArtistExportJobFactory(created_by=superuser)
+    return factories.ArtistExportJobFactory.create(created_by=superuser)
 
 
 @pytest.fixture
 def band() -> Band:
     """Return `Band` instance."""
-    return factories.BandFactory(title="Aerosmith")
+    return factories.BandFactory.create(title="Aerosmith")
 
 
 @pytest.fixture
 def membership(band: Band) -> Membership:
     """Return `Membership` instance with specified band."""
-    return factories.MembershipFactory(band=band)
+    return factories.MembershipFactory.create(band=band)
 
 
 @pytest.fixture
@@ -74,9 +74,9 @@ def uploaded_file(existing_artist: Artist) -> SimpleUploadedFile:
 def force_import_artist_job(
     superuser: User,
     new_artist: Artist,
-) -> Artist:
+) -> ImportJob:
     """`ImportJob` with `force_import=True` and file with invalid row."""
-    return ArtistImportJobFactory(
+    return ArtistImportJobFactory.create(
         artists=[new_artist],
         is_valid_file=False,
         force_import=True,

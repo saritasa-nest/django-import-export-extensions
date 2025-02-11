@@ -353,8 +353,8 @@ def test_render_empty_values(membership: Membership):
 )
 def test_intermediate_widget_filter_with_lookup(rem_field_lookup: str):
     """Test widget filter rem model with lookup."""
-    founded_band = BandFactory(title="In result band")
-    ignored_band = BandFactory(title="This band will be ignored")
+    founded_band = BandFactory.create(title="In result band")
+    ignored_band = BandFactory.create(title="This band will be ignored")
 
     widget = IntermediateManyToManyWidget(
         rem_model=Band,
