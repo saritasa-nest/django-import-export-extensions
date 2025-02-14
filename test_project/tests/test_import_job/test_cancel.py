@@ -17,7 +17,7 @@ def test_cancel_import_error_status(
     incorrect.
 
     """
-    job: ImportJob = ArtistImportJobFactory(
+    job = ArtistImportJobFactory.create(
         artists=[existing_artist, new_artist],
     )
     job.import_status = ImportJob.ImportStatus.PARSED
@@ -38,7 +38,7 @@ def test_cancel_import_success_status(
     cancelled.
 
     """
-    job: ImportJob = ArtistImportJobFactory(
+    job = ArtistImportJobFactory.create(
         artists=[existing_artist, new_artist],
     )
     job.cancel_import()
@@ -57,7 +57,7 @@ def test_cancel_import_with_celery_parse_task_id(
 
     """
     revoke = mocker.patch("celery.current_app.control.revoke")
-    job: ImportJob = ArtistImportJobFactory(
+    job = ArtistImportJobFactory.create(
         artists=[existing_artist, new_artist],
     )
     job.cancel_import()
@@ -79,7 +79,7 @@ def test_cancel_import_with_celery_import_task_id(
 
     """
     revoke = mocker.patch("celery.current_app.control.revoke")
-    job: ImportJob = ArtistImportJobFactory(
+    job = ArtistImportJobFactory.create(
         artists=[existing_artist, new_artist],
     )
     job.parse_data()
@@ -104,7 +104,7 @@ def test_cancel_import_with_custom_task_id_on_parse(
     parse_data = mocker.patch(
         "import_export_extensions.models.ImportJob.parse_data",
     )
-    job: ImportJob = ArtistImportJobFactory(
+    job = ArtistImportJobFactory.create(
         artists=[existing_artist, new_artist],
     )
     job.cancel_import()
@@ -129,7 +129,7 @@ def test_cancel_import_with_custom_task_id_on_import(
     import_data = mocker.patch(
         "import_export_extensions.models.ImportJob.import_data",
     )
-    job: ImportJob = ArtistImportJobFactory(
+    job = ArtistImportJobFactory.create(
         artists=[existing_artist, new_artist],
     )
     job.parse_data()

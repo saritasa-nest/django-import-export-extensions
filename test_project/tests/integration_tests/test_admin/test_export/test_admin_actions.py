@@ -24,7 +24,7 @@ def test_cancel_export_admin_action(
     export_data_mock = mocker.patch(
         "import_export_extensions.models.ExportJob.export_data",
     )
-    job: ExportJob = ArtistExportJobFactory()
+    job = ArtistExportJobFactory.create()
 
     response = client.post(
         reverse("admin:import_export_extensions_exportjob_changelist"),
@@ -56,7 +56,7 @@ def test_cancel_export_admin_action_with_incorrect_export_job_status(
     client.force_login(superuser)
 
     revoke_mock = mocker.patch("celery.current_app.control.revoke")
-    job: ExportJob = ArtistExportJobFactory()
+    job = ArtistExportJobFactory.create()
 
     expected_error_message = f"ExportJob with id {job.pk} has incorrect status"
 

@@ -27,7 +27,7 @@ def test_import_data_valid_data_file(
     * import data
 
     """
-    job: ImportJob = ArtistImportJobFactory(
+    job = ArtistImportJobFactory.create(
         artists=[
             existing_artist,
             new_artist,
@@ -60,7 +60,7 @@ def test_job_has_finished(new_artist: Artist):
     and `import` part of job.
 
     """
-    job: ImportJob = ArtistImportJobFactory(artists=[new_artist])
+    job = ArtistImportJobFactory.create(artists=[new_artist])
     assert job.parse_finished is None
     assert job.import_finished is None
 
@@ -135,7 +135,7 @@ def test_force_import_create_correct_rows(
     new_artist: Artist,
 ):
     """Test import job with `force_import=True` create correct rows."""
-    import_job: ImportJob = ArtistImportJobFactory(
+    import_job = ArtistImportJobFactory.create(
         artists=[new_artist],
         force_import=True,
         skip_parse_step=True,
@@ -167,7 +167,7 @@ def test_import_create_with_max_rows(
     new_artist: Artist,
 ):
     """Test import job max dataset rows validation."""
-    import_job: ImportJob = ArtistImportJobFactory(
+    import_job = ArtistImportJobFactory.create(
         artists=[new_artist],
         skip_parse_step=True,
         is_valid_file=False,

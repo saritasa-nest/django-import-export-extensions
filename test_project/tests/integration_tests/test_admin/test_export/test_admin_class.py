@@ -81,7 +81,7 @@ def test_get_fieldsets_by_export_job_status(
     mocker.patch(
         "import_export_extensions.models.ExportJob.export_data",
     )
-    job: ExportJob = ArtistExportJobFactory()
+    job = ArtistExportJobFactory.create()
     job.export_status = job_status
     job.save()
 

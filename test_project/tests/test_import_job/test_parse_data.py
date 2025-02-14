@@ -154,7 +154,7 @@ def test_parse_data_invalid_row_file(
     and skip invalid rows.
 
     """
-    import_job: ImportJob = ArtistImportJobFactory(
+    import_job = ArtistImportJobFactory.create(
         artists=[new_artist],
         force_import=force_import,
         is_valid_file=False,
