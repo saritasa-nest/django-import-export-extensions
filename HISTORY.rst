@@ -2,7 +2,7 @@
 History
 =======
 
-Unreleased
+1.4.1 (2025-02-18)
 ------------------
 
 * Make querysets more consistent for ViewSets
