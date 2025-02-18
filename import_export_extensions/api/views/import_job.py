@@ -127,6 +127,9 @@ class ImportJobViewSet(
 
     def get_queryset(self):
         """Filter import jobs by resource used in viewset."""
+        if self.action == getattr(self, "import_action", ""):
+            # To make it consistent and for better support of drf-spectacular
+            return super().get_queryset()  # pragma: no cover
         return super().get_queryset().filter(
             resource_path=self.resource_class.class_path,
         )
