@@ -135,6 +135,10 @@ CELERY_TASK_DEFAULT_QUEUE = "development"
 # https://docs.djangoproject.com/en/dev/ref/settings/#std-setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+IMPORT_EXPORT_JOB_ERROR_HOOK_PATH = (
+    "test_project.fake_app.job_error_hook.job_error_hook"
+)
+
 if DEBUG:
     INSTALLED_APPS += ("debug_toolbar",)
     MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)

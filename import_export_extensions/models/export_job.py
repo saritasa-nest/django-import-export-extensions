@@ -3,6 +3,7 @@ import traceback
 import typing
 import uuid
 
+from django.conf import settings
 from django.core import files as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
@@ -208,17 +209,10 @@ class ExportJob(BaseJob):
                 ],
             )
         except Exception as error:
-            self.traceback = traceback.format_exc()
-            self.error_message = str(error)[
-                : self._meta.get_field("error_message").max_length
-            ]
-            self.export_status = self.ExportStatus.EXPORT_ERROR
-            self.save(
-                update_fields=[
-                    "export_status",
-                    "traceback",
-                    "error_message",
-                ],
+            self._handle_error(
+                error_message=str(error),
+                traceback=traceback.format_exc(),
+                exception=error,
             )
 
     def cancel_export(self) -> None:
@@ -278,12 +272,27 @@ class ExportJob(BaseJob):
                 info=async_result.info,
             )
 
-        # Update job's status in case of exception
+        self._handle_error(
+            error_message=str(async_result.info),
+            traceback=str(async_result.traceback),
+        )
+        return dict(
+            state=async_result.state,
+            info={},
+        )
+
+    def _handle_error(
+        self,
+        error_message: str,
+        traceback: str,
+        exception: Exception | None = None,
+    ):
+        """Update job's status in case of error."""
         self.export_status = self.ExportStatus.EXPORT_ERROR
-        self.error_message = str(async_result.info)[
+        self.error_message = error_message[
             : self._meta.get_field("error_message").max_length
         ]
-        self.traceback = str(async_result.traceback)
+        self.traceback = traceback
         self.save(
             update_fields=[
                 "error_message",
@@ -291,7 +300,14 @@ class ExportJob(BaseJob):
                 "export_status",
             ],
         )
-        return dict(
-            state=async_result.state,
-            info={},
-        )
+        if error_hook_path := getattr(
+            settings,
+            "IMPORT_EXPORT_JOB_ERROR_HOOK_PATH",
+            None,
+        ):
+            module_loading.import_string(error_hook_path)(
+                instance=self,
+                error_message=self.error_message,
+                traceback=self.traceback,
+                exception=exception,
+            )
