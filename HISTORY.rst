@@ -2,6 +2,13 @@
 History
 =======
 
+Unreleased
+------------------
+
+* Fix issue with long `error_message`
+* Add ability to specify hook to additional handling of import/export errors.
+  Use `IMPORT_EXPORT_JOB_ERROR_HOOK_PATH` in settings.
+
 1.4.1 (2025-02-18)
 ------------------
 
