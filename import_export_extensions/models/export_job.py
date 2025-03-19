@@ -209,7 +209,9 @@ class ExportJob(BaseJob):
             )
         except Exception as error:
             self.traceback = traceback.format_exc()
-            self.error_message = str(error)[:512]
+            self.error_message = str(error)[
+                : self._meta.get_field("error_message").max_length
+            ]
             self.export_status = self.ExportStatus.EXPORT_ERROR
             self.save(
                 update_fields=[
@@ -278,7 +280,9 @@ class ExportJob(BaseJob):
 
         # Update job's status in case of exception
         self.export_status = self.ExportStatus.EXPORT_ERROR
-        self.error_message = str(async_result.info)[:128]
+        self.error_message = str(async_result.info)[
+            : self._meta.get_field("error_message").max_length
+        ]
         self.traceback = str(async_result.traceback)
         self.save(
             update_fields=[

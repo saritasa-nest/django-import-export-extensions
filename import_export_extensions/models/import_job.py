@@ -316,7 +316,9 @@ class ImportJob(BaseJob):
             )
         except Exception as error:
             self.traceback = traceback.format_exc()
-            self.error_message = str(error)[:128]
+            self.error_message = str(error)[
+                : self._meta.get_field("error_message").max_length
+            ]
             self.import_status = self.ImportStatus.PARSE_ERROR
             self.save(
                 update_fields=[
@@ -404,7 +406,9 @@ class ImportJob(BaseJob):
             )
         except Exception as error:
             self.traceback = traceback.format_exc()
-            self.error_message = str(error)[:128]
+            self.error_message = str(error)[
+                : self._meta.get_field("error_message").max_length
+            ]
             self.import_status = self.ImportStatus.IMPORT_ERROR
             self.save(
                 update_fields=[
@@ -523,7 +527,9 @@ class ImportJob(BaseJob):
                 if self.import_status == self.ImportStatus.PARSING
                 else self.ImportStatus.IMPORT_ERROR
             )
-            self.error_message = str(async_result.info)[:128]
+            self.error_message = str(async_result.info)[
+                : self._meta.get_field("error_message").max_length
+            ]
             self.traceback = str(async_result.traceback)
             self.save(
                 update_fields=[
