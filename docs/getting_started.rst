@@ -105,6 +105,40 @@ Example of creation:
 These models are also registered in the Django Admin, allowing you to view all information about
 the created jobs directly from the admin interface.
 
+Signals
+-------
+
+The package provides signals `export_job_failed` and `import_job_failed`. You
+can use them to handle errors that happened during job.
+
+Example
+
+.. code-block:: python
+
+  import logging
+
+  from django import dispatch
+
+  from import_export_extensions.models.core import BaseJob
+  from import_export_extensions.signals import (
+      export_job_failed,
+      import_job_failed,
+  )
+
+
+  @dispatch.receiver(export_job_failed)
+  @dispatch.receiver(import_job_failed)
+  def job_error_hook(
+      sender,
+      instance: BaseJob,
+      error_message: str,
+      traceback: str,
+      exception: Exception | None,
+      **kwargs,
+  ):
+      """Present an example of job error hook."""
+      logging.getLogger(__file__).warning(f"{instance}, {error_message}")
+
 Admin models
 ------------
 

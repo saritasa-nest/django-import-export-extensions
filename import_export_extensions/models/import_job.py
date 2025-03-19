@@ -14,6 +14,7 @@ from celery import current_app, result, states
 from import_export.formats import base_formats
 from import_export.results import Result
 
+from .. import signals
 from ..resources import CeleryResource
 from . import tools
 from .core import BaseJob, TaskStateInfo
@@ -543,17 +544,13 @@ class ImportJob(BaseJob):
                 "import_status",
             ],
         )
-        if error_hook_path := getattr(
-            settings,
-            "IMPORT_EXPORT_JOB_ERROR_HOOK_PATH",
-            None,
-        ):
-            module_loading.import_string(error_hook_path)(
-                instance=self,
-                error_message=self.error_message,
-                traceback=self.traceback,
-                exception=exception,
-            )
+        signals.import_job_failed.send(
+            sender=self.__class__,
+            instance=self,
+            error_message=self.error_message,
+            traceback=self.traceback,
+            exception=exception,
+        )
 
     def _save_input_errors_file(self):
         """Save input errors file.

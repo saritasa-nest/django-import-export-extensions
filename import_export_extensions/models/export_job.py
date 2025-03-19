@@ -3,7 +3,6 @@ import traceback
 import typing
 import uuid
 
-from django.conf import settings
 from django.core import files as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
@@ -12,6 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from celery import current_app, result, states
 from import_export.formats import base_formats
 
+from .. import signals
 from . import tools
 from .core import BaseJob, TaskStateInfo
 
@@ -300,14 +300,10 @@ class ExportJob(BaseJob):
                 "export_status",
             ],
         )
-        if error_hook_path := getattr(
-            settings,
-            "IMPORT_EXPORT_JOB_ERROR_HOOK_PATH",
-            None,
-        ):
-            module_loading.import_string(error_hook_path)(
-                instance=self,
-                error_message=self.error_message,
-                traceback=self.traceback,
-                exception=exception,
-            )
+        signals.export_job_failed.send(
+            sender=self.__class__,
+            instance=self,
+            error_message=self.error_message,
+            traceback=self.traceback,
+            exception=exception,
+        )

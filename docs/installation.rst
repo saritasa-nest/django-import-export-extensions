@@ -100,28 +100,6 @@ Default: ``django_filters.rest_framework.DjangoFilterBackend``
 Specifies filter backend class for ``ordering`` in export action.
 Default: ``rest_framework.filters.OrderingFilter``
 
-``IMPORT_EXPORT_JOB_ERROR_HOOK_PATH``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Path to function which will act as hook on import/export error. There could
-any additional logging you need. Below is an example of such hook.
-
-.. code-block:: python
-
-  import logging
-
-  from import_export_extensions.models.core import BaseJob
-
-
-  def job_error_hook(
-      instance: BaseJob,
-      error_message: str,
-      traceback: str,
-      exception: Exception | None,
-  ):
-      """Present an example of job error hook."""
-      logging.getLogger(__file__).warning(f"{instance}, {error_message}")
-
 Settings from django-import-export
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Additionally, the package supports settings from the original django-import-export package.
