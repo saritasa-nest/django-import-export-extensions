@@ -1,5 +1,23 @@
+import contextlib
 import functools
+import typing
 import uuid
+
+from django.core.files.storage import (
+    InvalidStorageError,
+    default_storage,
+    storages,
+)
+
+IMPORT_EXPORT_STORAGE_ALIAS = "django_import_export_extensions"
+
+
+def select_storage() -> dict[str, typing.Any]:
+    """Pick storage for storing import/export files."""
+    storage = default_storage
+    with contextlib.suppress(InvalidStorageError):
+        storage = storages[IMPORT_EXPORT_STORAGE_ALIAS]
+    return storage
 
 
 def upload_file_to(

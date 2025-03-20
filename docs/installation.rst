@@ -107,3 +107,24 @@ For full details on these settings, refer to the `official documentation <https:
 
 **Note**: The only setting that does not affect functionality in this package is ``IMPORT_EXPORT_TMP_STORAGE_CLASS``,
 as the storage is not used in the implementation of ``CeleryImportAdminMixin``.
+
+Picking storage
+~~~~~~~~~~~~~~~
+
+To use different storage for import/export jobs you can use `STORAGES <https://docs.djangoproject.com/en/dev/ref/settings/#storages>`.
+from django.
+
+.. code-block:: python
+
+  STORAGES = {
+      "default": {
+          "BACKEND": "django.core.files.storage.filesystem.FileSystemStorage",
+      },
+      "staticfiles": {
+          "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+      },
+      # Use this to specify custom storage for package
+      "django_import_export_extensions": {
+          "BACKEND": "django.core.files.storage.filesystem.FileSystemStorage",
+      },
+  }

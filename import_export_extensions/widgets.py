@@ -14,7 +14,7 @@ from django.utils.encoding import smart_str
 from import_export.exceptions import ImportExportError
 from import_export.widgets import CharWidget, ManyToManyWidget
 
-from . import utils
+from . import models, utils
 
 DEFAULT_SYSTEM_STORAGE = "django.core.files.storage.FileSystemStorage"
 
@@ -350,5 +350,8 @@ class FileWidget(CharWidget):
 
         """
         if hasattr(settings, "STORAGES"):
-            return settings.STORAGES["default"]["BACKEND"]
+            return settings.STORAGES.get(
+                models.tools.IMPORT_EXPORT_STORAGE_ALIAS,
+                settings.STORAGES["default"],
+            )["BACKEND"]
         return settings.DEFAULT_FILE_STORAGE  # pragma: no cover
