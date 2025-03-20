@@ -2,6 +2,13 @@
 History
 =======
 
+Unreleased
+------------------
+
+* Fix issue with long `error_message`
+* Add signals `export_job_failed` and `import_job_failed`
+  to respond to failed jobs.
+
 1.4.1 (2025-02-18)
 ------------------
 

@@ -14,6 +14,7 @@ from celery import current_app, result, states
 from import_export.formats import base_formats
 from import_export.results import Result
 
+from .. import signals
 from ..resources import CeleryResource
 from . import tools
 from .core import BaseJob, TaskStateInfo
@@ -315,15 +316,10 @@ class ImportJob(BaseJob):
                 ],
             )
         except Exception as error:
-            self.traceback = traceback.format_exc()
-            self.error_message = str(error)[:128]
-            self.import_status = self.ImportStatus.PARSE_ERROR
-            self.save(
-                update_fields=[
-                    "traceback",
-                    "error_message",
-                    "import_status",
-                ],
+            self._handle_error(
+                error_message=str(error),
+                traceback=traceback.format_exc(),
+                exception=error,
             )
 
     def _parse_data_inner(self) -> Result:
@@ -403,15 +399,10 @@ class ImportJob(BaseJob):
                 ],
             )
         except Exception as error:
-            self.traceback = traceback.format_exc()
-            self.error_message = str(error)[:128]
-            self.import_status = self.ImportStatus.IMPORT_ERROR
-            self.save(
-                update_fields=[
-                    "import_status",
-                    "error_message",
-                    "traceback",
-                ],
+            self._handle_error(
+                error_message=str(error),
+                traceback=traceback.format_exc(),
+                exception=error,
             )
 
     def _import_data_inner(self) -> Result:
@@ -517,20 +508,9 @@ class ImportJob(BaseJob):
         """
         async_result = result.AsyncResult(task_id)
         if async_result.state in states.EXCEPTION_STATES:
-            # update job's status
-            self.import_status = (
-                self.ImportStatus.PARSE_ERROR
-                if self.import_status == self.ImportStatus.PARSING
-                else self.ImportStatus.IMPORT_ERROR
-            )
-            self.error_message = str(async_result.info)[:128]
-            self.traceback = str(async_result.traceback)
-            self.save(
-                update_fields=[
-                    "error_message",
-                    "traceback",
-                    "import_status",
-                ],
+            self._handle_error(
+                error_message=str(async_result.info),
+                traceback=str(async_result.traceback),
             )
             return dict(
                 state=async_result.state,
@@ -539,6 +519,36 @@ class ImportJob(BaseJob):
         return dict(
             state=async_result.state,
             info=async_result.info,
+        )
+
+    def _handle_error(
+        self,
+        error_message: str,
+        traceback: str,
+        exception: Exception | None = None,
+    ):
+        """Update job's status in case of error."""
+        self.import_status = (
+            self.ImportStatus.PARSE_ERROR
+            if self.import_status == self.ImportStatus.PARSING
+            else self.ImportStatus.IMPORT_ERROR
+        )
+        error_message_limit = self._meta.get_field("error_message").max_length
+        self.error_message = error_message[:error_message_limit]
+        self.traceback = traceback
+        self.save(
+            update_fields=[
+                "error_message",
+                "traceback",
+                "import_status",
+            ],
+        )
+        signals.import_job_failed.send(
+            sender=self.__class__,
+            instance=self,
+            error_message=self.error_message,
+            traceback=self.traceback,
+            exception=exception,
         )
 
     def _save_input_errors_file(self):
