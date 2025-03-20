@@ -289,9 +289,8 @@ class ExportJob(BaseJob):
     ):
         """Update job's status in case of error."""
         self.export_status = self.ExportStatus.EXPORT_ERROR
-        self.error_message = error_message[
-            : self._meta.get_field("error_message").max_length
-        ]
+        error_message_limit = self._meta.get_field("error_message").max_length
+        self.error_message = error_message[:error_message_limit]
         self.traceback = traceback
         self.save(
             update_fields=[

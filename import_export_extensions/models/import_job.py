@@ -533,9 +533,8 @@ class ImportJob(BaseJob):
             if self.import_status == self.ImportStatus.PARSING
             else self.ImportStatus.IMPORT_ERROR
         )
-        self.error_message = error_message[
-            : self._meta.get_field("error_message").max_length
-        ]
+        error_message_limit = self._meta.get_field("error_message").max_length
+        self.error_message = error_message[:error_message_limit]
         self.traceback = traceback
         self.save(
             update_fields=[
