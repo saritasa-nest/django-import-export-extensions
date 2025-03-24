@@ -134,6 +134,7 @@ class ImportJob(BaseJob):
 
     data_file = models.FileField(
         max_length=512,
+        storage=tools.select_storage,
         verbose_name=_("Data file"),
         upload_to=tools.upload_import_file_to,
         help_text=_("File that contain data to be imported"),

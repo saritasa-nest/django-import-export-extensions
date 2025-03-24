@@ -223,7 +223,7 @@ FileWidget
 ^^^^^^^^^^
 
 Working with file fields is a common task. The ``FileWidget`` allows you to import/export files,
-including links to external resources, and saves them in the ``DEFAULT_FILE_STORAGE`` location.
+including links to external resources, and saves via picked ``STORAGE``.
 This widget loads a file from a URL into the media directory and correctly renders the link
 for export. It also supports the ``AWS_STORAGE_BUCKET_NAME`` setting.
 
