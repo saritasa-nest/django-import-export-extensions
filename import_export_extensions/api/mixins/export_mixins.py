@@ -52,6 +52,8 @@ class ExportStartActionMixin:
         def start_export_action(
             self: "ExportStartActionMixin",
             request: request.Request,
+            *args,
+            **kwargs,
         ) -> response.Response:
             return self.start_export(request)
 
