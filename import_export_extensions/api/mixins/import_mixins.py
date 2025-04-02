@@ -39,6 +39,8 @@ class ImportStartActionMixin:
         def start_import_action(
             self: "ImportStartActionMixin",
             request: request.Request,
+            *args,
+            **kwargs,
         ) -> response.Response:
             return self.start_import(request)
 

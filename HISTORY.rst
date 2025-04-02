@@ -10,6 +10,7 @@ Unreleased
   to respond to failed jobs.
 * Add ability to specify storage via `STORAGES` setting and alias
   `django_import_export_extensions`
+* Make possible to pass args/kwargs to import/export start action
 
 1.4.1 (2025-02-18)
 ------------------
