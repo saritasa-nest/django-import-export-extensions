@@ -2,7 +2,7 @@
 History
 =======
 
-Unreleased
+1.5.0 (2025-04-02)
 ------------------
 
 * Fix issue with long `error_message`
