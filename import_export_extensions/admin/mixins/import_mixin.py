@@ -17,6 +17,7 @@ from django.utils.translation import gettext_lazy as _
 from import_export import admin as import_export_admin
 from import_export import mixins as import_export_mixins
 from import_export import resources as import_export_resources
+from import_export.forms import ConfirmImportForm, ImportForm
 
 from ... import models
 from ..forms import ForceImportForm
@@ -53,6 +54,9 @@ class CeleryImportAdminMixin(
     # Import data encoding
     from_encoding = "utf-8"
 
+    import_form_class: type[ImportForm] = ForceImportForm
+    confirm_form_class: type[ConfirmImportForm] = ConfirmImportForm
+
     # Statuses that should be displayed on 'results' page
     results_statuses = models.ImportJob.results_statuses
 
@@ -83,6 +87,16 @@ class CeleryImportAdminMixin(
     _log_actions = import_export_admin.ImportMixin._log_actions
     _create_log_entries = import_export_admin.ImportMixin._create_log_entries
     _create_log_entry = import_export_admin.ImportMixin._create_log_entry
+
+    # Copied form related methods
+    create_import_form = import_export_admin.ImportMixin.create_import_form
+    get_import_form_class = import_export_admin.ImportMixin.get_import_form_class  # noqa
+    get_import_form_kwargs = import_export_admin.ImportMixin.get_import_form_kwargs  # noqa
+    get_import_form_initial = import_export_admin.ImportMixin.get_import_form_initial  # noqa
+    create_confirm_form = import_export_admin.ImportMixin.create_confirm_form
+    get_confirm_form_class = import_export_admin.ImportMixin.get_confirm_form_class  # noqa
+    get_confirm_form_kwargs = import_export_admin.ImportMixin.get_confirm_form_kwargs  # noqa
+    get_confirm_form_initial = import_export_admin.ImportMixin.get_confirm_form_initial  # noqa
 
     def get_import_context_data(self, **kwargs):
         """Get context data for import."""
@@ -149,12 +163,7 @@ class CeleryImportAdminMixin(
         context = self.get_import_context_data()
         resource_classes = self.get_import_resource_classes(request)
 
-        form = ForceImportForm(
-            formats=self.get_import_formats(),
-            resources=resource_classes,
-            data=request.POST or None,
-            files=request.FILES or None,
-        )
+        form = self.create_import_form(request)
         resource_kwargs = self.get_import_resource_kwargs(request)
 
         if request.method == "POST" and form.is_valid():
@@ -272,16 +281,13 @@ class CeleryImportAdminMixin(
             context["title"] = _("Import results")
 
             if job.import_status == models.ImportJob.ImportStatus.PARSED:
-                context["confirm_form"] = Form()
+                context["confirm_form"] = self.create_confirm_form(request)
             else:
                 # display import form
                 resource_classes = self.get_import_resource_classes(request)
                 resource_kwargs = self.get_import_resource_kwargs(request)
 
-                context["import_form"] = ForceImportForm(
-                    formats=self.get_import_formats(),
-                    resources=resource_classes,
-                )
+                context["import_form"] = self.create_import_form(request)
                 context["fields_list"] = self._get_fields_list_for_resources(
                     resource_classes=resource_classes,
                     resource_kwargs=resource_kwargs,
@@ -311,7 +317,6 @@ class CeleryImportAdminMixin(
             f"Current status: {job.import_status}",
         )
 
-
     def create_import_job(
         self,
         request: WSGIRequest,
@@ -329,7 +334,7 @@ class CeleryImportAdminMixin(
                 "IMPORT_EXPORT_SKIP_ADMIN_CONFIRM",
                 False,
             ),
-            force_import=form.cleaned_data["force_import"],
+            force_import=form.cleaned_data.get("force_import", False),
         )
 
     def get_import_job(

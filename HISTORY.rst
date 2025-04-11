@@ -6,6 +6,7 @@ Unreleased
 ----------
 
 * Support Django 5.2
+* Add support for customizing Django Admin forms for import/export
 
 1.5.0 (2025-04-02)
 ------------------

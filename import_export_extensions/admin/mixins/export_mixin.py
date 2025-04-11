@@ -12,8 +12,8 @@ from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from import_export import admin as import_export_admin
-from import_export import forms as import_export_forms
 from import_export import mixins as import_export_mixins
+from import_export.forms import ExportForm
 
 from ... import models
 from . import base_mixin, types
@@ -43,6 +43,8 @@ class CeleryExportAdminMixin(
     # export data encoding
     to_encoding = "utf-8"
 
+    export_form_class: type[ExportForm] = ExportForm
+
     # template used to display ExportForm
     celery_export_template_name = "admin/import_export/export.html"
 
@@ -65,6 +67,7 @@ class CeleryExportAdminMixin(
     has_export_permission = (
         import_export_admin.ExportMixin.has_export_permission
     )
+    get_export_form_class = import_export_admin.ExportMixin.get_export_form_class  # noqa
 
     def get_export_context_data(self, **kwargs):
         """Get context data for export."""
@@ -120,7 +123,8 @@ class CeleryExportAdminMixin(
             raise PermissionDenied
 
         formats = self.get_export_formats()
-        form = import_export_forms.ExportForm(
+        form_type = self.get_export_form_class()
+        form = form_type(
             formats=formats,
             resources=self.get_export_resource_classes(request),
             data=request.POST or None,
