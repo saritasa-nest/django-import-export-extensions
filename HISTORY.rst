@@ -2,8 +2,8 @@
 History
 =======
 
-Unreleased
-----------
+1.6.0 (2025-04-29)
+------------------
 
 * Support Django 5.2
 * Add support for customizing Django Admin forms for import/export
