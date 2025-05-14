@@ -1,3 +1,7 @@
+import csv
+import pathlib
+import uuid
+
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.urls import reverse
@@ -10,7 +14,11 @@ from celery import states
 from pytest_lazy_fixtures import lf
 
 from import_export_extensions.models import ExportJob
-from test_project.fake_app.factories import ArtistExportJobFactory
+from test_project.fake_app.factories import (
+    ArtistExportJobFactory,
+    ArtistFactory,
+)
+from test_project.fake_app.models import Instrument
 
 
 @pytest.mark.usefixtures("existing_artist")
@@ -228,3 +236,43 @@ def test_export_progress_with_failed_celery_task(
     assert (
         artist_export_job.export_status == ExportJob.ExportStatus.EXPORT_ERROR
     )
+
+
+@pytest.mark.django_db(transaction=True)
+def test_export_using_get_params(
+    client: Client,
+    superuser: User,
+):
+    """Test export by using get params."""
+    client.force_login(superuser)
+
+    search_value = uuid.uuid4().hex
+    instrument_title = uuid.uuid4().hex
+    ArtistFactory.create(
+        name=search_value,
+        instrument__title=instrument_title,
+    )
+    ArtistFactory.create()
+    response = client.post(
+        reverse("admin:fake_app_artist_export"),
+        data={
+            "format": 0,
+        },
+        follow=True,
+        QUERY_STRING=f"q={search_value}&instrument__title={instrument_title}",
+    )
+    assert response.status_code == status.HTTP_200_OK
+
+    with pathlib.Path(
+        response.context["export_job"].data_file.path,
+    ).open() as file:
+        content = list(csv.reader(file))
+    # Check that we get only csv header and only one expected line
+    assert len(content) == 2
+
+    record = content[1]
+    assert record[1] == search_value
+    assert (
+        instrument := Instrument.objects.filter(id=int(record[-1])).first()
+    )
+    assert instrument.title == instrument_title

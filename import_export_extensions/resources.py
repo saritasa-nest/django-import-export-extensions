@@ -5,7 +5,7 @@ import typing
 
 from django.conf import settings
 from django.core.exceptions import FieldError, ValidationError
-from django.db.models import QuerySet
+from django.db.models import Q, QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
@@ -45,6 +45,10 @@ class CeleryResourceMixin:
     ):
         """Remember init kwargs."""
         self._filter_kwargs = filter_kwargs
+        # _admin_filter differences from _filter_kwargs
+        # because it isn't used in filterset_class
+        # and it always comes from admin panel export page
+        self._admin_filters: dict[str, str] = kwargs.pop("admin_filters", {})
         self._ordering = ordering
         self._created_by = created_by
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
@@ -75,7 +79,12 @@ class CeleryResourceMixin:
 
     def get_queryset(self):
         """Filter export queryset via filterset class."""
-        queryset = self.get_model_queryset()
+        queryset = self.get_model_queryset().filter(
+            self._get_admin_search_filter(
+                self._admin_filters.pop("search", {}),
+            ),
+            **self._admin_filters,
+        )
         try:
             queryset = queryset.order_by(*(self._ordering or ()))
         except FieldError as error:
@@ -93,6 +102,13 @@ class CeleryResourceMixin:
         if not filter_instance.is_valid():
             raise translate_validation(filter_instance.errors)
         return filter_instance.filter_queryset(queryset=queryset)
+
+    def _get_admin_search_filter(self, search_kwargs: dict[str, str]) -> Q:
+        """Get admin search filter from search kwargs."""
+        q_filter = Q()
+        for key, value in search_kwargs.items():
+            q_filter |= Q(**{key: value})
+        return q_filter
 
     @classproperty
     def class_path(self) -> str:
