@@ -2,6 +2,11 @@
 History
 =======
 
+Unreleased
+------------------
+
+* Add support using admin page filters for export
+
 1.6.0 (2025-04-29)
 ------------------
 
