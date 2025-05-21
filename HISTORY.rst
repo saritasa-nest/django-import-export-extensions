@@ -6,6 +6,8 @@ Unreleased
 ------------------
 
 * Add support using admin page filters for export
+* Minor refactor of CeleryResourceMixin for easier overriding of export/import methods
+* Add ability to pass additional args to `BaseFormat.export_data` on export
 
 1.6.0 (2025-04-29)
 ------------------

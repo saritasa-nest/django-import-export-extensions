@@ -48,7 +48,10 @@ class CeleryResourceMixin:
         # _admin_filter differences from _filter_kwargs
         # because it isn't used in filterset_class
         # and it always comes from admin panel export page
-        self._admin_filters: dict[str, str] = kwargs.pop("admin_filters", {})
+        self._admin_filters: dict[str, typing.Any] = kwargs.pop(
+            "admin_filters",
+            {},
+        )
         self._ordering = ordering
         self._created_by = created_by
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
@@ -77,16 +80,35 @@ class CeleryResourceMixin:
         """
         return cls._meta.model.objects.all()
 
-    def get_queryset(self):
-        """Filter export queryset via filterset class."""
-        queryset = self.get_model_queryset().filter(
+    def get_queryset(self) -> QuerySet:
+        """Filter export queryset via filterset class and order it."""
+        return self.filter_queryset(
+            self.order_queryset(
+                self.filter_queryset_via_admin(
+                    self.get_model_queryset(),
+                ),
+            ),
+        )
+
+    def filter_queryset_via_admin(
+        self,
+        queryset: QuerySet,
+    ) -> QuerySet:
+        """Filter queryset via admin filters."""
+        return queryset.filter(
             self._get_admin_search_filter(
                 self._admin_filters.pop("search", {}),
             ),
             **self._admin_filters,
         )
+
+    def order_queryset(
+        self,
+        queryset: QuerySet,
+    ) -> QuerySet:
+        """Order queryset for export."""
         try:
-            queryset = queryset.order_by(*(self._ordering or ()))
+            return queryset.order_by(*(self._ordering or ()))
         except FieldError as error:
             raise ValidationError(
                 {
@@ -94,6 +116,12 @@ class CeleryResourceMixin:
                     "ordering": str(error).split("Choices are:")[0].strip(),
                 },
             ) from error
+
+    def filter_queryset(
+        self,
+        queryset: QuerySet,
+    ) -> QuerySet:
+        """Filter queryset for export."""
         if not self._filter_kwargs:
             return queryset
         filter_instance = self.filterset_class(
@@ -143,7 +171,7 @@ class CeleryResourceMixin:
         rollback_on_validation_errors: bool = False,
         force_import: bool = False,
         **kwargs,
-    ):
+    ) -> typing.Any:
         """Init task state before importing.
 
         If `force_import=True`, then rows with errors will be skipped.
@@ -157,6 +185,29 @@ class CeleryResourceMixin:
             ),
             queryset=dataset,
         )
+        return self._import_data(
+            dataset=dataset,
+            dry_run=dry_run,
+            raise_errors=raise_errors,
+            use_transactions=use_transactions,
+            collect_failed_rows=collect_failed_rows,
+            rollback_on_validation_errors=rollback_on_validation_errors,
+            force_import=force_import,
+            **kwargs,
+        )
+
+    def _import_data(
+        self,
+        dataset: tablib.Dataset,
+        dry_run: bool = False,
+        raise_errors: bool = False,
+        use_transactions: bool | None = None,
+        collect_failed_rows: bool = False,
+        rollback_on_validation_errors: bool = False,
+        force_import: bool = False,
+        **kwargs,
+    ) -> typing.Any:
+        """Override if you need custom import logic."""
         return super().import_data(  # type: ignore
             dataset=dataset,
             dry_run=dry_run,
@@ -177,14 +228,14 @@ class CeleryResourceMixin:
         raise_errors=False,
         force_import=False,
         **kwargs,
-    ):
+    ) -> RowResult:
         """Update task status as we import rows.
 
         If `force_import=True`, then row errors will be stored in
         `field_skipped_errors` or `non_field_skipped_errors`.
 
         """
-        imported_row: RowResult = super().import_row(
+        imported_row = self._import_row(
             row=row,
             instance_loader=instance_loader,
             using_transactions=using_transactions,
@@ -202,6 +253,25 @@ class CeleryResourceMixin:
         if force_import and imported_row.has_error_import_type:
             imported_row = self._skip_row_with_errors(imported_row, row)
         return imported_row
+
+    def _import_row(
+        self,
+        row,
+        instance_loader,
+        using_transactions=True,
+        dry_run=False,
+        raise_errors=False,
+        **kwargs,
+    ) -> RowResult:
+        """Override if you need custom import row logic."""
+        return super().import_row(  # type: ignore
+            row=row,
+            instance_loader=instance_loader,
+            using_transactions=using_transactions,
+            dry_run=dry_run,
+            raise_errors=raise_errors,
+            **kwargs,
+        )
 
     def _skip_row_with_errors(
         self,
@@ -258,6 +328,14 @@ class CeleryResourceMixin:
             state=TaskState.EXPORTING.name,
             queryset=queryset,
         )
+        return self._export(queryset=queryset, **kwargs)
+
+    def _export(
+        self,
+        queryset: QuerySet,
+        **kwargs,
+    ) -> tablib.Dataset:
+        """Override if you need custom export logic."""
         return super().export(  # type: ignore
             queryset=queryset,
             **kwargs,
@@ -268,11 +346,27 @@ class CeleryResourceMixin:
         obj,
         selected_fields: list[fields.Field] | None = None,
         **kwargs,
-    ):
+    ) -> typing.Any:
         """Update task status as we export rows."""
-        resource = super().export_resource(obj, selected_fields, **kwargs)  # type: ignore
+        resource = self._export_resource(obj, selected_fields, **kwargs)
         self.update_task_state(state=TaskState.EXPORTING.name)
         return resource
+
+    def _export_resource(
+        self,
+        obj,
+        selected_fields: list[fields.Field] | None = None,
+        **kwargs,
+    ) -> typing.Any:
+        """Override if you need custom export resource logic."""
+        return super().export_resource(obj, selected_fields, **kwargs)  # type: ignore
+
+    def get_export_data_format_kwargs(
+        self,
+        file_format: base_formats.Format,
+    ) -> dict[str, typing.Any]:
+        """Get additional params for export format."""
+        return {}
 
     def initialize_task_state(
         self,
