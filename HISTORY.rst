@@ -2,7 +2,7 @@
 History
 =======
 
-Unreleased
+1.7.0 (2025-05-22)
 ------------------
 
 * Add support using admin page filters for export

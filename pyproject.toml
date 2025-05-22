@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-import-export-extensions"
-version = "1.6.0"
+version = "1.7.0"
 description = "Extend functionality of `django-import-export`"
 license = "MIT"
 authors = ["Saritasa <pypi@saritasa.com>"]
