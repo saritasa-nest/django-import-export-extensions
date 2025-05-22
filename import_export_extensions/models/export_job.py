@@ -237,14 +237,19 @@ class ExportJob(BaseJob):
         self.export_status = self.ExportStatus.CANCELLED
         self.save(update_fields=["export_status"])
 
-    def _export_data_inner(self):
+    def _export_data_inner(self) -> None:
         """Run export process with saving to file."""
         self.result = self.resource.export()
         self.save(update_fields=["result"])
 
         # `export_data` may be bytes (base formats such as xlsx, csv, etc.) or
         # file object (formats inherited from `BaseZipExport`)
-        export_data = self.file_format.export_data(dataset=self.result)
+        export_data = self.file_format.export_data(
+            dataset=self.result,
+            **self.resource.get_export_data_format_kwargs(
+                file_format=self.file_format,
+            ),
+        )
         # create file if `export_data` is not file
         if not hasattr(export_data, "read"):
             export_data = django_files.base.ContentFile(
