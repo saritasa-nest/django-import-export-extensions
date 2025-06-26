@@ -41,6 +41,7 @@ class CeleryResourceMixin:
         filter_kwargs: dict[str, typing.Any] | None = None,
         ordering: collections.abc.Sequence[str] | None = None,
         created_by: typing.Any | None = None,
+        update_celery_task_state: bool | None = None,
         **kwargs,
     ):
         """Remember init kwargs."""
@@ -54,6 +55,11 @@ class CeleryResourceMixin:
         )
         self._ordering = ordering
         self._created_by = created_by
+        self._update_celery_task_state = update_celery_task_state or getattr(
+            self._meta,
+            "update_celery_task_state",
+            True,
+        )
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
         self.total_objects_count = 0
         self.current_object_number = 0
@@ -379,6 +385,8 @@ class CeleryResourceMixin:
         generate state for the task.
 
         """
+        if self._update_celery_task_state:
+            return
         if not current_task or current_task.request.called_directly:
             return
 
@@ -414,6 +422,8 @@ class CeleryResourceMixin:
         of task status updates.
 
         """
+        if not self._update_celery_task_state:
+            return  # pragma: no cover
         if not current_task or current_task.request.called_directly:
             return
 
