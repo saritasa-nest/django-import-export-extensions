@@ -128,10 +128,10 @@ class CeleryResourceMixin:
         queryset: QuerySet,
     ) -> QuerySet:
         """Filter queryset for export."""
-        if not self._filter_kwargs:
+        if not hasattr(self, "filterset_class"):
             return queryset
         filter_instance = self.filterset_class(
-            data=self._filter_kwargs,
+            data=self._filter_kwargs or {},
         )
         if not filter_instance.is_valid():
             raise translate_validation(filter_instance.errors)
