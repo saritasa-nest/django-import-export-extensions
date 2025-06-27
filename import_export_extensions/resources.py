@@ -385,8 +385,8 @@ class CeleryResourceMixin:
         generate state for the task.
 
         """
-        if self._update_celery_task_state:
-            return
+        if not self._update_celery_task_state:
+            return  # pragma: no cover
         if not current_task or current_task.request.called_directly:
             return
 
