@@ -41,6 +41,7 @@ class CeleryResourceMixin:
         filter_kwargs: dict[str, typing.Any] | None = None,
         ordering: collections.abc.Sequence[str] | None = None,
         created_by: typing.Any | None = None,
+        update_celery_task_state: bool | None = None,
         **kwargs,
     ):
         """Remember init kwargs."""
@@ -54,6 +55,11 @@ class CeleryResourceMixin:
         )
         self._ordering = ordering
         self._created_by = created_by
+        self._update_celery_task_state = update_celery_task_state or getattr(
+            self._meta,
+            "update_celery_task_state",
+            True,
+        )
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
         self.total_objects_count = 0
         self.current_object_number = 0
@@ -122,10 +128,10 @@ class CeleryResourceMixin:
         queryset: QuerySet,
     ) -> QuerySet:
         """Filter queryset for export."""
-        if not self._filter_kwargs:
+        if not hasattr(self, "filterset_class"):
             return queryset
         filter_instance = self.filterset_class(
-            data=self._filter_kwargs,
+            data=self._filter_kwargs or {},
         )
         if not filter_instance.is_valid():
             raise translate_validation(filter_instance.errors)
@@ -379,6 +385,8 @@ class CeleryResourceMixin:
         generate state for the task.
 
         """
+        if not self._update_celery_task_state:
+            return  # pragma: no cover
         if not current_task or current_task.request.called_directly:
             return
 
@@ -414,6 +422,8 @@ class CeleryResourceMixin:
         of task status updates.
 
         """
+        if not self._update_celery_task_state:
+            return  # pragma: no cover
         if not current_task or current_task.request.called_directly:
             return
 
