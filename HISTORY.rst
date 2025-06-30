@@ -2,6 +2,12 @@
 History
 =======
 
+Unreleased
+------------------
+
+* Add ability to disable celery task updates for resource
+* Make that resources will always filter queryset on export if filterset_class is present
+
 1.7.0 (2025-05-22)
 ------------------
 
