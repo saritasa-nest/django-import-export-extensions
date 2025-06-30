@@ -2,7 +2,7 @@
 History
 =======
 
-Unreleased
+1.8.0 (2025-06-30)
 ------------------
 
 * Add ability to disable celery task updates for resource
