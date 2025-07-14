@@ -58,7 +58,9 @@ def test_export_using_admin_model(client: Client, superuser: User):
 
     assert ExportJob.objects.exists()
     export_job = ExportJob.objects.first()
-    assert export_job.export_status == ExportJob.ExportStatus.EXPORTED
+    assert export_job.export_status == ExportJob.ExportStatus.EXPORTED, (
+        export_job.traceback
+    )
 
 
 @pytest.mark.parametrize(

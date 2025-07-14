@@ -10,7 +10,9 @@ def test_export_data_exported(artist_export_job: ExportJob):
     artist_export_job.export_data()
 
     # ensure status updated
-    assert artist_export_job.export_status == ExportJob.ExportStatus.EXPORTED
+    assert (
+        artist_export_job.export_status == ExportJob.ExportStatus.EXPORTED
+    ), artist_export_job.traceback
 
     # ensure file exists
     assert artist_export_job.data_file

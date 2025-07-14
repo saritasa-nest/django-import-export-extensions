@@ -2,6 +2,11 @@
 History
 =======
 
+unreleased
+------------------
+
+* Improve filterset class initialization during fetching export queryset
+
 1.8.0 (2025-06-30)
 ------------------
 
