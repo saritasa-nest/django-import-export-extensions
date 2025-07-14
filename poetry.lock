@@ -29,14 +29,14 @@ vine = ">=5.0.0,<6.0.0"
 
 [[package]]
 name = "asgiref"
-version = "3.9.0"
+version = "3.9.1"
 description = "ASGI specs, helper code, and adapters"
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "dev"]
 files = [
-    {file = "asgiref-3.9.0-py3-none-any.whl", hash = "sha256:06a41250a0114d2b6f6a2cb3ab962147d355b53d1de15eebc34a9d04a7b79981"},
-    {file = "asgiref-3.9.0.tar.gz", hash = "sha256:3dd2556d0f08c4fab8a010d9ab05ef8c34565f6bf32381d17505f7ca5b273767"},
+    {file = "asgiref-3.9.1-py3-none-any.whl", hash = "sha256:f3bba7092a48005b5f5bacd747d36ee4a5a61f4a269a6df590b43144355ebd2c"},
+    {file = "asgiref-3.9.1.tar.gz", hash = "sha256:a5ab6582236218e5ef1648f242fd9f10626cfd4de8dc377db215d5d5098e3142"},
 ]
 
 [package.dependencies]
@@ -206,14 +206,14 @@ zstd = ["zstandard (==0.23.0)"]
 
 [[package]]
 name = "certifi"
-version = "2025.6.15"
+version = "2025.7.9"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.7"
 groups = ["main", "docs"]
 files = [
-    {file = "certifi-2025.6.15-py3-none-any.whl", hash = "sha256:2e0c7ce7cb5d8f8634ca55d2ba7e6ec2689a2fd6537d8dec1296a477a4910057"},
-    {file = "certifi-2025.6.15.tar.gz", hash = "sha256:d747aa5a8b9bbbb1bb8c22bb13e22bd1f18e9796defa16bab421f7f7a317323b"},
+    {file = "certifi-2025.7.9-py3-none-any.whl", hash = "sha256:d842783a14f8fdd646895ac26f719a061408834473cfc10203f6a575beb15d39"},
+    {file = "certifi-2025.7.9.tar.gz", hash = "sha256:c1d2ec05395148ee10cf672ffc28cd37ea0ab0d99f9cc74c43e588cbd111b079"},
 ]
 
 [[package]]
@@ -1614,14 +1614,14 @@ testing = ["Django", "django-configurations (>=2.0)"]
 
 [[package]]
 name = "pytest-lazy-fixtures"
-version = "1.1.4"
+version = "1.2.0"
 description = "Allows you to use fixtures in @pytest.mark.parametrize."
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = ">=3.8"
 groups = ["test"]
 files = [
-    {file = "pytest_lazy_fixtures-1.1.4-py3-none-any.whl", hash = "sha256:1504b6e267657d70d34829fce2580cedd4d3f8558491d6c03fab9b525ec77f2b"},
-    {file = "pytest_lazy_fixtures-1.1.4.tar.gz", hash = "sha256:c494b52d798890033d64b28687a4d52807c8b0f606d56316e139df0cbe116c57"},
+    {file = "pytest_lazy_fixtures-1.2.0-py3-none-any.whl", hash = "sha256:1ec9822de004ad01914f51f85668eaa4a7125bef4b5887459b065630407966f4"},
+    {file = "pytest_lazy_fixtures-1.2.0.tar.gz", hash = "sha256:2dd3327c8131049f65943f369463112d2ffcbebf663b323b6e6c4dae9a035fa4"},
 ]
 
 [package.dependencies]
@@ -2391,6 +2391,7 @@ files = [
     {file = "typing_extensions-4.14.1-py3-none-any.whl", hash = "sha256:d1e1e3b58374dc93031d6eda2420a48ea44a36c2b4766a4fdeb3710755731d76"},
     {file = "typing_extensions-4.14.1.tar.gz", hash = "sha256:38b39f4aeeab64884ce9f74c94263ef78f3c22467c8724005483154c26648d36"},
 ]
+markers = {main = "python_version < \"3.13\"", dev = "python_version < \"3.12\"", local = "python_version < \"3.11\"", test = "python_version < \"3.11\""}
 
 [[package]]
 name = "tzdata"
