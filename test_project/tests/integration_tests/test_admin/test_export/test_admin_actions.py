@@ -71,7 +71,7 @@ def test_cancel_export_admin_action_with_incorrect_export_job_status(
     job.refresh_from_db()
 
     assert response.status_code == status.HTTP_200_OK
-    assert job.export_status == ExportJob.ExportStatus.EXPORTED
+    assert job.export_status == ExportJob.ExportStatus.EXPORTED, job.traceback
     assert (
         expected_error_message
         in response.context["messages"]._loaded_data[0].message

@@ -1,4 +1,5 @@
 import collections
+import dataclasses
 import enum
 import functools
 import typing
@@ -10,14 +11,21 @@ from django.utils import timezone
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
 
+import celery
 import tablib
-from celery import current_task
 from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
 from import_export import fields, resources
 from import_export.formats import base_formats
 
 from .results import Error, Result, RowResult
+
+
+@dataclasses.dataclass
+class ExportRequest:
+    """Mock for filterset class to be able to provide user."""
+
+    user: typing.Any
 
 
 class TaskState(enum.Enum):
@@ -123,16 +131,29 @@ class CeleryResourceMixin:
                 },
             ) from error
 
+    def _prepare_filterset(
+        self,
+        queryset: QuerySet,
+    ) -> filters.FilterSet | None:
+        """Prepare filterset instance."""
+        if not hasattr(self, "filterset_class"):
+            return None
+        return self.filterset_class(
+            data=self._filter_kwargs or {},
+            queryset=queryset,
+            request=ExportRequest(user=self._created_by),
+        )
+
     def filter_queryset(
         self,
         queryset: QuerySet,
     ) -> QuerySet:
         """Filter queryset for export."""
-        if not hasattr(self, "filterset_class"):
-            return queryset
-        filter_instance = self.filterset_class(
-            data=self._filter_kwargs or {},
+        filter_instance = self._prepare_filterset(
+            queryset=queryset,
         )
+        if not filter_instance:
+            return queryset
         if not filter_instance.is_valid():
             raise translate_validation(filter_instance.errors)
         return filter_instance.filter_queryset(queryset=queryset)
@@ -374,6 +395,13 @@ class CeleryResourceMixin:
         """Get additional params for export format."""
         return {}
 
+    @property
+    def _is_current_task_available_and_not_called_directly(self) -> bool:
+        return (
+            celery.current_task
+            and not celery.current_task.request.called_directly
+        )
+
     def initialize_task_state(
         self,
         state: str,
@@ -387,7 +415,7 @@ class CeleryResourceMixin:
         """
         if not self._update_celery_task_state:
             return  # pragma: no cover
-        if not current_task or current_task.request.called_directly:
+        if not self._is_current_task_available_and_not_called_directly:
             return
 
         self.total_objects_count = (
@@ -424,7 +452,7 @@ class CeleryResourceMixin:
         """
         if not self._update_celery_task_state:
             return  # pragma: no cover
-        if not current_task or current_task.request.called_directly:
+        if not self._is_current_task_available_and_not_called_directly:
             return
 
         self.current_object_number += 1
@@ -445,7 +473,7 @@ class CeleryResourceMixin:
 
     def _update_current_task_state(self, state: str, meta: dict[str, int]):
         """Update state of task where resource is executed."""
-        current_task.update_state(
+        celery.current_task.update_state(
             state=state,
             meta=meta,
         )
