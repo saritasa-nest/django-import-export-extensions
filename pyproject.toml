@@ -126,7 +126,7 @@ psycopg2-binary = "^2.9.9"
 sphinx = "<9"
 # Theme for documentation
 # https://github.com/pradyunsg/furo
-furo = "^2024.8.6"
+furo = ">=2024.8.6,<2026.0.0"
 
 [tool.poetry.group.local.dependencies]
 # A Python library for parsing and creating TOML
