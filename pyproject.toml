@@ -75,7 +75,7 @@ ipython = "^8.27.0"
 # The Django Debug Toolbar is a configurable set of panels that display various debug information
 # about the current request/response and when clicked, display more details about the panel's content.
 # https://django-debug-toolbar.readthedocs.io/en/latest/
-django-debug-toolbar = ">=4.4.6,<6.0.0"
+django-debug-toolbar = ">=4.4.6,<7.0.0"
 # Decouple helps configure settings using env variables and .env files
 # https://github.com/HBNetwork/python-decouple
 python-decouple = "^3.8"
