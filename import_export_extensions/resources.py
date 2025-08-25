@@ -96,8 +96,8 @@ class CeleryResourceMixin:
 
     def get_queryset(self) -> QuerySet:
         """Filter export queryset via filterset class and order it."""
-        return self.filter_queryset(
-            self.order_queryset(
+        return self.order_queryset(
+            self.filter_queryset(
                 self.filter_queryset_via_admin(
                     self.get_model_queryset(),
                 ),
