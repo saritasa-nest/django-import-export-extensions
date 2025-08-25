@@ -7,6 +7,7 @@ unreleased
 
 * Improve filterset class initialization during fetching export queryset
 * Make resource first filter, then order queryset
+* Add ability to set dataset title
 
 1.8.0 (2025-06-30)
 ------------------

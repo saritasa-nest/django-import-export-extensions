@@ -363,10 +363,12 @@ class CeleryResourceMixin:
         **kwargs,
     ) -> tablib.Dataset:
         """Override if you need custom export logic."""
-        return super().export(  # type: ignore
+        dataset: tablib.Dataset = super().export(  # type: ignore
             queryset=queryset,
             **kwargs,
         )
+        dataset.title = self.generate_dataset_title()
+        return dataset
 
     def export_resource(
         self,
@@ -481,6 +483,10 @@ class CeleryResourceMixin:
     def generate_export_filename(self, file_format: base_formats.Format):
         """Generate export filename."""
         return self._generate_export_filename_from_model(file_format)
+
+    def generate_dataset_title(self) -> str:
+        """Generate dataset title."""
+        return str(self._meta.model._meta.verbose_name_plural)
 
     def _generate_export_filename_from_model(
         self,
