@@ -96,13 +96,25 @@ class CeleryResourceMixin:
 
     def get_queryset(self) -> QuerySet:
         """Filter export queryset via filterset class and order it."""
-        return self.order_queryset(
-            self.filter_queryset(
-                self.filter_queryset_via_admin(
-                    self.get_model_queryset(),
-                ),
-            ),
-        )
+        queryset = self.get_model_queryset()
+        for operation in self.get_queryset_operations():
+            queryset = operation(queryset)
+        return queryset
+
+    def get_queryset_operations(
+        self,
+    ) -> list[
+        typing.Callable[
+            [QuerySet],
+            QuerySet,
+        ],
+    ]:
+        """Get operation which will be applied to queryset."""
+        return [
+            self.filter_queryset_via_admin,
+            self.order_queryset,
+            self.filter_queryset,
+        ]
 
     def filter_queryset_via_admin(
         self,
