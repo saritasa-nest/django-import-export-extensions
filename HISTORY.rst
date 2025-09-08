@@ -6,6 +6,8 @@ unreleased
 ------------------
 
 * Improve filterset class initialization during fetching export queryset
+* Add ability to customize the order of operation for export queryset
+* Add ability to set dataset title
 
 1.8.0 (2025-06-30)
 ------------------
