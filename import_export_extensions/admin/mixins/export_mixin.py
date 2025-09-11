@@ -12,8 +12,8 @@ from django.urls import re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from import_export import admin as import_export_admin
+from import_export import forms as import_export_forms
 from import_export import mixins as import_export_mixins
-from import_export.forms import ExportForm, SelectableFieldsExportForm
 
 from ... import models
 from . import base_mixin, types
@@ -43,7 +43,9 @@ class CeleryExportAdminMixin(
     # export data encoding
     to_encoding = "utf-8"
 
-    export_form_class: type[ExportForm] = SelectableFieldsExportForm
+    export_form_class: type[import_export_forms.ExportForm] = (
+        import_export_forms.SelectableFieldsExportForm
+    )
 
     # template used to display ExportForm
     celery_export_template_name = "admin/import_export/export.html"

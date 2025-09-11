@@ -6,7 +6,7 @@ unreleased
 ------------------
 
 * Improve filterset class initialization during fetching export queryset
-* Added a list of fields on the export confirmation page in the admin panel
+* Added a list of fields on the export confirmation page in the admin panel (https://github.com/saritasa-nest/django-import-export-extensions/issues/121)
 
 1.8.0 (2025-06-30)
 ------------------
