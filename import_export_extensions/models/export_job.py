@@ -239,7 +239,7 @@ class ExportJob(BaseJob):
 
     def _export_data_inner(self) -> None:
         """Run export process with saving to file."""
-        self.result = self.resource.export()
+        self.result = self.resource.export(**self.resource_kwargs)
         self.save(update_fields=["result"])
 
         # `export_data` may be bytes (base formats such as xlsx, csv, etc.) or

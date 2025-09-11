@@ -45,6 +45,10 @@ def test_export_using_admin_model(client: Client, superuser: User):
         path=reverse("admin:fake_app_artist_export"),
         data={
             "format": 0,
+            "artistresourcewithm2m_id": "on",
+            "artistresourcewithm2m_name": "on",
+            "artistresourcewithm2m_bands": "on",
+            "artistresourcewithm2m_instrument": "on",
         },
     )
     assert start_export_response.status_code == status.HTTP_302_FOUND
@@ -259,6 +263,10 @@ def test_export_using_get_params(
         reverse("admin:fake_app_artist_export"),
         data={
             "format": 0,
+            "artistresourcewithm2m_id": "on",
+            "artistresourcewithm2m_name": "on",
+            "artistresourcewithm2m_bands": "on",
+            "artistresourcewithm2m_instrument": "on",
         },
         follow=True,
         QUERY_STRING=f"q={search_value}&instrument__title={instrument_title}",
