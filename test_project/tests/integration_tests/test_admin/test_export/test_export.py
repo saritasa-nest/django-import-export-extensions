@@ -45,6 +45,10 @@ def test_export_using_admin_model(client: Client, superuser: User):
         path=reverse("admin:fake_app_artist_export"),
         data={
             "format": 0,
+            "artistresourcewithm2m_id": "on",
+            "artistresourcewithm2m_name": "on",
+            "artistresourcewithm2m_bands": "on",
+            "artistresourcewithm2m_instrument": "on",
         },
     )
     assert start_export_response.status_code == status.HTTP_302_FOUND
@@ -61,6 +65,46 @@ def test_export_using_admin_model(client: Client, superuser: User):
     assert export_job.export_status == ExportJob.ExportStatus.EXPORTED, (
         export_job.traceback
     )
+
+
+@pytest.mark.usefixtures("existing_artist")
+@pytest.mark.django_db(transaction=True)
+def test_export_using_admin_with_select_fields(
+    client: Client,
+    superuser: User,
+):
+    """Test that only selected fields are exported."""
+    client.force_login(superuser)
+
+    # Make get request to admin export page
+    export_get_response = client.get(
+        path=reverse("admin:fake_app_artist_export"),
+    )
+    assert export_get_response.status_code == status.HTTP_200_OK
+
+    response = client.post(
+        path=reverse("admin:fake_app_artist_export"),
+        follow=True,
+        data={
+            "format": 0,
+            "artistresourcewithm2m_id": "on",
+            "artistresourcewithm2m_name": "on",
+            "artistresourcewithm2m_bands": "on",
+        },
+    )
+    assert response.status_code == status.HTTP_200_OK
+
+    with pathlib.Path(
+        response.context["export_job"].data_file.path,
+    ).open() as file:
+        content = list(csv.reader(file))
+
+    expected_fields_count = 3
+    content_headers = content[0]
+    exported_artist = content[1]
+    assert len(content_headers) == expected_fields_count
+    assert len(exported_artist) == expected_fields_count
+    assert "instrument" not in content_headers
 
 
 @pytest.mark.parametrize(
@@ -259,6 +303,10 @@ def test_export_using_get_params(
         reverse("admin:fake_app_artist_export"),
         data={
             "format": 0,
+            "artistresourcewithm2m_id": "on",
+            "artistresourcewithm2m_name": "on",
+            "artistresourcewithm2m_bands": "on",
+            "artistresourcewithm2m_instrument": "on",
         },
         follow=True,
         QUERY_STRING=f"q={search_value}&instrument__title={instrument_title}",
