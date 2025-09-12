@@ -68,6 +68,7 @@ class CeleryExportAdminMixin(
         import_export_admin.ExportMixin.has_export_permission
     )
     get_export_form_class = import_export_admin.ExportMixin.get_export_form_class  # noqa
+    is_skip_export_form_enabled = import_export_admin.ExportMixin.is_skip_export_form_enabled  # noqa
 
     def get_export_context_data(self, **kwargs):
         """Get context data for export."""
@@ -123,17 +124,30 @@ class CeleryExportAdminMixin(
             raise PermissionDenied
 
         formats = self.get_export_formats()
+        resource_kwargs = self.get_export_resource_kwargs(
+            *args,
+            **kwargs,
+            request=request,
+        )
+        if self.is_skip_export_form_enabled():
+            job = self.create_export_job(
+                request=request,
+                resource_class=self.get_export_resource_classes(request)[0],
+                resource_kwargs=resource_kwargs,
+                file_format=formats[0],
+            )
+            return self._redirect_to_export_status_page(
+                request=request,
+                job=job,
+            )
+
         form_type = self.get_export_form_class()
         form = form_type(
             formats=formats,
             resources=self.get_export_resource_classes(request),
             data=request.POST or None,
         )
-        resource_kwargs = self.get_export_resource_kwargs(
-            *args,
-            **kwargs,
-            request=request,
-        )
+
         if request.method == "POST" and form.is_valid():
             file_format = formats[int(form.cleaned_data["format"])]
             # create ExportJob and redirect to page with it's status
