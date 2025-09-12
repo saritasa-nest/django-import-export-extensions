@@ -9,6 +9,10 @@ unreleased
 * Add ability to customize the order of operation for export queryset
 * Add ability to set dataset title
 * Add field selection to the export confirmation page in the admin panel
+* Add support to skip export confirmation page in admin (https://github.com/saritasa-nest/django-import-export-extensions/issues/122):
+
+  * with `IMPORT_EXPORT_SKIP_ADMIN_EXPORT_UI=True` setting from original package
+  * with `skip_export_form` flag at the admin model level
 
 1.8.0 (2025-06-30)
 ------------------
