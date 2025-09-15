@@ -103,7 +103,7 @@ pytest-mock = "^3.14.0"
 pytest-lazy-fixtures = "^1.1.1"
 # This plugin produces coverage reports.
 # https://pytest-cov.readthedocs.io/en/latest/index.html
-pytest-cov = "^6.0.0"
+pytest-cov = ">=6,<8"
 # To prettify pytest output
 # https://github.com/Teemu/pytest-sugar
 pytest-sugar = "^1.0.0"
