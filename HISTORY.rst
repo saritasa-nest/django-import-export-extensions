@@ -2,7 +2,7 @@
 History
 =======
 
-unreleased
+1.9.0 (2025-09-16)
 ------------------
 
 * Improve filterset class initialization during fetching export queryset
