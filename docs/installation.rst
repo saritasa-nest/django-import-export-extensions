@@ -111,7 +111,7 @@ as the storage is not used in the implementation of ``CeleryImportAdminMixin``.
 Picking storage
 ~~~~~~~~~~~~~~~
 
-To use different storage for import/export jobs you can use `STORAGES <https://docs.djangoproject.com/en/dev/ref/settings/#storages>`.
+To use different storage for import/export jobs you can use `STORAGES <https://docs.djangoproject.com/en/dev/ref/settings/#storages>`_.
 from django.
 
 .. code-block:: python
