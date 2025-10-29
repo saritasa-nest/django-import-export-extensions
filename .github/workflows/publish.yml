@@ -33,7 +33,7 @@ jobs:
         with:
           path: .venv
           key: ${{ runner.os }}-publish-${{ hashFiles('**/poetry.lock') }}
-      - name: Install only prod dependencies
+      - name: Install only main dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           poetry install --only main --no-interaction --no-root
