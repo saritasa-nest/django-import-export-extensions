@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-import-export-extensions"
-version = "1.9.0"
+version = "1.9.1"
 description = "Extend functionality of `django-import-export`"
 license = "MIT"
 authors = ["Saritasa <pypi@saritasa.com>"]
@@ -39,6 +39,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: 3 :: Only",
 ]
 packages = [{ include = "import_export_extensions" }]
@@ -413,12 +414,12 @@ python_files = [
   "*_tests.py",
 ]
 addopts = [
-    "--ff",
-    "--capture=no",
-    "--verbose",
-    "--cov-config=pyproject.toml",
-    "--cov-report=lcov:coverage.lcov",
-    "--cov-report=term-missing:skip-covered",
+  "--ff",
+  "--capture=no",
+  "--verbose",
+  "--cov-config=pyproject.toml",
+  "--cov-report=lcov:coverage.lcov",
+  "--cov-report=term-missing:skip-covered",
 ]
 
 [tool.coverage.run]
