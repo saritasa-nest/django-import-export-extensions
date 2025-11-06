@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-import-export-extensions"
-version = "1.9.1"
+version = "1.9.2"
 description = "Extend functionality of `django-import-export`"
 license = "MIT"
 authors = ["Saritasa <pypi@saritasa.com>"]
@@ -53,7 +53,7 @@ django-import-export = { extras = ["xls", "xlsx"], version = ">=4.2" }
 djangorestframework = "^3.15.2"
 # OpenApi auto specs generator
 # https://drf-spectacular.readthedocs.io/en/latest/
-drf-spectacular = ">=0.27.1,<0.30.0"
+drf-spectacular = "<0.30.0"
 # Filter querysets dynamically
 # https://django-filter.readthedocs.io/en/stable/
 django-filter = ">=24.3,<26.0"
