@@ -1,4 +1,4 @@
-# Django-import-export-extensions
+# django-import-export-extensions
 
 [![PyPI - Python Versions](https://img.shields.io/pypi/pyversions/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)
 [![PyPI - Django Versions](https://img.shields.io/pypi/frameworkversions/django/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)
@@ -12,10 +12,10 @@
 
 ## Links
 
-- [Documentation](<https://django-import-export-extensions.readthedocs.io>)
-- [GitHub](<https://github.com/saritasa-nest/django-import-export-extensions>)
-- [PyPI](<https://pypi.org/project/django-import-export-extensions>)
-- [Contibuting](<https://django-import-export-extensions.readthedocs.io/en/stable/contributing.html>)
+- [Documentation](https://django-import-export-extensions.readthedocs.io)
+- [GitHub](https://github.com/saritasa-nest/django-import-export-extensions)
+- [PyPI](https://pypi.org/project/django-import-export-extensions)
+- [Contributing](https://django-import-export-extensions.readthedocs.io/en/stable/contributing.html)
 - [History](https://django-import-export-extensions.readthedocs.io/en/stable/history.html)
 
 ## Description
@@ -110,8 +110,7 @@ class BookImportViewSet(views.ImportJobViewSet):
     resource_class = resources.BookResource
 ```
 
-Don't forget to [configure
-Celery](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html)
+Don't forget to [configure Celery](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html)
 if you want to run import/export in background
 
 ## License
