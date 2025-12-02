@@ -61,10 +61,6 @@ Then you also need to change admin mixins to use celery import/export via Django
             resources.BookResource,
         )
 
-
-If you only need import (or export) functionality, you can use ``CeleryImportAdminMixin``
-(``CeleryExportAdminMixin``) instead of ``CeleryImportExportMixin``.
-
 If you only need import (or export) functionality, you can use the ``CeleryImportAdminMixin``
 (or ``CeleryExportAdminMixin``) instead of the ``CeleryImportExportMixin``.
 

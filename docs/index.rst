@@ -21,6 +21,7 @@ django-import-export-extensions is a Django application and library based on
    getting_started
    extensions
    migrate_from_original_import_export
+   recipes_and_integration_tips
    authors
    history
 
