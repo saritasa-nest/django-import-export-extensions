@@ -2,11 +2,18 @@
 History
 =======
 
+Unreleased
+------------------
+
+* Support Django 6.0
+
 1.9.2 (2025-11-6)
+------------------
 
 * Change dependency versions constraints
 
 1.9.1 (2025-10-28)
+------------------
 
 * Support Python 3.14
 
