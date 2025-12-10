@@ -128,6 +128,13 @@ REST_FRAMEWORK = {
     "COMPONENT_SPLIT_REQUEST": True,  # Allows to upload import file from Swagger UI
 }
 
+# django.tasks settings
+TASKS = {
+    "default": {
+        "BACKEND": "django.tasks.backends.immediate.ImmediateBackend",
+    }
+}
+
 # Celery settings
 
 redis_host = decouple.config("REDIS_HOST", default="redis")

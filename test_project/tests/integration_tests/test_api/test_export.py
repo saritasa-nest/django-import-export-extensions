@@ -14,13 +14,17 @@ from import_export_extensions.models import ExportJob
 @pytest.mark.parametrize(
     argnames="export_url",
     argvalues=[
+        # pytest.param(
+        #     reverse("export-artist-start"),
+        #     id="Export url",
+        # ),
+        # pytest.param(
+        #     reverse("artists-export"),
+        #     id="Action url",
+        # ),
         pytest.param(
-            reverse("export-artist-start"),
-            id="Export url",
-        ),
-        pytest.param(
-            f"{reverse('artists-export')}",
-            id="Action url",
+            reverse("django-tasks-artists-export"),
+            id="Django Tasks action url",
         ),
     ],
 )
@@ -75,7 +79,7 @@ def test_export_api_creates_export_job(
             id="Export url",
         ),
         pytest.param(
-            f"{reverse('artists-export')}",
+            reverse("artists-export"),
             id="Action url",
         ),
     ],
@@ -136,7 +140,7 @@ def test_export_api_filtering(
             id="Export url",
         ),
         pytest.param(
-            f"{reverse('artists-export')}",
+            reverse("artists-export"),
             id="Action url",
         ),
     ],

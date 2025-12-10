@@ -37,6 +37,11 @@ ie_router.register(
     views.ArtistViewSet,
     basename="artists",
 )
+ie_router.register(
+    "django-tasks-artists",
+    views.DjangoTasksArtistViewSet,
+    basename="django-tasks-artists",
+)
 
 urlpatterns = [re_path("^admin/", admin.site.urls), *ie_router.urls]
 

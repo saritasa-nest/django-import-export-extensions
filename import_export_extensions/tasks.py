@@ -1,4 +1,5 @@
 from celery import shared_task
+from django.tasks import task
 
 from . import models
 
@@ -17,6 +18,14 @@ def import_data_task(job_id: int):
 
 @shared_task()
 def export_data_task(job_id: int):
+    """Async task for starting data export."""
+    job = models.ExportJob.objects.get(id=job_id)
+    job.export_data()
+
+
+# TODO merge this task in one function and use decorator dynamically
+@task()
+def export_data_django_task(job_id: int):
     """Async task for starting data export."""
     job = models.ExportJob.objects.get(id=job_id)
     job.export_data()
