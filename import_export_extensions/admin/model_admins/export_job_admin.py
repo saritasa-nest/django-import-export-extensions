@@ -1,11 +1,11 @@
-
 import http
+import typing
 
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
 from django.http import JsonResponse
-from django.urls import re_path
+from django.urls import URLPattern, re_path
 from django.utils.translation import gettext_lazy as _
 
 from ... import models
@@ -55,7 +55,7 @@ class ExportJobAdmin(
         "resource_kwargs",
     )
 
-    def get_urls(self):
+    def get_urls(self) -> list[URLPattern]:
         """Add url to get current export job progress in JSON representation.
 
         /admin/import_export_extensions/exportjob/<job_id>/progress/
@@ -76,7 +76,7 @@ class ExportJobAdmin(
         request: WSGIRequest,
         job_id: int,
         **kwargs,
-    ):
+    ) -> JsonResponse:
         """View to return `ExportJob` status as JSON.
 
         If current status is exporting, view also returns job state
@@ -124,7 +124,7 @@ class ExportJobAdmin(
         self,
         request: WSGIRequest,
         obj: models.ExportJob,
-    ):
+    ) -> list[tuple[str, dict[str, typing.Any]]]:
         """Get fieldsets depending on object status."""
         status = (
             _("Status"),
@@ -186,7 +186,7 @@ class ExportJobAdmin(
         return [status, traceback_fields, export_params]
 
     @admin.action(description="Cancel selected jobs")
-    def cancel_jobs(self, request: WSGIRequest, queryset: QuerySet):
+    def cancel_jobs(self, request: WSGIRequest, queryset: QuerySet) -> None:
         """Admin action for cancelling data export."""
         for job in queryset:
             try:

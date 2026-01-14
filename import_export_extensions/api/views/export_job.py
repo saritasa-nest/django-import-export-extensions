@@ -1,6 +1,8 @@
 import collections.abc
 import contextlib
 
+from django.db.models import QuerySet
+
 from rest_framework import (
     decorators,
     exceptions,
@@ -98,7 +100,7 @@ class ExportJobViewSet(
     export_action_name = "start"
     export_action_url = "start"
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[models.ExportJob]:
         """Filter export jobs by resource used in viewset."""
         if self.action == getattr(self, "export_action", ""):
             # To make it consistent and for better support of drf-spectacular

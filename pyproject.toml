@@ -260,16 +260,6 @@ ignore = [
   "COM812", # ruff formatter suggested to exclude it
   # https://docs.astral.sh/ruff/rules/try-except-in-loop/
   "PERF203",
-
-  # TODO: remove after fix:
-  # https://docs.astral.sh/ruff/rules/missing-type-function-argument/
-  "ANN001",
-  # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function/
-  "ANN201",
-  # https://docs.astral.sh/ruff/rules/missing-return-type-private-function/
-  "ANN202",
-  # https://docs.astral.sh/ruff/rules/missing-return-type-special-method/
-  "ANN204",
 ]
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = [

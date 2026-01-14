@@ -12,7 +12,7 @@ class ProgressBarWidget(forms.Widget):
 
     template_name = "admin/import_export_extensions/progress_bar.html"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         """Get ``ImportJob`` or ``ExportJob`` instance from kwargs.
 
         ``ImportJob`` or ``ExportJob`` instance is used

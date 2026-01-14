@@ -101,7 +101,7 @@ class CreateImportJob(serializers.Serializer):
         *args,
         resource_kwargs: dict[str, typing.Any] | None = None,
         **kwargs,
-    ):
+    ) -> None:
         """Set filter kwargs and current user."""
         super().__init__(*args, **kwargs)
         self._request: request.Request = self.context.get("request")
@@ -122,7 +122,7 @@ class CreateImportJob(serializers.Serializer):
             created_by=self._user,
         )
 
-    def update(self, instance, validated_data):
+    def update(self, instance, validated_data) -> None:
         """Empty method to pass linters checks."""
 
 

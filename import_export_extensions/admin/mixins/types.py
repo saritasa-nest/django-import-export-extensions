@@ -23,7 +23,7 @@ class ModelInfo:
         return self.meta.model_name
 
     @property
-    def app_label(self):
+    def app_label(self) -> str:
         """App label of model."""
         return self.meta.app_label
 
