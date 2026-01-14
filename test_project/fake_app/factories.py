@@ -21,7 +21,7 @@ class InstrumentFactory(factory.django.DjangoModelFactory[models.Instrument]):
 class ArtistFactory(factory.django.DjangoModelFactory[models.Artist]):
     """Simple factory for ``Artist`` model."""
 
-    name = factory.Faker("name")
+    name = factory.Sequence(lambda n: f"artist-{n}")
     external_id = factory.Faker("uuid4")
     instrument = factory.SubFactory(InstrumentFactory)
 

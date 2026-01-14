@@ -1,10 +1,43 @@
+from import_export.resources import ModelResource
+
 from import_export_extensions.fields import IntermediateManyToManyField
-from import_export_extensions.resources import CeleryModelResource
+from import_export_extensions.resources import CeleryModelResource, \
+    ResourceMixin
 from import_export_extensions.widgets import IntermediateManyToManyWidget
 
 from .filters import ArtistFilterSet
 from .models import Artist, Band
 
+
+class DjangoTasksArtisResource(ResourceMixin, ModelResource):
+
+    filterset_class = ArtistFilterSet
+
+    class Meta:
+        model = Artist
+        import_id_fields = ["external_id"]
+        clean_model_instances = True
+        use_django_tasks = True
+        fields = [
+            "id",
+            "external_id",
+            "name",
+            "instrument",
+        ]
+
+
+    def initialize_task_state(
+        self,
+        state: str,
+        queryset,
+    ):
+        """"""
+
+    def update_task_state(
+        self,
+        state: str,
+    ):
+        """"""
 
 class SimpleArtistResource(CeleryModelResource):
     """Artist resource with simple fields."""
