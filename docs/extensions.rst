@@ -144,7 +144,10 @@ filter parameters as the ``filter_kwargs`` argument to the resource:
 
         class Meta:
             model = models.Band
-            fields = ["id", "title"]
+            fields = [
+                "id",
+                "title",
+            ]
 
 If ``filterset_class`` is set for your resource, you can pass ``filter_kwargs`` to filter export
 queryset:
@@ -249,31 +252,36 @@ Usage:
 
 .. code-block:: python
 
-  class ArtistResourceWithM2M(CeleryModelResource):
-      """Artist resource with Many2Many field."""
+    class ArtistResourceWithM2M(CeleryModelResource):
+        """Artist resource with Many2Many field."""
 
-      bands = IntermediateManyToManyField(
-          attribute="bands",
-          column_name="Bands he played in",
-          widget=IntermediateManyToManyWidget(
-              rem_model=Band,
-              rem_field="title",
-              extra_fields=["date_joined"],
-              instance_separator=";",
-          ),
-      )
-
-      class Meta:
-          model = Artist
-          clean_model_instances = True
-          fields = ["id", "name", "bands", "instrument"]
-
-      def get_queryset(self):
-          """Reduce DB queries number."""
-          return Artist.objects.all().prefetch_related(
-              "membership_set__band",
-              "bands",
+        bands = IntermediateManyToManyField(
+            attribute="bands",
+            column_name="Bands he played in",
+            widget=IntermediateManyToManyWidget(
+                rem_model=Band,
+                rem_field="title",
+                extra_fields=["date_joined"],
+                instance_separator=";",
+            ),
         )
+
+        class Meta:
+            model = Artist
+            clean_model_instances = True
+            fields = [
+                "id",
+                "name",
+                "bands",
+                "instrument",
+            ]
+
+        def get_queryset(self):
+            """Reduce DB queries number."""
+            return Artist.objects.all().prefetch_related(
+                "membership_set__band",
+                "bands",
+            )
 
 **result.xlsx**
 

@@ -15,7 +15,7 @@ There are simple examples to quickly get import/export functionality.
 Django Model for tests
 ----------------------
 
-There is simple django model from test app that we gonna use in the examples above.
+There is simple Django model from test app that we gonna use in the examples above.
 
 .. code-block:: python
 

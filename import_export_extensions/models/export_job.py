@@ -23,9 +23,9 @@ class ExportJob(BaseJob):
 
     Export steps:
 
-    1. Create ExportJob with resource initialization parameters.
+    1. Create ``ExportJob`` with resource initialization parameters.
     2. Try to export all data to file.
-    3. If everything correct - export data to file from database.
+    3. If everything is correct - export data to file from database.
 
     Export file saves in media files.
 

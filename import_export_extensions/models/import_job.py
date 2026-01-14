@@ -28,7 +28,7 @@ class ImportJob(BaseJob):
     Import steps:
 
     1. Create ``ImportJob`` with resource initialization parameters and file
-        with data to be imported from
+        with data to be imported from.
     2. Dry run. Try to import all data from file and collect statistics (
         errors, new rows, updated rows).
     3. If data for import is correct - import data from file to database.

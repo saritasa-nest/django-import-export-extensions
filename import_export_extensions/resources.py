@@ -54,7 +54,7 @@ class CeleryResourceMixin:
     ):
         """Remember init kwargs."""
         self._filter_kwargs = filter_kwargs
-        # _admin_filter differences from _filter_kwargs
+        # _admin_filters differs from _filter_kwargs
         # because it isn't used in filterset_class
         # and it always comes from admin panel export page
         self._admin_filters: dict[str, typing.Any] = kwargs.pop(
@@ -89,7 +89,7 @@ class CeleryResourceMixin:
         Override this if you
         want to limit the returned queryset.
 
-        Same as resources.ModelResource get_queryset.
+        Same as resources.ModelResource.get_queryset.
 
         """
         return cls._meta.model.objects.all()
