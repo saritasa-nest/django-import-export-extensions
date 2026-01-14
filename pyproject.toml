@@ -46,11 +46,9 @@ classifiers = [
 packages = [{ include = "import_export_extensions" }]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-django = [
-    {version = ">=4.2", python = ">=3.10"},
-    {version = ">=6", python = ">=3.12"}
-]
+# TODO(otto): return versions back. Just tmp solution
+python = "^3.14"
+django = ">=6.*"
 django-import-export = { extras = ["xls", "xlsx"], version = ">=4.2" }
 # Django REST Framework
 # https://www.django-rest-framework.org/
@@ -73,6 +71,7 @@ celery = { extras = ["redis"], version = "^5.4.0" }
 # HTTP library for Python
 # https://requests.readthedocs.io/en/latest/
 requests = "^2.32.3"
+django-tasks = {extras = ["rq"], version = "^0.11.0"}
 
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.13"

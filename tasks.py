@@ -29,6 +29,8 @@ ns.configure(
             project_name="django-import-export-extensions",
             celery=saritasa_invocations.CelerySettings(
                 app="test_project.celery_app:app",
+                scheduler="",
+                extra_params=tuple(),
             ),
             django=saritasa_invocations.DjangoSettings(
                 manage_file_path="test_project/manage.py",

@@ -8,7 +8,9 @@ from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
 from django.utils.translation import gettext_lazy as _
 
-from celery import current_app, result, states
+from django import tasks as django_tasks
+
+from celery import current_app, result, states, shared_task
 from import_export.formats import base_formats
 
 from .. import signals
@@ -184,10 +186,15 @@ class ExportJob(BaseJob):
         """Start export data task."""
         from .. import tasks
 
-        tasks.export_data_task.apply_async(
-            kwargs=dict(job_id=self.pk),
-            task_id=self.export_task_id,
-        )
+        if getattr(self.resource.Meta, "use_django_tasks", False):
+            tasks.export_data_django_task.enqueue(
+                job_id=self.pk
+            )
+        else:
+            tasks.export_data_task.apply_async(
+                kwargs=dict(job_id=self.pk),
+                task_id=self.export_task_id,
+            )
 
     def export_data(self) -> None:
         """Export data to `data_file` from DB."""

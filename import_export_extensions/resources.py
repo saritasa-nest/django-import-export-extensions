@@ -38,7 +38,7 @@ class TaskState(enum.Enum):
     PARSING = _("Parsing")
 
 
-class CeleryResourceMixin:
+class ResourceMixin:
     """Mixin for resources for background import/export using celery."""
 
     filterset_class: type[filters.FilterSet]
@@ -51,7 +51,6 @@ class CeleryResourceMixin:
         filter_kwargs: dict[str, typing.Any] | None = None,
         ordering: collections.abc.Sequence[str] | None = None,
         created_by: typing.Any | None = None,
-        update_celery_task_state: bool | None = None,
         **kwargs,
     ) -> None:
         """Remember init kwargs."""
@@ -65,11 +64,6 @@ class CeleryResourceMixin:
         )
         self._ordering = ordering
         self._created_by = created_by
-        self._update_celery_task_state = update_celery_task_state or getattr(
-            self._meta,
-            "update_celery_task_state",
-            True,
-        )
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
         self.total_objects_count = 0
         self.current_object_number = 0
@@ -389,6 +383,13 @@ class CeleryResourceMixin:
         )
         return self._export(queryset=queryset, **kwargs)
 
+    def initialize_task_state(
+        self,
+        state: str,
+        queryset: QuerySet | tablib.Dataset,
+    ):
+        raise NotImplementedError("Extend resource with `initialize_task_state` function.")
+
     def _export(
         self,
         queryset: QuerySet,
@@ -413,6 +414,12 @@ class CeleryResourceMixin:
         self.update_task_state(state=TaskState.EXPORTING.name)
         return resource
 
+    def update_task_state(
+        self,
+        state: str,
+    ):
+        raise NotImplementedError("Extend resource with `update_task_state` function.")
+
     def _export_resource(
         self,
         obj: typing.Any,
@@ -428,6 +435,45 @@ class CeleryResourceMixin:
     ) -> dict[str, typing.Any]:
         """Get additional params for export format."""
         return {}
+
+    def generate_export_filename(self, file_format: base_formats.Format):
+        """Generate export filename."""
+        return self._generate_export_filename_from_model(file_format)
+
+    def generate_dataset_title(self) -> str:
+        """Generate dataset title."""
+        return str(self._meta.model._meta.verbose_name_plural)
+
+    def _generate_export_filename_from_model(
+        self,
+        file_format: base_formats.Format,
+    ):
+        """Generate export file name from model name."""
+        model = self._meta.model._meta.verbose_name_plural
+        date_str = timezone.now().strftime("%Y-%m-%d")
+        extension = file_format.get_extension()
+        return f"{model}-{date_str}.{extension}"
+
+    @classmethod
+    def get_error_result_class(cls) -> type[Error]:
+        """Override default error class."""
+        return Error
+
+
+class CeleryResourceMixin(ResourceMixin):
+
+    def __init__(
+        self,
+        update_celery_task_state: bool | None = None,
+        **kwargs,
+    ):
+        """Remember init kwargs."""
+        self._update_celery_task_state = update_celery_task_state or getattr(
+            self._meta,
+            "update_celery_task_state",
+            True,
+        )
+        super().__init__(**kwargs)
 
     @property
     def _is_current_task_available_and_not_called_directly(self) -> bool:

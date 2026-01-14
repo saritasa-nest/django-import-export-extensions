@@ -19,6 +19,7 @@ from ... import models
 from . import base_mixin, types
 
 
+# TODO(otto): rename - remove celery mentions
 class CeleryExportAdminMixin(
     import_export_mixins.BaseExportMixin,
     base_mixin.BaseCeleryImportExportAdminMixin,

@@ -14,13 +14,13 @@ DEFAULT_DRF_EXPORT_DJANGO_FILTERS_BACKEND = (
     "django_filters.rest_framework.DjangoFilterBackend"
 )
 DEFAULT_DRF_EXPORT_ORDERING_BACKEND = "rest_framework.filters.OrderingFilter"
+DEFAULT_IMPORT_EXPORT_USE_DJANGO_TASKS = False
 
-
-class CeleryImportExport(AppConfig):
-    """Default configuration for CeleryImportExport app."""
+class ImportExportExtensions(AppConfig):
+    """Default configuration for ImportExportExtensions app."""
 
     name = "import_export_extensions"
-    verbose_name = _("Celery Import/Export")
+    verbose_name = _("Import/Export Extensions")
     default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self) -> None:
@@ -46,3 +46,10 @@ class CeleryImportExport(AppConfig):
             "DRF_EXPORT_ORDERING_BACKEND",
             DEFAULT_DRF_EXPORT_ORDERING_BACKEND,
         )
+
+        # TODO new settings about run resource through django.tasks
+        # settings.IMPORT_EXPORT_USE_DJANGO_TASKS = getattr(
+        #     settings,
+        #     "IMPORT_EXPORT_USE_DJANGO_TASKS",
+        #     DEFAULT_IMPORT_EXPORT_USE_DJANGO_TASKS,
+        # )
