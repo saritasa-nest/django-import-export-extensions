@@ -1,11 +1,13 @@
 import http
+import typing
 
 from django.contrib import admin, messages
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.urls import re_path
+from django.urls import URLPattern, re_path
+from django.utils.safestring import SafeText
 from django.utils.translation import gettext_lazy as _
 
 from ... import models
@@ -60,7 +62,7 @@ class ImportJobAdmin(
         "resource_kwargs",
     )
 
-    def get_queryset(self, request: WSGIRequest):
+    def get_queryset(self, request: WSGIRequest) -> QuerySet:
         """Override `get_queryset`.
 
         Do not get `result` from db because it can be rather big and is not
@@ -69,7 +71,7 @@ class ImportJobAdmin(
         """
         return super().get_queryset(request).defer("result")
 
-    def get_urls(self):
+    def get_urls(self) -> list[URLPattern]:
         """Add url to get current import job progress in JSON representation.
 
         /admin/import_export_extensions/importjob/<job_id>/progress/
@@ -158,7 +160,7 @@ class ImportJobAdmin(
 
     _show_results.short_description = _("Parse/Import results")
 
-    def _input_errors(self, job: models.ImportJob):
+    def _input_errors(self, job: models.ImportJob) -> SafeText:
         """Render html with input errors."""
         template = "admin/import_export_extensions/import_job_results.html"
         return render_to_string(
@@ -173,7 +175,7 @@ class ImportJobAdmin(
         self,
         request: WSGIRequest,
         obj: models.ImportJob,
-    ):
+    ) -> list[tuple[str, dict[str, typing.Any]]]:
         """Get fieldsets depending on object status."""
         status = (
             _("Status"),
@@ -245,7 +247,7 @@ class ImportJobAdmin(
         return [status, traceback_, import_params]
 
     @admin.action(description="Cancel selected jobs")
-    def cancel_jobs(self, request: WSGIRequest, queryset: QuerySet):
+    def cancel_jobs(self, request: WSGIRequest, queryset: QuerySet) -> None:
         """Admin action for cancelling data import."""
         for job in queryset:
             try:
@@ -259,7 +261,7 @@ class ImportJobAdmin(
                 self.message_user(request, str(error), messages.ERROR)
 
     @admin.action(description="Confirm selected jobs")
-    def confirm_jobs(self, request: WSGIRequest, queryset: QuerySet):
+    def confirm_jobs(self, request: WSGIRequest, queryset: QuerySet) -> None:
         """Admin action for confirming data import."""
         for job in queryset:
             try:

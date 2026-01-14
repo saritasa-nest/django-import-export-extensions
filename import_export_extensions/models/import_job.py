@@ -1,3 +1,4 @@
+import collections.abc
 import pathlib
 import traceback
 import uuid
@@ -45,7 +46,7 @@ class ImportJob(BaseJob):
         * PARSED:
             data_file parsed, no errors in data occurred
         * INPUT_ERROR:
-            data_file parsed, data contain errors
+            data_file parsed, data contains errors
         * PARSE_ERROR:
             data_file can't be parsed (invalid format, etc.)
         * IMPORT_CONFIRMED
@@ -203,11 +204,11 @@ class ImportJob(BaseJob):
 
     def save(
         self,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
-    ):
+        force_insert: bool = False,
+        force_update: bool = False,
+        using: str | None = None,
+        update_fields: collections.abc.Iterable[str] | None = None,
+    ) -> None:
         """Start task for data parsing when ImportJob is created.
 
         Celery task is manually called with `apply_async`, to provide
@@ -278,7 +279,7 @@ class ImportJob(BaseJob):
                 f" {[status.value for status in expected_statuses]}",
             )
 
-    def start_parse_data_task(self):
+    def start_parse_data_task(self) -> None:
         """Start parsing task."""
         from .. import tasks
 
@@ -287,14 +288,14 @@ class ImportJob(BaseJob):
             task_id=self.parse_task_id,
         )
 
-    def parse_data(self):
+    def parse_data(self) -> None:
         """Parse `data_file` and collect results.
 
         Sets `result` and/or `traceback` and update `status`.
 
         """
         self._check_import_status_correctness(
-            expected_statuses=(self.ImportStatus.CREATED,),
+            expected_statuses=(self.ImportStatus.CREATED,),  # type: ignore[arg-type]
         )
 
         self.import_status = self.ImportStatus.PARSING
@@ -340,7 +341,7 @@ class ImportJob(BaseJob):
             force_import=self.force_import,
         )
 
-    def confirm_import(self):
+    def confirm_import(self) -> None:
         """Update task status to IMPORT_CONFIRMED and start parsing.
 
         This is "intermediate" state between PARSED and IMPORTING and required
@@ -351,7 +352,7 @@ class ImportJob(BaseJob):
 
         """
         self._check_import_status_correctness(
-            expected_statuses=(self.ImportStatus.PARSED,),
+            expected_statuses=(self.ImportStatus.PARSED,),  # type: ignore[arg-type]
         )
 
         self.import_status = self.ImportStatus.CONFIRMED
@@ -366,7 +367,7 @@ class ImportJob(BaseJob):
         )
         transaction.on_commit(self._start_import_data_task)
 
-    def _start_import_data_task(self):
+    def _start_import_data_task(self) -> None:
         """Start import task."""
         from .. import tasks
 
@@ -375,7 +376,7 @@ class ImportJob(BaseJob):
             task_id=self.import_task_id,
         )
 
-    def import_data(self):
+    def import_data(self) -> None:
         """Import data from `data_file` to DB."""
         expected_status = (
             self.ImportStatus.CREATED
@@ -383,7 +384,7 @@ class ImportJob(BaseJob):
             else self.ImportStatus.CONFIRMED
         )
         self._check_import_status_correctness(
-            expected_statuses=(expected_status,),
+            expected_statuses=(expected_status,),  # type: ignore[arg-type]
         )
 
         self.import_status = self.ImportStatus.IMPORTING
@@ -527,7 +528,7 @@ class ImportJob(BaseJob):
         error_message: str,
         traceback: str,
         exception: Exception | None = None,
-    ):
+    ) -> None:
         """Update job's status in case of error."""
         self.import_status = (
             self.ImportStatus.PARSE_ERROR
@@ -552,7 +553,7 @@ class ImportJob(BaseJob):
             exception=exception,
         )
 
-    def _save_input_errors_file(self):
+    def _save_input_errors_file(self) -> None:
         """Save input errors file.
 
         This should be saved after parsing and after importing

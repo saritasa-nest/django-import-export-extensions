@@ -1,6 +1,6 @@
+import collections.abc
 import pathlib
 import traceback
-import typing
 import uuid
 
 from django.core import files as django_files
@@ -122,11 +122,11 @@ class ExportJob(BaseJob):
 
     def save(
         self,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
-    ):
+        force_insert: bool = False,
+        force_update: bool = False,
+        using: str | None = None,
+        update_fields: collections.abc.Iterable[str] | None = None,
+    ) -> None:
         """Start task for data exporting when ExportJob is created.
 
         Celery task is manually called with `apply_async`, to provide
@@ -170,7 +170,7 @@ class ExportJob(BaseJob):
 
     def _check_export_status_correctness(
         self,
-        expected_statuses: typing.Sequence[ExportStatus],
+        expected_statuses: collections.abc.Sequence[ExportStatus],
     ) -> None:
         """Raise `ValueError` if `ExportJob` is in incorrect state."""
         if self.export_status not in expected_statuses:
@@ -180,7 +180,7 @@ class ExportJob(BaseJob):
                 f" {[status.value for status in expected_statuses]}",
             )
 
-    def _start_export_data_task(self):
+    def _start_export_data_task(self) -> None:
         """Start export data task."""
         from .. import tasks
 
@@ -189,7 +189,7 @@ class ExportJob(BaseJob):
             task_id=self.export_task_id,
         )
 
-    def export_data(self):
+    def export_data(self) -> None:
         """Export data to `data_file` from DB."""
         self.export_status = self.ExportStatus.EXPORTING
         self.export_started = timezone.now()
@@ -292,7 +292,7 @@ class ExportJob(BaseJob):
         error_message: str,
         traceback: str,
         exception: Exception | None = None,
-    ):
+    ) -> None:
         """Update job's status in case of error."""
         self.export_status = self.ExportStatus.EXPORT_ERROR
         error_message_limit = self._meta.get_field("error_message").max_length

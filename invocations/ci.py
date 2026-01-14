@@ -1,9 +1,9 @@
 import saritasa_invocations
-from invoke import task
+from invoke import Context, task
 
 
 @task
-def prepare(context):
+def prepare(context: Context) -> None:
     """Prepare ci environment for check."""
     saritasa_invocations.print_success("Preparing CI")
     saritasa_invocations.docker.up(context)

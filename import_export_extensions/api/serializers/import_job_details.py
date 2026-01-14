@@ -52,7 +52,10 @@ class ImportingDataSerializer(serializers.Serializer):
         child=ImportRowSerializer(),
     )
 
-    def to_representation(self, instance: models.ImportJob):
+    def to_representation(
+        self,
+        instance: models.ImportJob,
+    ) -> dict[str, typing.Any]:
         """Return dict with import details."""
         if instance.import_status not in models.ImportJob.success_statuses:
             return super().to_representation(self.get_initial())
@@ -106,7 +109,10 @@ class TotalsSerializer(serializers.Serializer):
     skip = serializers.IntegerField(allow_null=True, required=False)
     error = serializers.IntegerField(allow_null=True, required=False)
 
-    def to_representation(self, instance):
+    def to_representation(
+        self,
+        instance: models.ImportJob,
+    ) -> dict[str, typing.Any]:
         """Return dict with import totals."""
         if instance.import_status not in models.ImportJob.results_statuses:
             return super().to_representation(self.get_initial())
@@ -135,7 +141,10 @@ class InputErrorSerializer(serializers.Serializer):
         ),
     )
 
-    def to_representation(self, instance: models.ImportJob):
+    def to_representation(
+        self,
+        instance: models.ImportJob,
+    ) -> dict[str, typing.Any]:
         """Return dict with input errors."""
         if instance.import_status not in models.ImportJob.results_statuses:
             return super().to_representation(self.get_initial())
@@ -168,7 +177,10 @@ class InputErrorSerializer(serializers.Serializer):
 class IsAllRowsShowField(serializers.BooleanField):
     """Field for representing `all_rows_saved` value."""
 
-    def to_representation(self, instance):
+    def to_representation(
+        self,
+        instance: models.ImportJob,
+    ) -> bool:
         """Return boolean if all rows shown in importing data."""
         if instance.import_status not in models.ImportJob.success_statuses:
             return False
@@ -185,7 +197,10 @@ class SkippedErrorsSerializer(serializers.Serializer):
         child=serializers.ListField(child=serializers.CharField()),
     )
 
-    def to_representation(self, instance: models.ImportJob):
+    def to_representation(
+        self,
+        instance: models.ImportJob,
+    ) -> dict[str, typing.Any]:
         """Parse skipped errors from import job result."""
         if instance.import_status not in models.ImportJob.results_statuses:
             return super().to_representation(self.get_initial())

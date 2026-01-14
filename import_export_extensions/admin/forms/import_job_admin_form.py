@@ -23,7 +23,7 @@ class ImportJobAdminForm(forms.ModelForm):
         instance: models.ImportJob,
         *args,
         **kwargs,
-    ):
+    ) -> None:
         """Provide `import_progressbar` widget the ``ImportJob`` instance."""
         super().__init__(*args, instance=instance, **kwargs)
         url_name = "admin:import_job_progress"

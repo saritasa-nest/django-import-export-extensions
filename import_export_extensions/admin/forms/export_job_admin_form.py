@@ -24,7 +24,7 @@ class ExportJobAdminForm(forms.ModelForm):
         instance: models.ExportJob,
         *args,
         **kwargs,
-    ):
+    ) -> None:
         """Provide `export_progressbar` widget the `ExportJob` instance."""
         super().__init__(*args, instance=instance, **kwargs)
         url_name = "admin:export_job_progress"

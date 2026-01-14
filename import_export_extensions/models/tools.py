@@ -21,7 +21,7 @@ def select_storage() -> dict[str, typing.Any]:
 
 
 def upload_file_to(
-    instance,
+    instance: typing.Any,
     filename: str,
     main_folder_name: str,
 ) -> str:

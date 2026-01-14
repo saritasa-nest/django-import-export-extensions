@@ -7,7 +7,7 @@ LOCAL_DOCS_DIR = pathlib.Path("docs/_build")
 
 
 @invoke.task
-def build(context: invoke.Context):
+def build(context: invoke.Context) -> None:
     """Build documentation."""
     saritasa_invocations.print_success("Start building of local documentation")
     context.run(
