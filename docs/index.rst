@@ -3,7 +3,7 @@ Django import/export extensions
 ===============================
 
 django-import-export-extensions is a Django application and library based on
-`django-import-export` library that provided extended features.
+`django-import-export` library that provides extended features.
 
 **Features:**
 

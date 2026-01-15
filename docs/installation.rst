@@ -70,7 +70,7 @@ You can configure the following settings in your Django settings file:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Defines the maximum number of rows allowed in a file for import, helping to avoid memory overflow.
-The default value is 10,000. If the file exceeds this limit, a ``ValueError`` exception
+The default value is 100,000. If the file exceeds this limit, a ``ValueError`` exception
 will be raised during the import process.
 
 ``MIME_TYPES_MAP``
@@ -111,8 +111,8 @@ as the storage is not used in the implementation of ``CeleryImportAdminMixin``.
 Picking storage
 ~~~~~~~~~~~~~~~
 
-To use different storage for import/export jobs you can use `STORAGES <https://docs.djangoproject.com/en/dev/ref/settings/#storages>`_.
-from django.
+To use different storage for import/export jobs you can use `STORAGES <https://docs.djangoproject.com/en/dev/ref/settings/#storages>`_
+from Django.
 
 .. code-block:: python
 
