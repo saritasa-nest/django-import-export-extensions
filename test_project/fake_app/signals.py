@@ -12,7 +12,7 @@ from import_export_extensions.signals import (
 @dispatch.receiver(export_job_failed)
 @dispatch.receiver(import_job_failed)
 def job_error_hook(
-    sender: type,
+    sender: type[BaseJob],
     instance: BaseJob,
     error_message: str,
     traceback: str,

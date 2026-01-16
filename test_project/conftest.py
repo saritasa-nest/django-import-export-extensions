@@ -22,13 +22,13 @@ def django_db_setup(django_db_setup: typing.Any) -> None:
 @pytest.fixture(autouse=True)
 def enable_db_access_for_all_tests(
     django_db_setup: typing.Any,
-    db: typing.Any,
+    db: None,
 ) -> None:
     """Allow all tests to access DB."""
 
 
 @pytest.fixture(scope="session", autouse=True)
-def _temp_directory_for_media(tmpdir_factory: typing.Any) -> None:
+def _temp_directory_for_media(tmpdir_factory: pytest.TempdirFactory) -> None:
     """Fixture that set temp directory for all media files.
 
     This fixture changes DEFAULT_FILE_STORAGE or STORAGES variable

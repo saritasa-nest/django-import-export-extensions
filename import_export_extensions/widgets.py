@@ -297,7 +297,7 @@ class FileWidget(CharWidget):
     def render(
         self,
         value: FieldFile | None,
-        obj: typing.Any = None,
+        obj: typing.Any | None = None,
         **kwargs,
     ) -> str | None:
         """Convert DB value to URL to file."""
