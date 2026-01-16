@@ -1,12 +1,15 @@
 import contextlib
 import typing
 
+from django.db.models import QuerySet
+
 from rest_framework import (
     decorators,
     request,
     response,
     status,
 )
+from rest_framework.serializers import Serializer
 
 from ... import resources
 from .. import serializers
@@ -69,7 +72,7 @@ class ImportStartActionMixin:
                 },
             )(cls)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         """Return import model queryset on import action.
 
         For better openapi support and consistency.
@@ -77,13 +80,15 @@ class ImportStartActionMixin:
         """
         if self.action == self.import_action:
             return self.resource_class.get_model_queryset()  # pragma: no cover
-        return super().get_queryset()
+        return super().get_queryset()  # type: ignore[misc]
 
-    def get_import_detail_serializer_class(self):
+    def get_import_detail_serializer_class(
+        self,
+    ) -> type[serializers.ImportJobSerializer]:
         """Get serializer which will be used show details of import job."""
         return self.import_detail_serializer_class
 
-    def get_import_create_serializer_class(self):
+    def get_import_create_serializer_class(self) -> type:
         """Get serializer which will be used to start import job."""
         return serializers.get_create_import_job_serializer(
             self.resource_class,
@@ -93,14 +98,14 @@ class ImportStartActionMixin:
         """Provide extra arguments to resource class."""
         return {}
 
-    def get_serializer(self, *args, **kwargs):
+    def get_serializer(self, *args, **kwargs) -> Serializer:
         """Provide resource kwargs to serializer class."""
         if self.action == self.import_action:
             kwargs.setdefault(
                 "resource_kwargs",
                 self.get_import_resource_kwargs(),
             )
-        return super().get_serializer(*args, **kwargs)
+        return super().get_serializer(*args, **kwargs)  # type: ignore[misc]
 
     def start_import(self, request: request.Request) -> response.Response:
         """Validate request data and start ImportJob."""

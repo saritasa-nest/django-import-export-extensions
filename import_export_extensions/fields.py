@@ -1,3 +1,6 @@
+import typing
+
+from django.db.models import Model, QuerySet
 from django.db.models.fields.reverse_related import ManyToManyRel
 
 from import_export.fields import Field
@@ -32,13 +35,13 @@ class IntermediateManyToManyField(Field):
     So this field should be used for exporting Artists with `bands` field.
 
     Save workflow is following:
-        1. clean data (extract dicts)
+        1. Clean data (extract dicts)
         2. Remove current M2M instances of object
         3. Create new M2M instances based on current object
 
     """
 
-    def _format_exception(self, exception):
+    def _format_exception(self, exception: Exception) -> None:
         """Shortcut for humanizing exception."""
         error = str(exception)
         if hasattr(exception, "messages"):
@@ -47,7 +50,7 @@ class IntermediateManyToManyField(Field):
         msg = f"Column '{self.column_name}': {error}"
         raise ValueError(msg) from exception
 
-    def get_value(self, obj):
+    def get_value(self, obj: Model) -> QuerySet | None:
         """Return the value of the object's attribute.
 
         This method should return instances of intermediate model, i.e.
@@ -68,7 +71,10 @@ class IntermediateManyToManyField(Field):
         )
         return getattr(obj, through_model_accessor_name).all()
 
-    def get_relation_field_params(self, obj):
+    def get_relation_field_params(
+        self,
+        obj: Model,
+    ) -> tuple[ManyToManyRel, str, str]:
         """Shortcut to get relation field params.
 
         Gets relation, field itself, its name and its reversed field name
@@ -92,7 +98,11 @@ class IntermediateManyToManyField(Field):
         reversed_field_name = m2m_field.m2m_reverse_field_name()
         return m2m_rel, field_name, reversed_field_name
 
-    def get_through_model_accessor_name(self, obj, m2m_rel) -> str:
+    def get_through_model_accessor_name(
+        self,
+        obj: Model,
+        m2m_rel: ManyToManyRel,
+    ) -> str:
         """Shortcut to get through model accessor name."""
         for related_object in obj._meta.related_objects:
             if related_object.related_model is m2m_rel.through:
@@ -102,7 +112,13 @@ class IntermediateManyToManyField(Field):
             f"{obj._meta.model} has no relation with {m2m_rel.through}",
         )
 
-    def save(self, obj, data, *args, **kwargs):
+    def save(
+        self,
+        obj: Model,
+        data: dict[str, typing.Any],
+        *args,
+        **kwargs,
+    ) -> None:
         """Add M2M relations for obj from data.
 
         Args:

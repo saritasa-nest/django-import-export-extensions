@@ -3,6 +3,7 @@ import contextlib
 import typing
 
 from django.conf import settings
+from django.db.models import QuerySet
 from django.utils import module_loading
 
 from rest_framework import (
@@ -11,6 +12,7 @@ from rest_framework import (
     response,
     status,
 )
+from rest_framework.serializers import Serializer
 
 from ... import resources
 from .. import serializers
@@ -90,7 +92,7 @@ class ExportStartActionMixin:
                 },
             )(cls)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         """Return export model queryset on export action.
 
         For better openapi support and consistency.
@@ -98,13 +100,15 @@ class ExportStartActionMixin:
         """
         if self.action == self.export_action:
             return self.resource_class.get_model_queryset()  # pragma: no cover
-        return super().get_queryset()
+        return super().get_queryset()  # type: ignore[misc]
 
-    def get_export_detail_serializer_class(self):
+    def get_export_detail_serializer_class(
+        self,
+    ) -> type[serializers.ExportJobSerializer]:
         """Get serializer which will be used show details of export job."""
         return self.export_detail_serializer_class
 
-    def get_export_create_serializer_class(self):
+    def get_export_create_serializer_class(self) -> type:
         """Get serializer which will be used to start export job."""
         return serializers.get_create_export_job_serializer(
             self.resource_class,
@@ -114,14 +118,14 @@ class ExportStartActionMixin:
         """Provide extra arguments to resource class."""
         return {}
 
-    def get_serializer(self, *args, **kwargs):
+    def get_serializer(self, *args, **kwargs) -> Serializer:
         """Provide resource kwargs to serializer class."""
         if self.action == self.export_action:
             kwargs.setdefault(
                 "resource_kwargs",
                 self.get_export_resource_kwargs(),
             )
-        return super().get_serializer(*args, **kwargs)
+        return super().get_serializer(*args, **kwargs)  # type: ignore[misc]
 
     def start_export(self, request: request.Request) -> response.Response:
         """Validate request data and start ExportJob."""

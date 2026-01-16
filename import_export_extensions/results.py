@@ -11,16 +11,16 @@ class Error(results.Error):
 
     def __repr__(self) -> str:
         """Return object representation in string format."""
-        return f"Error({self.error})"
+        return f"Error({self.error})"  # type: ignore[has-type]
 
-    def __reduce__(self):
+    def __reduce__(self) -> str | tuple[typing.Any, ...]:
         """Simplify Exception object for pickling.
 
         `error` object may contain not picklable objects (for example, django's
         lazy text), so here it replaced with simple string.
 
         """
-        self.error = str(self.error)
+        self.error = str(self.error)  # type: ignore[has-type]
         return super().__reduce__()
 
 

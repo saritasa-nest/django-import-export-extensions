@@ -1,5 +1,7 @@
 import pathlib
 
+from django.http import HttpRequest
+
 import decouple
 
 # Build paths inside the project like this: BASE_DIR / "subdir"
@@ -152,7 +154,7 @@ if DEBUG:
     INSTALLED_APPS += ("debug_toolbar",)
     MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
 
-    def _show_toolbar_callback(request) -> bool:
+    def _show_toolbar_callback(request: HttpRequest) -> bool:
         """Show debug toolbar exclude testing."""
         from django.conf import settings
 

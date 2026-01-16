@@ -6,7 +6,7 @@ import saritasa_invocations
 
 
 @invoke.task
-def init(context: invoke.Context, clean: bool = False):
+def init(context: invoke.Context, clean: bool = False) -> None:
     """Prepare env for working with project."""
     saritasa_invocations.print_success("Setting up git config")
     saritasa_invocations.git.setup(context)
@@ -22,7 +22,7 @@ def init(context: invoke.Context, clean: bool = False):
 
 
 @invoke.task
-def clear(context: invoke.Context):
+def clear(context: invoke.Context) -> None:
     """Clear package directory from cache files."""
     saritasa_invocations.print_success("Start clearing")
     build_dirs = ("build", "dist", ".eggs")

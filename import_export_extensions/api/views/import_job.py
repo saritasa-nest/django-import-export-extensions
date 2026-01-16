@@ -1,6 +1,8 @@
 import collections
 import contextlib
 
+from django.db.models import QuerySet
+
 from rest_framework import (
     decorators,
     exceptions,
@@ -73,7 +75,7 @@ class BaseImportJobViewSet(
                 ),
             )(cls)
 
-    def confirm(self, *args, **kwargs):
+    def confirm(self, *args, **kwargs) -> response.Response:
         """Confirm import job that has `parsed` status."""
         job: models.ImportJob = self.get_object()
 
@@ -88,7 +90,7 @@ class BaseImportJobViewSet(
             data=serializer.data,
         )
 
-    def cancel(self, *args, **kwargs):
+    def cancel(self, *args, **kwargs) -> response.Response:
         """Cancel import job that is in progress."""
         job: models.ImportJob = self.get_object()
 
@@ -125,7 +127,7 @@ class ImportJobViewSet(
     import_action_name = "start"
     import_action_url = "start"
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[models.ImportJob]:
         """Filter import jobs by resource used in viewset."""
         if self.action == getattr(self, "import_action", ""):
             # To make it consistent and for better support of drf-spectacular
