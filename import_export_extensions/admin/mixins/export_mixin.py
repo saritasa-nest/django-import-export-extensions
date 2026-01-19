@@ -8,7 +8,7 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
-from django.urls import re_path, reverse
+from django.urls import URLPattern, re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from import_export import admin as import_export_admin
@@ -73,11 +73,11 @@ class CeleryExportAdminMixin(
     get_export_resource_fields_from_form = import_export_admin.ExportMixin.get_export_resource_fields_from_form  # noqa
     is_skip_export_form_enabled = import_export_admin.ExportMixin.is_skip_export_form_enabled  # noqa
 
-    def get_export_context_data(self, **kwargs):
+    def get_export_context_data(self, **kwargs) -> dict[str, typing.Any]:
         """Get context data for export."""
         return self.get_context_data(**kwargs)
 
-    def get_urls(self):
+    def get_urls(self) -> list[URLPattern]:
         """Return list of urls.
 
         /<model/celery-export/:
@@ -116,7 +116,12 @@ class CeleryExportAdminMixin(
         ]
         return export_urls + urls
 
-    def celery_export_action(self, request, *args, **kwargs):
+    def celery_export_action(
+        self,
+        request: WSGIRequest,
+        *args,
+        **kwargs,
+    ) -> HttpResponse | TemplateResponse:
         """Show and handle export.
 
         GET: show export form with format_type input
@@ -294,7 +299,12 @@ class CeleryExportAdminMixin(
         """
         return get_object_or_404(models.ExportJob, id=job_id)
 
-    def get_resource_kwargs(self, request, *args, **kwargs):
+    def get_resource_kwargs(
+        self,
+        request: WSGIRequest,
+        *args,
+        **kwargs,
+    ) -> dict[str, typing.Any]:
         """Return filter kwargs for resource queryset."""
         resource_kwargs = super().get_resource_kwargs(request, *args, **kwargs)
         resource_kwargs["admin_filters"] = self._export_get_admin_filter(
@@ -404,7 +414,7 @@ class CeleryExportAdminMixin(
         self,
         request: WSGIRequest,
         context: dict[str, typing.Any] | None = None,
-    ):
+    ) -> HttpResponse:
         """Add the check for permission to changelist template context."""
         context = context or {}
         context["has_export_permission"] = self.has_export_permission(request)

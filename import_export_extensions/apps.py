@@ -23,7 +23,7 @@ class CeleryImportExport(AppConfig):
     verbose_name = _("Celery Import/Export")
     default_auto_field = "django.db.models.BigAutoField"
 
-    def ready(self):
+    def ready(self) -> None:
         """Set up default settings."""
         settings.IMPORT_EXPORT_MAX_DATASET_ROWS = getattr(
             settings,

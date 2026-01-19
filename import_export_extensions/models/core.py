@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import module_loading
 from django.utils.translation import gettext_lazy as _
 
+from import_export import resources
 from import_export.results import Result
 from picklefield.fields import PickledObjectField
 
@@ -16,7 +17,7 @@ class CreationDateTimeField(models.DateTimeField):
 
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super().__init__(
             auto_now=True,
             verbose_name=_("Created"),
@@ -24,7 +25,7 @@ class CreationDateTimeField(models.DateTimeField):
 
 
 class ModificationDateTimeField(models.DateTimeField):
-    """DateTimeField  to indicate modified datetime.
+    """DateTimeField to indicate modified datetime.
 
     By default, sets editable=False, blank=True, auto_now=True.
 
@@ -32,7 +33,7 @@ class ModificationDateTimeField(models.DateTimeField):
 
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super().__init__(
             auto_now=True,
             verbose_name=_("Modified"),
@@ -121,7 +122,7 @@ class BaseJob(TimeStampedModel):
         abstract = True
 
     @property
-    def resource(self):
+    def resource(self) -> resources.Resource:
         """Get initialized resource instance."""
         resource_class = module_loading.import_string(self.resource_path)
         resource = resource_class(

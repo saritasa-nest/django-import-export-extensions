@@ -1,6 +1,6 @@
+import collections.abc
 import pathlib
 import re
-import typing
 import unicodedata
 from urllib.parse import unquote_plus
 
@@ -125,7 +125,7 @@ def get_clear_q_filter(str_value: str, attribute_name: str) -> Q:
 
 
 def clean_sequence_of_string_values(
-    sequence: typing.Iterable[str],
+    sequence: collections.abc.Iterable[str],
     ignore_empty: bool = True,
 ) -> list[str]:
     """Clean sequence of string values.

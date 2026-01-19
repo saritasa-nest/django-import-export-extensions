@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 import dataclasses
 import enum
 import functools
@@ -6,7 +6,7 @@ import typing
 
 from django.conf import settings
 from django.core.exceptions import FieldError, ValidationError
-from django.db.models import Q, QuerySet
+from django.db.models import Model, Q, QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
@@ -17,6 +17,7 @@ from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
 from import_export import fields, resources
 from import_export.formats import base_formats
+from import_export.instance_loaders import BaseInstanceLoader
 
 from .results import Error, Result, RowResult
 
@@ -51,7 +52,7 @@ class CeleryResourceMixin:
         created_by: typing.Any | None = None,
         update_celery_task_state: bool | None = None,
         **kwargs,
-    ):
+    ) -> None:
         """Remember init kwargs."""
         self._filter_kwargs = filter_kwargs
         # _admin_filters differs from _filter_kwargs
@@ -74,12 +75,15 @@ class CeleryResourceMixin:
         super().__init__()
 
     @functools.cached_property
-    def status_update_row_count(self):
+    def status_update_row_count(self) -> int:
         """Rows count after which to update celery task status."""
-        return getattr(
-            self._meta,
-            "status_update_row_count",
-            settings.STATUS_UPDATE_ROW_COUNT,
+        return typing.cast(
+            int,
+            getattr(
+                self._meta,
+                "status_update_row_count",
+                settings.STATUS_UPDATE_ROW_COUNT,
+            ),
         )
 
     @classmethod
@@ -104,7 +108,7 @@ class CeleryResourceMixin:
     def get_queryset_operations(
         self,
     ) -> list[
-        typing.Callable[
+        collections.abc.Callable[
             [QuerySet],
             QuerySet,
         ],
@@ -260,12 +264,12 @@ class CeleryResourceMixin:
 
     def import_row(
         self,
-        row,
-        instance_loader,
-        using_transactions=True,
-        dry_run=False,
-        raise_errors=False,
-        force_import=False,
+        row: dict[str, typing.Any],
+        instance_loader: BaseInstanceLoader,
+        using_transactions: bool = True,
+        dry_run: bool = False,
+        raise_errors: bool = False,
+        force_import: bool = False,
         **kwargs,
     ) -> RowResult:
         """Update task status as we import rows.
@@ -295,11 +299,11 @@ class CeleryResourceMixin:
 
     def _import_row(
         self,
-        row,
-        instance_loader,
-        using_transactions=True,
-        dry_run=False,
-        raise_errors=False,
+        row: dict[str, typing.Any],
+        instance_loader: BaseInstanceLoader,
+        using_transactions: bool = True,
+        dry_run: bool = False,
+        raise_errors: bool = False,
         **kwargs,
     ) -> RowResult:
         """Override if you need custom import row logic."""
@@ -315,7 +319,7 @@ class CeleryResourceMixin:
     def _skip_row_with_errors(
         self,
         row_result: RowResult,
-        row_data: collections.OrderedDict[str, str],
+        row_data: dict[str, str],
     ) -> RowResult:
         """Process row as skipped.
 
@@ -384,7 +388,7 @@ class CeleryResourceMixin:
 
     def export_resource(
         self,
-        obj,
+        obj: Model,
         selected_fields: list[fields.Field] | None = None,
         **kwargs,
     ) -> typing.Any:
@@ -395,7 +399,7 @@ class CeleryResourceMixin:
 
     def _export_resource(
         self,
-        obj,
+        obj: typing.Any,
         selected_fields: list[fields.Field] | None = None,
         **kwargs,
     ) -> typing.Any:
@@ -420,7 +424,7 @@ class CeleryResourceMixin:
         self,
         state: str,
         queryset: QuerySet | tablib.Dataset,
-    ):
+    ) -> None:
         """Set initial state of the task to track progress.
 
         Counts total number of instances to import/export and
@@ -449,7 +453,7 @@ class CeleryResourceMixin:
     def update_task_state(
         self,
         state: str,
-    ):
+    ) -> None:
         """Update state of the current event.
 
         Receives meta of the current task and increase the `current`. Task
@@ -485,14 +489,21 @@ class CeleryResourceMixin:
                 },
             )
 
-    def _update_current_task_state(self, state: str, meta: dict[str, int]):
+    def _update_current_task_state(
+        self,
+        state: str,
+        meta: dict[str, int],
+    ) -> None:
         """Update state of task where resource is executed."""
         celery.current_task.update_state(
             state=state,
             meta=meta,
         )
 
-    def generate_export_filename(self, file_format: base_formats.Format):
+    def generate_export_filename(
+        self,
+        file_format: base_formats.Format,
+    ) -> str:
         """Generate export filename."""
         return self._generate_export_filename_from_model(file_format)
 
@@ -503,7 +514,7 @@ class CeleryResourceMixin:
     def _generate_export_filename_from_model(
         self,
         file_format: base_formats.Format,
-    ):
+    ) -> str:
         """Generate export file name from model name."""
         model = self._meta.model._meta.verbose_name_plural
         date_str = timezone.now().strftime("%Y-%m-%d")

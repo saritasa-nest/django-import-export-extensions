@@ -32,7 +32,7 @@ class ExportForm(forms.Form):
         formats: list[type[base_formats.Format]],
         *args,
         **kwargs,
-    ):
+    ) -> None:
         super().__init__(*args, **kwargs)
         choices = []
         initial_choice = 0

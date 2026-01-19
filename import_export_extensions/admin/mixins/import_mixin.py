@@ -11,7 +11,7 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
-from django.urls import re_path, reverse
+from django.urls import URLPattern, re_path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from import_export import admin as import_export_admin
@@ -98,11 +98,11 @@ class CeleryImportAdminMixin(
     get_confirm_form_kwargs = import_export_admin.ImportMixin.get_confirm_form_kwargs  # noqa
     get_confirm_form_initial = import_export_admin.ImportMixin.get_confirm_form_initial  # noqa
 
-    def get_import_context_data(self, **kwargs):
+    def get_import_context_data(self, **kwargs) -> dict[str, typing.Any]:
         """Get context data for import."""
         return self.get_context_data(**kwargs)
 
-    def get_urls(self):
+    def get_urls(self) -> list[URLPattern]:
         """Return list of urls.
 
         * /<model>/<celery-import>/:
@@ -148,7 +148,7 @@ class CeleryImportAdminMixin(
         request: WSGIRequest,
         *args,
         **kwargs,
-    ):
+    ) -> HttpResponseRedirect | TemplateResponse:
         """Show and handle ImportForm.
 
         GET:
@@ -322,7 +322,7 @@ class CeleryImportAdminMixin(
         request: WSGIRequest,
         form: Form,
         resource: types.ResourceObj,
-    ):
+    ) -> models.ImportJob:
         """Create and return instance of import job."""
         return models.ImportJob.objects.create(
             resource_path=resource.class_path,
@@ -406,7 +406,7 @@ class CeleryImportAdminMixin(
         self,
         request: WSGIRequest,
         context: dict[str, typing.Any] | None = None,
-    ):
+    ) -> HttpResponse:
         """Add the check for permission to changelist template context."""
         context = context or {}
         context["has_import_permission"] = self.has_import_permission(request)

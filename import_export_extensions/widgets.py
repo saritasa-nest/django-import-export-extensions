@@ -1,3 +1,4 @@
+import collections.abc
 import mimetypes
 import typing
 from urllib.parse import urlparse
@@ -54,7 +55,7 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
         render_empty: bool = False,
         *args,
         **kwargs,
-    ):
+    ) -> None:
         """Init widget.
 
         Args:
@@ -80,8 +81,8 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
 
     def render(
         self,
-        value: typing.Iterable[Model],
-        obj=None,
+        value: collections.abc.Iterable[Model],
+        obj: typing.Any = None,
         *args,
         **kwargs,
     ) -> str:
@@ -290,13 +291,13 @@ class IntermediateManyToManyWidget(ManyToManyWidget):
 class FileWidget(CharWidget):
     """Widget for working with File fields."""
 
-    def __init__(self, filename: str):
+    def __init__(self, filename: str) -> None:
         self.filename = filename
 
     def render(
         self,
         value: FieldFile | None,
-        obj=None,
+        obj: typing.Any | None = None,
         **kwargs,
     ) -> str | None:
         """Convert DB value to URL to file."""
