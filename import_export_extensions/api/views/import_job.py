@@ -116,12 +116,11 @@ class ImportJobViewSet(
     this endpoint we return an instance of import.
 
     Endpoints:
-        list - to get list of all import jobs
-        details(retrieve) - to get status of import job
-        start - create import job and start parsing data from attached file
-        confirm - confirm import after parsing process is finished
-        cancel - stop importing/parsing process and cancel this import job
-
+        - list - to get list of all import jobs
+        - details(retrieve) - to get status of import job
+        - start - create import job and start parsing data from attached file
+        - confirm - confirm import after parsing process is finished
+        - cancel - stop importing/parsing process and cancel this import job
     """
 
     import_action_name = "start"
