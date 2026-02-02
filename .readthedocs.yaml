@@ -3,9 +3,9 @@
 version: 2
 # Set the version of Python and other tools you might need
 build:
-  os: ubuntu-22.04
+  os: ubuntu-24.04
   tools:
-    python: "3.12"
+    python: "3.14"
   jobs:
     # Job for install dependencies with poetry
     # Docs: https://docs.readthedocs.io/en/stable/build-customization.html#install-dependencies-with-poetry
@@ -16,6 +16,6 @@ build:
       # Install dependencies with 'docs' dependency group
       # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
       - VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH poetry install --with docs
-# Build documentation in the docs/ directory with Sphinx
-sphinx:
-  configuration: docs/conf.py
+# Build documentation via mkdocs
+mkdocs:
+  configuration: mkdocs.yml
