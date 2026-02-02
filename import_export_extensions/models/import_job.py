@@ -60,7 +60,7 @@ class ImportJob(BaseJob):
         * CANCELLED:
             import job has been cancelled (revoked)
 
-        State diagrams::
+        State diagrams:
 
             CREATED
                |

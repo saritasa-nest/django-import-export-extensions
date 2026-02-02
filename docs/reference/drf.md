@@ -1,72 +1,35 @@
-====================
-API (Rest Framework)
-====================
+# API (Rest Framework)
 
-.. autoclass:: import_export_extensions.api.ImportJobViewSet
-   :members:
+:::import_export_extensions.api.ImportJobViewSet
 
-.. autoclass:: import_export_extensions.api.ExportJobViewSet
-   :members:
+:::import_export_extensions.api.ExportJobViewSet
 
-.. autoclass:: import_export_extensions.api.ImportJobForUserViewSet
-   :members:
+:::import_export_extensions.api.ImportJobForUserViewSet
 
-.. autoclass:: import_export_extensions.api.ExportJobForUserViewSet
-   :members:
+:::import_export_extensions.api.ExportJobForUserViewSet
 
-.. autoclass:: import_export_extensions.api.BaseImportJobViewSet
-   :members:
+:::import_export_extensions.api.BaseImportJobViewSet
 
-.. autoclass:: import_export_extensions.api.BaseExportJobViewSet
-   :members:
+:::import_export_extensions.api.BaseExportJobViewSet
 
-.. autoclass:: import_export_extensions.api.BaseImportJobForUserViewSet
-   :members:
+:::import_export_extensions.api.BaseImportJobForUserViewSet
 
-.. autoclass:: import_export_extensions.api.BaseExportJobForUserViewSet
-   :members:
+:::import_export_extensions.api.BaseExportJobForUserViewSet
 
-.. autoclass:: import_export_extensions.api.LimitQuerySetToCurrentUserMixin
-   :members:
+:::import_export_extensions.api.LimitQuerySetToCurrentUserMixin
 
-.. autoclass:: import_export_extensions.api.ImportStartActionMixin
-   :members:
+:::import_export_extensions.api.ImportStartActionMixin
 
-.. autoclass:: import_export_extensions.api.ExportStartActionMixin
-   :members:
+:::import_export_extensions.api.ExportStartActionMixin
 
-.. autoclass:: import_export_extensions.api.CreateExportJob
-   :members: create, validate
+:::import_export_extensions.api.CreateExportJob
 
-.. autoclass:: import_export_extensions.api.CreateImportJob
-   :members: create, validate
+:::import_export_extensions.api.CreateImportJob
 
-.. autoclass:: import_export_extensions.api.ExportJobSerializer
-   :members:
+:::import_export_extensions.api.ExportJobSerializer
 
-.. autoclass:: import_export_extensions.api.ImportJobSerializer
-   :members:
+:::import_export_extensions.api.ImportJobSerializer
 
-.. autoclass:: import_export_extensions.api.ProgressSerializer
-   :members:
+:::import_export_extensions.api.ProgressSerializer
 
-    .. attribute:: info
-       :type: ProgressInfoSerializer
-       :value: {"current": 0, "total": 0}
-
-       Shows current and total imported/exported values
-
-.. autoclass:: import_export_extensions.api.ProgressInfoSerializer
-   :members:
-
-    .. attribute:: current
-       :type: int
-       :value: 0
-
-       Shows number of imported/exported objects
-
-    .. attribute:: total
-       :type: int
-       :value: 0
-
-       Shows total objects to import/export
+:::import_export_extensions.api.ProgressInfoSerializer

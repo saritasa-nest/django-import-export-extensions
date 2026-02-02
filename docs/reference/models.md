@@ -1,9 +1,5 @@
-======
-Models
-======
+# Models
 
-.. autoclass:: import_export_extensions.models.ExportJob
-   :members:
+:::import_export_extensions.models.ExportJob
 
-.. autoclass:: import_export_extensions.models.ImportJob
-   :members:
+:::import_export_extensions.models.ImportJob

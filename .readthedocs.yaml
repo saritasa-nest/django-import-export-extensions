@@ -16,6 +16,6 @@ build:
       # Install dependencies with 'docs' dependency group
       # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
       - VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH poetry install --with docs
-# Build documentation in the docs/ directory with Sphinx
-sphinx:
-  configuration: docs/conf.py
+# Build documentation via mkdocs
+mkdocs:
+  configuration: mkdocs.yml

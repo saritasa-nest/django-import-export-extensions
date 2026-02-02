@@ -1,1 +1,1 @@
-.. include:: ../HISTORY.rst
+../CHANGELOG.md

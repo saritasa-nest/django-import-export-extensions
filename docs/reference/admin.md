@@ -1,36 +1,23 @@
-=====
-Admin
-=====
+# Admin
 
-.. automodule:: import_export_extensions.admin.model_admins.export_job_admin
-   :members:
+:::import_export_extensions.admin.model_admins.export_job_admin
 
-.. automodule:: import_export_extensions.admin.model_admins.import_job_admin
-   :members:
+:::import_export_extensions.admin.model_admins.import_job_admin
 
-.. automodule:: import_export_extensions.admin.model_admins.mixins
-   :members:
+:::import_export_extensions.admin.model_admins.mixins
 
-.. automodule:: import_export_extensions.admin.forms.export_job_admin_form
-   :members:
+:::import_export_extensions.admin.forms.export_job_admin_form
 
-.. automodule:: import_export_extensions.admin.forms.import_job_admin_form
-   :members:
+:::import_export_extensions.admin.forms.import_job_admin_form
 
-.. automodule:: import_export_extensions.admin.forms.import_admin_form
-   :members:
+:::import_export_extensions.admin.forms.import_admin_form
 
-.. automodule:: import_export_extensions.admin.mixins.types
-   :members:
+:::import_export_extensions.admin.mixins.types
 
-.. automodule:: import_export_extensions.admin.mixins.export_mixin
-   :members:
+:::import_export_extensions.admin.mixins.export_mixin
 
-.. automodule:: import_export_extensions.admin.mixins.import_export_mixin
-   :members:
+:::import_export_extensions.admin.mixins.import_export_mixin
 
-.. automodule:: import_export_extensions.admin.mixins.import_mixin
-   :members:
+:::import_export_extensions.admin.mixins.import_mixin
 
-.. automodule:: import_export_extensions.admin.widgets
-   :members:
+:::import_export_extensions.admin.widgets
