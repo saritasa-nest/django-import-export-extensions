@@ -1,0 +1,59 @@
+site_name: django-import-export-extensions
+site_description: Extend functionality of django-import-export
+site_url: https://django-import-export-extensions.readthedocs.io/
+repo_url: https://github.com/saritasa-nest/django-import-export-extensions
+repo_name: django-import-export-extensions
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - search.share
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.path
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.emoji
+  - pymdownx.magiclink
+  - toc:
+      permalink: true
+nav:
+  - Home: index.md
+  - Installation and configuration: installation.md
+  - Getting started: getting_started.md
+  - Migrate from original django-import-export package: migrate_from_original_import_export.md
+  - Extensions: extensions.md
+  - Recipes and integrations tips: recipes_and_integration_tips.md
+  - Changelog: changelog.md
+  - Contributing: contributing.md
+  - Reference:
+      - Admin: "reference/admin.md"
+      - DRF: "reference/drf.md"
+      - Models: "reference/models.md"

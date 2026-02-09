@@ -43,7 +43,7 @@ class ExportJob(BaseJob):
         * EXPORTED:
             DB queryset exported, no errors occurred
 
-        State diagrams::
+        State diagrams:
 
             CREATED
                |
