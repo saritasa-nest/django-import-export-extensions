@@ -6,6 +6,8 @@ Unreleased
 ------------------
 
 * Support Django 6.0
+* Keep the IDs of search and filter results from the admin, instead of using
+  a reimplementation of the Django admin code
 
 1.9.2 (2025-11-6)
 ------------------

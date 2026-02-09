@@ -310,7 +310,7 @@ def test_export_using_get_params(
             "artistresourcewithm2m_instrument": "on",
         },
         follow=True,
-        QUERY_STRING=f"q={search_value}&instrument__title={instrument_title}",
+        QUERY_STRING=f"q=@{search_value}&instrument__title={instrument_title}",
     )
     assert response.status_code == status.HTTP_200_OK
 

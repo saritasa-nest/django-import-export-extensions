@@ -18,7 +18,7 @@ class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
         "instrument__title",
     )
     search_fields = (
-        "instrument__title",
+        "instrument__title__icontains",
         "name",
         # `@name`, `^name`, `=name` are about one model field but thanks for
         # first symbol they apply difference lookups in search.

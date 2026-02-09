@@ -3,6 +3,7 @@ import dataclasses
 import enum
 import functools
 import typing
+import warnings
 
 from django.conf import settings
 from django.core.exceptions import FieldError, ValidationError
@@ -125,11 +126,17 @@ class CeleryResourceMixin:
         queryset: QuerySet,
     ) -> QuerySet:
         """Filter queryset via admin filters."""
+        filters: dict[str, typing.Any] = {}
+        if admin_search_filters := self._admin_filters.get(
+            "search",
+            {},
+        ):  # pragma: no cover
+            filters.update(
+                **self._get_admin_search_filter(admin_search_filters),
+            )
+        filters.update(**self._admin_filters)
         return queryset.filter(
-            self._get_admin_search_filter(
-                self._admin_filters.pop("search", {}),
-            ),
-            **self._admin_filters,
+            **filters,
         )
 
     def order_queryset(
@@ -174,8 +181,17 @@ class CeleryResourceMixin:
             raise translate_validation(filter_instance.errors)
         return filter_instance.filter_queryset(queryset=queryset)
 
-    def _get_admin_search_filter(self, search_kwargs: dict[str, str]) -> Q:
+    def _get_admin_search_filter(
+        self,
+        search_kwargs: dict[str, str],
+    ) -> Q:  # pragma: no cover
         """Get admin search filter from search kwargs."""
+        warnings.warn(
+            "The method is deprecated and will be removed in future versions. "
+            "Admin filters are now purely pks filters.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         q_filter = Q()
         for key, value in search_kwargs.items():
             q_filter |= Q(**{key: value})
