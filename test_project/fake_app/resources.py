@@ -1,8 +1,10 @@
 from import_export.resources import ModelResource
 
 from import_export_extensions.fields import IntermediateManyToManyField
-from import_export_extensions.resources import CeleryModelResource, \
-    ResourceMixin
+from import_export_extensions.resources import (
+    CeleryModelResource,
+    ResourceMixin,
+)
 from import_export_extensions.widgets import IntermediateManyToManyWidget
 
 from .filters import ArtistFilterSet
@@ -10,6 +12,11 @@ from .models import Artist, Band
 
 
 class DjangoTasksArtisResource(ResourceMixin, ModelResource):
+    """Artist resource with simple fields.
+
+    Use the django.tasks module for async operations.
+
+    """
 
     filterset_class = ArtistFilterSet
 
@@ -17,14 +24,14 @@ class DjangoTasksArtisResource(ResourceMixin, ModelResource):
         model = Artist
         import_id_fields = ["external_id"]
         clean_model_instances = True
-        use_django_tasks = True
         fields = [
             "id",
             "external_id",
             "name",
             "instrument",
         ]
-
+        # Enable async export/import
+        use_django_tasks = True
 
     def initialize_task_state(
         self,
@@ -32,12 +39,15 @@ class DjangoTasksArtisResource(ResourceMixin, ModelResource):
         queryset,
     ):
         """"""
+        # TODO(otto): add logic or left empty
 
     def update_task_state(
         self,
         state: str,
     ):
         """"""
+        # TODO(otto): add logic or left empty
+
 
 class SimpleArtistResource(CeleryModelResource):
     """Artist resource with simple fields."""

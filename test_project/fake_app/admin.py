@@ -1,13 +1,17 @@
 from django.contrib import admin
 
-from import_export_extensions.admin import CeleryImportExportMixin
+from import_export_extensions.admin import ImportExportMixin
 
 from .models import Artist, Band, Instrument, Membership
-from .resources import ArtistResourceWithM2M, SimpleArtistResource, DjangoTasksArtisResource
+from .resources import (
+    ArtistResourceWithM2M,
+    DjangoTasksArtisResource,
+    SimpleArtistResource,
+)
 
 
 @admin.register(Artist)
-class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
+class ArtistAdmin(ImportExportMixin, admin.ModelAdmin):
     """Simple Artist admin model for tests."""
 
     list_display = (

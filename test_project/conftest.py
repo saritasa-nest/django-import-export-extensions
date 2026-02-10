@@ -12,6 +12,7 @@ def pytest_configure() -> None:
 
     """
     settings.TESTING = True
+    settings.CELERY_TASK_ALWAYS_EAGER = True
 
 
 @pytest.fixture(scope="session", autouse=True)

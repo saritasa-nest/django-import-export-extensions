@@ -1,5 +1,6 @@
-from celery import shared_task
 from django.tasks import task
+
+from celery import shared_task
 
 from . import models
 

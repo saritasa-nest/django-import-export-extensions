@@ -8,9 +8,7 @@ from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
 from django.utils.translation import gettext_lazy as _
 
-from django import tasks as django_tasks
-
-from celery import current_app, result, states, shared_task
+from celery import current_app, result, states
 from import_export.formats import base_formats
 
 from .. import signals
@@ -187,9 +185,7 @@ class ExportJob(BaseJob):
         from .. import tasks
 
         if getattr(self.resource.Meta, "use_django_tasks", False):
-            tasks.export_data_django_task.enqueue(
-                job_id=self.pk
-            )
+            tasks.export_data_django_task.enqueue(job_id=self.pk)
         else:
             tasks.export_data_task.apply_async(
                 kwargs=dict(job_id=self.pk),

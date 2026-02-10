@@ -16,6 +16,7 @@ DEFAULT_DRF_EXPORT_DJANGO_FILTERS_BACKEND = (
 DEFAULT_DRF_EXPORT_ORDERING_BACKEND = "rest_framework.filters.OrderingFilter"
 DEFAULT_IMPORT_EXPORT_USE_DJANGO_TASKS = False
 
+
 class ImportExportExtensions(AppConfig):
     """Default configuration for ImportExportExtensions app."""
 

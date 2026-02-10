@@ -388,7 +388,9 @@ class ResourceMixin:
         state: str,
         queryset: QuerySet | tablib.Dataset,
     ):
-        raise NotImplementedError("Extend resource with `initialize_task_state` function.")
+        raise NotImplementedError(
+            "Extend resource with `initialize_task_state` function.",
+        )
 
     def _export(
         self,
@@ -418,7 +420,9 @@ class ResourceMixin:
         self,
         state: str,
     ):
-        raise NotImplementedError("Extend resource with `update_task_state` function.")
+        raise NotImplementedError(
+            "Extend resource with `update_task_state` function.",
+        )
 
     def _export_resource(
         self,
@@ -461,7 +465,6 @@ class ResourceMixin:
 
 
 class CeleryResourceMixin(ResourceMixin):
-
     def __init__(
         self,
         update_celery_task_state: bool | None = None,

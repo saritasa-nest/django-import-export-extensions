@@ -4,8 +4,6 @@ from django.http import HttpRequest
 
 import decouple
 
-import os
-
 # Build paths inside the project like this: BASE_DIR / "subdir"
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 
@@ -33,13 +31,10 @@ INSTALLED_APPS = [
     "import_export",
     "import_export_extensions",
     "test_project.fake_app",
-
     # TODO(otto): tmp app for testing different backend for django.tasks
     "django_tasks",
     "django_tasks.backends.database",
-
     "django_rq",
-
 ]
 
 MIDDLEWARE = [
@@ -140,13 +135,6 @@ REST_FRAMEWORK = {
     "COMPONENT_SPLIT_REQUEST": True,  # Allows to upload import file from Swagger UI
 }
 
-# django.tasks settings
-TASKS = {
-    "default": {
-        "BACKEND": "django_tasks.backends.rq.RQBackend"
-    }
-}
-
 # Celery settings
 
 redis_host = decouple.config("REDIS_HOST", default="redis")
@@ -182,10 +170,13 @@ if DEBUG:
     }
 
 
+# django.tasks settings
+TASKS = {"default": {"BACKEND": "django_tasks.backends.rq.RQBackend"}}
+
 RQ_QUEUES = {
-    'default': {
-        'HOST': redis_host,
-        'PORT': redis_port,
-        'DB': redis_db,
-    }
+    "default": {
+        "HOST": redis_host,
+        "PORT": redis_port,
+        "DB": redis_db,
+    },
 }
