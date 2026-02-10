@@ -19,23 +19,22 @@ from ... import models
 from . import base_mixin, types
 
 
-# TODO(otto): rename - remove celery mentions
-class CeleryExportAdminMixin(
+class ExportAdminMixin(
     import_export_mixins.BaseExportMixin,
-    base_mixin.BaseCeleryImportExportAdminMixin,
+    base_mixin.BaseImportExportAdminMixin,
 ):
-    """Admin mixin for celery export.
+    """Admin mixin for export.
 
     Admin export work-flow is:
-        GET `celery_export_action()` - display form with format type input
+        GET `export_action()` - display form with format type input
 
-        POST `celery_export_action()` - create ExportJob and starts data export
+        POST `export_action()` - create ExportJob and starts data export
             This view redirects to next view:
 
-        GET `celery_export_job_status_view()` - display ExportJob status (with
+        GET `export_job_status_view()` - display ExportJob status (with
             progress bar). When data exporting is done, redirect to next view:
 
-        GET `celery_export_job_results_view()` - display export results. If no
+        GET `export_job_results_view()` - display export results. If no
             errors - success message and link to the file with exported data.
             If errors - traceback and error message.
 
@@ -49,14 +48,14 @@ class CeleryExportAdminMixin(
     )
 
     # template used to display ExportForm
-    celery_export_template_name = "admin/import_export/export.html"
+    export_template_name = "admin/import_export/export.html"
 
     export_status_template_name = (
-        "admin/import_export_extensions/celery_export_status.html"
+        "admin/import_export_extensions/export_status.html"
     )
 
     export_results_template_name = (
-        "admin/import_export_extensions/celery_export_results.html"
+        "admin/import_export_extensions/export_results.html"
     )
 
     import_export_change_list_template = (
@@ -81,23 +80,23 @@ class CeleryExportAdminMixin(
     def get_urls(self) -> list[URLPattern]:
         """Return list of urls.
 
-        /<model/celery-export/:
+        /<model/export/:
             ExportForm ('export_action' method)
-        /<model>/celery-export/<ID>/:
+        /<model>/export/<ID>/:
             status of ExportJob and progress bar ('export_job_status_view')
-        /<model>/celery-export/<ID>/results/:
+        /<model>/export/<ID>/results/:
             table with export results (errors)
 
         """
         urls = super().get_urls()
         export_urls = [
             re_path(
-                r"^celery-export/$",
-                self.admin_site.admin_view(self.celery_export_action),
+                r"^export/$",
+                self.admin_site.admin_view(self.export_action),
                 name=f"{self.model_info.app_model_name}_export",
             ),
             re_path(
-                r"^celery-export/(?P<job_id>\d+)/$",
+                r"^export/(?P<job_id>\d+)/$",
                 self.admin_site.admin_view(self.export_job_status_view),
                 name=(
                     f"{self.model_info.app_model_name}"
@@ -105,7 +104,7 @@ class CeleryExportAdminMixin(
                 ),
             ),
             re_path(
-                r"^celery-export/(?P<job_id>\d+)/results/$",
+                r"^export/(?P<job_id>\d+)/results/$",
                 self.admin_site.admin_view(
                     self.export_job_results_view,
                 ),
@@ -117,7 +116,7 @@ class CeleryExportAdminMixin(
         ]
         return export_urls + urls
 
-    def celery_export_action(
+    def export_action(
         self,
         request: WSGIRequest,
         *args,
@@ -189,7 +188,7 @@ class CeleryExportAdminMixin(
 
         return TemplateResponse(
             request=request,
-            template=[self.celery_export_template_name],
+            template=[self.export_template_name],
             context=context,
         )
 

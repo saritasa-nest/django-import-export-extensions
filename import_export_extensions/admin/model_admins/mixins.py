@@ -1,4 +1,3 @@
-
 from django.contrib.contenttypes.models import ContentType
 from django.core.handlers.wsgi import WSGIRequest
 from django.utils.module_loading import import_string

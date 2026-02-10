@@ -5,8 +5,7 @@ from import_export import admin as import_export_admin
 from . import types
 
 
-# TODO(otto): remove celery mention
-class BaseCeleryImportExportAdminMixin(
+class BaseImportExportAdminMixin(
     import_export_admin.ImportExportMixinBase,
 ):
     """Extend base mixin with common logic for import/export."""

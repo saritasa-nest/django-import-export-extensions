@@ -24,29 +24,29 @@ from ..forms import ForceImportForm
 from . import base_mixin, types
 
 
-class CeleryImportAdminMixin(
+class ImportAdminMixin(
     import_export_mixins.BaseImportMixin,
-    base_mixin.BaseCeleryImportExportAdminMixin,
+    base_mixin.BaseImportExportAdminMixin,
 ):
-    """Admin mixin for celery import.
+    """Admin mixin for import.
 
     Admin import work-flow is:
 
-    GET ``celery_import_action()`` - display form with import file input
+    GET ``import_action()`` - display form with import file input
 
-    POST ``celery_import_action()`` - save file and create ImportJob.
+    POST ``import_action()`` - save file and create ImportJob.
         This view redirects to next view:
 
-    GET ``celery_import_job_status_view()`` - display ImportJob status (with
+    GET ``import_job_status_view()`` - display ImportJob status (with
         progress bar and critical errors occurred). When data parsing is
         done, redirect to next view:
 
-    GET ``celery_import_job_results_view()`` - display rows that will be
+    GET ``import_job_results_view()`` - display rows that will be
         imported and data parse errors. If no errors - next step.
         If errors - display same form as in ``import_action()``
 
-    POST ``celery_import_job_results_view()`` - start data importing and
-        redirect back to GET ``celery_import_job_status_view()``
+    POST ``import_job_results_view()`` - start data importing and
+        redirect back to GET ``import_job_status_view()``
         with progress bar and import totals.
 
     """
@@ -61,16 +61,16 @@ class CeleryImportAdminMixin(
     results_statuses = models.ImportJob.results_statuses
 
     # Template used to display ImportForm
-    celery_import_template = "admin/import_export/import.html"
+    import_template = "admin/import_export/import.html"
 
     # Template used to display status of import jobs
     import_status_template = (
-        "admin/import_export_extensions/celery_import_status.html"
+        "admin/import_export_extensions/import_status.html"
     )
 
     # template used to display results of import jobs
     import_result_template_name = (
-        "admin/import_export_extensions/celery_import_results.html"
+        "admin/import_export_extensions/import_results.html"
     )
 
     import_export_change_list_template = (
@@ -105,35 +105,35 @@ class CeleryImportAdminMixin(
     def get_urls(self) -> list[URLPattern]:
         """Return list of urls.
 
-        * /<model>/<celery-import>/:
-            ImportForm ('celery_import_action' method)
-        * /<model>/<celery-import>/<ID>/:
+        * /<model>/<import>/:
+            ImportForm ('import_action' method)
+        * /<model>/<import>/<ID>/:
             status of ImportJob and progress bar
-            ('celery_import_job_status_view')
-        * /<model>/<celery-import>/<ID>/results/:
+            ('import_job_status_view')
+        * /<model>/<import>/<ID>/results/:
             table with import results (errors) and import confirmation
-            ('celery_import_job_results_view')
+            ('import_job_results_view')
 
         """
         urls = super().get_urls()
         import_urls = [
             re_path(
-                r"^celery-import/$",
-                self.admin_site.admin_view(self.celery_import_action),
+                r"^import/$",
+                self.admin_site.admin_view(self.import_action),
                 name=f"{self.model_info.app_model_name}_import",
             ),
             re_path(
-                r"^celery-import/(?P<job_id>\d+)/$",
-                self.admin_site.admin_view(self.celery_import_job_status_view),
+                r"^import/(?P<job_id>\d+)/$",
+                self.admin_site.admin_view(self.import_job_status_view),
                 name=(
                     f"{self.model_info.app_model_name}"
                     f"_import_job_status"
                 ),
             ),
             re_path(
-                r"^celery-import/(?P<job_id>\d+)/results/$",
+                r"^import/(?P<job_id>\d+)/results/$",
                 self.admin_site.admin_view(
-                    self.celery_import_job_results_view,
+                    self.import_job_results_view,
                 ),
                 name=(
                     f"{self.model_info.app_model_name}"
@@ -143,7 +143,7 @@ class CeleryImportAdminMixin(
         ]
         return import_urls + urls
 
-    def celery_import_action(
+    def import_action(
         self,
         request: WSGIRequest,
         *args,
@@ -194,11 +194,11 @@ class CeleryImportAdminMixin(
         request.current_app = self.admin_site.name
         return TemplateResponse(
             request,
-            [self.celery_import_template],
+            [self.import_template],
             context,
         )
 
-    def celery_import_job_status_view(
+    def import_job_status_view(
         self,
         request: WSGIRequest,
         job_id: int,
@@ -243,7 +243,7 @@ class CeleryImportAdminMixin(
             context=context,
         )
 
-    def celery_import_job_results_view(
+    def import_job_results_view(
         self,
         request: WSGIRequest,
         job_id: int,
@@ -304,7 +304,7 @@ class CeleryImportAdminMixin(
 
         # POST request
         if job.import_status == models.ImportJob.ImportStatus.PARSED:
-            # start celery task for data importing
+            # start  task for data importing
             job.confirm_import()
             return self._redirect_to_import_status_page(
                 request=request,

@@ -239,6 +239,7 @@ class ExportJob(BaseJob):
         )
 
         # send signal to celery to revoke task
+        # TODO(otto): move to celery model?
         current_app.control.revoke(self.export_task_id, terminate=True)
 
         self.export_status = self.ExportStatus.CANCELLED
@@ -268,6 +269,7 @@ class ExportJob(BaseJob):
             save=True,
         )
 
+    # TODO(otto): move to celery model?
     def _get_task_state(self, task_id: str) -> TaskStateInfo:
         """Get state info for passed task_id.
 

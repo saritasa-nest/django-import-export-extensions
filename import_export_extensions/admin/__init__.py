@@ -1,6 +1,6 @@
 from .mixins import (
-    CeleryExportAdminMixin,
-    CeleryImportAdminMixin,
-    CeleryImportExportMixin,
+    ExportAdminMixin,
+    ImportAdminMixin,
+    ImportExportMixin,
 )
 from .model_admins import ExportJobAdmin, ImportJobAdmin
