@@ -92,6 +92,7 @@ class ExportJob(BaseJob):
         max_length=36,
         null=True,
         blank=True,
+        # TODO(otto): remove celery mention
         help_text=_("Celery task ID that start `export_data`"),
     )
 
@@ -185,6 +186,7 @@ class ExportJob(BaseJob):
         from .. import tasks
 
         if getattr(self.resource.Meta, "use_django_tasks", False):
+            # TODO(otto): or use global setting
             tasks.export_data_django_task.enqueue(job_id=self.pk)
         else:
             tasks.export_data_task.apply_async(

@@ -39,7 +39,7 @@ class TaskState(enum.Enum):
 
 
 class ResourceMixin:
-    """Mixin for resources for background import/export using celery."""
+    """Mixin for resources for background import/export."""
 
     filterset_class: type[filters.FilterSet]
     SUPPORTED_FORMATS: list[type[base_formats.Format]] = (
@@ -465,6 +465,8 @@ class ResourceMixin:
 
 
 class CeleryResourceMixin(ResourceMixin):
+    """Mixin for resources for background import/export using celery."""
+
     def __init__(
         self,
         update_celery_task_state: bool | None = None,

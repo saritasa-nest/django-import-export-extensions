@@ -30,7 +30,7 @@ class DjangoTasksArtisResource(ResourceMixin, ModelResource):
             "name",
             "instrument",
         ]
-        # Enable async export/import
+        # Enable background export/import
         use_django_tasks = True
 
     def initialize_task_state(
@@ -40,6 +40,26 @@ class DjangoTasksArtisResource(ResourceMixin, ModelResource):
     ):
         """"""
         # TODO(otto): add logic or left empty
+        try:
+            from rq import get_current_job  # type: ignore
+        except Exception:  # pragma: no cover
+            return
+
+        job = get_current_job()
+        if job is None:
+            return
+
+        try:
+            total = queryset.count()
+        except Exception:
+            total = len(queryset)
+
+        self.total_objects_count = int(total)
+
+        job.meta["total"] = self.total_objects_count
+        job.meta["current"] = self.current_object_number
+        job.save_meta()
+
 
     def update_task_state(
         self,

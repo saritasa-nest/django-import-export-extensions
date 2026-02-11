@@ -31,11 +31,34 @@ INSTALLED_APPS = [
     "import_export",
     "import_export_extensions",
     "test_project.fake_app",
+
     # TODO(otto): tmp app for testing different backend for django.tasks
-    "django_tasks",
-    "django_tasks.backends.database",
+    # "django_tasks_db",
     "django_rq",
+    "django_tasks_rq",
 ]
+
+TASKS = {
+    "default": {
+        "BACKEND": "django.tasks.backends.immediate.ImmediateBackend"
+    }
+}
+
+# TODO(otto): django.tasks settings
+# TASKS = {
+#     "default": {
+#         "BACKEND": "django_tasks_db.DatabaseBackend",
+#         "QUEUES": ["default"]
+#     }
+# }
+
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks_rq.RQBackend",
+        "QUEUES": ["default"]
+    }
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -141,7 +164,15 @@ redis_host = decouple.config("REDIS_HOST", default="redis")
 redis_port = decouple.config("REDIS_PORT", default=6379, cast=int)
 redis_db = decouple.config("REDIS_DB", default=1, cast=int)
 
-CELERY_TASK_ALWAYS_EAGER = False
+RQ_QUEUES = {
+    'default': {
+        'HOST': redis_host,
+        'PORT': redis_port,
+        'DB': redis_db,
+    },
+}
+
+CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_STORE_EAGER_RESULT = True
 
 CELERY_TASK_SERIALIZER = "pickle"
@@ -168,15 +199,3 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": _show_toolbar_callback,
     }
-
-
-# django.tasks settings
-TASKS = {"default": {"BACKEND": "django_tasks.backends.rq.RQBackend"}}
-
-RQ_QUEUES = {
-    "default": {
-        "HOST": redis_host,
-        "PORT": redis_port,
-        "DB": redis_db,
-    },
-}
