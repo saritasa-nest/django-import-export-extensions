@@ -187,7 +187,9 @@ class ExportJob(BaseJob):
 
         if getattr(self.resource.Meta, "use_django_tasks", False):
             # TODO(otto): or use global setting
-            tasks.export_data_django_task.enqueue(job_id=self.pk)
+            task_result = tasks.export_data_django_task.enqueue( job_id=self.pk)
+            self.export_task_id = task_result.id
+            self.save(update_fields=["export_task_id"])
         else:
             tasks.export_data_task.apply_async(
                 kwargs=dict(job_id=self.pk),
@@ -245,6 +247,9 @@ class ExportJob(BaseJob):
 
     def _export_data_inner(self) -> None:
         """Run export process with saving to file."""
+        # TODO(otto): doesnt work
+        print(self.export_task_id)
+        print("Resource", self.resource.task_id)
         self.result = self.resource.export(**self.resource_kwargs)
         self.save(update_fields=["result"])
 
@@ -278,19 +283,40 @@ class ExportJob(BaseJob):
         In that case, job have status `importing`, but it can't be finished.
 
         """
-        async_result = result.AsyncResult(task_id)
-        if async_result.state not in states.EXCEPTION_STATES:
+        # async_result = result.AsyncResult(task_id)
+
+        import django_rq
+        from rq.job import Job
+
+        connection = django_rq.get_connection()
+        job = Job.fetch(task_id, connection=connection)
+        print(job)
+
+        if not job:
             return dict(
-                state=async_result.state,
-                info=async_result.info,
+                state="nothing state",
+                info={
+                    "total": 100,
+                    "current": 228,
+                },
+            )
+
+        print("Job:", job.get_status())
+        print(job.get_status() not in states.EXCEPTION_STATES)
+        if job.get_status() not in states.EXCEPTION_STATES:
+            print(job.get_status())
+            print(job.get_meta())
+            return dict(
+                state=job.get_status(),
+                info=job.get_meta(),
             )
 
         self._handle_error(
-            error_message=str(async_result.info),
-            traceback=str(async_result.traceback),
+            error_message=str(job.meta),
+            traceback="sorry error :(",
         )
         return dict(
-            state=async_result.state,
+            state=job.get_status(),
             info={},
         )
 

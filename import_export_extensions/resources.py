@@ -51,6 +51,7 @@ class ResourceMixin:
         filter_kwargs: dict[str, typing.Any] | None = None,
         ordering: collections.abc.Sequence[str] | None = None,
         created_by: typing.Any | None = None,
+        task_id = "",
         **kwargs,
     ) -> None:
         """Remember init kwargs."""
@@ -67,6 +68,7 @@ class ResourceMixin:
         self.resource_init_kwargs: dict[str, typing.Any] = kwargs
         self.total_objects_count = 0
         self.current_object_number = 0
+        self.task_id = task_id
         super().__init__()
 
     @functools.cached_property

@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     "django_tasks_rq",
 ]
 
-TASKS = {
-    "default": {
-        "BACKEND": "django.tasks.backends.immediate.ImmediateBackend"
-    }
-}
+# TASKS = {
+#     "default": {
+#         "BACKEND": "django.tasks.backends.immediate.ImmediateBackend"
+#     }
+# }
 
 # TODO(otto): django.tasks settings
 # TASKS = {

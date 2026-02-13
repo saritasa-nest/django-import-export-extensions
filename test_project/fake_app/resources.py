@@ -37,15 +37,24 @@ class DjangoTasksArtisResource(ResourceMixin, ModelResource):
         self,
         state: str,
         queryset,
+        task_id: str = ""
     ):
         """"""
         # TODO(otto): add logic or left empty
+        print("doesnt problem")
         try:
             from rq import get_current_job  # type: ignore
         except Exception:  # pragma: no cover
             return
 
-        job = get_current_job()
+        import django_rq
+        from rq.job import Job
+
+        print("task id ???")
+
+        connection = django_rq.get_connection()
+        job = Job.fetch(self.task_id, connection=connection)
+        print(job)
         if job is None:
             return
 
@@ -60,6 +69,8 @@ class DjangoTasksArtisResource(ResourceMixin, ModelResource):
         job.meta["current"] = self.current_object_number
         job.save_meta()
 
+        print(job.get_meta())
+
 
     def update_task_state(
         self,
@@ -67,6 +78,27 @@ class DjangoTasksArtisResource(ResourceMixin, ModelResource):
     ):
         """"""
         # TODO(otto): add logic or left empty
+
+        self.current_object_number += 1
+
+        is_reached_update_count = (
+            self.current_object_number % self.status_update_row_count == 0
+        )
+        is_last_object = self.current_object_number == self.total_objects_count
+
+        if is_reached_update_count or is_last_object:
+            import django_rq
+            from rq.job import Job
+
+            connection = django_rq.get_connection()
+            job = Job.fetch(self.task_id, connection=connection)
+
+            if job is None:
+                return
+
+            job.meta["total"] = self.total_objects_count
+            job.meta["current"] = self.current_object_number
+            job.save_meta()
 
 
 class SimpleArtistResource(CeleryModelResource):

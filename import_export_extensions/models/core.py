@@ -127,6 +127,7 @@ class BaseJob(TimeStampedModel):
         resource_class = module_loading.import_string(self.resource_path)
         resource = resource_class(
             created_by=self.created_by,
+            task_id=self.export_task_id,
             **self.resource_kwargs,
         )
         return resource

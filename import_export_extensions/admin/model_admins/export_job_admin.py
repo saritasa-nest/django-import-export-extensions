@@ -107,12 +107,14 @@ class ExportJobAdmin(
         job_progress = job.progress
         progress_info = job_progress["info"]
 
-        if progress_info and progress_info["total"]:
+        if progress_info and progress_info.get("total"):
             total = progress_info["total"]
             current = progress_info["current"]
             percent = int(100 / total * current)
 
+        # TODO(otto): add dataclass
         response_data.update(
+            # TODO(otto): do we need state?
             state=job_progress["state"],
             percent=percent,
             total=total,
