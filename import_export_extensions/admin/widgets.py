@@ -36,9 +36,9 @@ class ProgressBarWidget(forms.Widget):
     class Media:
         """Class with custom assets for widget."""
 
-        css = dict(
-            all=("import_export_extensions/css/widgets/progress_bar.css",),
-        )
+        css = {
+            "all": ("import_export_extensions/css/widgets/progress_bar.css",),
+        }
         js = (
             "admin/js/jquery.init.js",
             "import_export_extensions/js/widgets/progress_bar.js",

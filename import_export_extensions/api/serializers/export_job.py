@@ -87,11 +87,11 @@ class CreateExportJob(serializers.Serializer):
         return models.ExportJob.objects.create(
             resource_path=self.resource_class.class_path,
             file_format_path=f"{file_format_class.__module__}.{file_format_class.__name__}",
-            resource_kwargs=dict(
-                ordering=self._ordering,
-                filter_kwargs=self._filter_kwargs,
+            resource_kwargs={
+                "ordering": self._ordering,
+                "filter_kwargs": self._filter_kwargs,
                 **self._resource_kwargs,
-            ),
+            },
             created_by=self._user,
         )
 

@@ -14,7 +14,7 @@ from test_project.fake_app.factories import ArtistImportJobFactory
     argvalues=[
         pytest.param(
             ImportJob.ImportStatus.CREATED,
-            tuple(),
+            (),
             id="Get fieldsets for job in status CREATED",
         ),
         pytest.param(

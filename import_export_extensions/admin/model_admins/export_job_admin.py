@@ -92,11 +92,11 @@ class ExportJobAdmin(
             )
         except self.export_job_model.DoesNotExist as error:
             return JsonResponse(
-                dict(validation_error=error.args[0]),
+                {"validation_error": error.args[0]},
                 status=http.HTTPStatus.NOT_FOUND,
             )
 
-        response_data = dict(status=job.export_status.title())
+        response_data = {"status": job.export_status.title()}
 
         if job.export_status != models.ExportJob.ExportStatus.EXPORTING:
             return JsonResponse(response_data)

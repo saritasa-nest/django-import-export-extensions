@@ -325,7 +325,7 @@ class CeleryExportAdminMixin(
         url_name = (
             f"admin:{self.model_info.app_model_name}_export_job_status"
         )
-        url = reverse(url_name, kwargs=dict(job_id=job.id))
+        url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url
         return HttpResponseRedirect(redirect_to=url)
@@ -339,7 +339,7 @@ class CeleryExportAdminMixin(
         url_name = (
             f"admin:{self.model_info.app_model_name}_export_job_results"
         )
-        url = reverse(url_name, kwargs=dict(job_id=job.id))
+        url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url
         return HttpResponseRedirect(redirect_to=url)

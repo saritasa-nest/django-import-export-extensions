@@ -284,7 +284,7 @@ class ImportJob(BaseJob):
         from .. import tasks
 
         tasks.parse_data_task.apply_async(
-            kwargs=dict(job_id=self.pk),
+            kwargs={"job_id": self.pk},
             task_id=self.parse_task_id,
         )
 
@@ -372,7 +372,7 @@ class ImportJob(BaseJob):
         from .. import tasks
 
         tasks.import_data_task.apply_async(
-            kwargs=dict(job_id=self.pk),
+            kwargs={"job_id": self.pk},
             task_id=self.import_task_id,
         )
 
@@ -514,14 +514,14 @@ class ImportJob(BaseJob):
                 error_message=str(async_result.info),
                 traceback=str(async_result.traceback),
             )
-            return dict(
-                state=async_result.state,
-                info={},
-            )
-        return dict(
-            state=async_result.state,
-            info=async_result.info,
-        )
+            return {
+                "state": async_result.state,
+                "info": {},
+            }
+        return {
+            "state": async_result.state,
+            "info": async_result.info,
+        }
 
     def _handle_error(
         self,

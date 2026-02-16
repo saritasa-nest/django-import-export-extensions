@@ -30,7 +30,7 @@ class RowResult(results.RowResult):
     def __init__(self) -> None:
         """Copy of base init except creating validation error field."""
         self.non_field_skipped_errors: list[results.Error] = []
-        self.field_skipped_errors: dict[str, list[ValidationError]] = dict()
+        self.field_skipped_errors: dict[str, list[ValidationError]] = {}
         self.errors: list[Error] = []
         self.diff: list[str] | None = None
         self.import_type = None
