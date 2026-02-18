@@ -2,11 +2,10 @@ from django.contrib import admin
 
 from import_export_extensions.admin import CeleryImportExportMixin
 
-from .models import Artist, Band, Instrument, Membership
-from .resources import ArtistResourceWithM2M, SimpleArtistResource
+from . import models, resources
 
 
-@admin.register(Artist)
+@admin.register(models.Artist)
 class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
     """Simple Artist admin model for tests."""
 
@@ -30,18 +29,23 @@ class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
         "^name",
         "=name",
     )
-    resource_classes = [ArtistResourceWithM2M, SimpleArtistResource]
+    resource_classes = (
+        resources.ArtistResourceWithM2M,
+        resources.SimpleArtistResource,
+    )
 
 
-@admin.register(Instrument)
+@admin.register(models.Instrument)
 class InstrumentAdmin(admin.ModelAdmin):
     """Simple Instrument admin model for tests."""
 
-    list_display = ("title",)
+    list_display = (
+        "title",
+    )
 
 
-@admin.register(Band)
-class BandAdmin(admin.ModelAdmin):
+@admin.register(models.Band)
+class BandAdmin(CeleryImportExportMixin, admin.ModelAdmin):
     """Band admin model for tests."""
 
     list_display = (
@@ -52,9 +56,12 @@ class BandAdmin(admin.ModelAdmin):
         "id",
         "title",
     )
+    resource_classes = (
+        resources.BandResourceWithM2M,
+    )
 
 
-@admin.register(Membership)
+@admin.register(models.Membership)
 class MembershipAdmin(admin.ModelAdmin):
     """Membership admin model for tests."""
 

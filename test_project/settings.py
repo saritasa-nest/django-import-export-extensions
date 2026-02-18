@@ -7,7 +7,7 @@ import decouple
 # Build paths inside the project like this: BASE_DIR / "subdir"
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 
-SECRET_KEY = "a87082n4v52u4rnvk2edv128eudfvn5"  # noqa: S105
+SECRET_KEY = "dummy-secret-key"  # noqa: S105
 
 ALLOWED_HOSTS = ["*"]
 
