@@ -126,12 +126,12 @@ werkzeug = "^3.0.4"
 psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.docs.dependencies]
-# Package for documentation generation
-# https://www.sphinx-doc.org/en/master/
-sphinx = "<9"
-# Theme for documentation
-# https://github.com/pradyunsg/furo
-furo = ">=2024.8.6,<2026.0.0"
+# Documentation that simply works
+# https://squidfunk.github.io/mkdocs-material/
+mkdocs-material = "^9.7.1"
+# Automatic documentation from sources, for MkDocs
+# https://mkdocstrings.github.io/
+mkdocstrings = {extras = ["python"], version = "^1.0.2"}
 
 [tool.poetry.group.local.dependencies]
 # A Python library for parsing and creating TOML
