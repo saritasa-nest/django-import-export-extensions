@@ -13,6 +13,7 @@ from .. import forms
 from . import mixins
 
 
+@admin.register(models.ExportJob)
 class ExportJobAdmin(
     mixins.BaseImportExportJobAdminMixin,
     admin.ModelAdmin,
@@ -25,16 +26,17 @@ class ExportJobAdmin(
         "id",
         "export_status",
         "_model",
+        "created_by",
+        "created",
         "export_started",
         "export_finished",
-        "created",
-        "created_by",
     )
     list_display_links = (
         "id",
         "export_status",
         "_model",
     )
+    date_hierarchy = "created"
     export_job_model = models.ExportJob
     list_filter = ("export_status",)
     list_select_related = ("created_by",)
@@ -50,6 +52,7 @@ class ExportJobAdmin(
         "export_finished",
         "error_message",
         "_model",
+        "created_by",
         "resource_path",
         "data_file",
         "resource_kwargs",
@@ -132,6 +135,7 @@ class ExportJobAdmin(
                 "fields": (
                     "export_status",
                     "_model",
+                    "created_by",
                     "created",
                     "export_started",
                     "export_finished",
@@ -198,6 +202,3 @@ class ExportJobAdmin(
                 )
             except ValueError as error:
                 self.message_user(request, str(error), messages.ERROR)
-
-
-admin.site.register(models.ExportJob, ExportJobAdmin)

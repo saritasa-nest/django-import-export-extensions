@@ -15,6 +15,7 @@ from .. import forms
 from . import mixins
 
 
+@admin.register(models.ImportJob)
 class ImportJobAdmin(
     mixins.BaseImportExportJobAdminMixin,
     admin.ModelAdmin,
@@ -38,6 +39,7 @@ class ImportJobAdmin(
         "import_status",
         "_model",
     )
+    date_hierarchy = "created"
     import_job_model = models.ImportJob
     list_filter = ("import_status",)
     list_select_related = ("created_by",)
@@ -168,7 +170,7 @@ class ImportJobAdmin(
             dict(result=job.result),
         )
 
-    _input_errors.short_description = "Import data"
+    _input_errors.short_description = _("Import data")
     _input_errors.allow_tags = True
 
     def get_fieldsets(
@@ -273,6 +275,3 @@ class ImportJobAdmin(
                 )
             except ValueError as error:
                 self.message_user(request, str(error), messages.ERROR)
-
-
-admin.site.register(models.ImportJob, ImportJobAdmin)

@@ -18,6 +18,7 @@ from test_project.fake_app.factories import ArtistExportJobFactory
                 (
                     "export_status",
                     "_model",
+                    "created_by",
                     "created",
                     "export_started",
                     "export_finished",
@@ -31,6 +32,7 @@ from test_project.fake_app.factories import ArtistExportJobFactory
                 (
                     "export_status",
                     "_model",
+                    "created_by",
                     "created",
                     "export_started",
                     "export_finished",
@@ -55,6 +57,7 @@ from test_project.fake_app.factories import ArtistExportJobFactory
                 (
                     "export_status",
                     "_model",
+                    "created_by",
                     "created",
                     "export_started",
                     "export_finished",

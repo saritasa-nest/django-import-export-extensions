@@ -1,4 +1,3 @@
-
 from django.contrib.contenttypes.models import ContentType
 from django.core.handlers.wsgi import WSGIRequest
 from django.utils.module_loading import import_string
@@ -41,6 +40,8 @@ class BaseImportExportJobAdminMixin:
         except (ImportError, AttributeError):  # pragma: no cover
             model = _("Unknown")
         return model
+
+    _model.short_description = _("Model")
 
     def get_from_content_type(
         self,
