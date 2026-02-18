@@ -6,17 +6,17 @@
 
 [![Build status on Github](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml/badge.svg)](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml)
 [![Test coverage](https://coveralls.io/repos/github/saritasa-nest/django-import-export-extensions/badge.svg?branch=main)](https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main)
-[![Documentation Status](https://readthedocs.org/projects/django-import-export-extensions/badge/?version=latest)](https://django-import-export-extensions.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/publish_docs.yml/badge.svg)](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/publish_docs.yml)
 
  ![PyPI Downloads](https://static.pepy.tech/badge/django-import-export-extensions/month)
 
 ## Links
 
-- [Documentation](https://django-import-export-extensions.readthedocs.io)
+- [Documentation](https://saritasa-nest.github.io/django-import-export-extensions/)
 - [GitHub](https://github.com/saritasa-nest/django-import-export-extensions)
 - [PyPI](https://pypi.org/project/django-import-export-extensions)
-- [Contributing](https://django-import-export-extensions.readthedocs.io/en/stable/contributing.html)
-- [History](https://django-import-export-extensions.readthedocs.io/en/stable/history.html)
+- [Contributing](https://saritasa-nest.github.io/django-import-export-extensions/contributing/)
+- [Changelog](https://saritasa-nest.github.io/django-import-export-extensions/changelog/)
 
 ## Description
 
