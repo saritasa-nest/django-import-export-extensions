@@ -1,0 +1,24 @@
+name: Publish latest documentation to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: "pyproject.toml"
+      - name: Install docs dependencies
+        run: poetry install --with docs
+      - name: Build and deploy documentation to GitHub Pages
+        run: poetry run mkdocs gh-deploy --force
