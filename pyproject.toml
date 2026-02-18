@@ -132,6 +132,9 @@ mkdocs-material = "^9.7.1"
 # Automatic documentation from sources, for MkDocs
 # https://mkdocstrings.github.io/
 mkdocstrings = {extras = ["python"], version = "^1.0.2"}
+# Manage multiple versions of your MkDocs-powered documentation
+# https://github.com/jimporter/mike
+mike = "^2.1.3"
 
 [tool.poetry.group.local.dependencies]
 # A Python library for parsing and creating TOML

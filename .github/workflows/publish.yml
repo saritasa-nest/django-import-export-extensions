@@ -37,10 +37,13 @@ jobs:
             echo "::error::Git tag ($TAG) does not match pyproject version ($VERSION)" >&2
             exit 1
           fi
-          echo "package_version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "package-version=$VERSION" >> "$GITHUB_OUTPUT"
       - name: Build artifacts (dist)
         run: |
           poetry build
+      - name: Publish new docs version
+        run: |
+          poetry install --with docs && poetry run mike deploy --push --update-aliases {{  steps.version-check.outputs.package-version }} latest
       - name: Publish to PyPI (Trusted Publisher)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:

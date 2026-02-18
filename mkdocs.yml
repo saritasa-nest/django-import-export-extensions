@@ -1,22 +1,32 @@
 site_name: django-import-export-extensions
 site_description: Extend functionality of django-import-export
-site_url: https://django-import-export-extensions.readthedocs.io/
-repo_url: https://github.com/saritasa-nest/django-import-export-extensions
+site_url: https://saritasa-nest.github.io/django-import-export-extensions/
+repo_url: https://github.com/saritasa-nest/django-import-export-extensions/
 repo_name: django-import-export-extensions
 theme:
   name: material
+  favicon: _static/favicon.png
   palette:
-    - scheme: default
-      primary: orange
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      primary: custom
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     # Palette toggle for dark mode
-    - scheme: slate
-      primary: orange
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
       toggle:
         icon: material/brightness-4
-        name: Switch to light mode
+        name: Switch to system preference
   features:
     - search.suggest
     - search.highlight
@@ -28,6 +38,8 @@ theme:
     - content.code.annotate
     - content.code.copy
     - content.tooltips
+extra_css:
+  - _static/custom_color.css
 plugins:
   - search
   - autorefs
@@ -57,3 +69,6 @@ nav:
       - Admin: "reference/admin.md"
       - DRF: "reference/drf.md"
       - Models: "reference/models.md"
+extra:
+  version:
+    provider: mike
