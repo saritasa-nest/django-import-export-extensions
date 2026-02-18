@@ -229,12 +229,12 @@ class CeleryImportAdminMixin(
         context = self.get_import_context_data()
         job_url = reverse("admin:import_job_progress", args=(job.id,))
         context.update(
-            dict(
-                title=_("Import status"),
-                opts=self.model_info.meta,
-                import_job=job,
-                import_job_url=job_url,
-            ),
+            {
+                "title": _("Import status"),
+                "opts": self.model_info.meta,
+                "import_job": job,
+                "import_job_url": job_url,
+            },
         )
         request.current_app = self.admin_site.name
         return TemplateResponse(
@@ -359,7 +359,7 @@ class CeleryImportAdminMixin(
         url_name = (
             f"admin:{self.model_info.app_model_name}_import_job_status"
         )
-        url = reverse(url_name, kwargs=dict(job_id=job.id))
+        url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url
         return HttpResponseRedirect(redirect_to=url)
@@ -373,7 +373,7 @@ class CeleryImportAdminMixin(
         url_name = (
             f"admin:{self.model_info.app_model_name}_import_job_results"
         )
-        url = reverse(url_name, kwargs=dict(job_id=job.id))
+        url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url
         if job.import_status != models.ImportJob.ImportStatus.PARSED:

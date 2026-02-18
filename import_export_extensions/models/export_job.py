@@ -185,7 +185,7 @@ class ExportJob(BaseJob):
         from .. import tasks
 
         tasks.export_data_task.apply_async(
-            kwargs=dict(job_id=self.pk),
+            kwargs={"job_id": self.pk},
             task_id=self.export_task_id,
         )
 
@@ -273,19 +273,19 @@ class ExportJob(BaseJob):
         """
         async_result = result.AsyncResult(task_id)
         if async_result.state not in states.EXCEPTION_STATES:
-            return dict(
-                state=async_result.state,
-                info=async_result.info,
-            )
+            return {
+                "state": async_result.state,
+                "info": async_result.info,
+            }
 
         self._handle_error(
             error_message=str(async_result.info),
             traceback=str(async_result.traceback),
         )
-        return dict(
-            state=async_result.state,
-            info={},
-        )
+        return {
+            "state": async_result.state,
+            "info": {},
+        }
 
     def _handle_error(
         self,

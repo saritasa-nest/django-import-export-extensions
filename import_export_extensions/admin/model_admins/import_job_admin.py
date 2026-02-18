@@ -108,11 +108,11 @@ class ImportJobAdmin(
             )
         except self.import_job_model.DoesNotExist as error:
             return JsonResponse(
-                dict(validation_error=error.args[0]),
+                {"validation_error": error.args[0]},
                 status=http.HTTPStatus.NOT_FOUND,
             )
 
-        response_data = dict(status=job.import_status.title())
+        response_data = {"status": job.import_status.title()}
 
         if job.import_status not in models.ImportJob.progress_statuses:
             return JsonResponse(response_data)
@@ -165,7 +165,7 @@ class ImportJobAdmin(
         template = "admin/import_export_extensions/import_job_results.html"
         return render_to_string(
             template,
-            dict(result=job.result),
+            {"result": job.result},
         )
 
     _input_errors.short_description = "Import data"
