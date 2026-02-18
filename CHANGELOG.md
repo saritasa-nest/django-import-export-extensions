@@ -6,6 +6,12 @@
 - Keep the IDs of search and filter results from the admin, instead of using
   a reimplementation of the Django admin code
 - Migrate to MKDocs from Sphinx for documentation generation
+- Minor improvements for import/export admins:
+  - Display `Created by` on detail page for export
+  - Add filter by `created` date both for export/import admin list pages
+  - Fix `created_by` for export by django-admin - now user who makes export
+    saves correct
+  - Rename `model` property to `Model` for export/import admin detail pages
 
 ## 1.9.2 (2025-11-6)
 

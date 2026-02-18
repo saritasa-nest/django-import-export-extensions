@@ -280,6 +280,7 @@ class CeleryExportAdminMixin(
         job = models.ExportJob.objects.create(
             resource_path=resource_class.class_path,
             resource_kwargs=resource_kwargs,
+            created_by=request.user,
             file_format_path=(
                 f"{file_format.__module__}.{file_format.__name__}"
             ),
