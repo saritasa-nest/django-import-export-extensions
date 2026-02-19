@@ -1,0 +1,1337 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Extend functionality of django-import-export">
+      
+      
+      
+        <link rel="canonical" href="https://saritasa-nest.github.io/django-import-export-extensions/extensions/">
+      
+      
+        <link rel="prev" href="../migrate_from_original_import_export/">
+      
+      
+        <link rel="next" href="../recipes_and_integration_tips/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../_static/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Extensions - django-import-export-extensions</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../_static/custom_color.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#extensions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="django-import-export-extensions" class="md-header__button md-logo" aria-label="django-import-export-extensions" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            django-import-export-extensions
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Extensions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/saritasa-nest/django-import-export-extensions/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    django-import-export-extensions
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="django-import-export-extensions" class="md-nav__button md-logo" aria-label="django-import-export-extensions" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    django-import-export-extensions
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/saritasa-nest/django-import-export-extensions/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    django-import-export-extensions
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation and configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrate_from_original_import_export/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migrate from original django-import-export package
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extensions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#importjobexportjob-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ImportJob/ExportJob models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#celery-admin-mixins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Celery admin mixins
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ViewSets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Force import
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Force import">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Admin page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widgets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filewidget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FileWidget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intermediatemanytomanywidget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IntermediateManyToManyWidget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-resultxlsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result (result.xlsx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fields">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#intermediatemanytomanyfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IntermediateManyToManyField
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes_and_integration_tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipes and integrations tips
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/drf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DRF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#importjobexportjob-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ImportJob/ExportJob models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#celery-admin-mixins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Celery admin mixins
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ViewSets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Force import
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Force import">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Admin page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widgets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filewidget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FileWidget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intermediatemanytomanywidget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IntermediateManyToManyWidget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-resultxlsx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result (result.xlsx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fields">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#intermediatemanytomanyfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IntermediateManyToManyField
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="extensions">Extensions<a class="headerlink" href="#extensions" title="Permanent link">&para;</a></h1>
+<p>This package is an extension of the original <code>django-import-export</code>, so for more information
+on the import/export process and advanced resource usage, refer
+<a href="https://django-import-export.readthedocs.io/en/latest/index.html">the official django-import-export documentation</a>.</p>
+<p>The following section describes the features added by this package.</p>
+<h2 id="importjobexportjob-models">ImportJob/ExportJob models<a class="headerlink" href="#importjobexportjob-models" title="Permanent link">&para;</a></h2>
+<p><code>django-import-export-extensions</code> provides the <code>ImportJob</code> and <code>ExportJob</code> models to store all
+information related to the import/export process. Additionally, these models are involved
+in the background import/export tasks.</p>
+<p>The job models are already registered in Django Admin and come with custom forms that display all
+relevant job information, including the current import/export status.</p>
+<p><img alt="Example of custom form for ImportJob details in Django Admin" src="../_static/images/import-job-admin.png" /></p>
+<p><code>ImportJob</code>/<code>ExportJob</code> models contain useful properties and methods for managing
+the import/export process. To learn more, see the <a href="../reference/models/">Models API documentation</a>.</p>
+<h2 id="celery-admin-mixins">Celery admin mixins<a class="headerlink" href="#celery-admin-mixins" title="Permanent link">&para;</a></h2>
+<p>The admin mixins have been completely rewritten, although they still inherit from the base mixins:
+<code>mixins.BaseImportMixin</code>, <code>mixins.BaseExportMixin</code>, and <code>admin.ImportExportMixinBase</code>.
+The new Celery admin mixins add pages for displaying import/export status and use custom templates
+for both the status and results pages.</p>
+<p>After starting the import/export process, you will be redirected to the status page.
+Once the import/export is complete, you will then be redirected to the results page.</p>
+<p><img alt="A screenshot of Django Admin export status page" src="../_static/images/export-status.png" /></p>
+<h2 id="viewsets">ViewSets<a class="headerlink" href="#viewsets" title="Permanent link">&para;</a></h2>
+<p>The <code>ImportJobViewSet</code> and <code>ExportJobViewSet</code> viewsets make it easy to implement
+import/export functionality via API. To use them, simply create a custom class
+and set the <code>resource_class</code> attribute:</p>
+<div class="highlight"><span class="filename">api/views.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">import_export_extensions.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">views</span> <span class="k">as</span> <span class="n">import_export_views</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">resources</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BandImportViewSet</span><span class="p">(</span><span class="n">import_export_views</span><span class="o">.</span><span class="n">ImportJobViewSet</span><span class="p">):</span>
+    <span class="n">resource_class</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">BandResource</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BandExportViewSet</span><span class="p">(</span><span class="n">import_export_views</span><span class="o">.</span><span class="n">ExportJobViewSet</span><span class="p">):</span>
+    <span class="n">resource_class</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">BandResource</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">api/urls.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.routers</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultRouter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">views</span>
+
+<span class="n">band_import_export_router</span> <span class="o">=</span> <span class="n">DefaultRouter</span><span class="p">()</span>
+<span class="n">band_import_export_router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="s2">&quot;import-band&quot;</span><span class="p">,</span>
+    <span class="n">views</span><span class="o">.</span><span class="n">BandImportViewSet</span><span class="p">,</span>
+    <span class="n">basename</span><span class="o">=</span><span class="s2">&quot;import-band&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">band_import_export_router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="s2">&quot;export-band&quot;</span><span class="p">,</span>
+    <span class="n">views</span><span class="o">.</span><span class="n">BandExportViewSet</span><span class="p">,</span>
+    <span class="n">basename</span><span class="o">=</span><span class="s2">&quot;export-band&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">band_import_export_router</span><span class="o">.</span><span class="n">urls</span>
+</code></pre></div>
+<p>By default, all import/export jobs for the set <code>resource_class</code> will be available,
+but you can override the <code>get_queryset</code> method to customize this behavior. Additionally, you can
+override the <code>get_resource_kwargs</code> method to provide custom values in the resource class
+(e.g., for the start action).</p>
+<p>These viewsets provide all the methods required for the full import/export workflow: start, details,
+confirm, cancel, and list actions. There is also integration with
+<a href="https://github.com/tfranzel/drf-spectacular">drf-spectacular</a>. If you have it installed,
+you can view the generated OpenAPI UI for these viewsets.</p>
+<p><img alt="A screenshot of autogenerated OpenAPI specification" src="../_static/images/bands-openapi.png" /></p>
+<h2 id="filters">Filters<a class="headerlink" href="#filters" title="Permanent link">&para;</a></h2>
+<p>The <code>CeleryResource</code> and <code>CeleryModelResource</code> classes also support
+<a href="https://django-filter.readthedocs.io/">django-filter</a> to filter the queryset for export.
+To use this feature, set the <code>filterset_class</code> attribute on your resource class and pass
+filter parameters as the <code>filter_kwargs</code> argument to the resource:</p>
+<div class="highlight"><span class="filename">api/filters.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">django_filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">rest_framework</span> <span class="k">as</span> <span class="n">filters</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BandFilterSet</span><span class="p">(</span><span class="n">filters</span><span class="o">.</span><span class="n">FilterSet</span><span class="p">):</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Band</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">resources.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">import_export_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">resources</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">filters</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BandResource</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CeleryModelResource</span><span class="p">):</span>
+
+    <span class="n">filterset_class</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">BandFilterSet</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Band</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+</code></pre></div>
+<p>If <code>filterset_class</code> is set for your resource, you can pass <code>filter_kwargs</code> to filter export
+queryset:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">BandResource</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Band</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Band</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">([</span><span class="n">Band</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span> <span class="k">for</span> <span class="n">title</span> <span class="ow">in</span> <span class="s2">&quot;ABC&quot;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BandResource</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">filter_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">band_resource_with_filters</span> <span class="o">=</span> <span class="n">BandResource</span><span class="p">(</span><span class="n">filter_kwargs</span><span class="o">=</span><span class="n">filter_kwargs</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">band_resource_with_filters</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">1</span>
+</code></pre></div>
+<p>Pass <code>filter_kwargs</code> in <code>resource_kwargs</code> argument to create <code>ExportJob</code> with filtered queryset:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span> <span class="o">=</span> <span class="n">ExportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">resource_path</span><span class="o">=</span><span class="n">BandResource</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
+        <span class="n">file_format_path</span><span class="o">=</span><span class="n">file_format_path</span><span class="p">,</span>
+        <span class="n">resource_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;filter_kwargs&quot;</span><span class="p">:</span> <span class="n">filter_kwargs</span><span class="p">},</span>
+    <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">export_job</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+<span class="mi">1</span>
+</code></pre></div>
+<p>Since we are using the Django REST Framework filter set, the <code>ExportJobViewSet</code> also supports it.
+It automatically uses the filter set defined in the <code>resource_class</code>. You can see that the start
+action expects query parameters for filtering:</p>
+<p><img alt="Filters in OpenAPI" src="../_static/images/filters-openapi.png" /></p>
+<h2 id="force-import">Force import<a class="headerlink" href="#force-import" title="Permanent link">&para;</a></h2>
+<p>This package includes a "force import" feature. When enabled, rows with errors will be skipped,
+and the remaining rows will be processed.</p>
+<h3 id="admin-page">Admin page<a class="headerlink" href="#admin-page" title="Permanent link">&para;</a></h3>
+<p>This functionality available in admin:</p>
+<p><img alt="Force import admin" src="../_static/images/force_import_admin.png" /></p>
+<p>If any rows contain errors, they will be reported during the parse/import stage:</p>
+<p><img alt="Force import results" src="../_static/images/force_import_results.png" /></p>
+<h3 id="api">API<a class="headerlink" href="#api" title="Permanent link">&para;</a></h3>
+<p>In the API, there are two additional fields: <code>force_import</code> and <code>skip_parse_step</code>.</p>
+<ul>
+<li>
+<p><code>force_import</code> - Allows you to skip rows with errors.</p>
+</li>
+<li>
+<p><code>skip_parse_step</code> - Enables you to run the import task immediately, without needing to call the <code>confirm</code> endpoint.</p>
+</li>
+</ul>
+<p><img alt="Start API" src="../_static/images/start_api.png" /></p>
+<h2 id="widgets">Widgets<a class="headerlink" href="#widgets" title="Permanent link">&para;</a></h2>
+<p>This package also provides additional widgets for some types of data.</p>
+<h3 id="filewidget">FileWidget<a class="headerlink" href="#filewidget" title="Permanent link">&para;</a></h3>
+<p>Working with file fields is a common task. The <code>FileWidget</code> allows you to import/export files,
+including links to external resources, and saves via picked <code>STORAGE</code>.
+This widget loads a file from a URL into the media directory and correctly renders the link
+for export. It also supports the <code>AWS_STORAGE_BUCKET_NAME</code> setting.</p>
+<h3 id="intermediatemanytomanywidget">IntermediateManyToManyWidget<a class="headerlink" href="#intermediatemanytomanywidget" title="Permanent link">&para;</a></h3>
+<p><code>IntermediateManyToManyWidget</code> allows to import/export objects with related items.
+Default M2M widget store just IDs of related objects. With intermediate widget
+additional data may be stored. Should be used with <code>IntermediateManyToManyField</code>.</p>
+<p>The <code>IntermediateManyToManyWidget</code> is an advanced widget that allows you to import/export objects
+with related items in a Many-to-Many relationship, while also supporting additional data beyond
+just the relationship IDs. Unlike the default M2M widget, which only stores the IDs of related
+objects, the <code>IntermediateManyToManyWidget</code> enables you to store additional information for each
+related object, making it more flexible for use cases where extra attributes or fields need
+to be saved alongside the relationship.</p>
+<p>This widget is designed to be used with the <code>IntermediateManyToManyField</code> in your model.</p>
+<p>Usage:</p>
+<div class="highlight"><span class="filename">resources.py</span><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ArtistResourceWithM2M</span><span class="p">(</span><span class="n">CeleryModelResource</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Artist resource with Many2Many field.&quot;&quot;&quot;</span>
+
+    <span class="n">bands</span> <span class="o">=</span> <span class="n">IntermediateManyToManyField</span><span class="p">(</span>
+        <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;bands&quot;</span><span class="p">,</span>
+        <span class="n">column_name</span><span class="o">=</span><span class="s2">&quot;Bands he played in&quot;</span><span class="p">,</span>
+        <span class="n">widget</span><span class="o">=</span><span class="n">IntermediateManyToManyWidget</span><span class="p">(</span>
+            <span class="n">rem_model</span><span class="o">=</span><span class="n">Band</span><span class="p">,</span>
+            <span class="n">rem_field</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
+            <span class="n">extra_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date_joined&quot;</span><span class="p">],</span>
+            <span class="n">instance_separator</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Artist</span>
+        <span class="n">clean_model_instances</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bands&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;instrument&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reduce DB queries number.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Artist</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
+            <span class="s2">&quot;membership_set__band&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bands&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
+<h3 id="result-resultxlsx">Result (result.xlsx)<a class="headerlink" href="#result-resultxlsx" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>Bands he played in</th>
+<th>instrument</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Rachel Schmidt</td>
+<td>Walter-Hodges:1971-09-22;Ortiz-Hughes:2018-02-02</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h2>
+<h3 id="intermediatemanytomanyfield">IntermediateManyToManyField<a class="headerlink" href="#intermediatemanytomanyfield" title="Permanent link">&para;</a></h3>
+<p>This is resource field for M2M with custom <code>through</code> model.</p>
+<p>By default, <code>django-import-export</code> set up object attributes using
+<code>setattr(obj, attribute_name, value)</code>, where <code>value</code> is <code>QuerySet</code>
+of related model objects. But django forbid this when <code>ManyToManyField</code>
+used with custom <code>through</code> model.</p>
+<p>This field expects be used with custom <code>IntermediateManyToManyWidget</code> widget
+that return not simple value, but dict with intermediate model attributes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "search.share", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.path", "content.code.annotate", "content.code.copy", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
