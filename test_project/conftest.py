@@ -12,6 +12,8 @@ def pytest_configure() -> None:
 
     """
     settings.TESTING = True
+    # Disable async task execution while tests running
+    settings.CELERY_TASK_ALWAYS_EAGER = True
 
 
 @pytest.fixture(scope="session", autouse=True)
