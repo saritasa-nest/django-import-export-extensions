@@ -92,7 +92,8 @@ class ExportJob(BaseJob):
         max_length=36,
         null=True,
         blank=True,
-        help_text=_("Celery task ID that start `export_data`"),
+        # TODO(rename): remove celery mention
+        help_text=_("Task ID that start `export_data`"),
     )
 
     export_started = models.DateTimeField(

@@ -5,7 +5,7 @@ from import_export import admin as import_export_admin
 from . import types
 
 
-class BaseCeleryImportExportAdminMixin(
+class BaseImportExportAdminMixin(
     import_export_admin.ImportExportMixinBase,
 ):
     """Extend base mixin with common logic for import/export."""

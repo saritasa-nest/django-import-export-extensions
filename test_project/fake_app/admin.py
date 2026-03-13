@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from import_export_extensions.admin import CeleryImportExportMixin
+from import_export_extensions.admin import ImportExportMixin
 
 from . import models, resources
 
 
 @admin.register(models.Artist)
-class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
+class ArtistAdmin(ImportExportMixin, admin.ModelAdmin):
     """Simple Artist admin model for tests."""
 
     list_display = (
@@ -45,7 +45,7 @@ class InstrumentAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Band)
-class BandAdmin(CeleryImportExportMixin, admin.ModelAdmin):
+class BandAdmin(ImportExportMixin, admin.ModelAdmin):
     """Band admin model for tests."""
 
     list_display = (

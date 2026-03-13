@@ -152,14 +152,16 @@ class ImportJob(BaseJob):
         default=str,
         max_length=36,
         verbose_name=_("Parsing task ID"),
-        help_text=_("Celery task ID that start `parse_data`"),
+        # TODO(rename): remove celery mention
+        help_text=_("Task ID that start `parse_data`"),
     )
 
     import_task_id = models.CharField(
         max_length=36,
         default=str,
         verbose_name=_("Import task ID"),
-        help_text=_("Celery task ID that start `import_data`"),
+        # TODO(rename): remove celery mention
+        help_text=_("Task ID that start `import_data`"),
     )
 
     parse_finished = models.DateTimeField(

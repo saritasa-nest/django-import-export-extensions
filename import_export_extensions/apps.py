@@ -16,11 +16,11 @@ DEFAULT_DRF_EXPORT_DJANGO_FILTERS_BACKEND = (
 DEFAULT_DRF_EXPORT_ORDERING_BACKEND = "rest_framework.filters.OrderingFilter"
 
 
-class CeleryImportExport(AppConfig):
-    """Default configuration for CeleryImportExport app."""
+class ImportExportExtensions(AppConfig):
+    """Default configuration for ImportExportExtensions app."""
 
     name = "import_export_extensions"
-    verbose_name = _("Celery Import/Export")
+    verbose_name = _("Import/Export Extensions")
     default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self) -> None:

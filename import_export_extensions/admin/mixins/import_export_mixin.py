@@ -1,10 +1,10 @@
-from .export_mixin import CeleryExportAdminMixin
-from .import_mixin import CeleryImportAdminMixin
+from .export_mixin import ExportAdminMixin
+from .import_mixin import ImportAdminMixin
 
 
-class CeleryImportExportMixin(
-    CeleryImportAdminMixin,
-    CeleryExportAdminMixin,
+class ImportExportMixin(
+    ImportAdminMixin,
+    ExportAdminMixin,
 ):
     """Import and export mixin."""
 
