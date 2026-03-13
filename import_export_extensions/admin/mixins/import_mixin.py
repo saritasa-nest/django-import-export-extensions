@@ -227,7 +227,10 @@ class CeleryImportAdminMixin(
             )
 
         context = self.get_import_context_data()
-        job_url = reverse("admin:import_job_progress", args=(job.id,))
+        job_url = reverse(
+            "admin:import_job_progress",
+            kwargs={"job_id": job.id},
+        )
         context.update(
             {
                 "title": _("Import status"),

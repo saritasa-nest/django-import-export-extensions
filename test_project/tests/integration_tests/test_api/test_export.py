@@ -19,7 +19,7 @@ from import_export_extensions.models import ExportJob
             id="Export url",
         ),
         pytest.param(
-            f"{reverse('artists-export')}",
+            reverse("artists-export"),
             id="Action url",
         ),
     ],
@@ -75,7 +75,7 @@ def test_export_api_creates_export_job(
             id="Export url",
         ),
         pytest.param(
-            f"{reverse('artists-export')}",
+            reverse("artists-export"),
             id="Action url",
         ),
     ],
@@ -136,7 +136,7 @@ def test_export_api_filtering(
             id="Export url",
         ),
         pytest.param(
-            f"{reverse('artists-export')}",
+            reverse("artists-export"),
             id="Action url",
         ),
     ],
