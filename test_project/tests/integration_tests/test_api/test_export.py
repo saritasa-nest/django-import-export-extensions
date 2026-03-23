@@ -22,6 +22,10 @@ from import_export_extensions.models import ExportJob
             reverse("artists-export"),
             id="Action url",
         ),
+        pytest.param(
+            reverse("django-tasks-artists-export"),
+            id="Django Tasks action url",
+        ),
     ],
 )
 def test_export_api_creates_export_job(

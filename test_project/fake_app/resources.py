@@ -1,9 +1,90 @@
+from import_export.resources import ModelResource
+
 from import_export_extensions.fields import IntermediateManyToManyField
-from import_export_extensions.resources import CeleryModelResource
+from import_export_extensions.resources import (
+    CeleryModelResource,
+    ResourceMixin,
+)
 from import_export_extensions.widgets import IntermediateManyToManyWidget
 
 from .filters import ArtistFilterSet
 from .models import Artist, Band
+
+
+class DjangoTasksArtisResource(ResourceMixin, ModelResource):
+    """Artist resource with simple fields.
+
+    Use the django.tasks module for async operations.
+
+    """
+
+    filterset_class = ArtistFilterSet
+
+    class Meta:
+        model = Artist
+        import_id_fields = ["external_id"]
+        clean_model_instances = True
+        fields = [
+            "id",
+            "external_id",
+            "name",
+            "instrument",
+        ]
+        # Enable background export/import
+        use_django_tasks = True
+
+    def initialize_task_state(self, state: str, queryset, task_id: str = ""):
+        """Override to add custom logic for django-rq."""
+        try:
+            pass  # type: ignore
+        except Exception:  # pragma: no cover
+            return
+
+        import django_rq
+        from rq.job import Job
+
+        connection = django_rq.get_connection()
+        job = Job.fetch(self.task_id, connection=connection)
+
+        if job is None:
+            return
+
+        try:
+            total = queryset.count()
+        except Exception:
+            total = len(queryset)
+
+        self.total_objects_count = int(total)
+
+        job.meta["total"] = self.total_objects_count
+        job.meta["current"] = self.current_object_number
+        job.save_meta()
+
+    def update_task_state(
+        self,
+        state: str,
+    ):
+        """Override to add custom logic for django-rq."""
+        self.current_object_number += 1
+
+        is_reached_update_count = (
+            self.current_object_number % self.status_update_row_count == 0
+        )
+        is_last_object = self.current_object_number == self.total_objects_count
+
+        if is_reached_update_count or is_last_object:
+            import django_rq
+            from rq.job import Job
+
+            connection = django_rq.get_connection()
+            job = Job.fetch(self.task_id, connection=connection)
+
+            if job is None:
+                return
+
+            job.meta["total"] = self.total_objects_count
+            job.meta["current"] = self.current_object_number
+            job.save_meta()
 
 
 class SimpleArtistResource(CeleryModelResource):

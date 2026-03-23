@@ -31,7 +31,20 @@ INSTALLED_APPS = [
     "import_export",
     "import_export_extensions",
     "test_project.fake_app",
+    # TODO(django.tasks): tmp apps for testing different backend for django.tasks
+    "django_rq",
+    "django_tasks_rq",
 ]
+
+# TODO(django.tasks): settings for testing django.tasks
+TASKS = {
+    "default": {
+        # "BACKEND": "django.tasks.backends.immediate.ImmediateBackend",
+        "BACKEND": "django_tasks_rq.RQBackend",
+        "QUEUES": ["default"],
+    },
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -136,6 +149,14 @@ REST_FRAMEWORK = {
 redis_host = decouple.config("REDIS_HOST", default="redis")
 redis_port = decouple.config("REDIS_PORT", default=6379, cast=int)
 redis_db = decouple.config("REDIS_DB", default=1, cast=int)
+
+RQ_QUEUES = {
+    "default": {
+        "HOST": redis_host,
+        "PORT": redis_port,
+        "DB": redis_db,
+    },
+}
 
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_STORE_EAGER_RESULT = True

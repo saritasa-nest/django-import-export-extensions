@@ -8,7 +8,7 @@ from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
 from django.utils.translation import gettext_lazy as _
 
-from celery import current_app, result, states
+from celery import current_app, states
 from import_export.formats import base_formats
 
 from .. import signals
@@ -185,10 +185,16 @@ class ExportJob(BaseJob):
         """Start export data task."""
         from .. import tasks
 
-        tasks.export_data_task.apply_async(
-            kwargs={"job_id": self.pk},
-            task_id=self.export_task_id,
-        )
+        if getattr(self.resource.Meta, "use_django_tasks", False):
+            # TODO(otto): also use global setting
+            task_result = tasks.export_data_django_task.enqueue(job_id=self.pk)
+            self.export_task_id = task_result.id
+            self.save(update_fields=["export_task_id"])
+        else:
+            tasks.export_data_task.apply_async(
+                kwargs={"job_id": self.pk},
+                task_id=self.export_task_id,
+            )
 
     def export_data(self) -> None:
         """Export data to `data_file` from DB."""
@@ -233,6 +239,7 @@ class ExportJob(BaseJob):
         )
 
         # send signal to celery to revoke task
+        # TODO(otto): move to celery model?
         current_app.control.revoke(self.export_task_id, terminate=True)
 
         self.export_status = self.ExportStatus.CANCELLED
@@ -262,6 +269,7 @@ class ExportJob(BaseJob):
             save=True,
         )
 
+    # TODO(otto): move to celery model?
     def _get_task_state(self, task_id: str) -> TaskStateInfo:
         """Get state info for passed task_id.
 
@@ -272,19 +280,36 @@ class ExportJob(BaseJob):
         In that case, job have status `importing`, but it can't be finished.
 
         """
-        async_result = result.AsyncResult(task_id)
-        if async_result.state not in states.EXCEPTION_STATES:
+        # TODO(otto): replaced celery by django-rq
+        # async_result = result.AsyncResult(task_id)
+
+        import django_rq
+        from rq.job import Job
+
+        connection = django_rq.get_connection()
+        job = Job.fetch(task_id, connection=connection)
+
+        if not job:
             return {
-                "state": async_result.state,
-                "info": async_result.info,
+                "state": "nothing state",
+                "info": {
+                    "total": 100,
+                    "current": 0,
+                },
+            }
+
+        if job.get_status() not in states.EXCEPTION_STATES:
+            return {
+                "state": job.get_status(),
+                "info": job.get_meta(),
             }
 
         self._handle_error(
-            error_message=str(async_result.info),
-            traceback=str(async_result.traceback),
+            error_message=str(job.meta),
+            traceback="sorry error :(",
         )
         return {
-            "state": async_result.state,
+            "state": job.get_status(),
             "info": {},
         }
 

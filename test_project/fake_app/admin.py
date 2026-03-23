@@ -32,6 +32,7 @@ class ArtistAdmin(ImportExportMixin, admin.ModelAdmin):
     resource_classes = (
         resources.ArtistResourceWithM2M,
         resources.SimpleArtistResource,
+        resources.DjangoTasksArtisResource,
     )
 
 

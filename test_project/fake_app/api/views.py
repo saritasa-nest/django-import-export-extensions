@@ -50,3 +50,29 @@ class ArtistViewSet(
         "id",
         "name",
     )
+
+class DjangoTasksArtistViewSet(
+    api.ExportStartActionMixin,
+    api.ImportStartActionMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    """Viewset for an Artist model.
+
+    Use django.tasks for import/export.
+
+    """
+
+    resource_class = resources.DjangoTasksArtisResource
+
+    queryset = models.Artist.objects.all()
+    serializer_class = ArtistSerializer
+    filterset_class = resources.SimpleArtistResource.filterset_class
+    ordering = (
+        "id",
+    )
+    ordering_fields = (
+        "id",
+        "name",
+    )

@@ -14,6 +14,7 @@ DEFAULT_DRF_EXPORT_DJANGO_FILTERS_BACKEND = (
     "django_filters.rest_framework.DjangoFilterBackend"
 )
 DEFAULT_DRF_EXPORT_ORDERING_BACKEND = "rest_framework.filters.OrderingFilter"
+DEFAULT_IMPORT_EXPORT_USE_DJANGO_TASKS = False
 
 
 class ImportExportExtensions(AppConfig):
@@ -45,4 +46,9 @@ class ImportExportExtensions(AppConfig):
             settings,
             "DRF_EXPORT_ORDERING_BACKEND",
             DEFAULT_DRF_EXPORT_ORDERING_BACKEND,
+        )
+        settings.IMPORT_EXPORT_USE_DJANGO_TASKS = getattr(
+            settings,
+            "IMPORT_EXPORT_USE_DJANGO_TASKS",
+            DEFAULT_IMPORT_EXPORT_USE_DJANGO_TASKS,
         )

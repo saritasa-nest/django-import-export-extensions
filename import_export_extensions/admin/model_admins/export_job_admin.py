@@ -24,6 +24,7 @@ class ExportJobAdmin(
     exclude = ("result",)
     list_display = (
         "id",
+        "export_task_id",
         "export_status",
         "_model",
         "created_by",
@@ -110,7 +111,7 @@ class ExportJobAdmin(
         job_progress = job.progress
         progress_info = job_progress["info"]
 
-        if progress_info and progress_info["total"]:
+        if progress_info and progress_info.get("total"):
             total = progress_info["total"]
             current = progress_info["current"]
             percent = int(100 / total * current)
