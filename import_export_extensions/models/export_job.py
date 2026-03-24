@@ -237,6 +237,24 @@ class ExportJob(BaseJob):
         self.export_status = self.ExportStatus.CANCELLED
         self.save(update_fields=["export_status"])
 
+    def rerun(self) -> None:
+        """Rerun export job."""
+        self.export_status = self.ExportStatus.CREATED
+        self.export_task_id = ""
+        self.export_started = None
+        self.export_finished = None
+        self.traceback = ""
+        self.error_message = ""
+
+        if self.data_file:
+            self.data_file.delete(save=False)
+
+        self.save()
+
+        self.export_task_id = str(uuid.uuid4())
+        self.save(update_fields=["export_task_id"])
+        transaction.on_commit(self._start_export_data_task)
+
     def _export_data_inner(self) -> None:
         """Run export process with saving to file."""
         self.result = self.resource.export(**self.resource_kwargs)
