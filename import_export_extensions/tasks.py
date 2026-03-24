@@ -18,5 +18,4 @@ def import_data_task(job_id: int) -> None:
 @shared_task()
 def export_data_task(job_id: int) -> None:
     """Async task for starting data export."""
-    job = models.ExportJob.objects.get(id=job_id)
-    job.export_data()
+    models.ExportJob.objects.get(pk=job_id).export_data()

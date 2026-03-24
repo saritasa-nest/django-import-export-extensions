@@ -499,6 +499,36 @@ class ImportJob(BaseJob):
         self.import_status = self.ImportStatus.CANCELLED
         self.save(update_fields=["import_status"])
 
+    def rerun(self) -> None:
+        """Rerun import job.
+
+        First, reset all job data.
+        Run import or parse process - depends on job `skip_parse_step`.
+
+        """
+        self.import_status = self.ImportStatus.CREATED
+        self.parse_task_id = ""
+        self.parse_finished = None
+        self.import_task_id = ""
+        self.import_started = None
+        self.import_finished = None
+        self.traceback = ""
+        self.error_message = ""
+        self.result = Result()
+
+        if self.input_errors_file:
+            self.input_errors_file.delete(save=False)
+
+        if self.skip_parse_step:
+            self.import_task_id = str(uuid.uuid4())
+            self.import_started = timezone.now()
+            self.save()
+            transaction.on_commit(self._start_import_data_task)
+        else:
+            self.parse_task_id = str(uuid.uuid4())
+            self.save()
+            transaction.on_commit(self.start_parse_data_task)
+
     def _get_task_state(self, task_id: str) -> TaskStateInfo:
         """Get state info for passed task_id.
 

@@ -164,3 +164,5 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": _show_toolbar_callback,
     }
+
+IMPORT_EXPORT_RERUN_ENABLED = True

@@ -6,6 +6,10 @@
 - Keep the IDs of search and filter results from the admin, instead of using
   a re-implementation of the Django admin code
 - Migrate to MKDocs from Sphinx for documentation generation
+- Add the button "Re-run" in django-admin for the job change page.
+  This button allows re-run the job with the same properties
+- Add global setting `IMPORT_EXPORT_RERUN_ENABLED` to enable/disable
+  "Re-run" button
 - Minor improvements for import/export admins:
   - Display `Created by` on detail page for export
   - Add filter by `created` date both for export/import admin list pages

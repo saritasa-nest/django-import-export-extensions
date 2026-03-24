@@ -89,6 +89,15 @@ Default: `django_filters.rest_framework.DjangoFilterBackend`
 Specifies filter backend class for `ordering` in export action. Default:
 `rest_framework.filters.OrderingFilter`
 
+### `IMPORT_EXPORT_RERUN_ENABLED`
+
+Enables the "Re-run" button on the `ExportJob` and `ImportJob` detail pages in
+the Django admin. This button allows you to re-trigger an import or export
+process using the same parameters and files as the original job, which is
+useful for debugging without having to manually recreate the job.
+
+Default: `False`
+
 ## Settings from django-import-export
 
 Additionally, the package supports settings from the original
