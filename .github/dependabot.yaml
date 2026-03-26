@@ -10,7 +10,17 @@ updates:
       github-actions:
         patterns:
           - "*"
-  - package-ecosystem: pip
+  - package-ecosystem: pre-commit
+    directories:
+      - "/"
+    schedule:
+      interval: monthly
+      time: "00:00"
+    groups:
+      pre-commit:
+        patterns:
+          - "*"
+  - package-ecosystem: uv
     directory: "/"
     schedule:
       interval: weekly

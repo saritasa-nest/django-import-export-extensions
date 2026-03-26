@@ -11,7 +11,6 @@ from django.db.models import Model, Q, QuerySet
 from django.db.models.fields.files import FieldFile
 from django.forms import ValidationError
 from django.utils.encoding import smart_str
-
 from import_export.exceptions import ImportExportError
 from import_export.widgets import CharWidget, ManyToManyWidget
 

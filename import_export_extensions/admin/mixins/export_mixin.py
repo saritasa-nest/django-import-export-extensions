@@ -10,7 +10,6 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import URLPattern, re_path, reverse
 from django.utils.translation import gettext_lazy as _
-
 from import_export import admin as import_export_admin
 from import_export import forms as import_export_forms
 from import_export import mixins as import_export_mixins
@@ -69,9 +68,15 @@ class CeleryExportAdminMixin(
     has_export_permission = (
         import_export_admin.ExportMixin.has_export_permission
     )
-    get_export_form_class = import_export_admin.ExportMixin.get_export_form_class  # noqa
-    get_export_resource_fields_from_form = import_export_admin.ExportMixin.get_export_resource_fields_from_form  # noqa
-    is_skip_export_form_enabled = import_export_admin.ExportMixin.is_skip_export_form_enabled  # noqa
+    get_export_form_class = (
+        import_export_admin.ExportMixin.get_export_form_class
+    )
+    get_export_resource_fields_from_form = (
+        import_export_admin.ExportMixin.get_export_resource_fields_from_form
+    )
+    is_skip_export_form_enabled = (
+        import_export_admin.ExportMixin.is_skip_export_form_enabled
+    )
 
     def get_export_context_data(self, **kwargs) -> dict[str, typing.Any]:
         """Get context data for export."""
@@ -98,20 +103,14 @@ class CeleryExportAdminMixin(
             re_path(
                 r"^celery-export/(?P<job_id>\d+)/$",
                 self.admin_site.admin_view(self.export_job_status_view),
-                name=(
-                    f"{self.model_info.app_model_name}"
-                    f"_export_job_status"
-                ),
+                name=f"{self.model_info.app_model_name}_export_job_status",
             ),
             re_path(
                 r"^celery-export/(?P<job_id>\d+)/results/$",
                 self.admin_site.admin_view(
                     self.export_job_results_view,
                 ),
-                name=(
-                    f"{self.model_info.app_model_name}"
-                    f"_export_job_results"
-                ),
+                name=f"{self.model_info.app_model_name}_export_job_results",
             ),
         ]
         return export_urls + urls
@@ -298,6 +297,7 @@ class CeleryExportAdminMixin(
         """Get ExportJob instance.
 
         Raises
+        ------
             Http404
 
         """
@@ -326,9 +326,7 @@ class CeleryExportAdminMixin(
         job: models.ExportJob,
     ) -> HttpResponse:
         """Shortcut for redirecting to job's status page."""
-        url_name = (
-            f"admin:{self.model_info.app_model_name}_export_job_status"
-        )
+        url_name = f"admin:{self.model_info.app_model_name}_export_job_status"
         url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url
@@ -340,9 +338,7 @@ class CeleryExportAdminMixin(
         job: models.ExportJob,
     ) -> HttpResponse:
         """Shortcut for redirecting to job's results page."""
-        url_name = (
-            f"admin:{self.model_info.app_model_name}_export_job_results"
-        )
+        url_name = f"admin:{self.model_info.app_model_name}_export_job_results"
         url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url

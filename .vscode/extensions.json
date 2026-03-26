@@ -1,0 +1,39 @@
+{
+  "recommendations": [
+    // Support Python in VS Code (including LSP server Pylance)
+    // https://marketplace.visualstudio.com/items?itemName=ms-python.python
+    "ms-python.python",
+
+    // A Visual Studio Code extension with support for the Ruff linter.
+    // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
+    "charliermarsh.ruff",
+
+    // AI assistant
+    // https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat
+    "GitHub.copilot-chat",
+
+    // Visualize code authorship
+    // https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+    "eamodio.gitlens",
+
+    // View git graph of repository
+    // https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph
+    "mhutchie.git-graph",
+
+    // Markdown linting and style checking for Visual Studio Code
+    // https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
+    "DavidAnson.vscode-markdownlint",
+
+    // Sorts lines of text
+    // https://marketplace.visualstudio.com/items?itemName=Tyriar.sort-lines
+    "Tyriar.sort-lines",
+
+    // Check code for spelling
+    // https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker
+    "streetsidesoftware.code-spell-checker",
+
+    // To use the settings from .editorconfig file
+    // https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+    "EditorConfig.EditorConfig",
+  ]
+}

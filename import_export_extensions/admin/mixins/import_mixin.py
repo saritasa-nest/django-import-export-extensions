@@ -13,7 +13,6 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import URLPattern, re_path, reverse
 from django.utils.translation import gettext_lazy as _
-
 from import_export import admin as import_export_admin
 from import_export import mixins as import_export_mixins
 from import_export import resources as import_export_resources
@@ -90,13 +89,25 @@ class CeleryImportAdminMixin(
 
     # Copied form related methods
     create_import_form = import_export_admin.ImportMixin.create_import_form
-    get_import_form_class = import_export_admin.ImportMixin.get_import_form_class  # noqa
-    get_import_form_kwargs = import_export_admin.ImportMixin.get_import_form_kwargs  # noqa
-    get_import_form_initial = import_export_admin.ImportMixin.get_import_form_initial  # noqa
+    get_import_form_class = (
+        import_export_admin.ImportMixin.get_import_form_class
+    )
+    get_import_form_kwargs = (
+        import_export_admin.ImportMixin.get_import_form_kwargs
+    )
+    get_import_form_initial = (
+        import_export_admin.ImportMixin.get_import_form_initial
+    )
     create_confirm_form = import_export_admin.ImportMixin.create_confirm_form
-    get_confirm_form_class = import_export_admin.ImportMixin.get_confirm_form_class  # noqa
-    get_confirm_form_kwargs = import_export_admin.ImportMixin.get_confirm_form_kwargs  # noqa
-    get_confirm_form_initial = import_export_admin.ImportMixin.get_confirm_form_initial  # noqa
+    get_confirm_form_class = (
+        import_export_admin.ImportMixin.get_confirm_form_class
+    )
+    get_confirm_form_kwargs = (
+        import_export_admin.ImportMixin.get_confirm_form_kwargs
+    )
+    get_confirm_form_initial = (
+        import_export_admin.ImportMixin.get_confirm_form_initial
+    )
 
     def get_import_context_data(self, **kwargs) -> dict[str, typing.Any]:
         """Get context data for import."""
@@ -125,20 +136,14 @@ class CeleryImportAdminMixin(
             re_path(
                 r"^celery-import/(?P<job_id>\d+)/$",
                 self.admin_site.admin_view(self.celery_import_job_status_view),
-                name=(
-                    f"{self.model_info.app_model_name}"
-                    f"_import_job_status"
-                ),
+                name=f"{self.model_info.app_model_name}_import_job_status",
             ),
             re_path(
                 r"^celery-import/(?P<job_id>\d+)/results/$",
                 self.admin_site.admin_view(
                     self.celery_import_job_results_view,
                 ),
-                name=(
-                    f"{self.model_info.app_model_name}"
-                    f"_import_job_results"
-                ),
+                name=f"{self.model_info.app_model_name}_import_job_results",
             ),
         ]
         return import_urls + urls
@@ -348,6 +353,7 @@ class CeleryImportAdminMixin(
         """Get ImportJob instance.
 
         Raises
+        ------
             Http404
 
         """
@@ -359,9 +365,7 @@ class CeleryImportAdminMixin(
         job: models.ImportJob,
     ) -> HttpResponseRedirect:
         """Shortcut for redirecting to job's status page."""
-        url_name = (
-            f"admin:{self.model_info.app_model_name}_import_job_status"
-        )
+        url_name = f"admin:{self.model_info.app_model_name}_import_job_status"
         url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url
@@ -373,9 +377,7 @@ class CeleryImportAdminMixin(
         job: models.ImportJob,
     ) -> HttpResponseRedirect:
         """Shortcut for redirecting to job's results page."""
-        url_name = (
-            f"admin:{self.model_info.app_model_name}_import_job_results"
-        )
+        url_name = f"admin:{self.model_info.app_model_name}_import_job_results"
         url = reverse(url_name, kwargs={"job_id": job.id})
         query = request.GET.urlencode()
         url = f"{url}?{query}" if query else url

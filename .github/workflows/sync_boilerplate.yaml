@@ -1,0 +1,28 @@
+name: Sync boilerplate
+
+on:
+  schedule:
+    # Run action at 00:00 UTC on the 1st day of every month https://crontab.guru/#0_00_1_*_*
+    - cron: '0 00 1 * *'
+  # or trigger action manually
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync_boilerplate:
+    name: Sync boilerplate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run
+        uses: saritasa-nest/saritasa-python-open-source-boilerplate/.github/actions/sync_boilerplate@main
+        with:
+          app-id: ${{ secrets.SARITASA_GITHUB_BOT_ID }}
+          app-private-key: ${{ secrets.SARITASA_GITHUB_BOT_PRIVATE_KEY }}
+      - name: Report failure
+        if: failure() && github.event_name == 'schedule'
+        uses: saritasa-nest/saritasa-python-open-source-boilerplate/.github/actions/report_action_failure@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

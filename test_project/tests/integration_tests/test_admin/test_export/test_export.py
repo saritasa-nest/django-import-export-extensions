@@ -3,16 +3,14 @@ import pathlib
 import uuid
 
 import django.test
-from django.contrib.auth.models import User
-from django.test.client import Client
-from django.urls import reverse
-
-from rest_framework import status
-
 import pytest
 import pytest_mock
 from celery import states
+from django.contrib.auth.models import User
+from django.test.client import Client
+from django.urls import reverse
 from pytest_lazy_fixtures import lf
+from rest_framework import status
 
 from import_export_extensions.models import ExportJob
 from test_project.fake_app.factories import (

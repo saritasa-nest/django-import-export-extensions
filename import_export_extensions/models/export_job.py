@@ -3,12 +3,11 @@ import pathlib
 import traceback
 import uuid
 
+from celery import current_app, result, states
 from django.core import files as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
 from django.utils.translation import gettext_lazy as _
-
-from celery import current_app, result, states
 from import_export.formats import base_formats
 
 from .. import signals
@@ -87,7 +86,7 @@ class ExportJob(BaseJob):
         help_text=_("File that contain exported data"),
     )
 
-    export_task_id = models.CharField(  # noqa: DJ001
+    export_task_id = models.CharField(
         verbose_name=_("Export task ID"),
         max_length=36,
         null=True,

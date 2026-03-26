@@ -2,7 +2,6 @@ import collections
 import typing
 
 from django.core.exceptions import ValidationError
-
 from import_export import results
 
 

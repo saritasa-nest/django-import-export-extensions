@@ -1,12 +1,11 @@
 import io
 
+import pytest
+import pytest_mock
 from django.core.files import File
 from django.core.files.storage import default_storage
 from django.db.models.fields.files import FieldFile
 from django.forms import ValidationError
-
-import pytest
-import pytest_mock
 from import_export.exceptions import ImportExportError
 from pytest_mock import MockerFixture
 

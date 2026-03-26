@@ -5,15 +5,14 @@ import functools
 import typing
 import warnings
 
+import celery
+import tablib
 from django.conf import settings
 from django.core.exceptions import FieldError, ValidationError
 from django.db.models import Model, Q, QuerySet
 from django.utils import timezone
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
-
-import celery
-import tablib
 from django_filters import rest_framework as filters
 from django_filters.utils import translate_validation
 from import_export import fields, resources

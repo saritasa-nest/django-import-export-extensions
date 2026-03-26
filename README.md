@@ -1,14 +1,14 @@
 # django-import-export-extensions
 
-[![PyPI - Python Versions](https://img.shields.io/pypi/pyversions/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)
-[![PyPI - Django Versions](https://img.shields.io/pypi/frameworkversions/django/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)
+![GitHub last commit](https://img.shields.io/github/last-commit/saritasa-nest/django-import-export-extensions)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/saritasa-nest/django-import-export-extensions/checks.yml)
 ![PyPI](https://img.shields.io/pypi/v/django-import-export-extensions)
-
-[![Build status on Github](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml/badge.svg)](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/checks.yml)
-[![Test coverage](https://coveralls.io/repos/github/saritasa-nest/django-import-export-extensions/badge.svg?branch=main)](https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main)
-[![Documentation Status](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/publish_docs.yml/badge.svg)](https://github.com/saritasa-nest/django-import-export-extensions/actions/workflows/publish_docs.yml)
-
- ![PyPI Downloads](https://static.pepy.tech/badge/django-import-export-extensions/month)
+![PyPI - Status](https://img.shields.io/pypi/status/django-import-export-extensions)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django-import-export-extensions)
+[![PyPI - Django Versions](https://img.shields.io/pypi/frameworkversions/django/django-import-export-extensions)](https://pypi.org/project/django-import-export-extensions/)
+![PyPI - License](https://img.shields.io/pypi/l/django-import-export-extensions)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/django-import-export-extensions)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 ## Links
 

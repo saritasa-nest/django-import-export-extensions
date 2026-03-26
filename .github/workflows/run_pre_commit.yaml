@@ -1,0 +1,62 @@
+name: Run pre-commit hooks
+
+on:
+  pull_request:
+  push:
+    branches: [
+      main
+    ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Fallback to plain text output for reducing docker output
+  # https://github.com/docker/compose/issues/8753#issuecomment-934473781
+  BUILDKIT_PROGRESS: plain
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+        django-version:
+          - ">=4.2,<4.3"
+          - ">=5.0,<5.3"
+          - ">=6.0,<6.3"
+        exclude:
+          - python-version: "3.10"
+            django-version: ">=6.0,<6.3"
+          - python-version: "3.11"
+            django-version: ">=6.0,<6.3"
+    steps:
+      - name: Run
+        uses: saritasa-nest/saritasa-python-open-source-boilerplate/.github/actions/run_pre_commit@main
+        with:
+          python-version: ${{ matrix.python-version }}
+        env:
+          DJANGO_VERSION: ${{ matrix.django-version }}
+      - name: Coveralls Upload
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: Python${{ matrix.python-version }} - Django${{ matrix.django-version }}
+          parallel: true
+  coveralls-results:
+    needs: pre-commit
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true

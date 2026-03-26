@@ -1,7 +1,6 @@
 import dataclasses
 
 from django.db.models.options import Options
-
 from import_export.formats import base_formats
 
 from ... import resources

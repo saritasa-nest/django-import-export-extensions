@@ -1,7 +1,6 @@
 import django.test
-from django.db.models import Q
-
 import pytest
+from django.db.models import Q
 
 from import_export_extensions import utils
 
