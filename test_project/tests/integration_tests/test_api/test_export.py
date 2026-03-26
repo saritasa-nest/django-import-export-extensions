@@ -1,11 +1,9 @@
 import collections.abc
 
+import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
-
 from rest_framework import status, test
-
-import pytest
 
 from import_export_extensions.models import ExportJob
 

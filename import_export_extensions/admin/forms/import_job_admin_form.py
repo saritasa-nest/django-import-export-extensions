@@ -28,8 +28,9 @@ class ImportJobAdminForm(forms.ModelForm):
         super().__init__(*args, instance=instance, **kwargs)
         url_name = "admin:import_job_progress"
         self.fields["import_progressbar"].label = (
-            "Import progress" if
-            instance.import_status == models.ImportJob.ImportStatus.IMPORTING
+            "Import progress"
+            if instance.import_status
+            == models.ImportJob.ImportStatus.IMPORTING
             else "Parsing progress"
         )
         self.fields["import_progressbar"].widget = ProgressBarWidget(

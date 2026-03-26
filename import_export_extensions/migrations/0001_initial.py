@@ -3,10 +3,9 @@
 import functools
 
 import django.db.models.deletion
+import picklefield.fields
 from django.conf import settings
 from django.db import migrations, models
-
-import picklefield.fields
 
 import import_export_extensions.models.core
 import import_export_extensions.models.tools

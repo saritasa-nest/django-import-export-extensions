@@ -1,10 +1,8 @@
 import re
 
-from django.core.exceptions import ValidationError as DjangoValidationError
-
-from rest_framework.exceptions import ValidationError
-
 import pytest
+from django.core.exceptions import ValidationError as DjangoValidationError
+from rest_framework.exceptions import ValidationError
 
 from import_export_extensions import results
 from test_project.fake_app.factories import ArtistFactory

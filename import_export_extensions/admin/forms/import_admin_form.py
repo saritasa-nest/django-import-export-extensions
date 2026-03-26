@@ -1,5 +1,4 @@
 from django import forms
-
 from import_export import forms as base_forms
 
 

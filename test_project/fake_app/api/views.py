@@ -14,10 +14,12 @@ class ArtistExportViewSet(api.ExportJobForUserViewSet):
         "name",
     )
 
+
 class ArtistImportViewSet(api.ImportJobForUserViewSet):
     """Simple ViewSet for importing Artist model."""
 
     resource_class = resources.SimpleArtistResource
+
 
 class ArtistSerializer(serializers.ModelSerializer):
     """Serializer for Artist model."""
@@ -29,6 +31,7 @@ class ArtistSerializer(serializers.ModelSerializer):
             "name",
             "instrument",
         )
+
 
 class ArtistViewSet(
     api.ExportStartActionMixin,
@@ -43,9 +46,7 @@ class ArtistViewSet(
     queryset = models.Artist.objects.all()
     serializer_class = ArtistSerializer
     filterset_class = resources.SimpleArtistResource.filterset_class
-    ordering = (
-        "id",
-    )
+    ordering = ("id",)
     ordering_fields = (
         "id",
         "name",

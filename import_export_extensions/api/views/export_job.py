@@ -1,8 +1,8 @@
 import collections.abc
 import contextlib
 
+import django_filters
 from django.db.models import QuerySet
-
 from rest_framework import (
     decorators,
     exceptions,
@@ -12,8 +12,6 @@ from rest_framework import (
     status,
     viewsets,
 )
-
-import django_filters
 
 from ... import models
 from .. import mixins as core_mixins
@@ -27,13 +25,13 @@ class BaseExportJobViewSet(
     """Base viewset for managing export jobs."""
 
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = core_mixins.ExportStartActionMixin.export_detail_serializer_class  # noqa: E501
+    serializer_class = (
+        core_mixins.ExportStartActionMixin.export_detail_serializer_class
+    )
     queryset = models.ExportJob.objects.all()
     filterset_class: django_filters.rest_framework.FilterSet | None = None
     search_fields: collections.abc.Sequence[str] = ("id",)
-    ordering: collections.abc.Sequence[str] = (
-        "id",
-    )
+    ordering: collections.abc.Sequence[str] = ("id",)
     ordering_fields: collections.abc.Sequence[str] = (
         "id",
         "created",
@@ -55,8 +53,11 @@ class BaseExportJobViewSet(
         # Correct specs of drf-spectacular if it is installed
         with contextlib.suppress(ImportError):
             from drf_spectacular.utils import extend_schema, extend_schema_view
+
             if hasattr(cls, "get_export_detail_serializer_class"):
-                response_serializer = cls().get_export_detail_serializer_class()  # noqa: E501
+                response_serializer = (
+                    cls().get_export_detail_serializer_class()
+                )
             else:
                 response_serializer = cls().get_serializer_class()
             extend_schema_view(
@@ -83,6 +84,7 @@ class BaseExportJobViewSet(
             data=serializer.data,
         )
 
+
 class ExportJobViewSet(
     core_mixins.ExportStartActionMixin,
     BaseExportJobViewSet,
@@ -105,8 +107,12 @@ class ExportJobViewSet(
         if self.action == getattr(self, "export_action", ""):
             # To make it consistent and for better support of drf-spectacular
             return super().get_queryset()  # pragma: no cover
-        return super().get_queryset().filter(
-            resource_path=self.resource_class.class_path,
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                resource_path=self.resource_class.class_path,
+            )
         )
 
 
@@ -115,6 +121,7 @@ class ExportJobForUserViewSet(
     ExportJobViewSet,
 ):
     """Viewset for providing export feature to users."""
+
 
 class BaseExportJobForUserViewSet(
     core_mixins.LimitQuerySetToCurrentUserMixin,

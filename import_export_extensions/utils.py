@@ -4,16 +4,15 @@ import re
 import unicodedata
 from urllib.parse import unquote_plus
 
+import requests
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db.models import Q
-
-import requests
 from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 
 
 def normalize_string_value(value: str) -> str:
-    """Normalize string value.
+    r"""Normalize string value.
 
     1. Remove leading and trailing whitespaces.
     2. Replace all space characters ('\t\n\r\x0b\x0c') with the Space char.

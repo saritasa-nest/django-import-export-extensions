@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.urls import reverse
-
 from rest_framework import status
 
 

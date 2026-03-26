@@ -1,0 +1,46 @@
+# YAML linting configuration
+# Rule reference: https://yamllint.readthedocs.io/en/stable/rules.html
+
+extends: default
+ignore-from-file: .gitignore
+rules:
+  # Allow any line length
+  line-length: disable
+
+  # Disable checking of document start marker `---`
+  document-start: disable
+
+  # Enforce consistent spacing inside brackets:
+  #   [ item ]  -  exactly 1 space inside
+  brackets:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 1
+    max-spaces-inside-empty: 1
+  braces:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 1
+    max-spaces-inside-empty: 1
+
+  # Enforce 2-space indentation
+  # and align sequence items under the parent key
+  indentation:
+    spaces: 2
+    indent-sequences: true
+
+  # Ensure comments are properly indented
+  comments-indentation: enable
+
+  # All comments must begin with "# "
+  comments:
+    require-starting-space: true
+
+  # Prevent accidental trailing whitespace
+  trailing-spaces: enable
+
+  # Ensure each YAML file ends with a newline
+  new-line-at-end-of-file: enable
+
+  # Disable `truthy` to hide warnings about using `on` inside of GitHub workflow files.
+  truthy: disable

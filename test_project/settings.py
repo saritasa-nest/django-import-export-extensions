@@ -1,8 +1,7 @@
 import pathlib
 
-from django.http import HttpRequest
-
 import decouple
+from django.http import HttpRequest
 
 # Build paths inside the project like this: BASE_DIR / "subdir"
 BASE_DIR = pathlib.Path(__file__).resolve().parent
@@ -128,7 +127,8 @@ STATICFILES_FINDERS = (
 # Configure `drf-spectacular` to check it works for import-export API
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "COMPONENT_SPLIT_REQUEST": True,  # Allows to upload import file from Swagger UI
+    # Allows to upload import file from Swagger UI
+    "COMPONENT_SPLIT_REQUEST": True,
 }
 
 # Celery settings

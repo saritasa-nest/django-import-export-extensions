@@ -2,7 +2,6 @@ import typing
 
 from django.db.models import Model, QuerySet
 from django.db.models.fields.reverse_related import ManyToManyRel
-
 from import_export.fields import Field
 
 

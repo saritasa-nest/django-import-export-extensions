@@ -40,9 +40,7 @@ class ExportJobAdmin(
     export_job_model = models.ExportJob
     list_filter = ("export_status",)
     list_select_related = ("created_by",)
-    actions = (
-        "cancel_jobs",
-    )
+    actions = ("cancel_jobs",)
     readonly_fields = (
         "export_status",
         "traceback",
