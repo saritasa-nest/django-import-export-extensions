@@ -1,6 +1,5 @@
-from django.core.files import base as django_files
-
 import factory
+from django.core.files import base as django_files
 from import_export.formats import base_formats as formats
 
 from import_export_extensions.models import ExportJob, ImportJob

@@ -74,7 +74,7 @@ def test_parse_data_unknown_error(
 
     Required logic:
     * try to run import with `dry_run`
-    * Some error occured (not related to iput file) (for example, broken
+    * Some error occurred (not related to input file) (for example, broken
         file)
     * collect traceback
     * update BaseImportJob status (error on data parsing)

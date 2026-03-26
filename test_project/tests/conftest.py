@@ -1,10 +1,8 @@
+import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-
 from rest_framework import test
-
-import pytest
 
 from import_export_extensions.models import ExportJob, ImportJob
 

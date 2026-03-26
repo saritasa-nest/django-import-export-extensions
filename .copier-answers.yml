@@ -1,0 +1,9 @@
+# Answers what were given during boilerplate initialization
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+# https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
+_commit: 92a4120
+_src_path: https://github.com/saritasa-nest/saritasa-python-boilerplate-open-source.git
+folder_name: import_export_extensions
+min_python_version: 3.10
+package_description: Extend functionality of `django-import-export`
+package_name: django-import-export-extensions

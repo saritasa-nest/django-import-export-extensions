@@ -4,14 +4,13 @@ import traceback
 import uuid
 from collections.abc import Sequence
 
+import tablib
+from celery import current_app, result, states
 from django.conf import settings
 from django.core.files import base as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
 from django.utils.translation import gettext_lazy as _
-
-import tablib
-from celery import current_app, result, states
 from import_export.formats import base_formats
 from import_export.results import Result
 
@@ -328,6 +327,7 @@ class ImportJob(BaseJob):
         """Run import process with `dry_run == True`.
 
         Returns
+        -------
             apps.utils.async_import_export.results.Result instance with
             parsing results
 
@@ -414,6 +414,7 @@ class ImportJob(BaseJob):
         no instances are saved to DB. So sync works incorrect
 
         Returns
+        -------
             import_export.results.Result instance with parsing results
 
         """

@@ -1,0 +1,58 @@
+# Rules documentation: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+# Config example: https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml
+
+# MD003/heading-style/header-style - Heading style
+MD003:
+  # Heading style
+  # Example: `# Heading`
+  style: "atx"
+
+# MD004/ul-style - Unordered list style
+MD004:
+  # List style
+  style: "dash"
+
+# MD013/line-length - Line length
+MD013:
+  line_length: 120
+
+# MD028/no-blanks-blockquote - Blank line inside blockquote
+MD028: false
+
+# MD029/ol-prefix - Ordered list item prefix
+MD029:
+  # List style
+  style: "ordered"
+
+# MD033/no-inline-html - Inline HTML
+MD033: false
+
+# MD034/no-bare-urls - Bare URL used
+MD034: true
+
+# MD035/hr-style - Horizontal rule style
+MD035:
+  # Horizontal rule style
+  style: "---"
+
+# MD046/code-block-style - Code block style
+MD046:
+  # Block style
+  style: "fenced"
+
+# MD048/code-fence-style - Code fence style
+MD048:
+  # Code fence style
+  style: "backtick"
+
+# Why asterisk: https://www.markdownguide.org/basic-syntax/#bold-best-practices
+
+# MD049/emphasis-style - Emphasis style should be consistent
+MD049:
+  # Emphasis style should be consistent
+  style: "asterisk"
+
+# MD050/strong-style - Strong style should be consistent
+MD050:
+  # Strong style should be consistent
+  style: "asterisk"

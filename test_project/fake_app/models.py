@@ -31,7 +31,7 @@ class Artist(models.Model):
         on_delete=models.CASCADE,
     )
 
-    external_id = models.CharField(  # noqa DJ01
+    external_id = models.CharField(
         verbose_name=_("External ID"),
         help_text=_("External ID for sync import objects."),
         null=True,

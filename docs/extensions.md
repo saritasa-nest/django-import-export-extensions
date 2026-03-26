@@ -176,9 +176,9 @@ If any rows contain errors, they will be reported during the parse/import stage:
 
 In the API, there are two additional fields: `force_import` and `skip_parse_step`.
 
-* `force_import` - Allows you to skip rows with errors.
+- `force_import` - Allows you to skip rows with errors.
 
-* `skip_parse_step` - Enables you to run the import task immediately, without needing to call the `confirm` endpoint.
+- `skip_parse_step` - Enables you to run the import task immediately, without needing to call the `confirm` endpoint.
 
 ![Start API](_static/images/start_api.png)
 

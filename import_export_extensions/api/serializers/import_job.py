@@ -1,8 +1,7 @@
 import typing
 
-from rest_framework import request, serializers
-
 from celery import states
+from rest_framework import request, serializers
 
 from ... import models, resources
 from . import import_job_details as details

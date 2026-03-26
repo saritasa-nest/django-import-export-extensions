@@ -1,12 +1,10 @@
+import pytest
 from django.contrib.auth.models import User
 from django.core.files import base as django_files
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
-
 from rest_framework import status
 from rest_framework.test import APIClient
-
-import pytest
 
 from import_export_extensions.models.import_job import ImportJob
 from test_project.fake_app.factories import ArtistImportJobFactory

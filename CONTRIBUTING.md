@@ -1,4 +1,4 @@
-# Contributing
+# How to contribute
 
 Contributions are welcome, and they are greatly appreciated! Every
 little bit helps, and credit will always be given.
@@ -26,7 +26,7 @@ and `help wanted` is open to whoever wants to implement it.
 ### Implement Features
 
 Look through the GitHub issues for features. Anything tagged with
-`enhancement` and `help wanted\`is open to whoever wants to
+`enhancement` and `help wanted` is open to whoever wants to
 implement it.
 
 ### Write Documentation
@@ -35,8 +35,6 @@ implement it.
 whether as part of the official `django-import-export-extensions` docs,
 in docstrings, or even on the web in blog posts, articles, and such.
 
-### Submit Feedback
-
 The best way to send feedback is to file an issue at
 <https://github.com/saritasa-nest/django-import-export-extensions/issues>.
 
@@ -44,91 +42,53 @@ If you are proposing a feature:
 
 - Explain in detail how it would work.
 - Keep the scope as narrow as possible, to make it easier to
-    implement.
+  implement.
 - Remember that this is a volunteer-driven project, and that
-    contributions are welcome :)
+  contributions are welcome :)
 
 ## Get Started
 
-Ready to contribute? Here's how to set up
-`django-import-export-extensions` for local development.
+Ready to contribute? Here's how to set up `django-import-export-extensions`
+for local development.
 
-1. Fork the [django-import-export-extensions](https://github.com/saritasa-nest/django-import-export-extensions) repo on
-    GitHub.
+Fork the [django-import-export-extensions](https://github.com/saritasa-nest/django-import-export-extensions) repo on GitHub.
+And then clone your fork locally:
 
-2. Clone your fork locally:
+```bash
+git clone git@github.com:your_name_here/django-import-export-extensions.git
+```
 
-    ``` shell
-    git clone git@github.com:your_name_here/django-import-export-extensions.git
-    ```
+Then, navigate to the project directory:
 
-3. Setup virtual environment:
+```bash
+cd django-import-export-extensions
+```
 
-    Using uv:
+### Setup virtual environment
 
-    ``` shell
-    uv venv --python 3.14 --prompt django-import-export-extensions --seed
-    poetry config virtualenvs.in-project true
-    source .venv/bin/activate && poetry install
-    ```
+We use [uv](https://docs.astral.sh/uv/) to manage the dependencies.
 
-4. Create a branch for local development:
+To set up venv you would need to run `sync` command:
 
-    ```shell
-    git checkout -b name-of-your-bugfix-or-feature
-    ```
+```bash
+uv sync --all-packages --all-groups --all-extras
+```
 
-    Now you can make your changes locally.
+To activate your `virtualenv`
 
-5. When you\'re done making changes, check that your changes pass
-    linters and the tests:
+```bash
+source .venv/bin/activate
+```
 
-    ```shell
-    inv pre-commit.run-hooks
-    ```
+### Check code
 
-6. Commit your changes and push your branch to GitHub:
+We use `pre-commit` for quality control.
 
-    ```shell
-    git add .
-    git commit -m "Your detailed description of your changes."
-    git push origin name-of-your-bugfix-or-feature
-    ```
+To run checks:
 
-7. Submit a pull request through the GitHub website.
-
-## Starting test project
-
-To check your changes, you can run test_project:
-
-1. Set up aliases for docker hosts in `/etc/hosts`:
-
-    ```shell
-    inv ci.prepare
-    ```
-
-    or specify values required for database and redis in the `.env` file. Example:
-
-    ```txt title=".env"
-    DB_HOST=localhost
-    REDIS_HOST=localhost
-    ```
-
-2. Run the project and go to `localhost:8000` page in browser to check whether it was started:
-
-    ``` shell
-    inv django.run
-    ```
-
-!!! note
-
-    To run import/export in background, change
-    [CELERY_TASK_ALWAYS_EAGER](https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-always-eager)
-    to `False` and start celery with:
-
-    ```shell
-    inv celery.run
-    ```
+```bash
+inv pre-commit.run-hooks
+```
 
 ## Pull Request Guidelines
 
@@ -136,8 +96,7 @@ Before you submit a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
 2. If the pull request adds functionality, the docs should be updated.
-  Put your new functionality into a function with a docstring, and add
-  the feature to the list in README.md.
-3. The pull request should work for each supported Python version, and
-  for PyPy. Check github actions status, verify that all checks have
-  been passed.
+   Put your new functionality into a function with a docstring, and add
+   the feature to the list in README.md.
+3. The pull request should work for each supported Python version.
+   Check github actions status, verify that all checks have been passed.

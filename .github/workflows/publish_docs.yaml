@@ -1,0 +1,20 @@
+name: Publish latest documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Run
+        uses: saritasa-nest/saritasa-python-open-source-boilerplate/.github/actions/publish_docs@main
