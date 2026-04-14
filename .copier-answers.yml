@@ -1,7 +1,7 @@
 # Answers what were given during boilerplate initialization
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
 # https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
-_commit: 8326c4f
+_commit: 733bdfe
 _src_path: https://github.com/saritasa-nest/saritasa-python-boilerplate-open-source.git
 folder_name: import_export_extensions
 min_python_version: 3.1

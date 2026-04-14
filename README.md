@@ -1,7 +1,7 @@
 # django-import-export-extensions
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/saritasa-nest/django-import-export-extensions)
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/saritasa-nest/django-import-export-extensions/checks.yml)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/saritasa-nest/django-import-export-extensions/run_pre_commit.yaml)
 ![PyPI](https://img.shields.io/pypi/v/django-import-export-extensions)
 ![PyPI - Status](https://img.shields.io/pypi/status/django-import-export-extensions)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django-import-export-extensions)
