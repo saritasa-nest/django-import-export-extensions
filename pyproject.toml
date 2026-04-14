@@ -65,7 +65,7 @@ dependencies = [
   "django-picklefield>3.2",
   # Celery
   # https://docs.celeryproject.org/en/stable/
-  "celery[redis]>=5.4.0",
+  "celery>=5.4.0",
   # HTTP library for Python
   # https://requests.readthedocs.io/en/latest/
   "requests>=2.32.3",
@@ -77,6 +77,10 @@ dev = [
   # about the current request/response and when clicked, display more details about the panel's content.
   # https://django-debug-toolbar.readthedocs.io/en/latest/
   "django-debug-toolbar>=4",
+  # Python client for Redis database and key-value store
+  # Used for celery
+  # https://redis.readthedocs.io/en/latest/
+  "redis>=5",
 ]
 local = [
     "ipython>0",
