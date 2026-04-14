@@ -49,7 +49,7 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.8
+    rev: v0.15.10
     hooks:
       - id: ruff-check
         args: [
@@ -58,7 +58,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v9.7.0
+    rev: v10.0.0
     hooks:
       - id: cspell
 
@@ -68,7 +68,7 @@ repos:
       - id: add-trailing-comma
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.2
+    rev: 0.11.6
     hooks:
       - id: uv-lock
       - id: uv-sync
