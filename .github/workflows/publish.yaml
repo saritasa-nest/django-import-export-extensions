@@ -1,0 +1,29 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [
+      published,
+    ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+    permissions:
+      id-token: write  # For Trusted Publishing
+      contents: read
+    steps:
+      - name: Run
+        uses: saritasa-nest/saritasa-python-open-source-boilerplate/.github/actions/publish@main
+      - name: Report failure
+        if: failure() && github.event_name == 'release'
+        uses: saritasa-nest/saritasa-python-open-source-boilerplate/.github/actions/report_action_failure@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

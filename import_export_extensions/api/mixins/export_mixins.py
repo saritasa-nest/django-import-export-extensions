@@ -5,7 +5,6 @@ import typing
 from django.conf import settings
 from django.db.models import QuerySet
 from django.utils import module_loading
-
 from rest_framework import (
     decorators,
     request,
@@ -35,6 +34,7 @@ class ExportStartActionMixin:
     )
 
     def __init_subclass__(cls) -> None:
+        """Set up `start_export_action` as action of viewset."""
         super().__init_subclass__()
         # Skip if it is has no resource_class specified
         if not hasattr(cls, "resource_class"):

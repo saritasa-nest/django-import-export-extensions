@@ -1,7 +1,6 @@
-from django.db import models
-
 import pytest
 import pytest_mock
+from django.db import models
 from pytest_lazy_fixtures import lf
 
 from import_export_extensions.fields import IntermediateManyToManyField

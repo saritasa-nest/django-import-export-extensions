@@ -1,11 +1,9 @@
+import pytest
+import pytest_mock
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.urls import reverse
-
 from rest_framework import status
-
-import pytest
-import pytest_mock
 
 from import_export_extensions.models import ExportJob
 from test_project.fake_app.factories import ArtistExportJobFactory

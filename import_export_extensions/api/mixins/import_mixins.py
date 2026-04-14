@@ -2,7 +2,6 @@ import contextlib
 import typing
 
 from django.db.models import QuerySet
-
 from rest_framework import (
     decorators,
     request,
@@ -34,6 +33,7 @@ class ImportStartActionMixin:
     )
 
     def __init_subclass__(cls) -> None:
+        """Set up `start_import_action` as action of viewset."""
         super().__init_subclass__()
         # Skip if it is has no resource_class specified
         if not hasattr(cls, "resource_class"):

@@ -2,7 +2,6 @@ import collections
 import contextlib
 
 from django.db.models import QuerySet
-
 from rest_framework import (
     decorators,
     exceptions,
@@ -25,12 +24,12 @@ class BaseImportJobViewSet(
     """Base viewset for managing import jobs."""
 
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = core_mixins.ImportStartActionMixin.import_detail_serializer_class  # noqa: E501
+    serializer_class = (
+        core_mixins.ImportStartActionMixin.import_detail_serializer_class
+    )
     queryset = models.ImportJob.objects.all()
     search_fields: collections.abc.Sequence[str] = ("id",)
-    ordering: collections.abc.Sequence[str] = (
-        "id",
-    )
+    ordering: collections.abc.Sequence[str] = ("id",)
     ordering_fields: collections.abc.Sequence[str] = (
         "id",
         "created",
@@ -56,8 +55,11 @@ class BaseImportJobViewSet(
         # Correct specs of drf-spectacular if it is installed
         with contextlib.suppress(ImportError):
             from drf_spectacular.utils import extend_schema, extend_schema_view
+
             if hasattr(cls, "get_import_detail_serializer_class"):
-                response_serializer = cls().get_import_detail_serializer_class()  # noqa: E501
+                response_serializer = (
+                    cls().get_import_detail_serializer_class()
+                )
             else:
                 response_serializer = cls().get_serializer_class()
             extend_schema_view(
@@ -105,6 +107,7 @@ class BaseImportJobViewSet(
             data=serializer.data,
         )
 
+
 class ImportJobViewSet(
     core_mixins.ImportStartActionMixin,
     BaseImportJobViewSet,
@@ -131,15 +134,21 @@ class ImportJobViewSet(
         if self.action == getattr(self, "import_action", ""):
             # To make it consistent and for better support of drf-spectacular
             return super().get_queryset()  # pragma: no cover
-        return super().get_queryset().filter(
-            resource_path=self.resource_class.class_path,
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                resource_path=self.resource_class.class_path,
+            )
         )
+
 
 class ImportJobForUserViewSet(
     core_mixins.LimitQuerySetToCurrentUserMixin,
     ImportJobViewSet,
 ):
     """Viewset for providing import feature to users."""
+
 
 class BaseImportJobForUserViewSet(
     core_mixins.LimitQuerySetToCurrentUserMixin,

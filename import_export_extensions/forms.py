@@ -7,7 +7,6 @@ file. And in ExportForm the default export format is `xlsx`.
 
 from django import forms
 from django.utils.translation import gettext_lazy as _
-
 from import_export.formats import base_formats
 
 

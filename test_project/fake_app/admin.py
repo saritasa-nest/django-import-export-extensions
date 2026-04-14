@@ -13,9 +13,7 @@ class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
         "name",
         "instrument",
     )
-    list_filter = (
-        "instrument__title",
-    )
+    list_filter = ("instrument__title",)
     search_fields = (
         "instrument__title__icontains",
         "name",
@@ -39,9 +37,7 @@ class ArtistAdmin(CeleryImportExportMixin, admin.ModelAdmin):
 class InstrumentAdmin(admin.ModelAdmin):
     """Simple Instrument admin model for tests."""
 
-    list_display = (
-        "title",
-    )
+    list_display = ("title",)
 
 
 @admin.register(models.Band)
@@ -56,9 +52,7 @@ class BandAdmin(CeleryImportExportMixin, admin.ModelAdmin):
         "id",
         "title",
     )
-    resource_classes = (
-        resources.BandResourceWithM2M,
-    )
+    resource_classes = (resources.BandResourceWithM2M,)
 
 
 @admin.register(models.Membership)

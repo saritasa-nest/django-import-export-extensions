@@ -1,21 +1,21 @@
+import invoke
 import saritasa_invocations
-from invoke import Collection
 
 import invocations
 
-ns = Collection(
-    invocations.project,
-    invocations.docs,
+ns = invoke.Collection(
     invocations.ci,
-    saritasa_invocations.celery,
-    saritasa_invocations.django,
-    saritasa_invocations.docker,
+    invocations.docs,
+    invocations.project,
     saritasa_invocations.pytest,
-    saritasa_invocations.poetry,
+    saritasa_invocations.uv,
     saritasa_invocations.git,
     saritasa_invocations.pre_commit,
     saritasa_invocations.mypy,
     saritasa_invocations.python,
+    saritasa_invocations.celery,
+    saritasa_invocations.django,
+    saritasa_invocations.docker,
 )
 
 # Configurations for run command

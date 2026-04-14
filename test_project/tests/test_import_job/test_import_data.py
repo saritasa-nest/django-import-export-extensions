@@ -1,5 +1,4 @@
 import django.test
-
 import pytest
 
 from import_export_extensions.models import ImportJob

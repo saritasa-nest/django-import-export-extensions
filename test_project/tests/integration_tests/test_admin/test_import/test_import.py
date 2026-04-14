@@ -1,14 +1,12 @@
+import pytest
+import pytest_mock
+from celery import states
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test.client import Client
 from django.urls import reverse
-
-from rest_framework import status
-
-import pytest
-import pytest_mock
-from celery import states
 from pytest_lazy_fixtures import lf
+from rest_framework import status
 
 from import_export_extensions.models import ImportJob
 from test_project.fake_app.factories import ArtistImportJobFactory

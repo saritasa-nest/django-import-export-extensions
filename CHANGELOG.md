@@ -4,7 +4,7 @@
 
 - Support Django 6.0
 - Keep the IDs of search and filter results from the admin, instead of using
-  a reimplementation of the Django admin code
+  a re-implementation of the Django admin code
 - Migrate to MKDocs from Sphinx for documentation generation
 - Minor improvements for import/export admins:
   - Display `Created by` on detail page for export

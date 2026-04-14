@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 from django.utils import module_loading
 from django.utils.translation import gettext_lazy as _
-
 from import_export import resources
 from import_export.results import Result
 from picklefield.fields import PickledObjectField

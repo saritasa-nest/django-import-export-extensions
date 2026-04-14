@@ -1,9 +1,8 @@
 import sys
 
-from rest_framework import viewsets
-
 import pytest
 import pytest_mock
+from rest_framework import viewsets
 
 from import_export_extensions.api.views import (
     ExportJobViewSet,

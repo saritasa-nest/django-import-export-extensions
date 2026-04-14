@@ -1,9 +1,8 @@
 import pickle
 
+import pytest
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
-import pytest
 
 from import_export_extensions import results
 
