@@ -517,7 +517,6 @@ xlsx = [
 
 [[package]]
 name = "django-import-export-extensions"
-version = "1.9.2"
 source = { editable = "." }
 dependencies = [
     { name = "celery", extra = ["redis"] },
