@@ -149,5 +149,14 @@
         "* 21 3 * *"
       ],
     },
+    {
+      // Updates of compose images disabled for now because
+      // we usually use the latest versions
+      enabled: false,
+      // https://docs.renovatebot.com/modules/manager/docker-compose/
+      matchManagers: [
+        "docker-compose",
+      ],
+    },
   ]
 }
