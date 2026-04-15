@@ -87,6 +87,9 @@ local = [
     # Collection of invoke commands which used in Saritasa organization
     # https://github.com/saritasa-nest/saritasa-python-invocations/
     "saritasa-invocations[env_settings]>0",
+    # A library and CLI app for rendering project templates.
+    # https://copier.readthedocs.io/en/latest/
+    "copier>0",
 ]
 linters = [
     # Mypy is a static type checker for Python.

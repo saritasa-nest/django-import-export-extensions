@@ -1,0 +1,153 @@
+{
+  // Provide support for JSON schema in editors, for VSCode use
+  // https://marketplace.visualstudio.com/items?itemName=BlueGlassBlock.better-json5
+  // ext install BlueGlassBlock.better-json5
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // https://docs.renovatebot.com/config-overview/#extends
+  extends: [
+    // https://docs.renovatebot.com/presets-config/#configbest-practices
+    "config:best-practices",
+
+    // https://docs.renovatebot.com/presets-default/#dependencydashboard
+    ":dependencyDashboard",
+    // https://docs.renovatebot.com/presets-default/#enableprecommit
+    ":enablePreCommit",
+    // https://docs.renovatebot.com/presets-default/#enablevulnerabilityalerts
+    ":enableVulnerabilityAlerts",
+    // https://docs.renovatebot.com/presets-default/#rebasestaleprs
+    ":rebaseStalePrs",
+  ],
+
+  // https://docs.renovatebot.com/configuration-options/#reviewersfromcodeowners
+  reviewersFromCodeOwners: true,
+
+  // https://docs.renovatebot.com/configuration-options/#automerge
+  automerge: true,
+
+  // https://docs.renovatebot.com/configuration-options/#separatemajorminor
+  separateMajorMinor: true,
+
+  // https://docs.renovatebot.com/configuration-options/#separatemultiplemajor
+  separateMultipleMajor: true,
+
+  // https://docs.renovatebot.com/configuration-options/#prhourlylimit
+  prHourlyLimit: 0,
+
+  // https://docs.renovatebot.com/configuration-options/#addlabels
+  addLabels: [
+    "automated-pr",
+  ],
+
+  // https://docs.renovatebot.com/configuration-options/#commitmessageprefix
+  commitMessagePrefix: "[automated-commit]",
+  // https://docs.renovatebot.com/configuration-options/#commitmessagetopic
+  commitMessageTopic: "{{#if isGroup}} {{groupSlug}} {{else}} {{depName}} {{/if}}",
+
+  // https://docs.renovatebot.com/configuration-options/#minimumreleaseage
+  minimumReleaseAge: "1 day",
+
+  // https://docs.renovatebot.com/configuration-options/#lockfilemaintenance
+  // Enable regular refreshes of lock files to have the latest versions of
+  // sub dependencies. Without it, renovate will update just direct
+  // dependencies from `pyproject.toml`. The downside of this setting is that
+  // such PRs does not have any changelogs. This maintenance is very
+  // straightforward - renovate simply deletes lock file and recreate it again.
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: [
+      // https://crontab.guru/#*_21_*_*_WED
+      "* 21 * * WED"
+    ],
+  },
+
+  // https://docs.renovatebot.com/configuration-options/#vulnerabilityalerts
+  vulnerabilityAlerts: {
+    enabled: true,
+    automerge: false,
+  },
+
+  // https://docs.renovatebot.com/configuration-options/#ignoredeps
+  ignoreDeps: [
+    // Do not update python version in `pyproject.toml`
+    // It should be updated manually
+    "python",
+  ],
+
+  // https://docs.renovatebot.com/configuration-options/#packagerules
+  // Schedules docs
+  // https://docs.renovatebot.com/configuration-options/#schedule
+  packageRules: [
+    {
+      groupName: "python dependencies",
+      groupSlug: "python",
+      description: "Update python dependencies",
+      automerge: false,
+      matchFileNames: [
+        "pyproject.toml",
+        "poetry.lock",
+        "uv.lock",
+      ],
+      schedule: [
+        // https://crontab.guru/#*_21_*_*_SUN
+        "* 21 * * SUN"
+      ],
+    },
+    {
+      groupName: "GitHub Actions dependencies",
+      groupSlug: "github-actions",
+      description: "Update GitHub Action dependencies",
+      automerge: true,
+      // Disable digest pinning to avoid too much PRs
+      pinDigests: false,
+      // https://docs.renovatebot.com/modules/manager/github-actions/
+      matchManagers: [
+        "github-actions",
+      ],
+      schedule: [
+        // https://crontab.guru/#*_21_1_*_*
+        "* 21 1 * *"
+      ],
+    },
+    {
+      groupName: "pre-commit hooks",
+      groupSlug: "pre-commit",
+      description: "Update pre-commit hooks",
+      automerge: true,
+      // Disable digest pinning to avoid too much PRs
+      pinDigests: false,
+      // https://docs.renovatebot.com/modules/manager/pre-commit/
+      matchManagers: [
+        "pre-commit",
+      ],
+      schedule: [
+        // https://crontab.guru/#*_21_2_*_*
+        "* 21 2 * *"
+      ],
+    },
+    {
+      groupName: "CSS/JS in HTML",
+      groupSlug: "html",
+      description: "Update CSS/JS libraries in HTML templates",
+      automerge: false,
+      // Disable digest pinning to avoid too many PRs
+      pinDigests: false,
+      // Only https://cdnjs.com/ is supported for now
+      // https://docs.renovatebot.com/modules/manager/html/
+      matchManagers: [
+        "html",
+      ],
+      prHeader: "# Frontend updated - MANUAL CHECK REQUIRED!",
+      addLabels: [
+        "manual-check-required",
+      ],
+      // https://docs.renovatebot.com/configuration-options/#minimumreleaseagebehaviour
+      // https://cdnjs.com/ doesn't have timestamps
+      minimumReleaseAgeBehaviour: "timestamp-optional",
+      schedule: [
+        // https://crontab.guru/#*_21_3_*_*
+        "* 21 3 * *"
+      ],
+    },
+  ]
+}
