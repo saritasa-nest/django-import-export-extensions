@@ -8,10 +8,10 @@ authors = [
     {name = "Saritasa", email = "pypi@saritasa.com"}
 ]
 maintainers = [
-  { name = "Nikita Azanov, email = <nikita.azanov@saritasa.com>"},
-  { name = "Andrey Otto, email = <andrey.otto@saritasa.com>"},
-  { name = "Stanislav Khlud, email = <stanislav.khlud@saritasa.com>"},
-  { name = "Egor Toryshak, email = <egor.toryshak@saritasa.com"},
+  { name = "Nikita Azanov", email = "nikita.azanov@saritasa.com"},
+  { name = "Andrey Otto", email = "andrey.otto@saritasa.com"},
+  { name = "Stanislav Khlud", email = "stanislav.khlud@saritasa.com"},
+  { name = "Egor Toryshak", email = "egor.toryshak@saritasa.com"},
 ]
 keywords = [
   "python",
@@ -31,6 +31,12 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Framework :: Django",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
@@ -156,7 +162,7 @@ test = [
 Documentation = "https://saritasa-nest.github.io/django-import-export-extensions/"
 Repository = "https://github.com/saritasa-nest/django-import-export-extensions"
 Changelog = "https://saritasa-nest.github.io/django-import-export-extensions/changelog/"
-Releases = "https://saritasa-nest.github.io/django-import-export-extensions/releases/"
+Releases = "https://github.com/saritasa-nest/django-import-export-extensions/releases/"
 "Bug Tracker" = "https://github.com/saritasa-nest/django-import-export-extensions/issues/"
 Contributing ="https://saritasa-nest.github.io/django-import-export-extensions/contributing/"
 

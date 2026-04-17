@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 1.10.1 (2026-04-17)
+
+- Fix pyproject.toml configuration
+
 ## 1.10.0 (2026-04-17)
 
 - Support Django 6.0
