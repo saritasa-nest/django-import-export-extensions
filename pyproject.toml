@@ -31,6 +31,7 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -159,7 +160,7 @@ test = [
 ]
 
 [project.urls]
-Documentation = "https://saritasa-nest.github.io/django-import-export-extensions/"
+Documentation = "https://saritasa-nest.github.io/django-import-export-extensions/latest/"
 Repository = "https://github.com/saritasa-nest/django-import-export-extensions"
 Changelog = "https://saritasa-nest.github.io/django-import-export-extensions/changelog/"
 Releases = "https://github.com/saritasa-nest/django-import-export-extensions/releases/"

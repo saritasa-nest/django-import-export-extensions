@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.10.2 (2026-04-17)
+
+- Fix docs link in pyproject.toml
+- Fix status of project in pyproject.toml to "stable"
+
 ## 1.10.1 (2026-04-17)
 
 - Fix pyproject.toml configuration
