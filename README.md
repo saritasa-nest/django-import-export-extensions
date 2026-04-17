@@ -2,6 +2,7 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/saritasa-nest/django-import-export-extensions)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/saritasa-nest/django-import-export-extensions/run_pre_commit.yaml)
+[![Coverage Status](https://coveralls.io/repos/github/saritasa-nest/django-import-export-extensions/badge.svg?branch=main)](https://coveralls.io/github/saritasa-nest/django-import-export-extensions?branch=main)
 ![PyPI](https://img.shields.io/pypi/v/django-import-export-extensions)
 ![PyPI - Status](https://img.shields.io/pypi/status/django-import-export-extensions)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django-import-export-extensions)
