@@ -225,3 +225,8 @@
 ## 0.1.0 (2023-04-01)
 
 - First release on PyPI.
+- Beta release
+
+## 0.0.0
+
+- Start of package development
