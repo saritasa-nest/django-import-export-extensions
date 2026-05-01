@@ -5,7 +5,7 @@ dynamic = [
 ]
 description = "Extend functionality of `django-import-export`"
 authors = [
-    {name = "Saritasa", email = "pypi@saritasa.com"}
+  {name = "Saritasa", email = "pypi@saritasa.com"}
 ]
 maintainers = [
   { name = "Nikita Azanov", email = "nikita.azanov@saritasa.com"},
@@ -26,6 +26,7 @@ keywords = [
 license = "MIT"
 readme = "README.md"
 classifiers = [
+<<<<<<< before updating
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Intended Audience :: Developers",
@@ -44,6 +45,18 @@ classifiers = [
     "Framework :: Django :: 5.1",
     "Framework :: Django :: 5.2",
     "Framework :: Django :: 6.0",
+=======
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.1",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+>>>>>>> after updating
 ]
 requires-python = ">=3.10"
 dependencies = [
@@ -90,27 +103,33 @@ dev = [
   "redis>=5",
 ]
 local = [
-    "ipython>0",
-    # Exports functions to access the IPython debugger, which features tab completion, syntax highlighting, better tracebacks
-    # https://github.com/gotcha/ipdb
-    "ipdb>0",
-    # A framework for managing and maintaining multi-language pre-commit hooks.
-    # https://pre-commit.com/
-    "pre-commit>0",
-    # Collection of invoke commands which used in Saritasa organization
-    # https://github.com/saritasa-nest/saritasa-python-invocations/
-    "saritasa-invocations[env_settings]>0",
-    # A library and CLI app for rendering project templates.
-    # https://copier.readthedocs.io/en/latest/
-    "copier>0",
+  "ipython>0",
+  # Exports functions to access the IPython debugger, which features tab completion, syntax highlighting, better tracebacks
+  # https://github.com/gotcha/ipdb
+  "ipdb>0",
+  # A framework for managing and maintaining multi-language pre-commit hooks.
+  # https://pre-commit.com/
+  "pre-commit>0",
+  # Collection of invoke commands which used in Saritasa organization
+  # https://github.com/saritasa-nest/saritasa-python-invocations/
+  "saritasa-invocations[env_settings]>0",
+  # A library and CLI app for rendering project templates.
+  # https://copier.readthedocs.io/en/latest/
+  "copier>0",
 ]
 linters = [
+<<<<<<< before updating
     # Mypy is a static type checker for Python.
     # https://mypy.readthedocs.io/en/stable/
     "mypy>0",
     # This is a PEP 561 type stub package for the `requests` package
     # https://pypi.org/project/types-requests/
     "types-requests>0",
+=======
+  # Mypy is a static type checker for Python.
+  # https://mypy.readthedocs.io/en/stable/
+  "mypy>0",
+>>>>>>> after updating
 ]
 docs = [
   # Project documentation with Markdown.
@@ -162,10 +181,10 @@ test = [
 [project.urls]
 Documentation = "https://saritasa-nest.github.io/django-import-export-extensions/latest/"
 Repository = "https://github.com/saritasa-nest/django-import-export-extensions"
-Changelog = "https://saritasa-nest.github.io/django-import-export-extensions/changelog/"
+Changelog = "https://saritasa-nest.github.io/django-import-export-extensions/latest/changelog/"
 Releases = "https://github.com/saritasa-nest/django-import-export-extensions/releases/"
 "Bug Tracker" = "https://github.com/saritasa-nest/django-import-export-extensions/issues/"
-Contributing ="https://saritasa-nest.github.io/django-import-export-extensions/contributing/"
+Contributing ="https://saritasa-nest.github.io/django-import-export-extensions/latest/contributing/"
 
 [build-system]
 requires = ["hatchling"]
@@ -298,11 +317,11 @@ ignore = [
 force-wrap-aliases = true
 split-on-trailing-comma = true
 section-order = [
-    "future",
-    "standard-library",
-    "third-party",
-    "first-party",
-    "local-folder",
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
 ]
 
 [tool.ruff.lint.flake8-pytest-style]

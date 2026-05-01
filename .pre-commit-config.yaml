@@ -73,7 +73,8 @@ repos:
       - id: uv-lock
       - id: uv-sync
         args: [
-          --all-groups
+          --all-groups,
+          --all-extras,
         ]
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
@@ -81,7 +82,7 @@ repos:
     hooks:
       - id: markdownlint
         args: [
-          "--fix",
+          --fix,
         ]
 
   - repo: https://github.com/rhysd/actionlint
