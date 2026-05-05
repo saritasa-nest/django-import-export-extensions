@@ -313,9 +313,12 @@ class CeleryExportAdminMixin(
         resource_kwargs = super().get_resource_kwargs(request, *args, **kwargs)
         resource_kwargs["admin_filters"] = {
             "pk__in": list(
-                self.get_changelist_instance(request)
-                .get_queryset(request)
-                .values_list("pk", flat=True),
+                map(
+                    str,
+                    self.get_changelist_instance(request)
+                    .get_queryset(request)
+                    .values_list("pk", flat=True),
+                ),
             ),
         }
         return resource_kwargs
