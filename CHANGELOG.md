@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Convert primary keys to str on admin export
+
 ## 1.10.2 (2026-04-17)
 
 - Fix docs link in pyproject.toml
