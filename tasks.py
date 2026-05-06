@@ -29,6 +29,7 @@ ns.configure(
         },
         "saritasa_invocations": saritasa_invocations.Config(
             project_name="django-import-export-extensions",
+<<<<<<< before updating
             celery=saritasa_invocations.CelerySettings(
                 app="test_project.celery_app:app",
                 scheduler="",
@@ -41,6 +42,11 @@ ns.configure(
             ),
             github_actions=saritasa_invocations.GitHubActionsSettings(
                 hosts=("postgres", "redis"),
+=======
+            pre_commit=saritasa_invocations.PreCommitSettings(
+                entry="prek",
+                default_hook_stage="pre-push",
+>>>>>>> after updating
             ),
         ),
     },

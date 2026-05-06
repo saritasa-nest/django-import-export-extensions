@@ -99,6 +99,8 @@ repos:
     rev: 43.141.2
     hooks:
       - id: renovate-config-validator
+        language: bun
+        language_version: bun@1
         args: [
           --strict,
         ]

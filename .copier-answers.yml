@@ -1,7 +1,10 @@
 # Answers what were given during boilerplate initialization
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
 # https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
-_commit: 9ed1b6a
+# https://copier.readthedocs.io/en/stable/updating/#never-change-the-answers-file-manually
+# To update, run (from the project root):
+# uvx copier update --vcs-ref main --skip-answered --trust --skip-tasks --data {question}={answer}
+_commit: a2deac2
 _src_path: https://github.com/saritasa-nest/saritasa-python-boilerplate-open-source.git
 folder_name: import_export_extensions
 min_python_version: 3.1

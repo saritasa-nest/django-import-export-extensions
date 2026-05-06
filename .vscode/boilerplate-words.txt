@@ -1,6 +1,7 @@
 Anson
 autorefs
 Behaviour
+bunx
 charliermarsh
 docstrings
 eamodio
@@ -12,6 +13,7 @@ magiclink
 mhutchie
 mikefarah
 mkdocstrings
+prek
 pymdownx
 saritasa
 superfences
