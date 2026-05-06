@@ -45,7 +45,14 @@
   commitMessageTopic: "{{#if isGroup}} {{groupSlug}} {{else}} {{depName}} {{/if}}",
 
   // https://docs.renovatebot.com/configuration-options/#minimumreleaseage
+  // Global setting for whole organization is 7 days
   minimumReleaseAge: "1 day",
+  // https://docs.renovatebot.com/configuration-options/#minimumreleaseagebehaviour
+  // Release age is not well supported on lock file updates
+  // https://github.com/renovatebot/renovate/discussions/38115
+  // https://github.com/renovatebot/renovate/issues/41652
+  // https://github.com/renovatebot/renovate/pull/41913
+  minimumReleaseAgeBehaviour: "timestamp-optional",
 
   // https://docs.renovatebot.com/configuration-options/#lockfilemaintenance
   // Enable regular refreshes of lock files to have the latest versions of

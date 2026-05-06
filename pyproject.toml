@@ -90,41 +90,41 @@ dev = [
   "redis>=5",
 ]
 local = [
-  "ipython>0",
+  "ipython",
   # Exports functions to access the IPython debugger, which features tab completion, syntax highlighting, better tracebacks
   # https://github.com/gotcha/ipdb
-  "ipdb>0",
-  # A framework for managing and maintaining multi-language pre-commit hooks.
-  # https://pre-commit.com/
-  "pre-commit>0",
+  "ipdb",
+  # A fast Git hook manager written in Rust, designed as a drop-in alternative to pre-commit, reimagined.
+  # https://prek.j178.dev/
+  "prek",
   # Collection of invoke commands which used in Saritasa organization
   # https://github.com/saritasa-nest/saritasa-python-invocations/
-  "saritasa-invocations[env_settings]>0",
+  "saritasa-invocations[env_settings]",
   # A library and CLI app for rendering project templates.
   # https://copier.readthedocs.io/en/latest/
-  "copier>0",
+  "copier",
 ]
 linters = [
   # Mypy is a static type checker for Python.
   # https://mypy.readthedocs.io/en/stable/
-  "mypy>0",
+  "mypy",
   # This is a PEP 561 type stub package for the `requests` package
   # https://pypi.org/project/types-requests/
-  "types-requests>0",
+  "types-requests",
 ]
 docs = [
   # Project documentation with Markdown.
   # https://www.mkdocs.org/
-  "mkdocs>0",
+  "mkdocs",
   # A powerful documentation framework on top of MkDocs
   # https://squidfunk.github.io/mkdocs-material/
-  "mkdocs-material>0",
+  "mkdocs-material",
   # Automatic documentation from sources, for MkDocs
   # https://mkdocstrings.github.io/
-  "mkdocstrings[python]>0",
+  "mkdocstrings[python]",
   # Manage multiple versions of your MkDocs-powered documentation
   # https://github.com/jimporter/mike
-  "mike>0",
+  "mike",
 ]
 test = [
   # Provides a Django management command to check whether the primary database is ready to accept connections.

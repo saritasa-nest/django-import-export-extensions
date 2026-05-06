@@ -29,6 +29,10 @@ ns.configure(
         },
         "saritasa_invocations": saritasa_invocations.Config(
             project_name="django-import-export-extensions",
+            pre_commit=saritasa_invocations.PreCommitSettings(
+                entry="prek",
+                default_hook_stage="pre-push",
+            ),
             celery=saritasa_invocations.CelerySettings(
                 app="test_project.celery_app:app",
                 scheduler="",
