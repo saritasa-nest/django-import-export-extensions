@@ -49,7 +49,7 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.12
+    rev: v0.15.15
     hooks:
       - id: ruff-check
         args: [
@@ -68,7 +68,7 @@ repos:
       - id: add-trailing-comma
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.8
+    rev: 0.11.18
     hooks:
       - id: uv-lock
       - id: uv-sync
@@ -96,7 +96,7 @@ repos:
       - id: yamllint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 43.141.2
+    rev: 43.207.4
     hooks:
       - id: renovate-config-validator
         language: bun
