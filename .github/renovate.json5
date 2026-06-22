@@ -89,7 +89,7 @@
       groupName: "python dependencies",
       groupSlug: "python",
       description: "Update python dependencies",
-      automerge: false,
+      automerge: true,
       matchFileNames: [
         "pyproject.toml",
         "poetry.lock",

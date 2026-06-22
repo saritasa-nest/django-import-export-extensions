@@ -12,7 +12,7 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![prek](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/j178/prek/master/docs/assets/badge-v0.json)](https://github.com/j178/prek)
 
-Check out out other open-source [projects](https://github.com/orgs/saritasa-nest/repositories?q=visibility%3Apublic+archived%3Afalse+fork%3Afalse+language%3APython)
+Check out our other open-source [projects](https://github.com/orgs/saritasa-nest/repositories?q=visibility%3Apublic+archived%3Afalse+fork%3Afalse+language%3APython)
 
 ## Links
 

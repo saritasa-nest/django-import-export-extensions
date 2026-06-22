@@ -4,7 +4,7 @@
 # https://copier.readthedocs.io/en/stable/updating/#never-change-the-answers-file-manually
 # To update, run (from the project root):
 # uvx copier update --vcs-ref main --skip-answered --trust --skip-tasks --data {question}={answer}
-_commit: d03da0e
+_commit: 20a9a54
 _src_path: https://github.com/saritasa-nest/saritasa-python-boilerplate-open-source.git
 folder_name: import_export_extensions
 min_python_version: 3.1
