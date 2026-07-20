@@ -2,7 +2,10 @@
 
 ## Unreleased
 
+## 1.10.3 (2026-07-20)
+
 - Convert primary keys to str on admin export
+- Fix `created` field settings (Now `created` field is set to `auto_now_add=True`)
 
 ## 1.10.2 (2026-04-17)
 
