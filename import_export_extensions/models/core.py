@@ -18,7 +18,7 @@ class CreationDateTimeField(models.DateTimeField):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(
-            auto_now=True,
+            auto_now_add=True,
             verbose_name=_("Created"),
         )
 

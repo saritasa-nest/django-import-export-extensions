@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 (
                     "created",
                     import_export_extensions.models.core.CreationDateTimeField(
-                        auto_now=True,
+                        auto_now_add=True,
                         verbose_name="Created",
                     ),
                 ),
@@ -196,7 +196,7 @@ class Migration(migrations.Migration):
                 (
                     "created",
                     import_export_extensions.models.core.CreationDateTimeField(
-                        auto_now=True,
+                        auto_now_add=True,
                         verbose_name="Created",
                     ),
                 ),
