@@ -2762,7 +2762,7 @@
                 <span class="n">job</span><span class="o">.</span><span class="n">cancel_export</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
                     <span class="n">request</span><span class="p">,</span>
-                    <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Export of </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> canceled&quot;</span><span class="p">),</span>
+                    <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export of </span><span class="si">%(job)s</span><span class="s2"> canceled&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="n">job</span><span class="p">},</span>
                     <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
@@ -2819,7 +2819,7 @@
             <span class="n">job</span><span class="o">.</span><span class="n">cancel_export</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
                 <span class="n">request</span><span class="p">,</span>
-                <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Export of </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> canceled&quot;</span><span class="p">),</span>
+                <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export of </span><span class="si">%(job)s</span><span class="s2"> canceled&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="n">job</span><span class="p">},</span>
                 <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
@@ -3728,7 +3728,7 @@ and percent of completed work.</p>
                 <span class="n">job</span><span class="o">.</span><span class="n">cancel_import</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
                     <span class="n">request</span><span class="p">,</span>
-                    <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Import of </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> canceled&quot;</span><span class="p">),</span>
+                    <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import of </span><span class="si">%(job)s</span><span class="s2"> canceled&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="n">job</span><span class="p">},</span>
                     <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
@@ -3742,7 +3742,7 @@ and percent of completed work.</p>
                 <span class="n">job</span><span class="o">.</span><span class="n">confirm_import</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
                     <span class="n">request</span><span class="p">,</span>
-                    <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Import of </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> confirmed&quot;</span><span class="p">),</span>
+                    <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import of </span><span class="si">%(job)s</span><span class="s2"> confirmed&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="n">job</span><span class="p">},</span>
                     <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
@@ -3799,7 +3799,7 @@ and percent of completed work.</p>
             <span class="n">job</span><span class="o">.</span><span class="n">cancel_import</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
                 <span class="n">request</span><span class="p">,</span>
-                <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Import of </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> canceled&quot;</span><span class="p">),</span>
+                <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import of </span><span class="si">%(job)s</span><span class="s2"> canceled&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="n">job</span><span class="p">},</span>
                 <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
@@ -3846,7 +3846,7 @@ and percent of completed work.</p>
             <span class="n">job</span><span class="o">.</span><span class="n">confirm_import</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
                 <span class="n">request</span><span class="p">,</span>
-                <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Import of </span><span class="si">{</span><span class="n">job</span><span class="si">}</span><span class="s2"> confirmed&quot;</span><span class="p">),</span>
+                <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import of </span><span class="si">%(job)s</span><span class="s2"> confirmed&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="n">job</span><span class="p">},</span>
                 <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
@@ -4423,7 +4423,8 @@ and percent of completed work.</p>
 <span class="normal">122</span>
 <span class="normal">123</span>
 <span class="normal">124</span>
-<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseImportExportJobAdminMixin</span><span class="p">:</span>
+<span class="normal">125</span>
+<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseImportExportJobAdminMixin</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin provides common methods for ImportJob and ExportJob admins.&quot;&quot;&quot;</span>
 
     <span class="n">change_form_template</span> <span class="o">=</span> <span class="p">(</span>
@@ -4517,7 +4518,8 @@ and percent of completed work.</p>
         <span class="n">obj</span><span class="o">.</span><span class="n">rerun</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
             <span class="n">request</span><span class="p">,</span>
-            <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Re-run of job(</span><span class="si">{</span><span class="n">job_id</span><span class="si">}</span><span class="s2">) has been started&quot;</span><span class="p">),</span>
+            <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Re-run of job(</span><span class="si">%(job_id)s</span><span class="s2">) has been started&quot;</span><span class="p">)</span>
+            <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">},</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -4828,13 +4830,15 @@ and percent of completed work.</p>
 <span class="normal">122</span>
 <span class="normal">123</span>
 <span class="normal">124</span>
-<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">WSGIRequest</span><span class="p">,</span> <span class="n">job_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">http</span><span class="o">.</span><span class="n">HttpResponse</span><span class="p">:</span>
+<span class="normal">125</span>
+<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">WSGIRequest</span><span class="p">,</span> <span class="n">job_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">http</span><span class="o">.</span><span class="n">HttpResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rerun job.&quot;&quot;&quot;</span>
     <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">job_id</span><span class="p">)</span>
     <span class="n">obj</span><span class="o">.</span><span class="n">rerun</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">message_user</span><span class="p">(</span>
         <span class="n">request</span><span class="p">,</span>
-        <span class="n">_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Re-run of job(</span><span class="si">{</span><span class="n">job_id</span><span class="si">}</span><span class="s2">) has been started&quot;</span><span class="p">),</span>
+        <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Re-run of job(</span><span class="si">%(job_id)s</span><span class="s2">) has been started&quot;</span><span class="p">)</span>
+        <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">},</span>
         <span class="n">messages</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">,</span>
     <span class="p">)</span>
 
