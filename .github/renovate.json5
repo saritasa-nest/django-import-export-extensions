@@ -54,6 +54,10 @@
   // https://github.com/renovatebot/renovate/pull/41913
   minimumReleaseAgeBehaviour: "timestamp-optional",
 
+  // https://docs.renovatebot.com/configuration-options/#automergestrategy
+  // Auto merge PRs without merge commits to keep history cleaner.
+  automergeStrategy: "rebase",
+
   // https://docs.renovatebot.com/configuration-options/#lockfilemaintenance
   // Enable regular refreshes of lock files to have the latest versions of
   // sub dependencies. Without it, renovate will update just direct
@@ -92,7 +96,6 @@
       automerge: true,
       matchFileNames: [
         "pyproject.toml",
-        "poetry.lock",
         "uv.lock",
       ],
       schedule: [

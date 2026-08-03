@@ -20,4 +20,4 @@ def job_error_hook(
     **kwargs,
 ) -> None:
     """Present an example of job error hook."""
-    logging.getLogger(__file__).warning(f"{instance}, {error_message}")
+    logging.getLogger(__name__).warning(f"{instance}, {error_message}")

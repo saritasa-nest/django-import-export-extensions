@@ -256,7 +256,7 @@ class ImportJobAdmin(
                 job.cancel_import()
                 self.message_user(
                     request,
-                    _(f"Import of {job} canceled"),
+                    _("Import of %(job)s canceled") % {"job": job},
                     messages.SUCCESS,
                 )
             except ValueError as error:
@@ -270,7 +270,7 @@ class ImportJobAdmin(
                 job.confirm_import()
                 self.message_user(
                     request,
-                    _(f"Import of {job} confirmed"),
+                    _("Import of %(job)s confirmed") % {"job": job},
                     messages.SUCCESS,
                 )
             except ValueError as error:

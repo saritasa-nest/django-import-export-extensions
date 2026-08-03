@@ -166,6 +166,6 @@ class IntermediateManyToManyField(Field):
             intermediate_obj = intermediate_model(**obj_data)
             try:
                 intermediate_obj.full_clean()
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 self._format_exception(e)
             intermediate_obj.save()

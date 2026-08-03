@@ -105,7 +105,8 @@ class BaseImportExportJobAdminMixin:
         obj.rerun()
         self.message_user(
             request,
-            _(f"Re-run of job({job_id}) has been started"),
+            _("Re-run of job(%(job_id)s) has been started")
+            % {"job_id": job_id},
             messages.SUCCESS,
         )
 

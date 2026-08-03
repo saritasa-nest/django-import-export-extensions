@@ -195,7 +195,7 @@ class ExportJobAdmin(
                 job.cancel_export()
                 self.message_user(
                     request,
-                    _(f"Export of {job} canceled"),
+                    _("Export of %(job)s canceled") % {"job": job},
                     messages.SUCCESS,
                 )
             except ValueError as error:

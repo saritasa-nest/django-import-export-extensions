@@ -208,7 +208,7 @@ class ExportJob(BaseJob):
                     "export_finished",
                 ],
             )
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
             self._handle_error(
                 error_message=str(error),
                 traceback=traceback.format_exc(),
