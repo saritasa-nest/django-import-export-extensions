@@ -1,1 +1,9 @@
 * nikita.azanov@saritasa.com andrey.otto@saritasa.com stanislav.khlud@saritasa.com egor.toryshak@saritasa.com
+
+# Disable CODEOWNERS for files with dependency specifications.
+# This reduces email noise from dependency updates.
+# All of this are auto merged by Renovate bot, so no need to assign reviewers
+# for these files.
+uv.lock
+.pre-commit-config.yaml
+.github/workflows/**
