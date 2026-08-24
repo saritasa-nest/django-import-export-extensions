@@ -766,8 +766,8 @@ with <a href="https://github.com/django-tenants/django-tenants">django-tenants</
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="c1"># If schema_name is provided, switch db schema</span>
-        <span class="k">if</span> <span class="s2">&quot;schema_name&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">connection</span><span class="o">.</span><span class="n">set_schema</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema_name&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">"schema_name"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">set_schema</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema_name"</span><span class="p">])</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
@@ -779,7 +779,7 @@ with <a href="https://github.com/django-tenants/django-tenants">django-tenants</
     <span class="k">def</span><span class="w"> </span><span class="nf">get_resource_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="c1"># Pass schema to job</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">tenant</span><span class="o">.</span><span class="n">schema_name</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"schema_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">tenant</span><span class="o">.</span><span class="n">schema_name</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_resource_kwargs</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>

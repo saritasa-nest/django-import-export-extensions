@@ -1606,7 +1606,7 @@
 <span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ExportJob</span><span class="p">(</span><span class="n">BaseJob</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract model for managing celery export jobs.</span>
+<span class="w">    </span><span class="sd">"""Abstract model for managing celery export jobs.</span>
 
 <span class="sd">    Encapsulate all logic related to celery export.</span>
 
@@ -1618,10 +1618,10 @@
 
 <span class="sd">    Export file saves in media files.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">ExportStatus</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;ExportJob possible statuses.</span>
+<span class="w">        </span><span class="sd">"""ExportJob possible statuses.</span>
 
 <span class="sd">        * CREATED:</span>
 <span class="sd">            export job is just created, no exporting done</span>
@@ -1640,13 +1640,13 @@
 <span class="sd">               |</span>
 <span class="sd">            EXPORTED</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">&quot;CREATED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Created&quot;</span><span class="p">)</span>
-        <span class="n">EXPORTING</span> <span class="o">=</span> <span class="s2">&quot;EXPORTING&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Exporting&quot;</span><span class="p">)</span>
-        <span class="n">EXPORT_ERROR</span> <span class="o">=</span> <span class="s2">&quot;EXPORT_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export Error&quot;</span><span class="p">)</span>
-        <span class="n">EXPORTED</span> <span class="o">=</span> <span class="s2">&quot;EXPORTED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Exported&quot;</span><span class="p">)</span>
-        <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">&quot;CANCELLED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Cancelled&quot;</span><span class="p">)</span>
+        <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">"CREATED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Created"</span><span class="p">)</span>
+        <span class="n">EXPORTING</span> <span class="o">=</span> <span class="s2">"EXPORTING"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Exporting"</span><span class="p">)</span>
+        <span class="n">EXPORT_ERROR</span> <span class="o">=</span> <span class="s2">"EXPORT_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Export Error"</span><span class="p">)</span>
+        <span class="n">EXPORTED</span> <span class="o">=</span> <span class="s2">"EXPORTED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Exported"</span><span class="p">)</span>
+        <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">"CANCELLED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Cancelled"</span><span class="p">)</span>
 
     <span class="n">export_finished_statuses</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">ExportStatus</span><span class="o">.</span><span class="n">EXPORTED</span><span class="p">,</span>
@@ -1657,57 +1657,57 @@
         <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
         <span class="n">choices</span><span class="o">=</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Job status&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Job status"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">file_format_path</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export path to class&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Export path to class"</span><span class="p">),</span>
         <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span>
-            <span class="s2">&quot;Export file format as path to base_formats class&quot;</span><span class="p">,</span>
+            <span class="s2">"Export file format as path to base_formats class"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">data_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
         <span class="n">storage</span><span class="o">=</span><span class="n">tools</span><span class="o">.</span><span class="n">select_storage</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Data file&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Data file"</span><span class="p">),</span>
         <span class="n">upload_to</span><span class="o">=</span><span class="n">tools</span><span class="o">.</span><span class="n">upload_export_file_to</span><span class="p">,</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;File that contain exported data&quot;</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"File that contain exported data"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">export_task_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export task ID&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Export task ID"</span><span class="p">),</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Celery task ID that start `export_data`&quot;</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Celery task ID that start `export_data`"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">export_started</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export started&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Export started"</span><span class="p">),</span>
         <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">export_finished</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export finished&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Export finished"</span><span class="p">),</span>
         <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export job&quot;</span><span class="p">)</span>
-        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export jobs&quot;</span><span class="p">)</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Export job"</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Export jobs"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation.&quot;&quot;&quot;</span>
-        <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="n">file_format</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_format_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Return string representation."""</span>
+        <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+        <span class="n">file_format</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_format_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ExportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file_format</span><span class="si">=}</span><span class="s2">)&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"ExportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file_format</span><span class="si">=}</span><span class="s2">)"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1716,12 +1716,12 @@
         <span class="n">using</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">update_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start task for data exporting when ExportJob is created.</span>
+<span class="w">        </span><span class="sd">"""Start task for data exporting when ExportJob is created.</span>
 
 <span class="sd">        Celery task is manually called with `apply_async`, to provide</span>
 <span class="sd">        possibility of custom `task_id` with which task will be run.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">is_created</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">adding</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">force_insert</span><span class="o">=</span><span class="n">force_insert</span><span class="p">,</span>
@@ -1731,24 +1731,24 @@
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">is_created</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;export_task_id&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"export_task_id"</span><span class="p">])</span>
             <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_export_data_task</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">base_formats</span><span class="o">.</span><span class="n">Format</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get initialized format instance.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get initialized format instance."""</span>
         <span class="k">return</span> <span class="n">module_loading</span><span class="o">.</span><span class="n">import_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_format_path</span><span class="p">)()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">export_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get filename for export result file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get filename for export result file."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">generate_export_filename</span><span class="p">(</span>
             <span class="n">file_format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_format</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">progress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaskStateInfo</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict with export state.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return dict with export state."""</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span>
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">EXPORTING</span>
@@ -1761,31 +1761,31 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">expected_statuses</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="n">ExportStatus</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Raise `ValueError` if `ExportJob` is in incorrect state.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Raise `ValueError` if `ExportJob` is in incorrect state."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expected_statuses</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;ExportJob with id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> has incorrect status: &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">export_status</span><span class="si">}</span><span class="s2">`. Expected statuses:&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">expected_statuses</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"ExportJob with id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> has incorrect status: "</span>
+                <span class="sa">f</span><span class="s2">"`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">export_status</span><span class="si">}</span><span class="s2">`. Expected statuses:"</span>
+                <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">expected_statuses</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_start_export_data_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start export data task.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Start export data task."""</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">tasks</span>
 
         <span class="n">tasks</span><span class="o">.</span><span class="n">export_data_task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span>
-            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"job_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
             <span class="n">task_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">export_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Export data to `data_file` from DB.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Export data to `data_file` from DB."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">EXPORTING</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_started</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;export_status&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;export_started&quot;</span><span class="p">,</span>
+                <span class="s2">"export_status"</span><span class="p">,</span>
+                <span class="s2">"export_started"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1794,8 +1794,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">export_finished</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
                 <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;export_status&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;export_finished&quot;</span><span class="p">,</span>
+                    <span class="s2">"export_status"</span><span class="p">,</span>
+                    <span class="s2">"export_finished"</span><span class="p">,</span>
                 <span class="p">],</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
@@ -1806,13 +1806,13 @@
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">cancel_export</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel current data export.</span>
+<span class="w">        </span><span class="sd">"""Cancel current data export.</span>
 
 <span class="sd">        ExportJob can be CANCELLED only from following states:</span>
 <span class="sd">            - CREATED</span>
 <span class="sd">            - EXPORTING</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_export_status_correctness</span><span class="p">(</span>
             <span class="n">expected_statuses</span><span class="o">=</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">,</span>
@@ -1824,21 +1824,21 @@
         <span class="n">current_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">CANCELLED</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;export_status&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"export_status"</span><span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rerun export job.</span>
+<span class="w">        </span><span class="sd">"""Rerun export job.</span>
 
 <span class="sd">        First, reset all data and generate a new task id.</span>
 <span class="sd">        Then run a celery task for export as usual (like in save method).</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">CREATED</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_started</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_finished</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">""</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1847,9 +1847,9 @@
         <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_export_data_task</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_export_data_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run export process with saving to file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Run export process with saving to file."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"result"</span><span class="p">])</span>
 
         <span class="c1"># `export_data` may be bytes (base formats such as xlsx, csv, etc.) or</span>
         <span class="c1"># file object (formats inherited from `BaseZipExport`)</span>
@@ -1860,7 +1860,7 @@
             <span class="p">),</span>
         <span class="p">)</span>
         <span class="c1"># create file if `export_data` is not file</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">export_data</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">export_data</span><span class="p">,</span> <span class="s2">"read"</span><span class="p">):</span>
             <span class="n">export_data</span> <span class="o">=</span> <span class="n">django_files</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">ContentFile</span><span class="p">(</span>
                 <span class="n">content</span><span class="o">=</span><span class="n">encoding</span><span class="o">.</span><span class="n">force_bytes</span><span class="p">(</span><span class="n">export_data</span><span class="p">),</span>
             <span class="p">)</span>
@@ -1871,20 +1871,20 @@
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_task_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaskStateInfo</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get state info for passed task_id.</span>
+<span class="w">        </span><span class="sd">"""Get state info for passed task_id.</span>
 
 <span class="sd">        This method may change job status if task failed, but we did not</span>
 <span class="sd">        save info about this to DB.</span>
 
 <span class="sd">        This may happen if task start exporting, but processes was killed.</span>
-<span class="sd">        In that case, job have status `importing`, but it can&#39;t be finished.</span>
+<span class="sd">        In that case, job have status `importing`, but it can't be finished.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">async_result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">AsyncResult</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">states</span><span class="o">.</span><span class="n">EXCEPTION_STATES</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
-                <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
+                <span class="s2">"state"</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                <span class="s2">"info"</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
             <span class="p">}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_handle_error</span><span class="p">(</span>
@@ -1892,8 +1892,8 @@
             <span class="n">traceback</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">async_result</span><span class="o">.</span><span class="n">traceback</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
-            <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">"state"</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+            <span class="s2">"info"</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_handle_error</span><span class="p">(</span>
@@ -1902,16 +1902,16 @@
         <span class="n">traceback</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">exception</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update job&#39;s status in case of error.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Update job's status in case of error."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">EXPORT_ERROR</span>
-        <span class="n">error_message_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s2">&quot;error_message&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">max_length</span>
+        <span class="n">error_message_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s2">"error_message"</span><span class="p">)</span><span class="o">.</span><span class="n">max_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="n">error_message</span><span class="p">[:</span><span class="n">error_message_limit</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="n">traceback</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;error_message&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;traceback&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;export_status&quot;</span><span class="p">,</span>
+                <span class="s2">"error_message"</span><span class="p">,</span>
+                <span class="s2">"traceback"</span><span class="p">,</span>
+                <span class="s2">"export_status"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
         <span class="n">signals</span><span class="o">.</span><span class="n">export_job_failed</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
@@ -2074,7 +2074,7 @@ EXPORTED
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ExportStatus</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;ExportJob possible statuses.</span>
+<span class="w">    </span><span class="sd">"""ExportJob possible statuses.</span>
 
 <span class="sd">    * CREATED:</span>
 <span class="sd">        export job is just created, no exporting done</span>
@@ -2093,13 +2093,13 @@ EXPORTED
 <span class="sd">           |</span>
 <span class="sd">        EXPORTED</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">&quot;CREATED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Created&quot;</span><span class="p">)</span>
-    <span class="n">EXPORTING</span> <span class="o">=</span> <span class="s2">&quot;EXPORTING&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Exporting&quot;</span><span class="p">)</span>
-    <span class="n">EXPORT_ERROR</span> <span class="o">=</span> <span class="s2">&quot;EXPORT_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Export Error&quot;</span><span class="p">)</span>
-    <span class="n">EXPORTED</span> <span class="o">=</span> <span class="s2">&quot;EXPORTED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Exported&quot;</span><span class="p">)</span>
-    <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">&quot;CANCELLED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Cancelled&quot;</span><span class="p">)</span>
+    <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">"CREATED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Created"</span><span class="p">)</span>
+    <span class="n">EXPORTING</span> <span class="o">=</span> <span class="s2">"EXPORTING"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Exporting"</span><span class="p">)</span>
+    <span class="n">EXPORT_ERROR</span> <span class="o">=</span> <span class="s2">"EXPORT_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Export Error"</span><span class="p">)</span>
+    <span class="n">EXPORTED</span> <span class="o">=</span> <span class="s2">"EXPORTED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Exported"</span><span class="p">)</span>
+    <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">"CANCELLED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Cancelled"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2147,11 +2147,11 @@ EXPORTED
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return string representation.&quot;&quot;&quot;</span>
-    <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-    <span class="n">file_format</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_format_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Return string representation."""</span>
+    <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+    <span class="n">file_format</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_format_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ExportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file_format</span><span class="si">=}</span><span class="s2">)&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"ExportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file_format</span><span class="si">=}</span><span class="s2">)"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2202,13 +2202,13 @@ EXPORTED
 <span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cancel_export</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancel current data export.</span>
+<span class="w">    </span><span class="sd">"""Cancel current data export.</span>
 
 <span class="sd">    ExportJob can be CANCELLED only from following states:</span>
 <span class="sd">        - CREATED</span>
 <span class="sd">        - EXPORTING</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_export_status_correctness</span><span class="p">(</span>
         <span class="n">expected_statuses</span><span class="o">=</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">,</span>
@@ -2220,7 +2220,7 @@ EXPORTED
     <span class="n">current_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">CANCELLED</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;export_status&quot;</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"export_status"</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2269,13 +2269,13 @@ EXPORTED
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">export_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export data to `data_file` from DB.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Export data to `data_file` from DB."""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">EXPORTING</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">export_started</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
         <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-            <span class="s2">&quot;export_status&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;export_started&quot;</span><span class="p">,</span>
+            <span class="s2">"export_status"</span><span class="p">,</span>
+            <span class="s2">"export_started"</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -2284,8 +2284,8 @@ EXPORTED
         <span class="bp">self</span><span class="o">.</span><span class="n">export_finished</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;export_status&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;export_finished&quot;</span><span class="p">,</span>
+                <span class="s2">"export_status"</span><span class="p">,</span>
+                <span class="s2">"export_finished"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
@@ -2337,18 +2337,18 @@ Then run a celery task for export as usual (like in save method).</p>
 <span class="normal">255</span>
 <span class="normal">256</span>
 <span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rerun export job.</span>
+<span class="w">    </span><span class="sd">"""Rerun export job.</span>
 
 <span class="sd">    First, reset all data and generate a new task id.</span>
 <span class="sd">    Then run a celery task for export as usual (like in save method).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">export_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportStatus</span><span class="o">.</span><span class="n">CREATED</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">export_started</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">export_finished</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -2409,12 +2409,12 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
     <span class="n">using</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">update_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start task for data exporting when ExportJob is created.</span>
+<span class="w">    </span><span class="sd">"""Start task for data exporting when ExportJob is created.</span>
 
 <span class="sd">    Celery task is manually called with `apply_async`, to provide</span>
 <span class="sd">    possibility of custom `task_id` with which task will be run.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">is_created</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">adding</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
         <span class="n">force_insert</span><span class="o">=</span><span class="n">force_insert</span><span class="p">,</span>
@@ -2424,7 +2424,7 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">is_created</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;export_task_id&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"export_task_id"</span><span class="p">])</span>
         <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_export_data_task</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3072,7 +3072,7 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="normal">621</span>
 <span class="normal">622</span>
 <span class="normal">623</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImportJob</span><span class="p">(</span><span class="n">BaseJob</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract model for managing celery import jobs.</span>
+<span class="w">    </span><span class="sd">"""Abstract model for managing celery import jobs.</span>
 
 <span class="sd">    Encapsulate all logic related to celery import.</span>
 
@@ -3084,10 +3084,10 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="sd">        errors, new rows, updated rows).</span>
 <span class="sd">    3. If data for import is correct - import data from file to database.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">ImportStatus</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;ImportJob possible statuses.</span>
+<span class="w">        </span><span class="sd">"""ImportJob possible statuses.</span>
 
 <span class="sd">        * CREATED:</span>
 <span class="sd">            import job is just created, no parsing done</span>
@@ -3098,7 +3098,7 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="sd">        * INPUT_ERROR:</span>
 <span class="sd">            data_file parsed, data contains errors</span>
 <span class="sd">        * PARSE_ERROR:</span>
-<span class="sd">            data_file can&#39;t be parsed (invalid format, etc.)</span>
+<span class="sd">            data_file can't be parsed (invalid format, etc.)</span>
 <span class="sd">        * IMPORT_CONFIRMED</span>
 <span class="sd">            import confirmed but not started yet</span>
 <span class="sd">        * IMPORTING:</span>
@@ -3130,18 +3130,18 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="sd">               |</span>
 <span class="sd">            IMPORTED</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">&quot;CREATED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Created&quot;</span><span class="p">)</span>
-        <span class="n">PARSING</span> <span class="o">=</span> <span class="s2">&quot;PARSING&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parsing&quot;</span><span class="p">)</span>
-        <span class="n">PARSED</span> <span class="o">=</span> <span class="s2">&quot;PARSED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parsed&quot;</span><span class="p">)</span>
-        <span class="n">INPUT_ERROR</span> <span class="o">=</span> <span class="s2">&quot;INPUT_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Input data error&quot;</span><span class="p">)</span>
-        <span class="n">PARSE_ERROR</span> <span class="o">=</span> <span class="s2">&quot;PARSE_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parse error&quot;</span><span class="p">)</span>
-        <span class="n">CONFIRMED</span> <span class="o">=</span> <span class="s2">&quot;CONFIRMED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import confirmed&quot;</span><span class="p">)</span>
-        <span class="n">IMPORTING</span> <span class="o">=</span> <span class="s2">&quot;IMPORTING&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Importing&quot;</span><span class="p">)</span>
-        <span class="n">IMPORTED</span> <span class="o">=</span> <span class="s2">&quot;IMPORTED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Imported&quot;</span><span class="p">)</span>
-        <span class="n">IMPORT_ERROR</span> <span class="o">=</span> <span class="s2">&quot;IMPORT_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import error&quot;</span><span class="p">)</span>
-        <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">&quot;CANCELLED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Cancelled&quot;</span><span class="p">)</span>
+        <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">"CREATED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Created"</span><span class="p">)</span>
+        <span class="n">PARSING</span> <span class="o">=</span> <span class="s2">"PARSING"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Parsing"</span><span class="p">)</span>
+        <span class="n">PARSED</span> <span class="o">=</span> <span class="s2">"PARSED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Parsed"</span><span class="p">)</span>
+        <span class="n">INPUT_ERROR</span> <span class="o">=</span> <span class="s2">"INPUT_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Input data error"</span><span class="p">)</span>
+        <span class="n">PARSE_ERROR</span> <span class="o">=</span> <span class="s2">"PARSE_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Parse error"</span><span class="p">)</span>
+        <span class="n">CONFIRMED</span> <span class="o">=</span> <span class="s2">"CONFIRMED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Import confirmed"</span><span class="p">)</span>
+        <span class="n">IMPORTING</span> <span class="o">=</span> <span class="s2">"IMPORTING"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Importing"</span><span class="p">)</span>
+        <span class="n">IMPORTED</span> <span class="o">=</span> <span class="s2">"IMPORTED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Imported"</span><span class="p">)</span>
+        <span class="n">IMPORT_ERROR</span> <span class="o">=</span> <span class="s2">"IMPORT_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Import error"</span><span class="p">)</span>
+        <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">"CANCELLED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Cancelled"</span><span class="p">)</span>
 
     <span class="n">results_statuses</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSED</span><span class="p">,</span>
@@ -3180,77 +3180,77 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
         <span class="n">choices</span><span class="o">=</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Job status&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Job status"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">data_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
         <span class="n">storage</span><span class="o">=</span><span class="n">tools</span><span class="o">.</span><span class="n">select_storage</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Data file&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Data file"</span><span class="p">),</span>
         <span class="n">upload_to</span><span class="o">=</span><span class="n">tools</span><span class="o">.</span><span class="n">upload_import_file_to</span><span class="p">,</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;File that contain data to be imported&quot;</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"File that contain data to be imported"</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="n">input_errors_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Input errors file&quot;</span><span class="p">),</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;File that contain failed rows&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Input errors file"</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"File that contain failed rows"</span><span class="p">),</span>
         <span class="n">upload_to</span><span class="o">=</span><span class="n">tools</span><span class="o">.</span><span class="n">upload_import_file_to</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">parse_task_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parsing task ID&quot;</span><span class="p">),</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Celery task ID that start `parse_data`&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Parsing task ID"</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Celery task ID that start `parse_data`"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">import_task_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import task ID&quot;</span><span class="p">),</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Celery task ID that start `import_data`&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Import task ID"</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Celery task ID that start `import_data`"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">parse_finished</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
         <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parse finished&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Parse finished"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">import_started</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
         <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import started&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Import started"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">import_finished</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
         <span class="n">editable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import finished&quot;</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Import finished"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">skip_parse_step</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Start importing without confirmation&quot;</span><span class="p">),</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Skip parse step&quot;</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Start importing without confirmation"</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Skip parse step"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="n">force_import</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import data with skip invalid rows.&quot;</span><span class="p">),</span>
-        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Force import&quot;</span><span class="p">),</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Import data with skip invalid rows."</span><span class="p">),</span>
+        <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">"Force import"</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import job&quot;</span><span class="p">)</span>
-        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import jobs&quot;</span><span class="p">)</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Import job"</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Import jobs"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation.&quot;&quot;&quot;</span>
-        <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Return string representation."""</span>
+        <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ImportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"ImportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">)"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3259,12 +3259,12 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="n">using</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">update_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start task for data parsing when ImportJob is created.</span>
+<span class="w">        </span><span class="sd">"""Start task for data parsing when ImportJob is created.</span>
 
 <span class="sd">        Celery task is manually called with `apply_async`, to provide</span>
 <span class="sd">        possibility of custom `task_id` with which task will be run.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">is_created</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">adding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_save_input_errors_file</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
@@ -3281,19 +3281,19 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">import_started</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
                 <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;import_started&quot;</span><span class="p">,</span>
+                    <span class="s2">"import_task_id"</span><span class="p">,</span>
+                    <span class="s2">"import_started"</span><span class="p">,</span>
                 <span class="p">],</span>
             <span class="p">)</span>
             <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_import_data_task</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parse_task_id&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"parse_task_id"</span><span class="p">])</span>
             <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_parse_data_task</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">resource</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CeleryResource</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get initialized resource instance.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get initialized resource instance."""</span>
         <span class="n">resource_class</span> <span class="o">=</span> <span class="n">module_loading</span><span class="o">.</span><span class="n">import_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="n">resource_class</span><span class="p">(</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_kwargs</span><span class="p">,</span>
@@ -3302,7 +3302,7 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">progress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaskStateInfo</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict with parsing state.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return dict with parsing state."""</span>
         <span class="n">current_task_id</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span>
@@ -3321,35 +3321,35 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">expected_statuses</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ImportStatus</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Raise `ValueError` if `ImportJob` is in incorrect state.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Raise `ValueError` if `ImportJob` is in incorrect state."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expected_statuses</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;ImportJob with id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> has incorrect status: &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">import_status</span><span class="si">}</span><span class="s2">`. Expected statuses:&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">expected_statuses</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"ImportJob with id </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> has incorrect status: "</span>
+                <span class="sa">f</span><span class="s2">"`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">import_status</span><span class="si">}</span><span class="s2">`. Expected statuses:"</span>
+                <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">expected_statuses</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">start_parse_data_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start parsing task.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Start parsing task."""</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">tasks</span>
 
         <span class="n">tasks</span><span class="o">.</span><span class="n">parse_data_task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span>
-            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"job_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
             <span class="n">task_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse `data_file` and collect results.</span>
+<span class="w">        </span><span class="sd">"""Parse `data_file` and collect results.</span>
 
 <span class="sd">        Sets `result` and/or `traceback` and update `status`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_import_status_correctness</span><span class="p">(</span>
             <span class="n">expected_statuses</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">,),</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;import_status&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"import_status"</span><span class="p">])</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_data_inner</span><span class="p">()</span>
@@ -3362,9 +3362,9 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">parse_finished</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
                 <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;result&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;parse_finished&quot;</span><span class="p">,</span>
+                    <span class="s2">"import_status"</span><span class="p">,</span>
+                    <span class="s2">"result"</span><span class="p">,</span>
+                    <span class="s2">"parse_finished"</span><span class="p">,</span>
                 <span class="p">],</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
@@ -3375,14 +3375,14 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_data_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run import process with `dry_run == True`.</span>
+<span class="w">        </span><span class="sd">"""Run import process with `dry_run == True`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">            apps.utils.async_import_export.results.Result instance with</span>
 <span class="sd">            parsing results</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_to_import</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span>
             <span class="n">dataset</span><span class="p">,</span>
@@ -3393,15 +3393,15 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">confirm_import</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update task status to IMPORT_CONFIRMED and start parsing.</span>
+<span class="w">        </span><span class="sd">"""Update task status to IMPORT_CONFIRMED and start parsing.</span>
 
-<span class="sd">        This is &quot;intermediate&quot; state between PARSED and IMPORTING and required</span>
+<span class="sd">        This is "intermediate" state between PARSED and IMPORTING and required</span>
 <span class="sd">        because of possible latency of celery task start.</span>
 
 <span class="sd">        Celery task is manually called with `apply_async`, to provide</span>
 <span class="sd">        possibility of custom `task_id` with which task will be run.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_import_status_correctness</span><span class="p">(</span>
             <span class="n">expected_statuses</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSED</span><span class="p">,),</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="p">)</span>
@@ -3411,24 +3411,24 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_started</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;import_started&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
+                <span class="s2">"import_status"</span><span class="p">,</span>
+                <span class="s2">"import_started"</span><span class="p">,</span>
+                <span class="s2">"import_task_id"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
         <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_import_data_task</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_start_import_data_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start import task.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Start import task."""</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">tasks</span>
 
         <span class="n">tasks</span><span class="o">.</span><span class="n">import_data_task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span>
-            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"job_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
             <span class="n">task_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">import_task_id</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Import data from `data_file` to DB.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Import data from `data_file` to DB."""</span>
         <span class="n">expected_status</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip_parse_step</span>
@@ -3439,16 +3439,16 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTING</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;import_status&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"import_status"</span><span class="p">])</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_data_inner</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTED</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">import_finished</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
                 <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;result&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;import_finished&quot;</span><span class="p">,</span>
+                    <span class="s2">"import_status"</span><span class="p">,</span>
+                    <span class="s2">"result"</span><span class="p">,</span>
+                    <span class="s2">"import_finished"</span><span class="p">,</span>
                 <span class="p">],</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
@@ -3459,7 +3459,7 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_import_data_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run import process with saving to DB.</span>
+<span class="w">        </span><span class="sd">"""Run import process with saving to DB.</span>
 
 <span class="sd">        Transaction is not used as import is slow, so before it finish -</span>
 <span class="sd">        no instances are saved to DB. So sync works incorrect</span>
@@ -3468,7 +3468,7 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="sd">        -------</span>
 <span class="sd">            import_export.results.Result instance with parsing results</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">data_to_import</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data_to_import</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span>
             <span class="n">data_to_import</span><span class="p">,</span>
@@ -3483,27 +3483,27 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">file_ext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">base_formats</span><span class="o">.</span><span class="n">Format</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine import file format by file extension.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Determine import file format by file extension."""</span>
         <span class="n">supported_formats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">get_supported_formats</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">import_format</span> <span class="ow">in</span> <span class="n">supported_formats</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">import_format</span><span class="p">()</span><span class="o">.</span><span class="n">get_title</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">file_ext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-                <span class="s2">&quot;.&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">"."</span><span class="p">,</span>
+                <span class="s2">""</span><span class="p">,</span>
             <span class="p">):</span>
                 <span class="k">return</span> <span class="n">import_format</span>
 
-        <span class="n">supported_formats_titles</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">supported_formats_titles</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="n">supported_format</span><span class="p">()</span><span class="o">.</span><span class="n">get_title</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">supported_format</span> <span class="ow">in</span> <span class="n">supported_formats</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Incorrect import format: </span><span class="si">{</span><span class="n">file_ext</span><span class="si">}</span><span class="s2">. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Supported formats: </span><span class="si">{</span><span class="n">supported_formats_titles</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Incorrect import format: </span><span class="si">{</span><span class="n">file_ext</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="sa">f</span><span class="s2">"Supported formats: </span><span class="si">{</span><span class="n">supported_formats_titles</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_data_to_import</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tablib</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read ``self.data_file`` content and convert it to dataset.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Read ``self.data_file`` content and convert it to dataset."""</span>
         <span class="n">file_ext</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span>
         <span class="n">input_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_import_format_by_ext</span><span class="p">(</span>
             <span class="n">file_ext</span><span class="o">=</span><span class="n">file_ext</span><span class="p">,</span>
@@ -3516,15 +3516,15 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="n">num_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_to_import</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">num_rows</span> <span class="o">&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">IMPORT_EXPORT_MAX_DATASET_ROWS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Too many rows `</span><span class="si">{</span><span class="n">num_rows</span><span class="si">}</span><span class="s2">`&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(Max: </span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">IMPORT_EXPORT_MAX_DATASET_ROWS</span><span class="si">}</span><span class="s2">). &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Input file may be broken. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;If it&#39;s spreadsheet file, please delete empty rows.&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"Too many rows `</span><span class="si">{</span><span class="n">num_rows</span><span class="si">}</span><span class="s2">`"</span>
+                <span class="sa">f</span><span class="s2">"(Max: </span><span class="si">{</span><span class="n">settings</span><span class="o">.</span><span class="n">IMPORT_EXPORT_MAX_DATASET_ROWS</span><span class="si">}</span><span class="s2">). "</span>
+                <span class="sa">f</span><span class="s2">"Input file may be broken. "</span>
+                <span class="sa">f</span><span class="s2">"If it's spreadsheet file, please delete empty rows."</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">data_to_import</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">cancel_import</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel current data import.</span>
+<span class="w">        </span><span class="sd">"""Cancel current data import.</span>
 
 <span class="sd">        ImportJob can be CANCELLED only from following states:</span>
 <span class="sd">            - CREATED</span>
@@ -3532,12 +3532,12 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="sd">            - CONFIRMED</span>
 <span class="sd">            - IMPORTING</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">status_task_field_map</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">:</span> <span class="s2">&quot;parse_task_id&quot;</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span><span class="p">:</span> <span class="s2">&quot;parse_task_id&quot;</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CONFIRMED</span><span class="p">:</span> <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTING</span><span class="p">:</span> <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">:</span> <span class="s2">"parse_task_id"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span><span class="p">:</span> <span class="s2">"parse_task_id"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CONFIRMED</span><span class="p">:</span> <span class="s2">"import_task_id"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTING</span><span class="p">:</span> <span class="s2">"import_task_id"</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_import_status_correctness</span><span class="p">(</span>
             <span class="n">expected_statuses</span><span class="o">=</span><span class="n">status_task_field_map</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>  <span class="c1"># type: ignore</span>
@@ -3548,23 +3548,23 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="n">current_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CANCELLED</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;import_status&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"import_status"</span><span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rerun import job.</span>
+<span class="w">        </span><span class="sd">"""Rerun import job.</span>
 
 <span class="sd">        First, reset all job data.</span>
 <span class="sd">        Run import or parse process - depends on job `skip_parse_step`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parse_finished</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">import_task_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">import_task_id</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_started</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_finished</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_errors_file</span><span class="p">:</span>
@@ -3581,15 +3581,15 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
             <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_parse_data_task</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_task_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaskStateInfo</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get state info for passed task_id.</span>
+<span class="w">        </span><span class="sd">"""Get state info for passed task_id.</span>
 
 <span class="sd">        This method may change job status if task failed, but we did not</span>
 <span class="sd">        save info about this to DB.</span>
 
 <span class="sd">        This may happen if task start import/parsing, but processes was killed.</span>
-<span class="sd">        In that case, job have status `importing`, but it can&#39;t be finished.</span>
+<span class="sd">        In that case, job have status `importing`, but it can't be finished.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">async_result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">AsyncResult</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="n">states</span><span class="o">.</span><span class="n">EXCEPTION_STATES</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handle_error</span><span class="p">(</span>
@@ -3597,12 +3597,12 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
                 <span class="n">traceback</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">async_result</span><span class="o">.</span><span class="n">traceback</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
-                <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{},</span>
+                <span class="s2">"state"</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                <span class="s2">"info"</span><span class="p">:</span> <span class="p">{},</span>
             <span class="p">}</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
-            <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
+            <span class="s2">"state"</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+            <span class="s2">"info"</span><span class="p">:</span> <span class="n">async_result</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_handle_error</span><span class="p">(</span>
@@ -3611,20 +3611,20 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="n">traceback</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">exception</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update job&#39;s status in case of error.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Update job's status in case of error."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSE_ERROR</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span>
             <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORT_ERROR</span>
         <span class="p">)</span>
-        <span class="n">error_message_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s2">&quot;error_message&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">max_length</span>
+        <span class="n">error_message_limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s2">"error_message"</span><span class="p">)</span><span class="o">.</span><span class="n">max_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="n">error_message</span><span class="p">[:</span><span class="n">error_message_limit</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="n">traceback</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;error_message&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;traceback&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
+                <span class="s2">"error_message"</span><span class="p">,</span>
+                <span class="s2">"traceback"</span><span class="p">,</span>
+                <span class="s2">"import_status"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
         <span class="n">signals</span><span class="o">.</span><span class="n">import_job_failed</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
@@ -3636,12 +3636,12 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_save_input_errors_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save input errors file.</span>
+<span class="w">        </span><span class="sd">"""Save input errors file.</span>
 
 <span class="sd">        This should be saved after parsing and after importing</span>
 <span class="sd">        and if there are row errors in result.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_statuses</span>
             <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span>
@@ -3658,17 +3658,17 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="p">)</span>
 
         <span class="c1"># create file if `export_data` is not file</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">export_data</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">export_data</span><span class="p">,</span> <span class="s2">"read"</span><span class="p">):</span>
             <span class="n">export_data</span> <span class="o">=</span> <span class="n">django_files</span><span class="o">.</span><span class="n">ContentFile</span><span class="p">(</span>
                 <span class="n">encoding</span><span class="o">.</span><span class="n">force_bytes</span><span class="p">(</span><span class="n">export_data</span><span class="p">),</span>
             <span class="p">)</span>
 
         <span class="n">file_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">generate_export_filename</span><span class="p">(</span>
             <span class="n">file_format</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">input_errors_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;FailedRows</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"FailedRows</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">content</span><span class="o">=</span><span class="n">export_data</span><span class="p">,</span>
             <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
@@ -3856,7 +3856,7 @@ IMPORTED
 <span class="normal">91</span>
 <span class="normal">92</span>
 <span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImportStatus</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">TextChoices</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;ImportJob possible statuses.</span>
+<span class="w">    </span><span class="sd">"""ImportJob possible statuses.</span>
 
 <span class="sd">    * CREATED:</span>
 <span class="sd">        import job is just created, no parsing done</span>
@@ -3867,7 +3867,7 @@ IMPORTED
 <span class="sd">    * INPUT_ERROR:</span>
 <span class="sd">        data_file parsed, data contains errors</span>
 <span class="sd">    * PARSE_ERROR:</span>
-<span class="sd">        data_file can&#39;t be parsed (invalid format, etc.)</span>
+<span class="sd">        data_file can't be parsed (invalid format, etc.)</span>
 <span class="sd">    * IMPORT_CONFIRMED</span>
 <span class="sd">        import confirmed but not started yet</span>
 <span class="sd">    * IMPORTING:</span>
@@ -3899,18 +3899,18 @@ IMPORTED
 <span class="sd">           |</span>
 <span class="sd">        IMPORTED</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">&quot;CREATED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Created&quot;</span><span class="p">)</span>
-    <span class="n">PARSING</span> <span class="o">=</span> <span class="s2">&quot;PARSING&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parsing&quot;</span><span class="p">)</span>
-    <span class="n">PARSED</span> <span class="o">=</span> <span class="s2">&quot;PARSED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parsed&quot;</span><span class="p">)</span>
-    <span class="n">INPUT_ERROR</span> <span class="o">=</span> <span class="s2">&quot;INPUT_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Input data error&quot;</span><span class="p">)</span>
-    <span class="n">PARSE_ERROR</span> <span class="o">=</span> <span class="s2">&quot;PARSE_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Parse error&quot;</span><span class="p">)</span>
-    <span class="n">CONFIRMED</span> <span class="o">=</span> <span class="s2">&quot;CONFIRMED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import confirmed&quot;</span><span class="p">)</span>
-    <span class="n">IMPORTING</span> <span class="o">=</span> <span class="s2">&quot;IMPORTING&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Importing&quot;</span><span class="p">)</span>
-    <span class="n">IMPORTED</span> <span class="o">=</span> <span class="s2">&quot;IMPORTED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Imported&quot;</span><span class="p">)</span>
-    <span class="n">IMPORT_ERROR</span> <span class="o">=</span> <span class="s2">&quot;IMPORT_ERROR&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Import error&quot;</span><span class="p">)</span>
-    <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">&quot;CANCELLED&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Cancelled&quot;</span><span class="p">)</span>
+    <span class="n">CREATED</span> <span class="o">=</span> <span class="s2">"CREATED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Created"</span><span class="p">)</span>
+    <span class="n">PARSING</span> <span class="o">=</span> <span class="s2">"PARSING"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Parsing"</span><span class="p">)</span>
+    <span class="n">PARSED</span> <span class="o">=</span> <span class="s2">"PARSED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Parsed"</span><span class="p">)</span>
+    <span class="n">INPUT_ERROR</span> <span class="o">=</span> <span class="s2">"INPUT_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Input data error"</span><span class="p">)</span>
+    <span class="n">PARSE_ERROR</span> <span class="o">=</span> <span class="s2">"PARSE_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Parse error"</span><span class="p">)</span>
+    <span class="n">CONFIRMED</span> <span class="o">=</span> <span class="s2">"CONFIRMED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Import confirmed"</span><span class="p">)</span>
+    <span class="n">IMPORTING</span> <span class="o">=</span> <span class="s2">"IMPORTING"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Importing"</span><span class="p">)</span>
+    <span class="n">IMPORTED</span> <span class="o">=</span> <span class="s2">"IMPORTED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Imported"</span><span class="p">)</span>
+    <span class="n">IMPORT_ERROR</span> <span class="o">=</span> <span class="s2">"IMPORT_ERROR"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Import error"</span><span class="p">)</span>
+    <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">"CANCELLED"</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">"Cancelled"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -3957,10 +3957,10 @@ IMPORTED
 <span class="normal">200</span>
 <span class="normal">201</span>
 <span class="normal">202</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return string representation.&quot;&quot;&quot;</span>
-    <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Return string representation."""</span>
+    <span class="n">resource_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ImportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">)&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"ImportJob(resource=</span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">)"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4019,7 +4019,7 @@ IMPORTED
 <span class="normal">498</span>
 <span class="normal">499</span>
 <span class="normal">500</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cancel_import</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancel current data import.</span>
+<span class="w">    </span><span class="sd">"""Cancel current data import.</span>
 
 <span class="sd">    ImportJob can be CANCELLED only from following states:</span>
 <span class="sd">        - CREATED</span>
@@ -4027,12 +4027,12 @@ IMPORTED
 <span class="sd">        - CONFIRMED</span>
 <span class="sd">        - IMPORTING</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">status_task_field_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">:</span> <span class="s2">&quot;parse_task_id&quot;</span><span class="p">,</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span><span class="p">:</span> <span class="s2">&quot;parse_task_id&quot;</span><span class="p">,</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CONFIRMED</span><span class="p">:</span> <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTING</span><span class="p">:</span> <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">:</span> <span class="s2">"parse_task_id"</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span><span class="p">:</span> <span class="s2">"parse_task_id"</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CONFIRMED</span><span class="p">:</span> <span class="s2">"import_task_id"</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTING</span><span class="p">:</span> <span class="s2">"import_task_id"</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_import_status_correctness</span><span class="p">(</span>
         <span class="n">expected_statuses</span><span class="o">=</span><span class="n">status_task_field_map</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>  <span class="c1"># type: ignore</span>
@@ -4043,7 +4043,7 @@ IMPORTED
     <span class="n">current_app</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">terminate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CANCELLED</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;import_status&quot;</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"import_status"</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4095,15 +4095,15 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="normal">366</span>
 <span class="normal">367</span>
 <span class="normal">368</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">confirm_import</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update task status to IMPORT_CONFIRMED and start parsing.</span>
+<span class="w">    </span><span class="sd">"""Update task status to IMPORT_CONFIRMED and start parsing.</span>
 
-<span class="sd">    This is &quot;intermediate&quot; state between PARSED and IMPORTING and required</span>
+<span class="sd">    This is "intermediate" state between PARSED and IMPORTING and required</span>
 <span class="sd">    because of possible latency of celery task start.</span>
 
 <span class="sd">    Celery task is manually called with `apply_async`, to provide</span>
 <span class="sd">    possibility of custom `task_id` with which task will be run.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_import_status_correctness</span><span class="p">(</span>
         <span class="n">expected_statuses</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSED</span><span class="p">,),</span>  <span class="c1"># type: ignore[arg-type]</span>
     <span class="p">)</span>
@@ -4113,9 +4113,9 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">import_started</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
         <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-            <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;import_started&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
+            <span class="s2">"import_status"</span><span class="p">,</span>
+            <span class="s2">"import_started"</span><span class="p">,</span>
+            <span class="s2">"import_task_id"</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">)</span>
     <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_import_data_task</span><span class="p">)</span>
@@ -4171,7 +4171,7 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="normal">406</span>
 <span class="normal">407</span>
 <span class="normal">408</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">import_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Import data from `data_file` to DB.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Import data from `data_file` to DB."""</span>
     <span class="n">expected_status</span> <span class="o">=</span> <span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip_parse_step</span>
@@ -4182,16 +4182,16 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTING</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;import_status&quot;</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"import_status"</span><span class="p">])</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_data_inner</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">IMPORTED</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_finished</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;result&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;import_finished&quot;</span><span class="p">,</span>
+                <span class="s2">"import_status"</span><span class="p">,</span>
+                <span class="s2">"result"</span><span class="p">,</span>
+                <span class="s2">"import_finished"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
@@ -4258,17 +4258,17 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="normal">322</span>
 <span class="normal">323</span>
 <span class="normal">324</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse `data_file` and collect results.</span>
+<span class="w">    </span><span class="sd">"""Parse `data_file` and collect results.</span>
 
 <span class="sd">    Sets `result` and/or `traceback` and update `status`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_import_status_correctness</span><span class="p">(</span>
         <span class="n">expected_statuses</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">,),</span>  <span class="c1"># type: ignore[arg-type]</span>
     <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">PARSING</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;import_status&quot;</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"import_status"</span><span class="p">])</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_data_inner</span><span class="p">()</span>
@@ -4281,9 +4281,9 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">parse_finished</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;result&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;parse_finished&quot;</span><span class="p">,</span>
+                <span class="s2">"import_status"</span><span class="p">,</span>
+                <span class="s2">"result"</span><span class="p">,</span>
+                <span class="s2">"parse_finished"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
@@ -4345,20 +4345,20 @@ Run import or parse process - depends on job <code>skip_parse_step</code>.</p>
 <span class="normal">528</span>
 <span class="normal">529</span>
 <span class="normal">530</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rerun import job.</span>
+<span class="w">    </span><span class="sd">"""Rerun import job.</span>
 
 <span class="sd">    First, reset all job data.</span>
 <span class="sd">    Run import or parse process - depends on job `skip_parse_step`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">import_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImportStatus</span><span class="o">.</span><span class="n">CREATED</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parse_finished</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">import_task_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">import_task_id</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">import_started</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">import_finished</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">traceback</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_errors_file</span><span class="p">:</span>
@@ -4441,12 +4441,12 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
     <span class="n">using</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">update_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start task for data parsing when ImportJob is created.</span>
+<span class="w">    </span><span class="sd">"""Start task for data parsing when ImportJob is created.</span>
 
 <span class="sd">    Celery task is manually called with `apply_async`, to provide</span>
 <span class="sd">    possibility of custom `task_id` with which task will be run.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">is_created</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">adding</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_save_input_errors_file</span><span class="p">()</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
@@ -4463,14 +4463,14 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_started</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
             <span class="n">update_fields</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;import_task_id&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;import_started&quot;</span><span class="p">,</span>
+                <span class="s2">"import_task_id"</span><span class="p">,</span>
+                <span class="s2">"import_started"</span><span class="p">,</span>
             <span class="p">],</span>
         <span class="p">)</span>
         <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_import_data_task</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parse_task_id&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"parse_task_id"</span><span class="p">])</span>
         <span class="n">transaction</span><span class="o">.</span><span class="n">on_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_parse_data_task</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4502,11 +4502,11 @@ possibility of custom <code>task_id</code> with which task will be run.</p>
 <span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">start_parse_data_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start parsing task.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Start parsing task."""</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">tasks</span>
 
     <span class="n">tasks</span><span class="o">.</span><span class="n">parse_data_task</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span>
-        <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
+        <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"job_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">},</span>
         <span class="n">task_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_task_id</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>

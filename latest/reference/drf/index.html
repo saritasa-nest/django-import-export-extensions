@@ -1862,7 +1862,7 @@ this endpoint we return an instance of import.</p>
     <span class="n">core_mixins</span><span class="o">.</span><span class="n">ImportStartActionMixin</span><span class="p">,</span>
     <span class="n">BaseImportJobViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base API viewset for ImportJob model.</span>
+<span class="w">    </span><span class="sd">"""Base API viewset for ImportJob model.</span>
 
 <span class="sd">    Based on resource_class it will generate an endpoint which will allow to</span>
 <span class="sd">    start an import to model which was specified in resource_class. On success</span>
@@ -1874,14 +1874,14 @@ this endpoint we return an instance of import.</p>
 <span class="sd">        - start - create import job and start parsing data from attached file</span>
 <span class="sd">        - confirm - confirm import after parsing process is finished</span>
 <span class="sd">        - cancel - stop importing/parsing process and cancel this import job</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">import_action_name</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
-    <span class="n">import_action_url</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
+    <span class="n">import_action_name</span> <span class="o">=</span> <span class="s2">"start"</span>
+    <span class="n">import_action_url</span> <span class="o">=</span> <span class="s2">"start"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter import jobs by resource used in viewset.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;import_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Filter import jobs by resource used in viewset."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"import_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">):</span>
             <span class="c1"># To make it consistent and for better support of drf-spectacular</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -1935,8 +1935,8 @@ this endpoint we return an instance of import.</p>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter import jobs by resource used in viewset.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;import_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Filter import jobs by resource used in viewset."""</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"import_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">):</span>
         <span class="c1"># To make it consistent and for better support of drf-spectacular</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">return</span> <span class="p">(</span>
@@ -2019,7 +2019,7 @@ get status of job, just use detail(retrieve) endpoint.</p>
     <span class="n">core_mixins</span><span class="o">.</span><span class="n">ExportStartActionMixin</span><span class="p">,</span>
     <span class="n">BaseExportJobViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base API viewset for ExportJob model.</span>
+<span class="w">    </span><span class="sd">"""Base API viewset for ExportJob model.</span>
 
 <span class="sd">    Based on resource_class it will generate an endpoint which will allow to</span>
 <span class="sd">    start an export of model which was specified in resource_class. This</span>
@@ -2027,14 +2027,14 @@ get status of job, just use detail(retrieve) endpoint.</p>
 <span class="sd">    resource. On success this endpoint we return an instance of export, to</span>
 <span class="sd">    get status of job, just use detail(retrieve) endpoint.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">export_action_name</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
-    <span class="n">export_action_url</span> <span class="o">=</span> <span class="s2">&quot;start&quot;</span>
+    <span class="n">export_action_name</span> <span class="o">=</span> <span class="s2">"start"</span>
+    <span class="n">export_action_url</span> <span class="o">=</span> <span class="s2">"start"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter export jobs by resource used in viewset.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;export_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Filter export jobs by resource used in viewset."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"export_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">):</span>
             <span class="c1"># To make it consistent and for better support of drf-spectacular</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -2088,8 +2088,8 @@ get status of job, just use detail(retrieve) endpoint.</p>
 <span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter export jobs by resource used in viewset.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;export_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Filter export jobs by resource used in viewset."""</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"export_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">):</span>
         <span class="c1"># To make it consistent and for better support of drf-spectacular</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">return</span> <span class="p">(</span>
@@ -2143,7 +2143,7 @@ get status of job, just use detail(retrieve) endpoint.</p>
     <span class="n">core_mixins</span><span class="o">.</span><span class="n">LimitQuerySetToCurrentUserMixin</span><span class="p">,</span>
     <span class="n">ImportJobViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Viewset for providing import feature to users.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Viewset for providing import feature to users."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2198,7 +2198,7 @@ get status of job, just use detail(retrieve) endpoint.</p>
     <span class="n">core_mixins</span><span class="o">.</span><span class="n">LimitQuerySetToCurrentUserMixin</span><span class="p">,</span>
     <span class="n">ExportJobViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Viewset for providing export feature to users.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Viewset for providing export feature to users."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2339,42 +2339,42 @@ get status of job, just use detail(retrieve) endpoint.</p>
     <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
     <span class="n">viewsets</span><span class="o">.</span><span class="n">GenericViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base viewset for managing import jobs.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Base viewset for managing import jobs."""</span>
 
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">core_mixins</span><span class="o">.</span><span class="n">ImportStartActionMixin</span><span class="o">.</span><span class="n">import_detail_serializer_class</span>
     <span class="p">)</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="n">search_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,)</span>
-    <span class="n">ordering</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,)</span>
+    <span class="n">search_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"id"</span><span class="p">,)</span>
+    <span class="n">ordering</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"id"</span><span class="p">,)</span>
     <span class="n">ordering_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;created&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;modified&quot;</span><span class="p">,</span>
+        <span class="s2">"id"</span><span class="p">,</span>
+        <span class="s2">"created"</span><span class="p">,</span>
+        <span class="s2">"modified"</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dynamically create an cancel api endpoints.</span>
+<span class="w">        </span><span class="sd">"""Dynamically create an cancel api endpoints.</span>
 
 <span class="sd">        Need to do this to enable action and correct open-api spec generated by</span>
 <span class="sd">        drf_spectacular.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
         <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
             <span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">cancel</span><span class="p">)</span>
         <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
             <span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">confirm</span><span class="p">)</span>
         <span class="c1"># Correct specs of drf-spectacular if it is installed</span>
         <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">ImportError</span><span class="p">):</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">drf_spectacular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extend_schema</span><span class="p">,</span> <span class="n">extend_schema_view</span>
 
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;get_import_detail_serializer_class&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"get_import_detail_serializer_class"</span><span class="p">):</span>
                 <span class="n">response_serializer</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="bp">cls</span><span class="p">()</span><span class="o">.</span><span class="n">get_import_detail_serializer_class</span><span class="p">()</span>
                 <span class="p">)</span>
@@ -2396,7 +2396,7 @@ get status of job, just use detail(retrieve) endpoint.</p>
             <span class="p">)(</span><span class="bp">cls</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Confirm import job that has `parsed` status.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Confirm import job that has `parsed` status."""</span>
         <span class="n">job</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -2411,7 +2411,7 @@ get status of job, just use detail(retrieve) endpoint.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel import job that is in progress.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Cancel import job that is in progress."""</span>
         <span class="n">job</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -2498,26 +2498,26 @@ drf_spectacular.</p>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dynamically create an cancel api endpoints.</span>
+<span class="w">    </span><span class="sd">"""Dynamically create an cancel api endpoints.</span>
 
 <span class="sd">    Need to do this to enable action and correct open-api spec generated by</span>
 <span class="sd">    drf_spectacular.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
     <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
         <span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">cancel</span><span class="p">)</span>
     <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
         <span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">confirm</span><span class="p">)</span>
     <span class="c1"># Correct specs of drf-spectacular if it is installed</span>
     <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">ImportError</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">drf_spectacular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extend_schema</span><span class="p">,</span> <span class="n">extend_schema_view</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;get_import_detail_serializer_class&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"get_import_detail_serializer_class"</span><span class="p">):</span>
             <span class="n">response_serializer</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">cls</span><span class="p">()</span><span class="o">.</span><span class="n">get_import_detail_serializer_class</span><span class="p">()</span>
             <span class="p">)</span>
@@ -2573,7 +2573,7 @@ drf_spectacular.</p>
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancel import job that is in progress.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Cancel import job that is in progress."""</span>
     <span class="n">job</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -2622,7 +2622,7 @@ drf_spectacular.</p>
 <span class="normal">91</span>
 <span class="normal">92</span>
 <span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Confirm import job that has `parsed` status.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Confirm import job that has `parsed` status."""</span>
     <span class="n">job</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -2741,7 +2741,7 @@ drf_spectacular.</p>
     <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
     <span class="n">viewsets</span><span class="o">.</span><span class="n">GenericViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base viewset for managing export jobs.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Base viewset for managing export jobs."""</span>
 
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="p">(</span>
@@ -2749,31 +2749,31 @@ drf_spectacular.</p>
     <span class="p">)</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">filterset_class</span><span class="p">:</span> <span class="n">django_filters</span><span class="o">.</span><span class="n">rest_framework</span><span class="o">.</span><span class="n">FilterSet</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">search_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,)</span>
-    <span class="n">ordering</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,)</span>
+    <span class="n">search_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"id"</span><span class="p">,)</span>
+    <span class="n">ordering</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"id"</span><span class="p">,)</span>
     <span class="n">ordering_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;created&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;modified&quot;</span><span class="p">,</span>
+        <span class="s2">"id"</span><span class="p">,</span>
+        <span class="s2">"created"</span><span class="p">,</span>
+        <span class="s2">"modified"</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dynamically create an cancel api endpoints.</span>
+<span class="w">        </span><span class="sd">"""Dynamically create an cancel api endpoints.</span>
 
 <span class="sd">        Need to do this to enable action and correct open-api spec generated by</span>
 <span class="sd">        drf_spectacular.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
         <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
             <span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">cancel</span><span class="p">)</span>
         <span class="c1"># Correct specs of drf-spectacular if it is installed</span>
         <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">ImportError</span><span class="p">):</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">drf_spectacular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extend_schema</span><span class="p">,</span> <span class="n">extend_schema_view</span>
 
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;get_export_detail_serializer_class&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"get_export_detail_serializer_class"</span><span class="p">):</span>
                 <span class="n">response_serializer</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="bp">cls</span><span class="p">()</span><span class="o">.</span><span class="n">get_export_detail_serializer_class</span><span class="p">()</span>
                 <span class="p">)</span>
@@ -2789,7 +2789,7 @@ drf_spectacular.</p>
             <span class="p">)(</span><span class="bp">cls</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel export job that is in progress.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Cancel export job that is in progress."""</span>
         <span class="n">job</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -2866,22 +2866,22 @@ drf_spectacular.</p>
 <span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dynamically create an cancel api endpoints.</span>
+<span class="w">    </span><span class="sd">"""Dynamically create an cancel api endpoints.</span>
 
 <span class="sd">    Need to do this to enable action and correct open-api spec generated by</span>
 <span class="sd">    drf_spectacular.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
     <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
         <span class="n">detail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)(</span><span class="bp">cls</span><span class="o">.</span><span class="n">cancel</span><span class="p">)</span>
     <span class="c1"># Correct specs of drf-spectacular if it is installed</span>
     <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">ImportError</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">drf_spectacular.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">extend_schema</span><span class="p">,</span> <span class="n">extend_schema_view</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;get_export_detail_serializer_class&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"get_export_detail_serializer_class"</span><span class="p">):</span>
             <span class="n">response_serializer</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">cls</span><span class="p">()</span><span class="o">.</span><span class="n">get_export_detail_serializer_class</span><span class="p">()</span>
             <span class="p">)</span>
@@ -2931,7 +2931,7 @@ drf_spectacular.</p>
 <span class="normal">83</span>
 <span class="normal">84</span>
 <span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancel export job that is in progress.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Cancel export job that is in progress."""</span>
     <span class="n">job</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -2988,7 +2988,7 @@ drf_spectacular.</p>
     <span class="n">core_mixins</span><span class="o">.</span><span class="n">LimitQuerySetToCurrentUserMixin</span><span class="p">,</span>
     <span class="n">BaseImportJobViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Viewset for providing export job management to users.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Viewset for providing export job management to users."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -3043,7 +3043,7 @@ drf_spectacular.</p>
     <span class="n">core_mixins</span><span class="o">.</span><span class="n">LimitQuerySetToCurrentUserMixin</span><span class="p">,</span>
     <span class="n">BaseExportJobViewSet</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Viewset for providing export job management to users.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Viewset for providing export job management to users."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -3106,13 +3106,13 @@ drf_spectacular.</p>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LimitQuerySetToCurrentUserMixin</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make queryset to return only current user jobs.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Make queryset to return only current user jobs."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return user&#39;s jobs.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return user's jobs."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;import_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;export_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"import_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"export_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
         <span class="p">):</span>
             <span class="c1"># To make it consistent and for better support of drf-spectacular</span>
             <span class="k">return</span> <span class="p">(</span>
@@ -3121,7 +3121,7 @@ drf_spectacular.</p>
         <span class="k">return</span> <span class="p">(</span>
             <span class="nb">super</span><span class="p">()</span>  <span class="c1"># type: ignore[misc]</span>
             <span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">created_by_id</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">&quot;pk&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">created_by_id</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">"pk"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -3170,10 +3170,10 @@ drf_spectacular.</p>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return user&#39;s jobs.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Return user's jobs."""</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">(</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;import_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;export_action&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"import_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"export_action"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
     <span class="p">):</span>
         <span class="c1"># To make it consistent and for better support of drf-spectacular</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -3182,7 +3182,7 @@ drf_spectacular.</p>
     <span class="k">return</span> <span class="p">(</span>
         <span class="nb">super</span><span class="p">()</span>  <span class="c1"># type: ignore[misc]</span>
         <span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>
-        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">created_by_id</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">&quot;pk&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">created_by_id</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">"pk"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3324,32 +3324,32 @@ drf_spectacular.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImportStartActionMixin</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin which adds start import action.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Mixin which adds start import action."""</span>
 
     <span class="n">resource_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">resources</span><span class="o">.</span><span class="n">CeleryModelResource</span><span class="p">]</span>
-    <span class="n">import_action</span> <span class="o">=</span> <span class="s2">&quot;start_import_action&quot;</span>
-    <span class="n">import_action_name</span> <span class="o">=</span> <span class="s2">&quot;import&quot;</span>
-    <span class="n">import_action_url</span> <span class="o">=</span> <span class="s2">&quot;import&quot;</span>
+    <span class="n">import_action</span> <span class="o">=</span> <span class="s2">"start_import_action"</span>
+    <span class="n">import_action_name</span> <span class="o">=</span> <span class="s2">"import"</span>
+    <span class="n">import_action_url</span> <span class="o">=</span> <span class="s2">"import"</span>
     <span class="n">import_detail_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ImportJobSerializer</span>
     <span class="n">import_open_api_description</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;This endpoint creates import job and starts it. &quot;</span>
-        <span class="s2">&quot;To monitor progress use detail endpoint for jobs to fetch state of &quot;</span>
-        <span class="s2">&quot;job. Once it&#39;s status is `PARSED`, you can confirm import and data &quot;</span>
-        <span class="s2">&quot;should start importing. When status `INPUT_ERROR` or `PARSE_ERROR` &quot;</span>
-        <span class="s2">&quot;it means data failed validations and can&#39;t be imported. &quot;</span>
-        <span class="s2">&quot;When status is `IMPORTED`, it means data is in system and &quot;</span>
-        <span class="s2">&quot;job is completed.&quot;</span>
+        <span class="s2">"This endpoint creates import job and starts it. "</span>
+        <span class="s2">"To monitor progress use detail endpoint for jobs to fetch state of "</span>
+        <span class="s2">"job. Once it's status is `PARSED`, you can confirm import and data "</span>
+        <span class="s2">"should start importing. When status `INPUT_ERROR` or `PARSE_ERROR` "</span>
+        <span class="s2">"it means data failed validations and can't be imported. "</span>
+        <span class="s2">"When status is `IMPORTED`, it means data is in system and "</span>
+        <span class="s2">"job is completed."</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up `start_import_action` as action of viewset.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set up `start_import_action` as action of viewset."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
         <span class="c1"># Skip if it is has no resource_class specified</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;resource_class&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"resource_class"</span><span class="p">):</span>
             <span class="k">return</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">start_import_action</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;ImportStartActionMixin&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="s2">"ImportStartActionMixin"</span><span class="p">,</span>
             <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
             <span class="o">*</span><span class="n">args</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -3358,7 +3358,7 @@ drf_spectacular.</p>
 
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">import_action</span><span class="p">,</span> <span class="n">start_import_action</span><span class="p">)</span>
         <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
             <span class="n">url_name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">import_action_name</span><span class="p">,</span>
             <span class="n">url_path</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">import_action_url</span><span class="p">,</span>
             <span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -3382,11 +3382,11 @@ drf_spectacular.</p>
             <span class="p">)(</span><span class="bp">cls</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return import model queryset on import action.</span>
+<span class="w">        </span><span class="sd">"""Return import model queryset on import action.</span>
 
 <span class="sd">        For better openapi support and consistency.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_action</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">get_model_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># type: ignore[misc]</span>
@@ -3394,30 +3394,30 @@ drf_spectacular.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_import_detail_serializer_class</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">serializers</span><span class="o">.</span><span class="n">ImportJobSerializer</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used show details of import job.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get serializer which will be used show details of import job."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_detail_serializer_class</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_import_create_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used to start import job.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get serializer which will be used to start import job."""</span>
         <span class="k">return</span> <span class="n">serializers</span><span class="o">.</span><span class="n">get_create_import_job_serializer</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_import_resource_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide extra arguments to resource class.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Provide extra arguments to resource class."""</span>
         <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_serializer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Serializer</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide resource kwargs to serializer class.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Provide resource kwargs to serializer class."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_action</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
-                <span class="s2">&quot;resource_kwargs&quot;</span><span class="p">,</span>
+                <span class="s2">"resource_kwargs"</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_import_resource_kwargs</span><span class="p">(),</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">start_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate request data and start ImportJob.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Validate request data and start ImportJob."""</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -3500,14 +3500,14 @@ drf_spectacular.</p>
 <span class="normal">71</span>
 <span class="normal">72</span>
 <span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set up `start_import_action` as action of viewset.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Set up `start_import_action` as action of viewset."""</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
     <span class="c1"># Skip if it is has no resource_class specified</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;resource_class&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"resource_class"</span><span class="p">):</span>
         <span class="k">return</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">start_import_action</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;ImportStartActionMixin&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">"ImportStartActionMixin"</span><span class="p">,</span>
         <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -3516,7 +3516,7 @@ drf_spectacular.</p>
 
     <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">import_action</span><span class="p">,</span> <span class="n">start_import_action</span><span class="p">)</span>
     <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
         <span class="n">url_name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">import_action_name</span><span class="p">,</span>
         <span class="n">url_path</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">import_action_url</span><span class="p">,</span>
         <span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -3565,7 +3565,7 @@ drf_spectacular.</p>
 <span class="normal">93</span>
 <span class="normal">94</span>
 <span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_import_create_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used to start import job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Get serializer which will be used to start import job."""</span>
     <span class="k">return</span> <span class="n">serializers</span><span class="o">.</span><span class="n">get_create_import_job_serializer</span><span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="p">,</span>
     <span class="p">)</span>
@@ -3598,7 +3598,7 @@ drf_spectacular.</p>
 <span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_import_detail_serializer_class</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">serializers</span><span class="o">.</span><span class="n">ImportJobSerializer</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used show details of import job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Get serializer which will be used show details of import job."""</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_detail_serializer_class</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3625,7 +3625,7 @@ drf_spectacular.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">97</span>
 <span class="normal">98</span>
 <span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_import_resource_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide extra arguments to resource class.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Provide extra arguments to resource class."""</span>
     <span class="k">return</span> <span class="p">{}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3659,11 +3659,11 @@ drf_spectacular.</p>
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return import model queryset on import action.</span>
+<span class="w">    </span><span class="sd">"""Return import model queryset on import action.</span>
 
 <span class="sd">    For better openapi support and consistency.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_action</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">get_model_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># type: ignore[misc]</span>
@@ -3697,10 +3697,10 @@ drf_spectacular.</p>
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_serializer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Serializer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide resource kwargs to serializer class.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Provide resource kwargs to serializer class."""</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_action</span><span class="p">:</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
-            <span class="s2">&quot;resource_kwargs&quot;</span><span class="p">,</span>
+            <span class="s2">"resource_kwargs"</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_import_resource_kwargs</span><span class="p">(),</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
@@ -3739,7 +3739,7 @@ drf_spectacular.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">start_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate request data and start ImportJob.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Validate request data and start ImportJob."""</span>
     <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -3913,26 +3913,26 @@ drf_spectacular.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ExportStartActionMixin</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin which adds start export action.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Mixin which adds start export action."""</span>
 
     <span class="n">resource_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">resources</span><span class="o">.</span><span class="n">CeleryModelResource</span><span class="p">]</span>
-    <span class="n">export_action</span> <span class="o">=</span> <span class="s2">&quot;start_export_action&quot;</span>
-    <span class="n">export_action_name</span> <span class="o">=</span> <span class="s2">&quot;export&quot;</span>
-    <span class="n">export_action_url</span> <span class="o">=</span> <span class="s2">&quot;export&quot;</span>
+    <span class="n">export_action</span> <span class="o">=</span> <span class="s2">"start_export_action"</span>
+    <span class="n">export_action_name</span> <span class="o">=</span> <span class="s2">"export"</span>
+    <span class="n">export_action_url</span> <span class="o">=</span> <span class="s2">"export"</span>
     <span class="n">export_detail_serializer_class</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ExportJobSerializer</span>
     <span class="n">export_ordering</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">export_ordering_fields</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">export_open_api_description</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;This endpoint creates export job and starts it. &quot;</span>
-        <span class="s2">&quot;To monitor progress use detail endpoint for jobs to fetch state of &quot;</span>
-        <span class="s2">&quot;job. Once it&#39;s status is `EXPORTED`, you can download file.&quot;</span>
+        <span class="s2">"This endpoint creates export job and starts it. "</span>
+        <span class="s2">"To monitor progress use detail endpoint for jobs to fetch state of "</span>
+        <span class="s2">"job. Once it's status is `EXPORTED`, you can download file."</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up `start_export_action` as action of viewset.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set up `start_export_action` as action of viewset."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
         <span class="c1"># Skip if it is has no resource_class specified</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;resource_class&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"resource_class"</span><span class="p">):</span>
             <span class="k">return</span>
         <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">module_loading</span><span class="o">.</span><span class="n">import_string</span><span class="p">(</span>
@@ -3947,7 +3947,7 @@ drf_spectacular.</p>
             <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">start_export_action</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;ExportStartActionMixin&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="s2">"ExportStartActionMixin"</span><span class="p">,</span>
             <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
             <span class="o">*</span><span class="n">args</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -3956,7 +3956,7 @@ drf_spectacular.</p>
 
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">export_action</span><span class="p">,</span> <span class="n">start_export_action</span><span class="p">)</span>
         <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+            <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
             <span class="n">url_name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">export_action_name</span><span class="p">,</span>
             <span class="n">url_path</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">export_action_url</span><span class="p">,</span>
             <span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -3964,7 +3964,7 @@ drf_spectacular.</p>
             <span class="n">serializer_class</span><span class="o">=</span><span class="bp">cls</span><span class="p">()</span><span class="o">.</span><span class="n">get_export_create_serializer_class</span><span class="p">(),</span>
             <span class="n">filterset_class</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
                 <span class="bp">cls</span><span class="o">.</span><span class="n">resource_class</span><span class="p">,</span>
-                <span class="s2">&quot;filterset_class&quot;</span><span class="p">,</span>
+                <span class="s2">"filterset_class"</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">filter_backends</span><span class="o">=</span><span class="n">filter_backends</span><span class="p">,</span>
@@ -3988,11 +3988,11 @@ drf_spectacular.</p>
             <span class="p">)(</span><span class="bp">cls</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return export model queryset on export action.</span>
+<span class="w">        </span><span class="sd">"""Return export model queryset on export action.</span>
 
 <span class="sd">        For better openapi support and consistency.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_action</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">get_model_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># type: ignore[misc]</span>
@@ -4000,33 +4000,33 @@ drf_spectacular.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_export_detail_serializer_class</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">serializers</span><span class="o">.</span><span class="n">ExportJobSerializer</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used show details of export job.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get serializer which will be used show details of export job."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_detail_serializer_class</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_export_create_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used to start export job.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get serializer which will be used to start export job."""</span>
         <span class="k">return</span> <span class="n">serializers</span><span class="o">.</span><span class="n">get_create_export_job_serializer</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_export_resource_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide extra arguments to resource class.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Provide extra arguments to resource class."""</span>
         <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_serializer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Serializer</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide resource kwargs to serializer class.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Provide resource kwargs to serializer class."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_action</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
-                <span class="s2">&quot;resource_kwargs&quot;</span><span class="p">,</span>
+                <span class="s2">"resource_kwargs"</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_export_resource_kwargs</span><span class="p">(),</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">start_export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate request data and start ExportJob.&quot;&quot;&quot;</span>
-        <span class="n">ordering</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ordering&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Validate request data and start ExportJob."""</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ordering"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ordering</span><span class="p">:</span>
-            <span class="n">ordering</span> <span class="o">=</span> <span class="n">ordering</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">ordering</span> <span class="o">=</span> <span class="n">ordering</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span>
             <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
             <span class="n">ordering</span><span class="o">=</span><span class="n">ordering</span><span class="p">,</span>
@@ -4130,10 +4130,10 @@ drf_spectacular.</p>
 <span class="normal">91</span>
 <span class="normal">92</span>
 <span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set up `start_export_action` as action of viewset.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Set up `start_export_action` as action of viewset."""</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">()</span>
     <span class="c1"># Skip if it is has no resource_class specified</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;resource_class&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"resource_class"</span><span class="p">):</span>
         <span class="k">return</span>
     <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">module_loading</span><span class="o">.</span><span class="n">import_string</span><span class="p">(</span>
@@ -4148,7 +4148,7 @@ drf_spectacular.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">start_export_action</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;ExportStartActionMixin&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">"ExportStartActionMixin"</span><span class="p">,</span>
         <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -4157,7 +4157,7 @@ drf_spectacular.</p>
 
     <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">export_action</span><span class="p">,</span> <span class="n">start_export_action</span><span class="p">)</span>
     <span class="n">decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
-        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">],</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
         <span class="n">url_name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">export_action_name</span><span class="p">,</span>
         <span class="n">url_path</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">export_action_url</span><span class="p">,</span>
         <span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -4165,7 +4165,7 @@ drf_spectacular.</p>
         <span class="n">serializer_class</span><span class="o">=</span><span class="bp">cls</span><span class="p">()</span><span class="o">.</span><span class="n">get_export_create_serializer_class</span><span class="p">(),</span>
         <span class="n">filterset_class</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">resource_class</span><span class="p">,</span>
-            <span class="s2">&quot;filterset_class&quot;</span><span class="p">,</span>
+            <span class="s2">"filterset_class"</span><span class="p">,</span>
             <span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">filter_backends</span><span class="o">=</span><span class="n">filter_backends</span><span class="p">,</span>
@@ -4214,7 +4214,7 @@ drf_spectacular.</p>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_export_create_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used to start export job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Get serializer which will be used to start export job."""</span>
     <span class="k">return</span> <span class="n">serializers</span><span class="o">.</span><span class="n">get_create_export_job_serializer</span><span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="p">,</span>
     <span class="p">)</span>
@@ -4247,7 +4247,7 @@ drf_spectacular.</p>
 <span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_export_detail_serializer_class</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">serializers</span><span class="o">.</span><span class="n">ExportJobSerializer</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get serializer which will be used show details of export job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Get serializer which will be used show details of export job."""</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_detail_serializer_class</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4274,7 +4274,7 @@ drf_spectacular.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_export_resource_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide extra arguments to resource class.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Provide extra arguments to resource class."""</span>
     <span class="k">return</span> <span class="p">{}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4308,11 +4308,11 @@ drf_spectacular.</p>
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuerySet</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return export model queryset on export action.</span>
+<span class="w">    </span><span class="sd">"""Return export model queryset on export action.</span>
 
 <span class="sd">    For better openapi support and consistency.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_action</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">get_model_queryset</span><span class="p">()</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>  <span class="c1"># type: ignore[misc]</span>
@@ -4346,10 +4346,10 @@ drf_spectacular.</p>
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_serializer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Serializer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provide resource kwargs to serializer class.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Provide resource kwargs to serializer class."""</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_action</span><span class="p">:</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
-            <span class="s2">&quot;resource_kwargs&quot;</span><span class="p">,</span>
+            <span class="s2">"resource_kwargs"</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_export_resource_kwargs</span><span class="p">(),</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
@@ -4393,10 +4393,10 @@ drf_spectacular.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">start_export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">response</span><span class="o">.</span><span class="n">Response</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate request data and start ExportJob.&quot;&quot;&quot;</span>
-    <span class="n">ordering</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ordering&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Validate request data and start ExportJob."""</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ordering"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ordering</span><span class="p">:</span>
-        <span class="n">ordering</span> <span class="o">=</span> <span class="n">ordering</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="n">ordering</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
     <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span>
         <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="n">ordering</span><span class="o">=</span><span class="n">ordering</span><span class="p">,</span>
@@ -4503,11 +4503,11 @@ drf_spectacular.</p>
 <span class="normal">96</span>
 <span class="normal">97</span>
 <span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CreateExportJob</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Serializer to start export job.</span>
+<span class="w">    </span><span class="sd">"""Base Serializer to start export job.</span>
 
 <span class="sd">    It used to set up base workflow of ExportJob creation via API.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">resource_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">resources</span><span class="o">.</span><span class="n">CeleryModelResource</span><span class="p">]</span>
 
@@ -4519,16 +4519,16 @@ drf_spectacular.</p>
         <span class="n">resource_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set ordering, filter kwargs and current user.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set ordering, filter kwargs and current user."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span> <span class="o">=</span> <span class="n">ordering</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span> <span class="o">=</span> <span class="n">filter_kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span> <span class="o">=</span> <span class="n">resource_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"request"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">"user"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that ordering and filter kwargs are valid.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Check that ordering and filter kwargs are valid."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="p">(</span>
             <span class="n">ordering</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span><span class="p">,</span>
             <span class="n">filter_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span><span class="p">,</span>
@@ -4541,23 +4541,23 @@ drf_spectacular.</p>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">validated_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create export job.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create export job."""</span>
         <span class="n">file_format_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">get_supported_extensions_map</span><span class="p">()[</span>
-            <span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;file_format&quot;</span><span class="p">]</span>
+            <span class="n">validated_data</span><span class="p">[</span><span class="s2">"file_format"</span><span class="p">]</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="n">resource_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
-            <span class="n">file_format_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">file_format_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">resource_kwargs</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">&quot;ordering&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span><span class="p">,</span>
-                <span class="s2">&quot;filter_kwargs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span><span class="p">,</span>
+                <span class="s2">"ordering"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span><span class="p">,</span>
+                <span class="s2">"filter_kwargs"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span><span class="p">,</span>
                 <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Empty method to pass linters checks.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Empty method to pass linters checks."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -4612,13 +4612,13 @@ drf_spectacular.</p>
     <span class="n">resource_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set ordering, filter kwargs and current user.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Set ordering, filter kwargs and current user."""</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span> <span class="o">=</span> <span class="n">ordering</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span> <span class="o">=</span> <span class="n">filter_kwargs</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span> <span class="o">=</span> <span class="n">resource_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"request"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">"user"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4662,16 +4662,16 @@ drf_spectacular.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">validated_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create export job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Create export job."""</span>
     <span class="n">file_format_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">get_supported_extensions_map</span><span class="p">()[</span>
-        <span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;file_format&quot;</span><span class="p">]</span>
+        <span class="n">validated_data</span><span class="p">[</span><span class="s2">"file_format"</span><span class="p">]</span>
     <span class="p">]</span>
     <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
         <span class="n">resource_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
-        <span class="n">file_format_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">file_format_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="n">resource_kwargs</span><span class="o">=</span><span class="p">{</span>
-            <span class="s2">&quot;ordering&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span><span class="p">,</span>
-            <span class="s2">&quot;filter_kwargs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span><span class="p">,</span>
+            <span class="s2">"ordering"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span><span class="p">,</span>
+            <span class="s2">"filter_kwargs"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span><span class="p">,</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
@@ -4700,7 +4700,7 @@ drf_spectacular.</p>
               <summary>Source code in <code>import_export_extensions/api/serializers/export_job.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">97</span>
 <span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty method to pass linters checks.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Empty method to pass linters checks."""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4732,7 +4732,7 @@ drf_spectacular.</p>
 <span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that ordering and filter kwargs are valid.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Check that ordering and filter kwargs are valid."""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="p">(</span>
         <span class="n">ordering</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ordering</span><span class="p">,</span>
         <span class="n">filter_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter_kwargs</span><span class="p">,</span>
@@ -4818,11 +4818,11 @@ drf_spectacular.</p>
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CreateImportJob</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Serializer to start import job.</span>
+<span class="w">    </span><span class="sd">"""Base Serializer to start import job.</span>
 
 <span class="sd">    It used to set up base workflow of ImportJob creation via API.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">resource_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">resources</span><span class="o">.</span><span class="n">CeleryModelResource</span><span class="p">]</span>
 
@@ -4836,28 +4836,28 @@ drf_spectacular.</p>
         <span class="n">resource_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set filter kwargs and current user.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set filter kwargs and current user."""</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"request"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span> <span class="o">=</span> <span class="n">resource_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">"user"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">validated_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create import job.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create import job."""</span>
         <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">data_file</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">],</span>
-            <span class="n">force_import</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;force_import&quot;</span><span class="p">],</span>
-            <span class="n">skip_parse_step</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;skip_parse_step&quot;</span><span class="p">],</span>
+            <span class="n">data_file</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">"file"</span><span class="p">],</span>
+            <span class="n">force_import</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">"force_import"</span><span class="p">],</span>
+            <span class="n">skip_parse_step</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">"skip_parse_step"</span><span class="p">],</span>
             <span class="n">resource_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
             <span class="n">resource_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span><span class="p">,</span>
             <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Empty method to pass linters checks.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Empty method to pass linters checks."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -4906,11 +4906,11 @@ drf_spectacular.</p>
     <span class="n">resource_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set filter kwargs and current user.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Set filter kwargs and current user."""</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">Request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"request"</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span> <span class="o">=</span> <span class="n">resource_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="s2">"user"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4949,11 +4949,11 @@ drf_spectacular.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">validated_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create import job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Create import job."""</span>
     <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-        <span class="n">data_file</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">],</span>
-        <span class="n">force_import</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;force_import&quot;</span><span class="p">],</span>
-        <span class="n">skip_parse_step</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">&quot;skip_parse_step&quot;</span><span class="p">],</span>
+        <span class="n">data_file</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">"file"</span><span class="p">],</span>
+        <span class="n">force_import</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">"force_import"</span><span class="p">],</span>
+        <span class="n">skip_parse_step</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s2">"skip_parse_step"</span><span class="p">],</span>
         <span class="n">resource_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_class</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
         <span class="n">resource_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_resource_kwargs</span><span class="p">,</span>
         <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
@@ -4982,7 +4982,7 @@ drf_spectacular.</p>
               <summary>Source code in <code>import_export_extensions/api/serializers/import_job.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
 <span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty method to pass linters checks.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Empty method to pass linters checks."""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5036,21 +5036,21 @@ drf_spectacular.</p>
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ExportJobSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serializer to show information about export job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Serializer to show information about export job."""</span>
 
     <span class="n">progress</span> <span class="o">=</span> <span class="n">ExportProgressSerializer</span><span class="p">()</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;export_status&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;data_file&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;progress&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;export_started&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;export_finished&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;created&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;modified&quot;</span><span class="p">,</span>
+            <span class="s2">"id"</span><span class="p">,</span>
+            <span class="s2">"export_status"</span><span class="p">,</span>
+            <span class="s2">"data_file"</span><span class="p">,</span>
+            <span class="s2">"progress"</span><span class="p">,</span>
+            <span class="s2">"export_started"</span><span class="p">,</span>
+            <span class="s2">"export_finished"</span><span class="p">,</span>
+            <span class="s2">"created"</span><span class="p">,</span>
+            <span class="s2">"modified"</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -5157,63 +5157,63 @@ drf_spectacular.</p>
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImportJobSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serializer to show information about import job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Serializer to show information about import job."""</span>
 
     <span class="n">progress</span> <span class="o">=</span> <span class="n">ImportProgressSerializer</span><span class="p">()</span>
 
     <span class="n">import_params</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">ImportParamsSerializer</span><span class="p">(</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">totals</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">TotalsSerializer</span><span class="p">(</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parse_error</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;error_message&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"error_message"</span><span class="p">,</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">allow_blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">input_error</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">InputErrorSerializer</span><span class="p">(</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">skipped_errors</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">SkippedErrorsSerializer</span><span class="p">(</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">importing_data</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">ImportingDataSerializer</span><span class="p">(</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">input_errors_file</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">is_all_rows_shown</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">IsAllRowsShowField</span><span class="p">(</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span>
         <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImportJob</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;progress&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;import_status&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;import_params&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;totals&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;parse_error&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;input_error&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;skipped_errors&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;is_all_rows_shown&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;importing_data&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;input_errors_file&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;import_started&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;import_finished&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;force_import&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;created&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;modified&quot;</span><span class="p">,</span>
+            <span class="s2">"id"</span><span class="p">,</span>
+            <span class="s2">"progress"</span><span class="p">,</span>
+            <span class="s2">"import_status"</span><span class="p">,</span>
+            <span class="s2">"import_params"</span><span class="p">,</span>
+            <span class="s2">"totals"</span><span class="p">,</span>
+            <span class="s2">"parse_error"</span><span class="p">,</span>
+            <span class="s2">"input_error"</span><span class="p">,</span>
+            <span class="s2">"skipped_errors"</span><span class="p">,</span>
+            <span class="s2">"is_all_rows_shown"</span><span class="p">,</span>
+            <span class="s2">"importing_data"</span><span class="p">,</span>
+            <span class="s2">"input_errors_file"</span><span class="p">,</span>
+            <span class="s2">"import_started"</span><span class="p">,</span>
+            <span class="s2">"import_finished"</span><span class="p">,</span>
+            <span class="s2">"force_import"</span><span class="p">,</span>
+            <span class="s2">"created"</span><span class="p">,</span>
+            <span class="s2">"modified"</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -5265,7 +5265,7 @@ drf_spectacular.</p>
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ProgressSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serializer to show progress of job.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Serializer to show progress of job."""</span>
 
     <span class="n">info</span> <span class="o">=</span> <span class="n">ProgressInfoSerializer</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -5319,7 +5319,7 @@ drf_spectacular.</p>
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ProgressInfoSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serializer to show progress info, like how much is done.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Serializer to show progress info, like how much is done."""</span>
 
     <span class="n">current</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
     <span class="n">total</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>

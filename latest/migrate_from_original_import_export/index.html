@@ -839,14 +839,14 @@ class SimpleResource(
 <span class="gd">-     resources.Resource,</span>
 <span class="gi">+     resources.CeleryResource,</span>
 ):
-<span class="w"> </span>   &quot;&quot;&quot;Simple resource.&quot;&quot;&quot;
+<span class="w"> </span>   """Simple resource."""
 
 
 class BookResource(
 <span class="gd">-    resources.ModelResource,</span>
 <span class="gi">+    resources.CeleryModelResource,</span>
 ):
-<span class="w"> </span>   &quot;&quot;&quot;Resource class for `Book` model.&quot;&quot;&quot;
+<span class="w"> </span>   """Resource class for `Book` model."""
 
 <span class="w"> </span>   class Meta:
 <span class="w"> </span>       model = Book
@@ -864,7 +864,7 @@ class BookAdmin(
 <span class="gi">+    CeleryImportExportMixin,</span>
 <span class="gi">+    admin.ModelAdmin,</span>
 ):
-<span class="w"> </span>   &quot;&quot;&quot;Resource class for `Book` model.&quot;&quot;&quot;
+<span class="w"> </span>   """Resource class for `Book` model."""
 
 <span class="w"> </span>   resource_classes = (
 <span class="w"> </span>       resources.BookResource,
@@ -883,13 +883,13 @@ need to create instances of the import/export job:</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">import_export.formats</span><span class="w"> </span><span class="kn">import</span> <span class="n">base_formats</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">import_export_extensions.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExportJob</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">file_format</span> <span class="o">=</span> <span class="n">base_formats</span><span class="o">.</span><span class="n">CSV</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">file_format_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_format</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">file_format_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_format</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span> <span class="o">=</span> <span class="n">ExportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
         <span class="n">resource_path</span><span class="o">=</span><span class="n">BandResource</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
         <span class="n">file_format_path</span><span class="o">=</span><span class="n">file_format_path</span>
     <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">export_status</span>
-<span class="s1">&#39;CREATED&#39;</span>
+<span class="s1">'CREATED'</span>
 </code></pre></div>
 <p>You can check the current status of the job using the <code>export_status</code>
 (or <code>import_status</code>) property of the model. Additionally, the <code>progress</code>
@@ -897,14 +897,14 @@ property provides information about the total number of rows and the
 number of rows that have been completed.</p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">export_status</span>
-<span class="s1">&#39;EXPORTING&#39;</span>
+<span class="s1">'EXPORTING'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">progress</span>
-<span class="p">{</span><span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;EXPORTING&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;current&#39;</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}}</span>
+<span class="p">{</span><span class="s1">'state'</span><span class="p">:</span> <span class="s1">'EXPORTING'</span><span class="p">,</span> <span class="s1">'info'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'current'</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span> <span class="s1">'total'</span><span class="p">:</span> <span class="mi">100</span><span class="p">}}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">export_status</span>
-<span class="s1">&#39;EXPORTED&#39;</span>
+<span class="s1">'EXPORTED'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">data_file</span><span class="o">.</span><span class="n">path</span>
-<span class="s1">&#39;../media/import_export_extensions/export/3dfb7510-5593-4dc6-9d7d-bbd907cd3eb6/Artists-2020-02-22.csv&#39;</span>
+<span class="s1">'../media/import_export_extensions/export/3dfb7510-5593-4dc6-9d7d-bbd907cd3eb6/Artists-2020-02-22.csv'</span>
 </code></pre></div>
 <h2 id="other-configuration">Other configuration<a class="headerlink" href="#other-configuration" title="Permanent link">&para;</a></h2>
 <p>You may need to configure

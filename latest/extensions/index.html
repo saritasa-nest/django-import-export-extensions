@@ -1097,14 +1097,14 @@ and set the <code>resource_class</code> attribute:</p>
 
 <span class="n">band_import_export_router</span> <span class="o">=</span> <span class="n">DefaultRouter</span><span class="p">()</span>
 <span class="n">band_import_export_router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
-    <span class="s2">&quot;import-band&quot;</span><span class="p">,</span>
+    <span class="s2">"import-band"</span><span class="p">,</span>
     <span class="n">views</span><span class="o">.</span><span class="n">BandImportViewSet</span><span class="p">,</span>
-    <span class="n">basename</span><span class="o">=</span><span class="s2">&quot;import-band&quot;</span><span class="p">,</span>
+    <span class="n">basename</span><span class="o">=</span><span class="s2">"import-band"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">band_import_export_router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
-    <span class="s2">&quot;export-band&quot;</span><span class="p">,</span>
+    <span class="s2">"export-band"</span><span class="p">,</span>
     <span class="n">views</span><span class="o">.</span><span class="n">BandExportViewSet</span><span class="p">,</span>
-    <span class="n">basename</span><span class="o">=</span><span class="s2">&quot;export-band&quot;</span><span class="p">,</span>
+    <span class="n">basename</span><span class="o">=</span><span class="s2">"export-band"</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">band_import_export_router</span><span class="o">.</span><span class="n">urls</span>
@@ -1133,8 +1133,8 @@ filter parameters as the <code>filter_kwargs</code> argument to the resource:</p
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Band</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+            <span class="s2">"id"</span><span class="p">,</span>
+            <span class="s2">"title"</span><span class="p">,</span>
         <span class="p">]</span>
 </code></pre></div>
 <div class="highlight"><span class="filename">resources.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">import_export_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">resources</span>
@@ -1149,18 +1149,18 @@ filter parameters as the <code>filter_kwargs</code> argument to the resource:</p
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Band</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+            <span class="s2">"id"</span><span class="p">,</span>
+            <span class="s2">"title"</span><span class="p">,</span>
         <span class="p">]</span>
 </code></pre></div>
 <p>If <code>filterset_class</code> is set for your resource, you can pass <code>filter_kwargs</code> to filter export
 queryset:</p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">BandResource</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Band</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">Band</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">([</span><span class="n">Band</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span> <span class="k">for</span> <span class="n">title</span> <span class="ow">in</span> <span class="s2">&quot;ABC&quot;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Band</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">([</span><span class="n">Band</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span> <span class="k">for</span> <span class="n">title</span> <span class="ow">in</span> <span class="s2">"ABC"</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">BandResource</span><span class="p">()</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="mi">3</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">filter_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">filter_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"title"</span><span class="p">:</span> <span class="s2">"A"</span><span class="p">}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">band_resource_with_filters</span> <span class="o">=</span> <span class="n">BandResource</span><span class="p">(</span><span class="n">filter_kwargs</span><span class="o">=</span><span class="n">filter_kwargs</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">band_resource_with_filters</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 <span class="mi">1</span>
@@ -1169,7 +1169,7 @@ queryset:</p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span> <span class="o">=</span> <span class="n">ExportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
         <span class="n">resource_path</span><span class="o">=</span><span class="n">BandResource</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
         <span class="n">file_format_path</span><span class="o">=</span><span class="n">file_format_path</span><span class="p">,</span>
-        <span class="n">resource_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;filter_kwargs&quot;</span><span class="p">:</span> <span class="n">filter_kwargs</span><span class="p">},</span>
+        <span class="n">resource_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"filter_kwargs"</span><span class="p">:</span> <span class="n">filter_kwargs</span><span class="p">},</span>
     <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">export_job</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">export_job</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
@@ -1218,16 +1218,16 @@ to be saved alongside the relationship.</p>
 <p>This widget is designed to be used with the <code>IntermediateManyToManyField</code> in your model.</p>
 <p>Usage:</p>
 <div class="highlight"><span class="filename">resources.py</span><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ArtistResourceWithM2M</span><span class="p">(</span><span class="n">CeleryModelResource</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Artist resource with Many2Many field.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Artist resource with Many2Many field."""</span>
 
     <span class="n">bands</span> <span class="o">=</span> <span class="n">IntermediateManyToManyField</span><span class="p">(</span>
-        <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;bands&quot;</span><span class="p">,</span>
-        <span class="n">column_name</span><span class="o">=</span><span class="s2">&quot;Bands he played in&quot;</span><span class="p">,</span>
+        <span class="n">attribute</span><span class="o">=</span><span class="s2">"bands"</span><span class="p">,</span>
+        <span class="n">column_name</span><span class="o">=</span><span class="s2">"Bands he played in"</span><span class="p">,</span>
         <span class="n">widget</span><span class="o">=</span><span class="n">IntermediateManyToManyWidget</span><span class="p">(</span>
             <span class="n">rem_model</span><span class="o">=</span><span class="n">Band</span><span class="p">,</span>
-            <span class="n">rem_field</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
-            <span class="n">extra_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date_joined&quot;</span><span class="p">],</span>
-            <span class="n">instance_separator</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span>
+            <span class="n">rem_field</span><span class="o">=</span><span class="s2">"title"</span><span class="p">,</span>
+            <span class="n">extra_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"date_joined"</span><span class="p">],</span>
+            <span class="n">instance_separator</span><span class="o">=</span><span class="s2">";"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
 
@@ -1235,17 +1235,17 @@ to be saved alongside the relationship.</p>
         <span class="n">model</span> <span class="o">=</span> <span class="n">Artist</span>
         <span class="n">clean_model_instances</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;bands&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;instrument&quot;</span><span class="p">,</span>
+            <span class="s2">"id"</span><span class="p">,</span>
+            <span class="s2">"name"</span><span class="p">,</span>
+            <span class="s2">"bands"</span><span class="p">,</span>
+            <span class="s2">"instrument"</span><span class="p">,</span>
         <span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reduce DB queries number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Reduce DB queries number."""</span>
         <span class="k">return</span> <span class="n">Artist</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
-            <span class="s2">&quot;membership_set__band&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;bands&quot;</span><span class="p">,</span>
+            <span class="s2">"membership_set__band"</span><span class="p">,</span>
+            <span class="s2">"bands"</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div>
 <h3 id="result-resultxlsx">Result (result.xlsx)<a class="headerlink" href="#result-resultxlsx" title="Permanent link">&para;</a></h3>

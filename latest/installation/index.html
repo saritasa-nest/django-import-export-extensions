@@ -1006,8 +1006,8 @@ most recent stable release of <code>django-import-export-extensions</code>.</p>
 <code>INSTALLED_APPS</code> setting:</p>
 <div class="highlight"><span class="filename">settings.py</span><pre><span></span><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="o">...</span>
-    <span class="s2">&quot;import_export&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import_export_extensions&quot;</span><span class="p">,</span>
+    <span class="s2">"import_export"</span><span class="p">,</span>
+    <span class="s2">"import_export_extensions"</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
 <p>Finally, run the <code>migrate</code> and <code>collectstatic</code> commands:</p>
@@ -1065,15 +1065,15 @@ in the implementation of <code>CeleryImportAdminMixin</code>.</p>
 <a href="https://docs.djangoproject.com/en/dev/ref/settings/#storages">STORAGES</a>
 from Django.</p>
 <div class="highlight"><span class="filename">settings.py</span><pre><span></span><code><span class="n">STORAGES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;django.core.files.storage.filesystem.FileSystemStorage&quot;</span><span class="p">,</span>
+    <span class="s2">"default"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"BACKEND"</span><span class="p">:</span> <span class="s2">"django.core.files.storage.filesystem.FileSystemStorage"</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;staticfiles&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;django.contrib.staticfiles.storage.StaticFilesStorage&quot;</span><span class="p">,</span>
+    <span class="s2">"staticfiles"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"BACKEND"</span><span class="p">:</span> <span class="s2">"django.contrib.staticfiles.storage.StaticFilesStorage"</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="c1"># Use this to specify custom storage for package</span>
-    <span class="s2">&quot;django_import_export_extensions&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;django.core.files.storage.filesystem.FileSystemStorage&quot;</span><span class="p">,</span>
+    <span class="s2">"django_import_export_extensions"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"BACKEND"</span><span class="p">:</span> <span class="s2">"django.core.files.storage.filesystem.FileSystemStorage"</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 </code></pre></div>
