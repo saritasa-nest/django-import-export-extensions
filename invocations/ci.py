@@ -16,4 +16,4 @@ def prepare(context: invoke.Context) -> None:
 @invoke.task
 def run_pre_commit(context: invoke.Context) -> None:
     """Run pre-commit hooks."""
-    saritasa_invocations.pre_commit.run_hooks(context)
+    saritasa_invocations.pre_commit.run_hooks(context, params="--fail-fast")
