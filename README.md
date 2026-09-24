@@ -75,7 +75,6 @@ from .. import models
 
 
 class BookResource(CeleryModelResource):
-
     class Meta:
         model = models.Book
 ```

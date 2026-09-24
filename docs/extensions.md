@@ -96,7 +96,6 @@ from . import models
 
 
 class BandFilterSet(filters.FilterSet):
-
     class Meta:
         model = models.Band
         fields = [
@@ -112,7 +111,6 @@ from . import models
 
 
 class BandResource(resources.CeleryModelResource):
-
     filterset_class = filters.BandFilterSet
 
     class Meta:

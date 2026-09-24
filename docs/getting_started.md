@@ -22,7 +22,6 @@ from django.db import models
 
 
 class Band(models.Model):
-
     title = models.CharField(
         max_length=100,
     )
@@ -98,7 +97,7 @@ import_job = models.ImportJob.objects.create(
 export_job = models.ExportJob.objects.create(
     resource_path=resources.BandResource.class_path,
     file_format_path=file_format_path,
-    resource_kwargs={}
+    resource_kwargs={},
 )
 
 print(import_job.import_status, export_job.export_status)  # CREATED CREATED
@@ -157,9 +156,8 @@ from . import models
 @admin.register(models.Band)
 class BandAdmin(CeleryImportExportMixin, admin.ModelAdmin):
     """Admin for `Band` model with import export functionality."""
-    list_display = (
-        "title",
-    )
+
+    list_display = ("title",)
     resource_classes = [resources.BandResource]
 ```
 
@@ -182,11 +180,13 @@ from . import resources
 
 class BandExportViewSet(views.ExportJobViewSet):
     """Simple ViewSet for exporting `Band` model."""
+
     resource_class = resources.BandResource
 
 
 class BandImportViewSet(views.ImportJobViewSet):
     """Simple ViewSet for importing `Band` model."""
+
     resource_class = resources.BandResource
 ```
 

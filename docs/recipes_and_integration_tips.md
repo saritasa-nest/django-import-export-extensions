@@ -10,6 +10,7 @@ Change connection schema if it was provided in admin.
 ```python
 from django.db import connection
 
+
 class MyModelResource(CeleryModelResource):
     def __init__(self, *args, **kwargs):
 
