@@ -1129,7 +1129,6 @@ filter parameters as the <code>filter_kwargs</code> argument to the resource:</p
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BandFilterSet</span><span class="p">(</span><span class="n">filters</span><span class="o">.</span><span class="n">FilterSet</span><span class="p">):</span>
-
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Band</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
@@ -1143,7 +1142,6 @@ filter parameters as the <code>filter_kwargs</code> argument to the resource:</p
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BandResource</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CeleryModelResource</span><span class="p">):</span>
-
     <span class="n">filterset_class</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">BandFilterSet</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>

@@ -762,6 +762,7 @@ with <a href="https://github.com/django-tenants/django-tenants">django-tenants</
 <p>Change connection schema if it was provided in admin.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">django.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">connection</span>
 
+
 <span class="k">class</span><span class="w"> </span><span class="nc">MyModelResource</span><span class="p">(</span><span class="n">CeleryModelResource</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 

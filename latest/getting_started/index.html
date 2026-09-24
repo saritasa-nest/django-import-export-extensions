@@ -904,7 +904,6 @@ examples above.</p>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Band</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-
     <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="p">)</span>
@@ -968,7 +967,7 @@ triggered, and the import/export process begins.</p>
 <span class="n">export_job</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ExportJob</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
     <span class="n">resource_path</span><span class="o">=</span><span class="n">resources</span><span class="o">.</span><span class="n">BandResource</span><span class="o">.</span><span class="n">class_path</span><span class="p">,</span>
     <span class="n">file_format_path</span><span class="o">=</span><span class="n">file_format_path</span><span class="p">,</span>
-    <span class="n">resource_kwargs</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">resource_kwargs</span><span class="o">=</span><span class="p">{},</span>
 <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">import_job</span><span class="o">.</span><span class="n">import_status</span><span class="p">,</span> <span class="n">export_job</span><span class="o">.</span><span class="n">export_status</span><span class="p">)</span>  <span class="c1"># CREATED CREATED</span>
@@ -1017,9 +1016,8 @@ use the <code>CeleryImportExportMixin</code> in your admin model and set the
 <span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Band</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">BandAdmin</span><span class="p">(</span><span class="n">CeleryImportExportMixin</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Admin for `Band` model with import export functionality."""</span>
-    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">"title"</span><span class="p">,</span>
-    <span class="p">)</span>
+
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"title"</span><span class="p">,)</span>
     <span class="n">resource_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">resources</span><span class="o">.</span><span class="n">BandResource</span><span class="p">]</span>
 </code></pre></div>
 <p>There are also the <code>CeleryImportAdminMixin</code> and <code>CeleryExportAdminMixin</code>
@@ -1036,11 +1034,13 @@ provided to create the corresponding viewsets for the resource.</p>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BandExportViewSet</span><span class="p">(</span><span class="n">views</span><span class="o">.</span><span class="n">ExportJobViewSet</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Simple ViewSet for exporting `Band` model."""</span>
+
     <span class="n">resource_class</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">BandResource</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BandImportViewSet</span><span class="p">(</span><span class="n">views</span><span class="o">.</span><span class="n">ImportJobViewSet</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Simple ViewSet for importing `Band` model."""</span>
+
     <span class="n">resource_class</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">BandResource</span>
 </code></pre></div>
 <p>These viewsets provide the following actions to manage
