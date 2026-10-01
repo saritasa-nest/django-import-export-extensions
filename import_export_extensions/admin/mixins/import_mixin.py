@@ -13,9 +13,11 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import URLPattern, re_path, reverse
 from django.utils.translation import gettext_lazy as _
-from import_export import admin as import_export_admin
-from import_export import mixins as import_export_mixins
-from import_export import resources as import_export_resources
+from import_export import (
+    admin as import_export_admin,
+    mixins as import_export_mixins,
+    resources as import_export_resources,
+)
 from import_export.forms import ConfirmImportForm, ImportForm
 
 from ... import models

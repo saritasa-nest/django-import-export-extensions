@@ -10,9 +10,11 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import URLPattern, re_path, reverse
 from django.utils.translation import gettext_lazy as _
-from import_export import admin as import_export_admin
-from import_export import forms as import_export_forms
-from import_export import mixins as import_export_mixins
+from import_export import (
+    admin as import_export_admin,
+    forms as import_export_forms,
+    mixins as import_export_mixins,
+)
 
 from ... import models
 from . import base_mixin, types

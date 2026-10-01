@@ -101,9 +101,6 @@ local = [
   # Collection of invoke commands which used in Saritasa organization
   # https://github.com/saritasa-nest/saritasa-python-invocations/
   "saritasa-invocations[env_settings]",
-  # A library and CLI app for rendering project templates.
-  # https://copier.readthedocs.io/en/latest/
-  "copier",
 ]
 linters = [
   # Mypy is a static type checker for Python.
@@ -298,6 +295,8 @@ ignore = [
 [tool.ruff.lint.isort]
 force-wrap-aliases = true
 split-on-trailing-comma = true
+# https://docs.astral.sh/ruff/settings/#lint_isort_combine-as-imports
+combine-as-imports = true
 section-order = [
   "future",
   "standard-library",

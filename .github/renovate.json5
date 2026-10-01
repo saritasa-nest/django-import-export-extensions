@@ -67,8 +67,8 @@
   lockFileMaintenance: {
     enabled: true,
     schedule: [
-      // https://crontab.guru/#*_21_*_*_WED
-      "* 21 * * WED"
+      // https://crontab.guru/#*_16-23_*_*_WED
+      "* 16-23 * * WED"
     ],
   },
 
@@ -99,8 +99,8 @@
         "uv.lock",
       ],
       schedule: [
-        // https://crontab.guru/#*_21_*_*_SUN
-        "* 21 * * SUN"
+        // https://crontab.guru/#*_16-23_*_*_SUN
+        "* 16-23 * * SUN"
       ],
     },
     {
@@ -115,8 +115,8 @@
         "github-actions",
       ],
       schedule: [
-        // https://crontab.guru/#*_21_1_*_*
-        "* 21 1 * *"
+        // https://crontab.guru/#*_16-23_1_*_*
+        "* 16-23 1 * *"
       ],
     },
     {
@@ -131,8 +131,8 @@
         "pre-commit",
       ],
       schedule: [
-        // https://crontab.guru/#*_21_2_*_*
-        "* 21 2 * *"
+        // https://crontab.guru/#*_16-23_2_*_*
+        "* 16-23 2 * *"
       ],
     },
     {
@@ -155,8 +155,8 @@
       // https://cdnjs.com/ doesn't have timestamps
       minimumReleaseAgeBehaviour: "timestamp-optional",
       schedule: [
-        // https://crontab.guru/#*_21_3_*_*
-        "* 21 3 * *"
+        // https://crontab.guru/#*_16-23_3_*_*
+        "* 16-23 3 * *"
       ],
     },
     {
