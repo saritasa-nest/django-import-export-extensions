@@ -4,6 +4,7 @@ import traceback
 import uuid
 
 from celery import current_app, result, states
+from django.conf import settings
 from django.core import files as django_files
 from django.db import models, transaction
 from django.utils import encoding, module_loading, timezone
@@ -11,11 +12,10 @@ from django.utils.translation import gettext_lazy as _
 from import_export.formats import base_formats
 
 from .. import signals
-from . import tools
-from .core import BaseJob, TaskStateInfo
+from . import core, tools
 
 
-class ExportJob(BaseJob):
+class ExportJob(core.BaseJob):
     """Abstract model for managing celery export jobs.
 
     Encapsulate all logic related to celery export.
@@ -158,7 +158,7 @@ class ExportJob(BaseJob):
         ).replace("/", "-")
 
     @property
-    def progress(self) -> TaskStateInfo | None:
+    def progress(self) -> core.TaskStateInfo | None:
         """Return dict with export state."""
         if (
             self.export_task_id
@@ -259,13 +259,15 @@ class ExportJob(BaseJob):
 
     def _export_data_inner(self) -> None:
         """Run export process with saving to file."""
-        self.result = self.resource.export(**self.resource_kwargs)
-        self.save(update_fields=["result"])
+        result = self.resource.export(**self.resource_kwargs)
+        if settings.EXPORT_SAVE_RESULT_OBJ:
+            self.result = result
+            self.save(update_fields=["result"])
 
         # `export_data` may be bytes (base formats such as xlsx, csv, etc.) or
         # file object (formats inherited from `BaseZipExport`)
         export_data = self.file_format.export_data(
-            dataset=self.result,
+            dataset=result,
             **self.resource.get_export_data_format_kwargs(
                 file_format=self.file_format,
             ),
@@ -281,7 +283,7 @@ class ExportJob(BaseJob):
             save=True,
         )
 
-    def _get_task_state(self, task_id: str) -> TaskStateInfo:
+    def _get_task_state(self, task_id: str) -> core.TaskStateInfo:
         """Get state info for passed task_id.
 
         This method may change job status if task failed, but we did not
