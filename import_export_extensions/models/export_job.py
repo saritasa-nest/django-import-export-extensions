@@ -80,6 +80,7 @@ class ExportJob(BaseJob):
 
     data_file = models.FileField(
         max_length=512,
+        null=True,
         storage=tools.select_storage,
         verbose_name=_("Data file"),
         upload_to=tools.upload_export_file_to,
