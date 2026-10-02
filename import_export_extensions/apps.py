@@ -16,6 +16,8 @@ DEFAULT_DRF_EXPORT_DJANGO_FILTERS_BACKEND = (
 DEFAULT_DRF_EXPORT_ORDERING_BACKEND = "rest_framework.filters.OrderingFilter"
 # Enable/disable "Re-run" button in django-admin
 DEFAULT_IMPORT_EXPORT_RERUN_ENABLED = False
+# Enable/disable saving pickle result of export
+DEFAULT_EXPORT_SAVE_RESULT_OBJ = False
 
 
 class CeleryImportExport(AppConfig):
@@ -52,4 +54,9 @@ class CeleryImportExport(AppConfig):
             settings,
             "IMPORT_EXPORT_RERUN_ENABLED",
             DEFAULT_IMPORT_EXPORT_RERUN_ENABLED,
+        )
+        settings.EXPORT_SAVE_RESULT_OBJ = getattr(
+            settings,
+            "EXPORT_SAVE_RESULT_OBJ",
+            DEFAULT_EXPORT_SAVE_RESULT_OBJ,
         )
