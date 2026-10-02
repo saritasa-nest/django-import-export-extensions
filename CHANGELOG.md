@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Make `data_file` field in `ExportJob` nullable, since on creation it's empty
+
 ## 1.10.3 (2026-07-20)
 
 - Convert primary keys to str on admin export
