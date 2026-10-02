@@ -16,6 +16,11 @@ ie_router.register(
     basename="export-artist",
 )
 ie_router.register(
+    "export-band",
+    views.BandExportViewSet,
+    basename="export-band",
+)
+ie_router.register(
     "export-jobs",
     api.BaseExportJobForUserViewSet,
     basename="export-jobs",

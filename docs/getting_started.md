@@ -225,3 +225,87 @@ setup endpoints to be able to:
     is available only in import jobs.
 
 ![A screenshot of the generated OpenAPI specification](_static/images/action-bands-openapi.png)
+
+Example of setup via actions mixin
+
+```python title="views.py"
+from rest_framework import (
+    decorators,
+    mixins,
+    permissions,
+    serializers,
+    settings,
+    throttling,
+    viewsets,
+)
+
+from import_export_extensions import api
+
+from .. import models, resources
+
+
+class ArtistViewSet(
+    api.ExportStartActionMixin,
+    api.ImportStartActionMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    """Simple viewset for Artist model."""
+
+    resource_class = resources.SimpleArtistResource
+    queryset = models.Artist.objects.all()
+    serializer_class = ArtistSerializer
+    filterset_class = resources.SimpleArtistResource.filterset_class
+    ordering = ("id",)
+    ordering_fields = (
+        "id",
+        "name",
+    )
+    export_permission_classes = (permissions.IsAuthenticated,)
+
+    @decorators.action(
+        methods=["POST"],
+        detail=False,
+        export_action_name="export-m2m",
+        export_action_url="export-m2m",
+        is_export_action=True,
+        resource_class=resources.ArtistResourceWithM2M,
+        export_ordering_fields=(
+            "id",
+            "name",
+        ),
+        export_throttle_classes=(throttling.ScopedRateThrottle,),
+    )
+    def export_m2m(self, request, *args, **kwargs):
+        """Export artists with Many2Many field."""
+        return self.start_export(request, *args, **kwargs)
+```
+
+And then in urls.py
+
+```python title="urls.py"
+from rest_framework import routers
+
+from import_export_extensions import api
+
+from . import views
+
+router = routers.DefaultRouter()
+router.register(
+    "artists",
+    views.ArtistViewSet,
+    basename="artists",
+)
+router.register(
+    prefix="export",
+    viewset=api.BaseExportJobForUserViewSet,
+    basename="export",
+)
+router.register(
+    prefix="import",
+    viewset=api.BaseImportJobForUserViewSet,
+    basename="import",
+)
+urlpatterns = router.urls
+```
