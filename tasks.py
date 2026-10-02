@@ -18,6 +18,7 @@ ns = invoke.Collection(
     saritasa_invocations.celery,
     saritasa_invocations.django,
     saritasa_invocations.docker,
+    saritasa_invocations.open_api,
 )
 
 # Configurations for run command

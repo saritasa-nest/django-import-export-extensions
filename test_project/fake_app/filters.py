@@ -18,3 +18,24 @@ class ArtistFilterSet(filters.FilterSet):
                 "in",
             ),
         }
+
+
+class ArtistM2MFilterSet(filters.FilterSet):
+    """FilterSet for Artist resource for m2m export."""
+
+    class Meta:
+        model = Artist
+        fields = {
+            "id": (
+                "exact",
+                "in",
+            ),
+            "name": (
+                "exact",
+                "in",
+            ),
+            "instrument": (
+                "exact",
+                "in",
+            ),
+        }

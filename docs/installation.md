@@ -89,6 +89,16 @@ Default: `django_filters.rest_framework.DjangoFilterBackend`
 Specifies filter backend class for `ordering` in export action. Default:
 `rest_framework.filters.OrderingFilter`
 
+### `DRF_EXPORT_THROTTLE_CLASSES`
+
+Specifies throttle classes for export action. Defaults to the ones specified in
+in `REST_FRAMEWORK` configuration
+
+### `DRF_EXPORT_PERMISSION_CLASSES`
+
+Specifies permissions classes for export action. Defaults to the ones specified in
+in `REST_FRAMEWORK` configuration
+
 ### `IMPORT_EXPORT_RERUN_ENABLED`
 
 Enables the "Re-run" button on the `ExportJob` and `ImportJob` detail pages in
