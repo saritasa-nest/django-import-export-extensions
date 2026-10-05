@@ -10,7 +10,7 @@ class Error(results.Error):
 
     def __repr__(self) -> str:
         """Return object representation in string format."""
-        return f"Error({self.error})"  # type: ignore[has-type]
+        return f"Error({self.error})"
 
     def __reduce__(self) -> str | tuple[typing.Any, ...]:
         """Simplify Exception object for pickling.
