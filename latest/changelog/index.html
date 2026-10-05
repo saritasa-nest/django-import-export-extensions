@@ -1485,6 +1485,12 @@
 <h2 id="unreleased">Unreleased<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Make <code>data_file</code> field in <code>ExportJob</code> nullable, since on creation it's empty</li>
+<li>Add <code>throttling</code> support for export actions, you can set default classes via
+ <code>DRF_EXPORT_THROTTLE_CLASSES</code></li>
+<li>Add <code>permissions</code> support for export actions, you can set default classes via
+ <code>DRF_EXPORT_PERMISSION_CLASSES</code></li>
+<li>Rework <code>ExportStartActionMixin</code> to be more flexible and support extra export
+actions</li>
 </ul>
 <h2 id="1103-2026-07-20">1.10.3 (2026-07-20)<a class="headerlink" href="#1103-2026-07-20" title="Permanent link">&para;</a></h2>
 <ul>

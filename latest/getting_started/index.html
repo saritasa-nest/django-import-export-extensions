@@ -1075,6 +1075,84 @@ setup endpoints to be able to:</p>
     is available only in import jobs.</li>
 </ul>
 <p><img alt="A screenshot of the generated OpenAPI specification" src="../_static/images/action-bands-openapi.png" /></p>
+<p>Example of setup via actions mixin</p>
+<div class="highlight"><span class="filename">views.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">decorators</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="p">,</span>
+    <span class="n">permissions</span><span class="p">,</span>
+    <span class="n">serializers</span><span class="p">,</span>
+    <span class="n">settings</span><span class="p">,</span>
+    <span class="n">throttling</span><span class="p">,</span>
+    <span class="n">viewsets</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">import_export_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">resources</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ArtistViewSet</span><span class="p">(</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">ExportStartActionMixin</span><span class="p">,</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">ImportStartActionMixin</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span><span class="p">,</span>
+    <span class="n">mixins</span><span class="o">.</span><span class="n">RetrieveModelMixin</span><span class="p">,</span>
+    <span class="n">viewsets</span><span class="o">.</span><span class="n">GenericViewSet</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Simple viewset for Artist model."""</span>
+
+    <span class="n">resource_class</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">SimpleArtistResource</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Artist</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">ArtistSerializer</span>
+    <span class="n">filterset_class</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">SimpleArtistResource</span><span class="o">.</span><span class="n">filterset_class</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"id"</span><span class="p">,)</span>
+    <span class="n">ordering_fields</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"id"</span><span class="p">,</span>
+        <span class="s2">"name"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">export_permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+
+    <span class="nd">@decorators</span><span class="o">.</span><span class="n">action</span><span class="p">(</span>
+        <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">"POST"</span><span class="p">],</span>
+        <span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">export_action_name</span><span class="o">=</span><span class="s2">"export-m2m"</span><span class="p">,</span>
+        <span class="n">export_action_url</span><span class="o">=</span><span class="s2">"export-m2m"</span><span class="p">,</span>
+        <span class="n">is_export_action</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">resource_class</span><span class="o">=</span><span class="n">resources</span><span class="o">.</span><span class="n">ArtistResourceWithM2M</span><span class="p">,</span>
+        <span class="n">export_ordering_fields</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">"id"</span><span class="p">,</span>
+            <span class="s2">"name"</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">export_throttle_classes</span><span class="o">=</span><span class="p">(</span><span class="n">throttling</span><span class="o">.</span><span class="n">ScopedRateThrottle</span><span class="p">,),</span>
+    <span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_m2m</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Export artists with Many2Many field."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_export</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+<p>And then in urls.py</p>
+<div class="highlight"><span class="filename">urls.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework</span><span class="w"> </span><span class="kn">import</span> <span class="n">routers</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">import_export_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">views</span>
+
+<span class="n">router</span> <span class="o">=</span> <span class="n">routers</span><span class="o">.</span><span class="n">DefaultRouter</span><span class="p">()</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="s2">"artists"</span><span class="p">,</span>
+    <span class="n">views</span><span class="o">.</span><span class="n">ArtistViewSet</span><span class="p">,</span>
+    <span class="n">basename</span><span class="o">=</span><span class="s2">"artists"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="s2">"export"</span><span class="p">,</span>
+    <span class="n">viewset</span><span class="o">=</span><span class="n">api</span><span class="o">.</span><span class="n">BaseExportJobForUserViewSet</span><span class="p">,</span>
+    <span class="n">basename</span><span class="o">=</span><span class="s2">"export"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="s2">"import"</span><span class="p">,</span>
+    <span class="n">viewset</span><span class="o">=</span><span class="n">api</span><span class="o">.</span><span class="n">BaseImportJobForUserViewSet</span><span class="p">,</span>
+    <span class="n">basename</span><span class="o">=</span><span class="s2">"import"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">router</span><span class="o">.</span><span class="n">urls</span>
+</code></pre></div>
 
 
 

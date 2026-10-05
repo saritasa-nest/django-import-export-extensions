@@ -461,6 +461,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#drf_export_throttle_classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRF_EXPORT_THROTTLE_CLASSES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drf_export_permission_classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRF_EXPORT_PERMISSION_CLASSES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#import_export_rerun_enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -922,6 +944,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#drf_export_throttle_classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRF_EXPORT_THROTTLE_CLASSES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drf_export_permission_classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRF_EXPORT_PERMISSION_CLASSES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#import_export_rerun_enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1046,6 +1090,12 @@ Default: <code>django_filters.rest_framework.DjangoFilterBackend</code></p>
 <h3 id="drf_export_ordering_backend"><code>DRF_EXPORT_ORDERING_BACKEND</code><a class="headerlink" href="#drf_export_ordering_backend" title="Permanent link">&para;</a></h3>
 <p>Specifies filter backend class for <code>ordering</code> in export action. Default:
 <code>rest_framework.filters.OrderingFilter</code></p>
+<h3 id="drf_export_throttle_classes"><code>DRF_EXPORT_THROTTLE_CLASSES</code><a class="headerlink" href="#drf_export_throttle_classes" title="Permanent link">&para;</a></h3>
+<p>Specifies throttle classes for export action. Defaults to the ones specified in
+in <code>REST_FRAMEWORK</code> configuration</p>
+<h3 id="drf_export_permission_classes"><code>DRF_EXPORT_PERMISSION_CLASSES</code><a class="headerlink" href="#drf_export_permission_classes" title="Permanent link">&para;</a></h3>
+<p>Specifies permissions classes for export action. Defaults to the ones specified in
+in <code>REST_FRAMEWORK</code> configuration</p>
 <h3 id="import_export_rerun_enabled"><code>IMPORT_EXPORT_RERUN_ENABLED</code><a class="headerlink" href="#import_export_rerun_enabled" title="Permanent link">&para;</a></h3>
 <p>Enables the "Re-run" button on the <code>ExportJob</code> and <code>ImportJob</code> detail pages in
 the Django admin. This button allows you to re-trigger an import or export
