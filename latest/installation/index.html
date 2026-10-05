@@ -493,6 +493,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#export_save_result_obj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EXPORT_SAVE_RESULT_OBJ
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -976,6 +987,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#export_save_result_obj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EXPORT_SAVE_RESULT_OBJ
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1085,11 +1107,11 @@ is updated. This helps to increase the speed of import/export. The
 default value is 100. This parameter can be specified separately for
 each resource by adding <code>status_update_row_count</code> to its <code>Meta</code>.</p>
 <h3 id="drf_export_django_filters_backend"><code>DRF_EXPORT_DJANGO_FILTERS_BACKEND</code><a class="headerlink" href="#drf_export_django_filters_backend" title="Permanent link">&para;</a></h3>
-<p>Specifies filter backend class for <code>django-filters</code> in export action.
-Default: <code>django_filters.rest_framework.DjangoFilterBackend</code></p>
+<p>Specifies filter backend class for <code>django-filters</code> in export action.</p>
+<p>Default: <code>django_filters.rest_framework.DjangoFilterBackend</code></p>
 <h3 id="drf_export_ordering_backend"><code>DRF_EXPORT_ORDERING_BACKEND</code><a class="headerlink" href="#drf_export_ordering_backend" title="Permanent link">&para;</a></h3>
-<p>Specifies filter backend class for <code>ordering</code> in export action. Default:
-<code>rest_framework.filters.OrderingFilter</code></p>
+<p>Specifies filter backend class for <code>ordering</code> in export action.</p>
+<p>Default: <code>rest_framework.filters.OrderingFilter</code></p>
 <h3 id="drf_export_throttle_classes"><code>DRF_EXPORT_THROTTLE_CLASSES</code><a class="headerlink" href="#drf_export_throttle_classes" title="Permanent link">&para;</a></h3>
 <p>Specifies throttle classes for export action. Defaults to the ones specified in
 in <code>REST_FRAMEWORK</code> configuration</p>
@@ -1101,6 +1123,13 @@ in <code>REST_FRAMEWORK</code> configuration</p>
 the Django admin. This button allows you to re-trigger an import or export
 process using the same parameters and files as the original job, which is
 useful for debugging without having to manually recreate the job.</p>
+<p>Default: <code>False</code></p>
+<h3 id="export_save_result_obj"><code>EXPORT_SAVE_RESULT_OBJ</code><a class="headerlink" href="#export_save_result_obj" title="Permanent link">&para;</a></h3>
+<p>Enables saving the result of the export from the <code>Resource</code> class
+to the <code>result</code> field of <code>ExportJob</code>.
+Disabled by default since it's unnecessary:
+it takes place in DB(depending on the size of export data).
+But might be useful for debugging.</p>
 <p>Default: <code>False</code></p>
 <h2 id="settings-from-django-import-export">Settings from django-import-export<a class="headerlink" href="#settings-from-django-import-export" title="Permanent link">&para;</a></h2>
 <p>Additionally, the package supports settings from the original

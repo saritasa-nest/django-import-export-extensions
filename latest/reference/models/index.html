@@ -1606,7 +1606,9 @@
 <span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span>
-<span class="normal">334</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ExportJob</span><span class="p">(</span><span class="n">BaseJob</span><span class="p">):</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ExportJob</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">BaseJob</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Abstract model for managing celery export jobs.</span>
 
 <span class="sd">    Encapsulate all logic related to celery export.</span>
@@ -1749,7 +1751,7 @@
         <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">progress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaskStateInfo</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">progress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">core</span><span class="o">.</span><span class="n">TaskStateInfo</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Return dict with export state."""</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">export_task_id</span>
@@ -1850,13 +1852,15 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_export_data_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Run export process with saving to file."""</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"result"</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">EXPORT_SAVE_RESULT_OBJ</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"result"</span><span class="p">])</span>
 
         <span class="c1"># `export_data` may be bytes (base formats such as xlsx, csv, etc.) or</span>
         <span class="c1"># file object (formats inherited from `BaseZipExport`)</span>
         <span class="n">export_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_format</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span>
-            <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">get_export_data_format_kwargs</span><span class="p">(</span>
                 <span class="n">file_format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_format</span><span class="p">,</span>
             <span class="p">),</span>
@@ -1872,7 +1876,7 @@
             <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_task_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaskStateInfo</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_task_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">core</span><span class="o">.</span><span class="n">TaskStateInfo</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get state info for passed task_id.</span>
 
 <span class="sd">        This method may change job status if task failed, but we did not</span>
