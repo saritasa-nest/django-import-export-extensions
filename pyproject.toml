@@ -351,11 +351,11 @@ exclude = [
 ]
 
 [[tool.mypy.overrides]]
-module = "test_project.*"
+module = "tests.*"
 warn_unreachable = false
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "test_project.settings"
+DJANGO_SETTINGS_MODULE = "example.settings"
 python_files = [
   "tests.py",
   "test_*.py",
@@ -378,7 +378,8 @@ omit = [
   "**/invocations/**",
   "**/migrations/**",
   "**/__init__.py",
-  "test_project/**",
+  "example/**",
+  "tests/**",
   "tasks.py",
 ]
 

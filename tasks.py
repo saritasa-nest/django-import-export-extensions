@@ -35,14 +35,14 @@ ns.configure(
                 default_hook_stage="pre-push",
             ),
             celery=saritasa_invocations.CelerySettings(
-                app="test_project.celery_app:app",
+                app="example.celery_app:app",
                 scheduler="",
                 extra_params=("",),
             ),
             django=saritasa_invocations.DjangoSettings(
-                manage_file_path="test_project/manage.py",
-                settings_path="test_project.settings",
-                apps_path="test_project",
+                manage_file_path="example/manage.py",
+                settings_path="example.settings",
+                apps_path="example",
             ),
             github_actions=saritasa_invocations.GitHubActionsSettings(
                 hosts=("postgres", "redis"),

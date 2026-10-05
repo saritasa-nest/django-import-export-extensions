@@ -156,4 +156,4 @@ cython_debug/
 coverage.lcov
 
 # Test files
-test_project/media
+example/media

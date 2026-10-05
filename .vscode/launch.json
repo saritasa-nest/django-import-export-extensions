@@ -5,7 +5,7 @@
       "name": "Python: Django",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/test_project/manage.py",
+      "program": "${workspaceFolder}/example/manage.py",
       "preLaunchTask": "Launch containers and wait for DB",
       "args": [
         "runserver_plus",
@@ -18,7 +18,7 @@
       "name": "Python: Django With SQL Logs",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/test_project/manage.py",
+      "program": "${workspaceFolder}/example/manage.py",
       "preLaunchTask": "Launch containers and wait for DB",
       "args": [
         "runserver_plus",
@@ -36,7 +36,7 @@
         "preLaunchTask": "Launch containers and wait for DB",
         "args": [
             "--app",
-            "test_project.celery_app.app",
+            "example.celery_app.app",
             "worker",
             "--beat",
             "--scheduler=django",

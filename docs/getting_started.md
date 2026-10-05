@@ -10,6 +10,9 @@ You can also consult the
 [django-import-export documentation](https://django-import-export.readthedocs.io/en/latest/index.html)
 to learn how to work with import and export features.
 
+Also you can also check out `example` folder which contains project with
+example which use for tests.
+
 There are simple examples to quickly get import/export functionality.
 
 ## Django Model for tests
