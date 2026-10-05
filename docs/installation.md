@@ -82,12 +82,14 @@ each resource by adding `status_update_row_count` to its `Meta`.
 ### `DRF_EXPORT_DJANGO_FILTERS_BACKEND`
 
 Specifies filter backend class for `django-filters` in export action.
+
 Default: `django_filters.rest_framework.DjangoFilterBackend`
 
 ### `DRF_EXPORT_ORDERING_BACKEND`
 
-Specifies filter backend class for `ordering` in export action. Default:
-`rest_framework.filters.OrderingFilter`
+Specifies filter backend class for `ordering` in export action.
+
+Default: `rest_framework.filters.OrderingFilter`
 
 ### `DRF_EXPORT_THROTTLE_CLASSES`
 
@@ -105,6 +107,16 @@ Enables the "Re-run" button on the `ExportJob` and `ImportJob` detail pages in
 the Django admin. This button allows you to re-trigger an import or export
 process using the same parameters and files as the original job, which is
 useful for debugging without having to manually recreate the job.
+
+Default: `False`
+
+### `EXPORT_SAVE_RESULT_OBJ`
+
+Enables saving the result of the export from the `Resource` class
+to the `result` field of `ExportJob`.
+Disabled by default since it's unnecessary:
+it takes place in DB(depending on the size of export data).
+But might be useful for debugging.
 
 Default: `False`
 

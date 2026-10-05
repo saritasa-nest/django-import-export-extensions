@@ -9,6 +9,8 @@
  `DRF_EXPORT_PERMISSION_CLASSES`
 - Rework `ExportStartActionMixin` to be more flexible and support extra export
 actions
+- Add `EXPORT_SAVE_RESULT_OBJ` setting. Enables saving the result of the export
+ from the Resource class to the result field of `ExportJob`. Default: `False`
 
 ## 1.10.3 (2026-07-20)
 
