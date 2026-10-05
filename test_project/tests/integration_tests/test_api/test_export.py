@@ -1,6 +1,7 @@
 import collections.abc
 
 import pytest
+import pytest_django
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status, test
@@ -10,21 +11,37 @@ from import_export_extensions.models import ExportJob
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
-    argnames="export_url",
+    argnames=[
+        "export_url",
+        "expected_resource_path",
+    ],
     argvalues=[
         pytest.param(
             reverse("export-artist-start"),
+            "test_project.fake_app.resources.SimpleArtistResource",
             id="Export url",
         ),
         pytest.param(
             reverse("artists-export"),
+            "test_project.fake_app.resources.SimpleArtistResource",
             id="Action url",
+        ),
+        pytest.param(
+            reverse("artists-export-m2m"),
+            "test_project.fake_app.resources.ArtistResourceWithM2M",
+            id="Extra action url",
+        ),
+        pytest.param(
+            reverse("export-band-start"),
+            "test_project.fake_app.resources.BandResourceWithM2M",
+            id="Export url resource with no filterset",
         ),
     ],
 )
 def test_export_api_creates_export_job(
     admin_api_client: test.APIClient,
     export_url: str,
+    expected_resource_path: str,
 ):
     """Ensure export start API creates new export job."""
     response = admin_api_client.post(
@@ -35,7 +52,35 @@ def test_export_api_creates_export_job(
     )
     assert response.status_code == status.HTTP_201_CREATED, response.data
     assert response.data["export_status"] == ExportJob.ExportStatus.CREATED
-    assert ExportJob.objects.filter(id=response.data["id"]).exists()
+    assert (job := ExportJob.objects.filter(id=response.data["id"]).first())
+    assert job.resource_path == expected_resource_path
+
+
+def test_export_api_action_throttling(
+    admin_api_client: test.APIClient,
+    settings: pytest_django.fixtures.Settings,
+):
+    """Ensure that throttling works properly."""
+    settings.REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"]["export"] = "5/day"
+    for _ in range(5):
+        response = admin_api_client.post(
+            path=reverse("artists-export-m2m"),
+            data={
+                "file_format": "csv",
+            },
+        )
+        assert response.status_code == status.HTTP_201_CREATED, response.data
+        assert response.data["export_status"] == ExportJob.ExportStatus.CREATED
+        assert ExportJob.objects.filter(id=response.data["id"]).exists()
+    response = admin_api_client.post(
+        path=reverse("artists-export-m2m"),
+        data={
+            "file_format": "csv",
+        },
+    )
+    assert response.status_code == status.HTTP_429_TOO_MANY_REQUESTS, (
+        response.data
+    )
 
 
 @pytest.mark.parametrize(
@@ -137,6 +182,10 @@ def test_export_api_filtering(
             reverse("artists-export"),
             id="Action url",
         ),
+        pytest.param(
+            reverse("artists-export-m2m"),
+            id="Extra action url",
+        ),
     ],
 )
 def test_export_api_ordering(
@@ -174,6 +223,10 @@ def test_export_api_ordering(
             f"{reverse('artists-export')}?id=invalid_id",
             id="Action url with invalid filter_kwargs",
         ),
+        pytest.param(
+            f"{reverse('artists-export-m2m')}?id=invalid_id",
+            id="Extra action url with invalid filter_kwargs",
+        ),
     ],
 )
 def test_export_api_create_export_job_with_invalid_filter_kwargs(
@@ -202,6 +255,10 @@ def test_export_api_create_export_job_with_invalid_filter_kwargs(
         pytest.param(
             f"{reverse('artists-export')}?ordering=invalid_id",
             id="Action url with invalid ordering",
+        ),
+        pytest.param(
+            f"{reverse('artists-export-m2m')}?ordering=invalid_id",
+            id="Extra action url with invalid ordering",
         ),
     ],
 )

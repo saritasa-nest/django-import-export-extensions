@@ -14,6 +14,8 @@ DEFAULT_DRF_EXPORT_DJANGO_FILTERS_BACKEND = (
     "django_filters.rest_framework.DjangoFilterBackend"
 )
 DEFAULT_DRF_EXPORT_ORDERING_BACKEND = "rest_framework.filters.OrderingFilter"
+DEFAULT_DRF_EXPORT_THROTTLE_CLASSES = ()
+DEFAULT_DRF_EXPORT_PERMISSION_CLASSES = ()
 # Enable/disable "Re-run" button in django-admin
 DEFAULT_IMPORT_EXPORT_RERUN_ENABLED = False
 
@@ -47,6 +49,16 @@ class CeleryImportExport(AppConfig):
             settings,
             "DRF_EXPORT_ORDERING_BACKEND",
             DEFAULT_DRF_EXPORT_ORDERING_BACKEND,
+        )
+        settings.DRF_EXPORT_THROTTLE_CLASSES = getattr(
+            settings,
+            "DRF_EXPORT_THROTTLE_CLASSES",
+            DEFAULT_DRF_EXPORT_THROTTLE_CLASSES,
+        )
+        settings.DRF_EXPORT_PERMISSION_CLASSES = getattr(
+            settings,
+            "DRF_EXPORT_PERMISSION_CLASSES",
+            DEFAULT_DRF_EXPORT_PERMISSION_CLASSES,
         )
         settings.IMPORT_EXPORT_RERUN_ENABLED = getattr(
             settings,

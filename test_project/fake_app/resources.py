@@ -1,18 +1,19 @@
+from import_export import formats
+
 from import_export_extensions.fields import IntermediateManyToManyField
 from import_export_extensions.resources import CeleryModelResource
 from import_export_extensions.widgets import IntermediateManyToManyWidget
 
-from .filters import ArtistFilterSet
-from .models import Artist, Band
+from . import filters, models
 
 
 class SimpleArtistResource(CeleryModelResource):
     """Artist resource with simple fields."""
 
-    filterset_class = ArtistFilterSet
+    filterset_class = filters.ArtistFilterSet
 
     class Meta:
-        model = Artist
+        model = models.Artist
         import_id_fields = ["external_id"]
         clean_model_instances = True
         fields = [
@@ -26,11 +27,19 @@ class SimpleArtistResource(CeleryModelResource):
 class ArtistResourceWithM2M(CeleryModelResource):
     """Artist resource with Many2Many field."""
 
+    filterset_class = filters.ArtistM2MFilterSet
+
+    SUPPORTED_FORMATS = [
+        formats.base_formats.CSV,
+        formats.base_formats.XLS,
+        formats.base_formats.XLSX,
+    ]
+
     bands = IntermediateManyToManyField(
         attribute="bands",
         column_name="Bands he played in",
         widget=IntermediateManyToManyWidget(
-            rem_model=Band,
+            rem_model=models.Band,
             rem_field="title",
             extra_fields=["date_joined"],
             instance_separator=";",
@@ -38,7 +47,7 @@ class ArtistResourceWithM2M(CeleryModelResource):
     )
 
     class Meta:
-        model = Artist
+        model = models.Artist
         clean_model_instances = True
         fields = ["id", "name", "bands", "instrument"]
 
@@ -61,7 +70,7 @@ class BandResourceWithM2M(CeleryModelResource):
         attribute="artists",
         column_name="Artists in band",
         widget=IntermediateManyToManyWidget(
-            rem_model=Artist,
+            rem_model=models.Artist,
             rem_field="name",
             extra_fields=["date_joined"],
             instance_separator=";",
@@ -69,7 +78,7 @@ class BandResourceWithM2M(CeleryModelResource):
     )
 
     class Meta:
-        model = Band
+        model = models.Band
         clean_model_instances = True
         fields = ["id", "title", "artists"]
 

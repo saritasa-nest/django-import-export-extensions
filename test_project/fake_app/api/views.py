@@ -1,4 +1,12 @@
-from rest_framework import mixins, serializers, viewsets
+from rest_framework import (
+    decorators,
+    mixins,
+    permissions,
+    serializers,
+    settings,
+    throttling,
+    viewsets,
+)
 
 from import_export_extensions import api
 
@@ -12,6 +20,16 @@ class ArtistExportViewSet(api.ExportJobForUserViewSet):
     export_ordering_fields = (
         "id",
         "name",
+    )
+
+
+class BandExportViewSet(api.ExportJobForUserViewSet):
+    """Simple ViewSet for exporting Band model."""
+
+    resource_class = resources.BandResourceWithM2M
+    export_ordering_fields = (
+        "id",
+        "title",
     )
 
 
@@ -33,6 +51,14 @@ class ArtistSerializer(serializers.ModelSerializer):
         )
 
 
+class ScopedRateThrottle(throttling.ScopedRateThrottle):
+    """Custom for testing."""
+
+    def get_rate(self):
+        """Make it lazy for easier testing."""
+        return settings.api_settings.DEFAULT_THROTTLE_RATES[self.scope]
+
+
 class ArtistViewSet(
     api.ExportStartActionMixin,
     api.ImportStartActionMixin,
@@ -51,3 +77,21 @@ class ArtistViewSet(
         "id",
         "name",
     )
+    export_permission_classes = (permissions.IsAuthenticated,)
+
+    @decorators.action(
+        methods=["POST"],
+        detail=False,
+        export_action_name="export-m2m",
+        export_action_url="export-m2m",
+        is_export_action=True,
+        resource_class=resources.ArtistResourceWithM2M,
+        export_ordering_fields=(
+            "id",
+            "name",
+        ),
+        export_throttle_classes=(ScopedRateThrottle,),
+    )
+    def export_m2m(self, request, *args, **kwargs):
+        """Export artists with Many2Many field."""
+        return self.start_export(request, *args, **kwargs)
