@@ -33,11 +33,11 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Framework :: Django",
   "Framework :: Django :: 4.2",
   "Framework :: Django :: 5.0",
@@ -46,7 +46,7 @@ classifiers = [
   "Framework :: Django :: 6.0",
   "Framework :: Django :: 6.1",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
   # Django is a high-level Python web framework that encourages
   # rapid development and clean, pragmatic design.

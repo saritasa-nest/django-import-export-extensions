@@ -11,6 +11,8 @@
 actions
 - Add `EXPORT_SAVE_RESULT_OBJ` setting. Enables saving the result of the export
  from the Resource class to the result field of `ExportJob`. Default: `False`
+- Drop support for Python 3.10
+- Confirm support for Python 3.15
 
 ## 1.10.3 (2026-07-20)
 
