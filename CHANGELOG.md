@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.11.0 (2026-10-20)
+
 - Make `data_file` field in `ExportJob` nullable, since on creation it's empty
 - Add `throttling` support for export actions, you can set default classes via
  `DRF_EXPORT_THROTTLE_CLASSES`
