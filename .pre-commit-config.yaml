@@ -48,7 +48,11 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
+<<<<<<< before updating
     rev: v0.16.8
+=======
+    rev: v0.16.10
+>>>>>>> after updating
     hooks:
       - id: ruff-check
         args: [
@@ -57,7 +61,11 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
+<<<<<<< before updating
     rev: v10.2.0
+=======
+    rev: v10.3.0
+>>>>>>> after updating
     hooks:
       - id: cspell
 
@@ -67,7 +75,11 @@ repos:
       - id: add-trailing-comma
 
   - repo: https://github.com/astral-sh/uv-pre-commit
+<<<<<<< before updating
     rev: 0.12.18
+=======
+    rev: 0.12.23
+>>>>>>> after updating
     hooks:
       - id: uv-lock
       - id: uv-sync
@@ -95,7 +107,11 @@ repos:
       - id: yamllint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
+<<<<<<< before updating
     rev: 44.108.2
+=======
+    rev: 44.132.5
+>>>>>>> after updating
     hooks:
       - id: renovate-config-validator
         language: bun
